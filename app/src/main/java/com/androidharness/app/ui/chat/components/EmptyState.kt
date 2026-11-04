@@ -78,6 +78,15 @@ import com.androidharness.app.ui.common.Button
  * status badges. Without a provider there is a real call-to-action button
  * instead of instructions to hunt through menus.
  */
+
+/**
+ * Saba Studio — chat-first entry surface.
+ *
+ * The same suggestion callbacks, agent chooser and provider onboarding are retained.
+ * A minimal ChatGPT-like layout uses neon only as a subtle brand accent, rather than
+ * making every element compete for attention. Project and terminal tools remain
+ * accessible through the app's existing navigation.
+ */
 @Composable
 internal fun EmptyState(
     hasProvider: Boolean,
@@ -86,139 +95,124 @@ internal fun EmptyState(
     chatOnly: Boolean = false,
     agent: com.androidharness.app.data.ChatAgentProfile? = null,
     agentSetup: (@Composable () -> Unit)? = null,
-    /** Fill the chat list's viewport (fillParentMaxHeight) so content can center. */
     modifier: Modifier = Modifier,
 ) {
-    val uiContext = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
+    val cyan = Color(0xFF38DDF7)
+    val violet = Color(0xFF9877FF)
     val scheme = MaterialTheme.colorScheme
-    val suggestions = if (chatOnly && agent != null && agent.starters.isNotEmpty()) agent.starters.map { agentIcon(agent.avatar) to it } else if (chatOnly) listOf(
-        Icons.Outlined.School to uiContext.getString(R.string.chat_suggestion_explain),
-        Icons.Outlined.Lightbulb to uiContext.getString(R.string.chat_suggestion_ideas),
-        Icons.Outlined.EditNote to uiContext.getString(R.string.chat_suggestion_draft),
-    ) else listOf(
-        Icons.Outlined.Terminal to "Create a Python hello world and run it",
-        Icons.Outlined.Folder to "Explore my workspace and summarize it",
-        Icons.Outlined.Code to "Build a simple HTML landing page",
-        Icons.Outlined.CreateNewFolder to "Set up a new project with a README",
+    val ideas = if (chatOnly && agent != null && agent.starters.isNotEmpty()) {
+        agent.starters.take(4).map { Icons.Outlined.Lightbulb to it }
+    } else if (chatOnly) {
+        listOf(
+            Icons.Outlined.School to context.getString(R.string.chat_suggestion_explain),
+            Icons.Outlined.Lightbulb to context.getString(R.string.chat_suggestion_ideas),
+            Icons.Outlined.EditNote to context.getString(R.string.chat_suggestion_draft),
+        )
+    } else listOf(
+        Icons.Outlined.Code to "یک پروژه اندرویدی جدید بساز",
+        Icons.Outlined.Folder to "سورس پروژه فعلی را بررسی کن",
+        Icons.Outlined.Terminal to "یک برنامه پایتون بساز و اجرا کن",
+        Icons.Outlined.CreateNewFolder to "برای پروژه یک README ایجاد کن",
     )
-    var entered by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        delay(40)
-        entered = true
-    }
 
-    Box(modifier.fillMaxWidth().fillMaxHeight()) {
-        Box(
-            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-            contentAlignment = Alignment.Center,
+    Box(
+        modifier = modifier.fillMaxWidth().fillMaxHeight(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .widthIn(max = 540.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 22.dp, vertical = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                modifier = Modifier
-                    .widthIn(max = 520.dp)
-                    .fillMaxWidth()
-                    .padding(
-                        top = 24.dp,
-                        start = 8.dp, end = 8.dp, bottom = 24.dp,
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                if (chatOnly && agent != null) {
-                    AgentAvatar(agent.avatar)
-                    Spacer(Modifier.height(16.dp))
+            if (chatOnly && agent != null) {
+                AgentAvatar(agent.avatar)
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(62.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(violet.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        Icons.Outlined.Code,
+                        contentDescription = null,
+                        tint = cyan,
+                        modifier = Modifier.size(32.dp),
+                    )
                 }
-                Text(
-                    if (hasProvider && chatOnly && agent != null) agent.name else if (hasProvider) uiContext.getString(if (chatOnly) R.string.chat_empty_title else R.string.ui_what_do_you_want_to_build) else uiContext.getString(R.string.ui_connect_a_provider),
-                    style = MaterialTheme.typography.headlineSmallEmphasized,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(Modifier.height(10.dp))
-                Text(
-                    if (hasProvider && chatOnly && agent != null && agent.description.isNotBlank()) agent.description else if (hasProvider) uiContext.getString(if (chatOnly) R.string.chat_empty_description else R.string.ui_start_with_an_idea_or_create_a)
-                    else uiContext.getString(R.string.ui_add_an_api_key_for_openai_anthropic),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = scheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
-                if (hasProvider) {
-                    Spacer(Modifier.height(28.dp))
+            }
+            Spacer(Modifier.height(22.dp))
+            Text(
+                text = if (chatOnly && agent != null) agent.name else "صبا استودیو",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = if (!hasProvider) "برای شروع، یک مدل هوش مصنوعی را متصل کنید"
+                else if (chatOnly && agent != null && agent.description.isNotBlank()) agent.description
+                else "امروز چه چیزی بسازیم؟",
+                style = MaterialTheme.typography.bodyLarge,
+                color = scheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            if (!hasProvider) {
+                Spacer(Modifier.height(24.dp))
+                Button(onClick = onAddProvider) {
+                    Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("اتصال مدل هوش مصنوعی")
+                }
+            } else {
+                Spacer(Modifier.height(30.dp))
+                if (chatOnly && agent == null && agentSetup != null) {
+                    agentSetup()
+                    Spacer(Modifier.height(12.dp))
+                }
+                ideas.forEachIndexed { index, (icon, label) ->
                     Surface(
-                        color = scheme.surface,
-                        shape = if (LocalHarnessGlass.current.mode != HarnessGlassMode.OFF) RoundedCornerShape(28.dp) else MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, scheme.outlineVariant.copy(alpha = 0.5f)),
+                        color = scheme.surfaceContainerLow,
+                        shape = RoundedCornerShape(17.dp),
+                        border = BorderStroke(
+                            1.dp,
+                            (if (index == 0) cyan else scheme.outlineVariant)
+                                .copy(alpha = if (index == 0) 0.48f else 0.55f),
+                        ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .animateContentSize(),
+                            .padding(vertical = 5.dp)
+                            .clickable { onSuggestion(label) },
                     ) {
-                        Column {
-                            if (chatOnly && agent == null && agentSetup != null) {
-                                agentSetup()
-                                HorizontalDivider(color = scheme.outlineVariant.copy(alpha = 0.5f), modifier = Modifier.padding(start = 56.dp))
-                            }
-                            suggestions.forEachIndexed { index, (icon, suggestion) ->
-                                AnimatedVisibility(
-                                    visible = entered,
-                                    enter = fadeIn(tween(200, delayMillis = 90 * index)) +
-                                        slideInVertically(tween(240, delayMillis = 90 * index)) { it / 6 },
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable { onSuggestion(suggestion) }
-                                            .padding(horizontal = 14.dp, vertical = 12.dp),
-                                    ) {
-                                        Box(
-                                            contentAlignment = Alignment.Center,
-                                            modifier = Modifier
-                                                .size(30.dp)
-                                                .clip(RoundedCornerShape(9.dp))
-                                                .harnessGlass(scheme.surfaceContainerHigh, RoundedCornerShape(9.dp)),
-                                        ) {
-                                            Icon(
-                                                icon,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
-                                                tint = scheme.onSurfaceVariant,
-                                            )
-                                        }
-                                        Spacer(Modifier.width(12.dp))
-                                        Text(
-                                            suggestion,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            modifier = Modifier.weight(1f),
-                                        )
-                                        Spacer(Modifier.width(8.dp))
-                                        Icon(
-                                            Icons.AutoMirrored.Filled.ArrowForward,
-                                            contentDescription = null,
-                                            tint = scheme.onSurfaceVariant.copy(alpha = 0.7f),
-                                            modifier = Modifier.size(16.dp),
-                                        )
-                                    }
-                                }
-                                if (index != suggestions.lastIndex) {
-                                    HorizontalDivider(
-                                        color = scheme.outlineVariant.copy(alpha = 0.5f),
-                                        modifier = Modifier.padding(start = 56.dp),
-                                    )
-                                }
-                            }
-                            HorizontalDivider(color = scheme.outlineVariant)
-                            DonationFundingNotice()
-                            DonationRow()
-                            HorizontalDivider(
-                                color = scheme.outlineVariant.copy(alpha = 0.5f),
-                                modifier = Modifier.padding(start = 56.dp),
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 15.dp),
+                        ) {
+                            Icon(
+                                icon,
+                                contentDescription = null,
+                                tint = if (index == 0) cyan else violet,
+                                modifier = Modifier.size(21.dp),
                             )
-                            UpiDonationRow()
+                            Spacer(Modifier.width(12.dp))
+                            Text(
+                                text = label,
+                                color = scheme.onSurface,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f),
+                            )
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = null,
+                                tint = scheme.onSurfaceVariant,
+                                modifier = Modifier.size(17.dp),
+                            )
                         }
-                    }
-                } else {
-                    Spacer(Modifier.height(26.dp))
-                    Button(onClick = onAddProvider) {
-                        Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(6.dp))
-                        Text(uiContext.getString(R.string.settings_providers_add))
                     }
                 }
             }

@@ -159,7 +159,7 @@ internal fun ProjectNavigationSidebar(
             onAction = { if (it == SidebarChatAction.SELECT) onSelectedChatsChange(selection + chat.id) else onAction(chat, it) },
             selecting = selecting, checked = chat.id in selection)
         if (glass) HorizontalDivider(Modifier.padding(start = if (indented) 40.dp else 20.dp, end = 20.dp),
-            color = scheme.onSurface.copy(alpha = .16f))
+            color = scheme.onSurface.copy(alpha = .08f))
     }
     @Composable fun Footer() {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
@@ -203,7 +203,7 @@ internal fun ProjectNavigationSidebar(
                     Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 18.dp, end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                         HarnessMark(26.dp, Modifier.semantics { contentDescription = uiContext.getString(R.string.ui_androidharness_icon) })
-                        Text("AndroidHarness", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
+                        Text("صبا استودیو", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         ExpressiveIconButton(onClick = onCollapse) { Icon(Icons.AutoMirrored.Outlined.MenuOpen, uiContext.getString(R.string.ui_collapse_sidebar), Modifier.size(19.dp)) }
                     }
@@ -217,7 +217,7 @@ internal fun ProjectNavigationSidebar(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp).heightIn(min = 44.dp)
                             .then(if (glass) Modifier.harnessGlass(scheme.primaryContainer, RoundedCornerShape(28.dp)) else Modifier)) {
                         Icon(Icons.Outlined.EditNote, null, Modifier.size(19.dp)); Spacer(Modifier.width(8.dp))
-                        Text(uiContext.getString(if (chatOnly) R.string.settings_telegram_new_chat else R.string.conversation_new_code_chat), style = MaterialTheme.typography.labelLarge)
+                        Text("گفت‌وگوی جدید", style = MaterialTheme.typography.labelLarge)
                     }
                     }
                     if (!selecting || !short) {
@@ -364,7 +364,7 @@ internal fun ProjectNavigationSidebar(
                         }
                         val recent = sessions.filter { it.id !in pinned && it.id !in archived }
                         if (recent.isNotEmpty()) {
-                            item { SidebarSectionHeader(uiContext.getString(if (chatOnly) R.string.ui_recent_chats else R.string.conversation_recent_code_chats), true, null) }
+                            item { SidebarSectionHeader(if (chatOnly) "گفتگوهای اخیر" else uiContext.getString(R.string.conversation_recent_code_chats), true, null) }
                             items(recent, key = { "chat:${it.id}" }) { Chat(it, showProject = true) }
                         }
                         if (recent.isEmpty() && grouped.pinned.isEmpty()) item {
@@ -491,14 +491,14 @@ private fun SidebarChatRow(chat: SessionEntity, selected: Boolean, pinned: Boole
     val hasDraft = remember(chat.conversationJson) {
         com.androidharness.app.data.ConversationConfig.decode(chat.conversationJson).draftText.isNotBlank()
     }
-    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) scheme.primary.copy(alpha = .07f)
+    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) androidx.compose.ui.graphics.Color(0xFF38DDF7).copy(alpha = .10f)
         else if (focused) scheme.surfaceContainerHigh else scheme.surface, expressiveEffectsSpec(), label = "Chat selection")
     Row(Modifier.fillMaxWidth().padding(start = if (indented) 30.dp else 10.dp, end = 10.dp, top = 2.dp, bottom = 2.dp)) {
         if (indented) Box(Modifier.width(1.dp).height(56.dp).background(scheme.outlineVariant))
         Row(Modifier.weight(1f).padding(start = if (indented) 5.dp else 0.dp)
-            .background(rowColor, RoundedCornerShape(10.dp)),
+            .background(rowColor, RoundedCornerShape(14.dp)),
             verticalAlignment = Alignment.CenterVertically) {
-            Row(Modifier.weight(1f).expressivePressFeedback(press).clip(RoundedCornerShape(10.dp)).secondaryClick(onActions).pointerHoverIcon(PointerIcon.Hand)
+            Row(Modifier.weight(1f).expressivePressFeedback(press).clip(RoundedCornerShape(14.dp)).secondaryClick(onActions).pointerHoverIcon(PointerIcon.Hand)
                 .onFocusChanged { focused = it.isFocused }.onPreviewKeyEvent { event ->
                     if (event.key == Key.Menu || event.key == Key.F10 && event.isShiftPressed) {
                         if (event.type == KeyEventType.KeyUp) onActions(); true
