@@ -2,7 +2,7 @@ name: Saba Studio source audit and Android debug APK
 
 on:
   push:
-    branches: [develop/codestudio-alpha, feature/chat-first-ui]
+    branches: [main, develop/codestudio-alpha, feature/chat-first-ui]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -68,10 +68,20 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Install Android SDK platform 37
-        run: sdkmanager "platforms;android-37" "build-tools;37.0.0"
+      - name: Set up Android SDK platform 37
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' -type f | sort -V | tail -1)"
+          fi
+          test -x "$SDKMANAGER"
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses > /dev/null || true
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-37" "build-tools;37.0.0"
+          test -f "$ANDROID_HOME/platforms/android-37/android.jar"
       - name: Set up Gradle cache
         uses: gradle/actions/setup-gradle@v4
       - name: Build Saba Studio debug APK
