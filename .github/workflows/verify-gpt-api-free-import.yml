@@ -1,0 +1,53 @@
+name: Verify complete GPT API Free import
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/verify-gpt-api-free-import.yml"
+permissions:
+  contents: write
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch pinned upstream snapshot without executing source
+        run: |
+          git clone --quiet --filter=blob:none https://github.com/chatanywhere/GPT_API_free.git /tmp/gpt-api-free
+          git -C /tmp/gpt-api-free checkout --quiet f4e4054594ec4998886e2bb7ae7650e22356d641
+      - name: Copy and verify all upstream files byte-for-byte
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, shutil
+          source = Path('/tmp/gpt-api-free')
+          target = Path('third_party/GPT_API_free')
+          files = sorted(p for p in source.rglob('*') if p.is_file() and '.git' not in p.relative_to(source).parts)
+          assert files, 'No upstream files fetched'
+          updated = []
+          for path in files:
+              relative = path.relative_to(source)
+              destination = target / relative
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              if not destination.exists() or destination.read_bytes() != path.read_bytes():
+                  shutil.copyfile(path, destination)
+                  updated.append(str(relative))
+              assert hashlib.sha256(path.read_bytes()).digest() == hashlib.sha256(destination.read_bytes()).digest(), relative
+          mirrored = sorted(p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file())
+          upstream = sorted(p.relative_to(source).as_posix() for p in files)
+          assert upstream == mirrored, f'File list mismatch: missing={set(upstream)-set(mirrored)} unexpected={set(mirrored)-set(upstream)}'
+          print('Verified', len(upstream), 'files; updated:', updated)
+          PY
+      - name: Commit missing files if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- third_party/GPT_API_free
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: complete byte-for-byte GPT API Free snapshot"
+            git push
+          else
+            echo "Snapshot already identical"
+          fi
