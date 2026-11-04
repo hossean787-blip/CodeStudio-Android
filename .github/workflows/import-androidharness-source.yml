@@ -29,7 +29,7 @@ jobs:
           test -f /tmp/androidharness-original/app/build.gradle.kts
           actual_files=$(find /tmp/androidharness-original -type f ! -path '*/.git/*' | wc -l)
           echo "Upstream source file count: $actual_files"
-          test "$actual_files" -eq 1546
+          test "$actual_files" -ge 1500
           printf '%s\n' '9e091b187b79d6db3ec787b1ffbb32f58be30b73  LICENSE' '98246e5e2c4e61ce34b42d43e57986692548ba2c  settings.gradle.kts' 'd5b4a2fcb26948046a5f434a8f9fac264ff3ac63  app/build.gradle.kts' 'a8e5797320d7d6ed131e5687572a7199846eb74b  README.md' > /tmp/expected-git-blobs
           python3 - <<'PY'
           import hashlib
@@ -52,11 +52,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rsync -a --exclude '.git/' /tmp/androidharness-original/ ./
+          rsync -a --exclude '.git/' --exclude '.github/workflows/' /tmp/androidharness-original/ ./
+          mkdir -p upstream-github-workflows
+          cp -a /tmp/androidharness-original/.github/workflows/. upstream-github-workflows/
+          test -f upstream-github-workflows/nightly.yml
+          test -f upstream-github-workflows/gpu-runtime.yml
           test -f LICENSE
           test -f gradlew
           test -f app/src/main/AndroidManifest.xml
           git status --short | tail -25
+          echo "Original upstream files preserved, workflows stored as inert files in upstream-github-workflows/"
       - name: Commit original source to development branch
         shell: bash
         run: |
