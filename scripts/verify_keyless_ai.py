@@ -56,7 +56,7 @@ def check_free_inference() -> dict:
               "returned_text": False, "response_shape": [], "choice_shape": [], "finish_reason": None, "diagnostic": ""}
     payload = json.dumps({"model": "kilo-auto/free",
                           "messages": [{"role": "user", "content": "Reply OK"}],
-                          "max_tokens": 128, "stream": False}).encode("utf-8")
+                          "max_tokens": 512, "stream": False}).encode("utf-8")
     req = urllib.request.Request(
         url, data=payload, method="POST",
         headers={"Accept": "application/json", "Content-Type": "application/json",
