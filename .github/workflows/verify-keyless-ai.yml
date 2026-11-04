@@ -1,0 +1,30 @@
+name: Verify keyless AI catalog and provider routing
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-keyless-ai.yml'
+      - 'scripts/verify_keyless_ai.py'
+
+permissions:
+  contents: read
+
+jobs:
+  keyless-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect anonymous model catalogs (no API keys)
+        run: |
+          python3 scripts/verify_keyless_ai.py --output keyless-report.json
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-keyless-provider-evidence
+          path: keyless-report.json
+          if-no-files-found: warn
+          retention-days: 14
