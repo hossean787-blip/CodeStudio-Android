@@ -109,7 +109,7 @@ jobs:
         shell: bash
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:testDebugUnitTest --tests 'com.androidharness.app.ui.settings.FreeClaudeCodeProviderPresetsTest' -Pdistribution=github --no-daemon
+          ./gradlew :app:testDebugUnitTest --tests 'com.androidharness.app.ui.settings.FreeClaudeCodeProviderPresetsTest' --tests 'com.androidharness.app.ui.settings.ChatAnywhereProviderPresetTest' -Pdistribution=github --no-daemon
       - name: Build Saba Studio debug APK
         shell: bash
         run: |
