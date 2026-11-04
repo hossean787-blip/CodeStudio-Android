@@ -90,6 +90,21 @@ jobs:
           test -f "$ANDROID_HOME/platforms/android-37/android.jar"
       - name: Set up Gradle cache
         uses: gradle/actions/setup-gradle@v4
+      - name: Validate guarded Free Claude Code Android launcher
+        shell: bash
+        run: |
+          set -euo pipefail
+          launcher=app/src/main/assets/skills/free-claude-code/scripts/fcc-local.sh
+          test -f "$launcher"
+          sh -n "$launcher"
+          set +e
+          sh "$launcher" check . > /tmp/fcc-preflight.out 2>&1
+          code=$?
+          set -e
+          # Hosted CI is not Python 3.14.10. The launcher must refuse unsupported runtimes.
+          test "$code" -eq 4
+          grep -q 'requires exactly 3.14.10' /tmp/fcc-preflight.out
+          test -f app/src/main/assets/skills/free-claude-code/SKILL.md
       - name: Verify Free Claude Code mobile provider integration
         shell: bash
         run: |
