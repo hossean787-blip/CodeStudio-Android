@@ -1,0 +1,78 @@
+name: Import complete AndroidHarness 3.2 source
+
+on:
+  push:
+    branches: [develop/codestudio-alpha]
+    paths:
+      - '.github/workflows/import-androidharness-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout dedicated development branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop/codestudio-alpha
+          persist-credentials: true
+      - name: Download upstream source at pinned release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v3.2-release https://github.com/Sanuu7/AndroidHarness.git /tmp/androidharness-original
+          test -f /tmp/androidharness-original/LICENSE
+          test -f /tmp/androidharness-original/app/build.gradle.kts
+          actual_files=$(find /tmp/androidharness-original -type f ! -path '*/.git/*' | wc -l)
+          echo "Upstream source file count: $actual_files"
+          test "$actual_files" -ge 1500
+          printf '%s\n' '9e091b187b79d6db3ec787b1ffbb32f58be30b73  LICENSE' '98246e5e2c4e61ce34b42d43e57986692548ba2c  settings.gradle.kts' 'd5b4a2fcb26948046a5f434a8f9fac264ff3ac63  app/build.gradle.kts' 'a8e5797320d7d6ed131e5687572a7199846eb74b  README.md' > /tmp/expected-git-blobs
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          base=Path('/tmp/androidharness-original')
+          want={
+              'LICENSE':'9e091b187b79d6db3ec787b1ffbb32f58be30b73',
+              'settings.gradle.kts':'98246e5e2c4e61ce34b42d43e57986692548ba2c',
+              'app/build.gradle.kts':'d5b4a2fcb26948046a5f434a8f9fac264ff3ac63',
+              'README.md':'a8e5797320d7d6ed131e5687572a7199846eb74b'
+          }
+          for path, sha in want.items():
+              b=(base/path).read_bytes()
+              actual=hashlib.sha1(('blob %d'%len(b)).encode()+bytes([0])+b).hexdigest()
+              if actual!=sha:
+                  raise SystemExit(f'Hash mismatch: {path}: {actual}')
+          print('Source release identity checks passed')
+          PY
+      - name: Copy full source without its Git metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --exclude '.git/' --exclude '.github/workflows/' /tmp/androidharness-original/ ./
+          mkdir -p upstream-github-workflows
+          cp -a /tmp/androidharness-original/.github/workflows/. upstream-github-workflows/
+          test -f upstream-github-workflows/nightly.yml
+          test -f upstream-github-workflows/gpu-runtime.yml
+          test -f LICENSE
+          test -f gradlew
+          test -f app/src/main/AndroidManifest.xml
+          git status --short | tail -25
+          echo "Original upstream files preserved, workflows stored as inert files in upstream-github-workflows/"
+      - name: Commit original source to development branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'Nothing to commit; complete source already present'
+          else
+            git commit -m 'chore: import original AndroidHarness v3.2 complete source'
+            git push origin HEAD:develop/codestudio-alpha
+          fi
+          echo "Tracked source files: $(git ls-files | wc -l)"
