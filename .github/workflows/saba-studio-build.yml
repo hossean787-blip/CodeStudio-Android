@@ -146,7 +146,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha-debug
+          name: SabaStudio-v0.1.0-alpha.2-debug
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
@@ -165,7 +165,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha-release-test-signed
+          name: SabaStudio-v0.1.0-alpha.2-release-test-signed
           path: |
             app/build/outputs/apk/release/app-release.apk
             app/build/outputs/apk/release/*.txt
@@ -203,7 +203,7 @@ jobs:
       - name: Download the exact verified release APK
         uses: actions/download-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha-release-test-signed
+          name: SabaStudio-v0.1.0-alpha.2-release-test-signed
           path: verified-release
       - name: Enable KVM
         run: |

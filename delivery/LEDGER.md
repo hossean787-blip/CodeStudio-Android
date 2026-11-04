@@ -53,3 +53,11 @@ provider fixture, plus install/start the exact Release artifact in Persian dark
 mode and capture screenshot/crash buffer. Fixture tests do not prove live AI
 inference. Also attempt a separate full native Release with pinned NDK/CMake;
 do not equate the existing no-NDK alpha with working local inference.
+
+Neon red test: run 41900957846 executed 1943 JVM tests; only the new default
+palette test failed at ThemePaletteTest.kt:47 (expected NEON, actual BLUE).
+Implementation: a selectable generated cyan/violet/pink Saba Neon palette,
+new-install default with wallpaper dynamic color opt-in; explicit stored
+palettes and dynamic-color settings remain honored. Existing contrast tests
+cover every palette in light/dark/AMOLED modes. Version advances to
+versionCode=2, versionName=0.1.0-alpha.2; package stays unchanged.
