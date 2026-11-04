@@ -371,7 +371,7 @@ internal fun MessageComposer(
                                         !attachedSkill.isNullOrBlank() -> uiContext.getString(R.string.ui_add_a_note_or_send)
                                         busy -> uiContext.getString(R.string.ui_queue_message)
                                         desktop && !chatOnly -> uiContext.getString(R.string.ui_describe_a_task)
-                                        else -> uiContext.getString(R.string.ui_message)
+                                        else -> if (chatOnly) "به صبا استودیو پیام بده..." else uiContext.getString(R.string.ui_message)
                                     },
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -388,7 +388,7 @@ internal fun MessageComposer(
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = if (desktop || !isGroqActive) Color.Transparent else if (ringAlpha > 0f) {
+                            color = if (chatOnly && focused) Color(0xFF38DDF7).copy(alpha = 0.65f) else if (desktop || !isGroqActive) Color.Transparent else if (ringAlpha > 0f) {
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.55f * ringAlpha)
                             } else {
                                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
