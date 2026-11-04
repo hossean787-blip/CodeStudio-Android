@@ -36,8 +36,8 @@ def check(name: str, url: str) -> dict:
             result["free_tool_models"] = sum(
                 1 for item in data if isinstance(item, dict)
                 and item.get("isFree") is True
+                and isinstance(item.get("supported_parameters", []), list)
                 and "tools" in item.get("supported_parameters", [])
-                if isinstance(item.get("supported_parameters", []), list)
             )
             result["status"] = "reachable"
             result["diagnostic"] = "Catalog reachable; generation/auth not tested"
