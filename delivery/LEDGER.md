@@ -73,3 +73,9 @@ Baseline-status clarification: `baseline-status.txt` contains `?? delivery/`
 because redirecting the baseline output created that directory before Git
 inspected untracked files. The checkout itself was clean before ledger creation
 (as observed immediately after clone); no pre-existing user edits were changed.
+
+Native probe audit found an existing stale reflection signature: LocalNative's
+current generateChat adds promptThreads and cacheKey, while ReleaseProbe still
+looked up the older method. Updated the probe to the actual JNI API before
+claiming a native runtime result; Java compilation passed. This changes only
+test tooling, not the shipped application's inference API.

@@ -1,0 +1,31 @@
+{
+  "jvm": {
+    "workflow_run": 41902362533,
+    "suites": 295,
+    "tests": 1943,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "sqlite": {
+    "tests": 4,
+    "failures": 0
+  },
+  "editor": {
+    "tests": 7,
+    "failures": 0
+  },
+  "initial_no_ndk_release": {
+    "workflow_run": 41902362533,
+    "artifact_id": 13358942733,
+    "source_commit": "7b880643c3cde120f0fd51914b4fb40ad67f7dfc",
+    "package": "ir.sabagostar.sabastudio",
+    "versionCode": 2,
+    "versionName": "0.1.0-alpha.2",
+    "apk_sha256": "b30f8b9121a62e2e4607bff996f3919e2dbcf40190b639962567dca5d4945b0e",
+    "certificate_sha256": "a5c965a4bcb02105f33925b08123284e4cd3d61a4381404cdf8d673c8f3e19c7",
+    "non_debuggable": true,
+    "local_native_library_bundled": false,
+    "host_signature_and_checksum_reverified": true
+  }
+}
