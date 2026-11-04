@@ -36,6 +36,8 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
+              'app/src/test/java/com/androidharness/app/llm/RotatingKeyProviderTest.kt',
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
               'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',

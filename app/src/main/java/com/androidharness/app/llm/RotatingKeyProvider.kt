@@ -55,15 +55,22 @@ class RotatingKeyProvider(
             } catch (e: CancellationException) { throw e }
             catch (e: ApiException) { failure = StreamEvent.Failure(e.message.orEmpty(), e.code, e.errorCode) }
             val rejected = failure ?: return@flow
-            val canRotate = rejected.code in setOf(401, 402, 403, 429) ||
-                rejected.errorCode?.lowercase() in setOf("rate_limit_exceeded", "rate_limit_error", "insufficient_quota", "quota_exceeded", "resource_exhausted", "credit_balance_too_low")
+            // A saved-credential fallback can repair rejected authentication; it
+            // must never be a way around provider billing, quota or access limits.
+            val reason = rejected.errorCode?.lowercase(java.util.Locale.ROOT)
+            val restricted = rejected.code in setOf(402, 403, 429) || reason in setOf(
+                "rate_limit_exceeded", "rate_limit_error", "insufficient_quota", "quota_exceeded",
+                "resource_exhausted", "credit_balance_too_low", "billing_hard_limit_reached",
+                "unsupported_country_region_territory", "unsupported_region", "region_not_supported")
+            val canRotate = !restricted && (rejected.code == 401 ||
+                (rejected.code == null && reason in setOf("invalid_api_key", "authentication_error", "invalid_authentication")))
             if (output || !canRotate || attempt == enabled.lastIndex) {
                 var message = rejected.message
                 pool.keys.forEach { if (it.value.isNotEmpty()) message = message.replace(it.value, "[redacted]") }
                 emit(rejected.copy(message = message))
                 return@flow
             }
-            emit(StreamEvent.Retrying(attempt + 1, 0, "Trying another saved API key after a provider rejection or limit."))
+            emit(StreamEvent.Retrying(attempt + 1, 0, "Trying another saved credential after authentication was rejected."))
         }
     }
 
