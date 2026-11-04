@@ -17,6 +17,8 @@ import com.androidharness.app.ui.common.expressivePressFeedback
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -102,7 +104,7 @@ internal fun ProjectNavigationSidebar(
     onNewChat: () -> Unit, onChat: (String) -> Unit, onMessage: (MessageHit) -> Unit,
     onProjectChat: (ProjectEntity) -> Unit, onProjects: () -> Unit,
     onChatActions: (SessionEntity) -> Unit, onAction: (SessionEntity, SidebarChatAction) -> Unit,
-    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onSkills: () -> Unit, onSettings: () -> Unit,
+    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onSkills: () -> Unit, onIntegrations: (String) -> Unit, onSettings: () -> Unit,
     workspaceLabel: String, workspaceSummary: String, onWorkspaces: () -> Unit,
     onCollapse: () -> Unit, currentRoute: String?, projectCreationEnabled: Boolean = true,
     changesSummary: String? = null, onChanges: () -> Unit = {},
@@ -130,6 +132,8 @@ internal fun ProjectNavigationSidebar(
     // The Saved button only exists while something is saved, so leave its list rather than strand an empty one.
     LaunchedEffect(savedAnswers.isEmpty()) { if (savedAnswers.isEmpty()) showSaved = false }
     var toolsOpen by rememberSaveable { mutableStateOf(false) }
+    var integrationsOpen by rememberSaveable { mutableStateOf(true) }
+    var catalogOpen by rememberSaveable { mutableStateOf(false) }
     val density = LocalDensity.current
     var footerHeight by remember { mutableStateOf(0.dp) }
     val currentProject = sessions.firstOrNull { it.id == selectedSession }?.projectId ?: selectedProject
@@ -175,6 +179,40 @@ internal fun ProjectNavigationSidebar(
                 changesSummary?.let { SidebarNavRow(it, Icons.Outlined.Difference, onClick = onChanges) }
             }
             SidebarNavRow(uiContext.getString(R.string.saba_claude_skills_nav), Icons.Outlined.AutoAwesome, currentRoute == "skills", onClick = onSkills)
+            SidebarNavRow(uiContext.getString(R.string.saba_apps_nav), Icons.Outlined.Apps,
+                expanded = integrationsOpen, onClick = { integrationsOpen = !integrationsOpen })
+            if (integrationsOpen) Column(Modifier.padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(if (glass) 6.dp else 0.dp)) {
+                SidebarNavRow("GitHub", Icons.Outlined.Code, onClick = { onIntegrations("github") })
+                SidebarNavRow("Gmail", Icons.Outlined.Email, onClick = { onIntegrations("gmail") })
+                SidebarNavRow("Google Drive", Icons.Outlined.Cloud, onClick = { onIntegrations("drive") })
+                SidebarNavRow(uiContext.getString(R.string.saba_apps_all), Icons.Outlined.Extension,
+                    expanded = catalogOpen, onClick = { catalogOpen = !catalogOpen })
+                if (catalogOpen) Column(
+                    Modifier.heightIn(max = 180.dp).verticalScroll(rememberScrollState()).padding(start = 8.dp),
+                ) {
+                    com.androidharness.app.integrations.IntegrationCatalog.entries
+                        .filterNot { it.id in setOf("github", "gmail", "drive") }
+                        .forEach { entry ->
+                            val icon = when (entry.id) {
+                                "calendar" -> Icons.Outlined.Event
+                                "contacts" -> Icons.Outlined.People
+                                "canva", "figma", "openart" -> Icons.Outlined.Palette
+                                "sharepoint" -> Icons.Outlined.Folder
+                                "linear" -> Icons.Outlined.ListAlt
+                                "supabase" -> Icons.Outlined.Storage
+                                "replit", "context7" -> Icons.Outlined.Terminal
+                                "heygen", "higgsfield" -> Icons.Outlined.Videocam
+                                "firecrawl" -> Icons.Outlined.Search
+                                "unusual-whales" -> Icons.Outlined.ShowChart
+                                else -> Icons.Outlined.Extension
+                            }
+                            SidebarNavRow(entry.title, icon, onClick = { onIntegrations(entry.id) })
+                        }
+                    SidebarNavRow(uiContext.getString(R.string.saba_integrations_title), Icons.Outlined.Apps,
+                        onClick = { onIntegrations("all") })
+                }
+            }
             SidebarNavRow(uiContext.getString(R.string.settings_providers_title), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
             SidebarNavRow(uiContext.getString(R.string.settings_page_title), Icons.Outlined.Settings, currentRoute == "settings", onClick = onSettings)
         }
