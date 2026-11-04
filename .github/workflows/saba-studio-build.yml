@@ -39,7 +39,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/EmptyState.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
-              'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt'
+              'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt'
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
@@ -89,6 +90,11 @@ jobs:
           test -f "$ANDROID_HOME/platforms/android-37/android.jar"
       - name: Set up Gradle cache
         uses: gradle/actions/setup-gradle@v4
+      - name: Verify Free Claude Code mobile provider integration
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:testDebugUnitTest --tests 'com.androidharness.app.ui.settings.FreeClaudeCodeProviderPresetsTest' -Pdistribution=github --no-daemon
       - name: Build Saba Studio debug APK
         shell: bash
         run: |
