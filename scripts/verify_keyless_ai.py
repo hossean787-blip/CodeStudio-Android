@@ -53,7 +53,7 @@ def check_free_inference() -> dict:
     url = "https://api.kilo.ai/api/gateway/chat/completions"
     result = {"provider": "kilo", "model": "kilo-auto/free",
               "status": "unavailable", "http_status": None,
-              "returned_text": False, "diagnostic": ""}
+              "returned_text": False, "response_shape": [], "diagnostic": ""}
     payload = json.dumps({"model": "kilo-auto/free",
                           "messages": [{"role": "user", "content": "Reply OK"}],
                           "max_tokens": 8, "stream": False}).encode("utf-8")
@@ -68,9 +68,12 @@ def check_free_inference() -> dict:
             if len(raw) > 65536:
                 raise ValueError("response exceeds 64 KiB")
             body = json.loads(raw)
+            if not isinstance(body, dict):
+                raise ValueError("unexpected response root")
+            result["response_shape"] = sorted(list(body.keys()))[:12]
             choices = body.get("choices", [])
-            result["returned_text"] = bool(choices and isinstance(choices[0], dict)
-                                           and choices[0].get("message", {}).get("content"))
+            text = choices[0].get("message", {}).get("content") if choices and isinstance(choices[0], dict) and isinstance(choices[0].get("message"), dict) else None
+            result["returned_text"] = bool(text and str(text).strip())
             result["status"] = "working" if result["returned_text"] else "unexpected_response"
             result["diagnostic"] = "Anonymous free-model response received" if result["returned_text"] else "No text returned"
     except urllib.error.HTTPError as exc:
