@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_integrations_title">اتصال برنامه‌ها و افزونه‌ها</string>
+    <string name="saba_integrations_explanation">برنامه دلخواه را انتخاب کنید و فقط مجوزهای لازم را بدهید. اتصال GitHub درون برنامه وجود دارد؛ ایمیل و انتخاب فایل از امکانات اندروید استفاده می‌کنند.</string>
+    <string name="saba_integrations_no_inheritance">اتصال‌های افزونه‌های ChatGPT خودکار به صبا استودیو منتقل نمی‌شوند. سرویس‌های دیگر به اتصال مستقل MCP یا افزونه سازگار نیاز دارند.</string>
+    <string name="saba_integrations_connected_as">متصل با حساب %1$s</string>
+    <string name="saba_integrations_needs_account">حساب هنوز متصل نیست</string>
+    <string name="saba_integrations_gmail_scope">با برنامه ایمیل گوشی پیام بنویسید. خواندن صندوق ورودی به اتصال مجاز و جداگانه نیاز دارد.</string>
+    <string name="saba_integrations_drive_scope">یک فایل را با انتخابگر اندروید (در صورت وجود، از Drive) انتخاب کنید. اتصال کامل API درایو هنوز فعال نیست.</string>
+    <string name="saba_integrations_not_connected">متصل نیست؛ یک MCP یا افزونه سازگار و مجوز حساب لازم است.</string>
+    <string name="saba_integrations_github_action">مدیریت اتصال GitHub</string>
+    <string name="saba_integrations_compose_email">نوشتن ایمیل</string>
+    <string name="saba_integrations_configure_mcp">تنظیم MCP</string>
+    <string name="saba_integrations_pick_document">انتخاب فایل</string>
+    <string name="saba_integrations_plugins">مدیریت افزونه‌ها</string>
+    <string name="saba_integrations_file_error">افزودن فایل انتخاب‌شده ممکن نشد؛ دوباره تلاش کنید.</string>
+    <string name="saba_integrations_email_error">برنامه ایمیل سازگار در گوشی پیدا نشد.</string>
+    <string name="saba_apps_nav">برنامه‌های متصل</string>
+    <string name="saba_apps_all">همه برنامه‌ها و افزونه‌ها</string>
+</resources>

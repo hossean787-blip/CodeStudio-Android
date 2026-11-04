@@ -488,6 +488,9 @@ fun AppNav(container: AppContainer) {
             onTerminal = { navigateFromSidebar { nav.navigate("terminal?session=${encode(workspaceSessionId.orEmpty())}&project=${encode(workspaceProjectId.orEmpty())}") } },
             onAutomation = { navigateFromSidebar { nav.navigate("automation") { launchSingleTop = true } } },
             onProviders = { navigateFromSidebar { nav.navigate("providers") { launchSingleTop = true } } },
+            onIntegrations = { service -> navigateFromSidebar {
+                nav.navigate("connections/${encode(service)}") { launchSingleTop = true }
+            } },
             onSettings = { navigateFromSidebar { nav.navigate("settings") { launchSingleTop = true } } },
             workspaceLabel = if (chatWorkspaceContext) uiContext.getString(R.string.ui_workspaces_for_this_chat) else uiContext.getString(R.string.ui_workspace), workspaceSummary = workspaceSummary,
             onWorkspaces = { selectedChatIds = emptyList(); scope.launch { drawerState.close() }; showWorkspaceSheet = true },
@@ -955,6 +958,22 @@ fun AppNav(container: AppContainer) {
             }
             composable("skills") {
                 SkillsScreen(container = container, onBack = { nav.popBackStack() })
+            }
+            composable("connections/{service}", arguments = listOf(
+                navArgument("service") { type = NavType.StringType },
+            )) { entry ->
+                fun settingsForApp(target: String) {
+                    container.pendingSettingsScroll.value = target
+                    nav.navigate("settings") { launchSingleTop = true }
+                }
+                com.androidharness.app.ui.integrations.ConnectedAppsScreen(
+                    container = container,
+                    focusId = entry.arguments?.getString("service").orEmpty(),
+                    onBack = { nav.popBackStack() },
+                    onGitHub = { settingsForApp("github") },
+                    onMcp = { settingsForApp("page:MCP:0") },
+                    onPlugins = { settingsForApp("plugins") },
+                )
             }
             composable("stats") {
                 com.androidharness.app.ui.stats.StatsScreen(

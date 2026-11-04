@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_integrations_title">Connections and apps</string>
+    <string name="saba_integrations_explanation">Choose an app and grant only the access you need. GitHub has an in-app connection; email and document picking use Android system apps.</string>
+    <string name="saba_integrations_no_inheritance">ChatGPT plugin connections are not automatically shared with Saba Studio. Other services require an independent supported MCP server or plugin.</string>
+    <string name="saba_integrations_connected_as">Connected as %1$s</string>
+    <string name="saba_integrations_needs_account">Account not connected</string>
+    <string name="saba_integrations_gmail_scope">Compose with your email app. Reading your inbox requires a separate authorized integration.</string>
+    <string name="saba_integrations_drive_scope">Choose an individual file using Android\'s document picker (Drive, if available). Full Drive API access is not connected.</string>
+    <string name="saba_integrations_not_connected">Not connected: a compatible MCP service or plugin and authorization are required.</string>
+    <string name="saba_integrations_github_action">Manage GitHub connection</string>
+    <string name="saba_integrations_compose_email">Compose email</string>
+    <string name="saba_integrations_configure_mcp">MCP settings</string>
+    <string name="saba_integrations_pick_document">Select file</string>
+    <string name="saba_integrations_plugins">Plugin manager</string>
+    <string name="saba_integrations_file_error">Could not attach the selected file. Please try again.</string>
+    <string name="saba_integrations_email_error">No compatible email app was found.</string>
+    <string name="saba_apps_nav">Connected apps</string>
+    <string name="saba_apps_all">All apps and plugins</string>
+</resources>

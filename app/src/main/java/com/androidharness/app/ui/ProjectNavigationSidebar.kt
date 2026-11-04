@@ -102,7 +102,7 @@ internal fun ProjectNavigationSidebar(
     onNewChat: () -> Unit, onChat: (String) -> Unit, onMessage: (MessageHit) -> Unit,
     onProjectChat: (ProjectEntity) -> Unit, onProjects: () -> Unit,
     onChatActions: (SessionEntity) -> Unit, onAction: (SessionEntity, SidebarChatAction) -> Unit,
-    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onSettings: () -> Unit,
+    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onIntegrations: (String) -> Unit, onSettings: () -> Unit,
     workspaceLabel: String, workspaceSummary: String, onWorkspaces: () -> Unit,
     onCollapse: () -> Unit, currentRoute: String?, projectCreationEnabled: Boolean = true,
     changesSummary: String? = null, onChanges: () -> Unit = {},
@@ -130,6 +130,7 @@ internal fun ProjectNavigationSidebar(
     // The Saved button only exists while something is saved, so leave its list rather than strand an empty one.
     LaunchedEffect(savedAnswers.isEmpty()) { if (savedAnswers.isEmpty()) showSaved = false }
     var toolsOpen by rememberSaveable { mutableStateOf(false) }
+    var integrationsOpen by rememberSaveable { mutableStateOf(true) }
     val density = LocalDensity.current
     var footerHeight by remember { mutableStateOf(0.dp) }
     val currentProject = sessions.firstOrNull { it.id == selectedSession }?.projectId ?: selectedProject
@@ -173,6 +174,16 @@ internal fun ProjectNavigationSidebar(
                 SidebarNavRow(uiContext.getString(R.string.ui_scheduled_tasks), Icons.Outlined.Schedule, currentRoute == "automation", onClick = onAutomation)
                 SidebarNavRow(workspaceLabel, Icons.Outlined.FolderOpen, subtitle = workspaceSummary, onClick = onWorkspaces)
                 changesSummary?.let { SidebarNavRow(it, Icons.Outlined.Difference, onClick = onChanges) }
+            }
+            SidebarNavRow(uiContext.getString(R.string.saba_apps_nav), Icons.Outlined.Apps,
+                expanded = integrationsOpen, onClick = { integrationsOpen = !integrationsOpen })
+            if (integrationsOpen) Column(Modifier.padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(if (glass) 6.dp else 0.dp)) {
+                SidebarNavRow("GitHub", Icons.Outlined.Code, onClick = { onIntegrations("github") })
+                SidebarNavRow("Gmail", Icons.Outlined.Email, onClick = { onIntegrations("gmail") })
+                SidebarNavRow("Google Drive", Icons.Outlined.Cloud, onClick = { onIntegrations("drive") })
+                SidebarNavRow(uiContext.getString(R.string.saba_apps_all), Icons.Outlined.Extension,
+                    onClick = { onIntegrations("all") })
             }
             SidebarNavRow(uiContext.getString(R.string.settings_providers_title), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
             SidebarNavRow(uiContext.getString(R.string.settings_page_title), Icons.Outlined.Settings, currentRoute == "settings", onClick = onSettings)
