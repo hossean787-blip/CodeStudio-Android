@@ -1,30 +1,76 @@
-# Saba Studio — execution evidence (in progress)
+# گزارش تحویل آزمایشی صبا استودیو — 0.1.0-alpha.2
 
-Baseline: `1f762648f1fb026b5cf938165b396222a466dc18`.
-Changes are isolated on `codex/saba-stabilization-20261104` until validation.
-See CAPABILITIES.md for native / external / archived feature mapping.
+نقطه بازگشت: `1f762648f1fb026b5cf938165b396222a466dc18`.
+سورس آزموده‌شده: `b84b476b367689407c7b6471cced846e88483219`؛ تغییرات بعدی گزارش، کد APK را تغییر نمی‌دهند.
+شاخه کاری: `codex/saba-stabilization-20261104`؛ وضعیت ادغام و Commit نهایی در [PR #3](https://github.com/hossean787-blip/CodeStudio-Android/pull/3) ثبت می‌شود.
 
-## Observed checks
+## خروجی
 
-- `python3 scripts/test_message_truncation.py`: 4 passed. Executes the actual Room truncation SQL on host SQLite; not Android runtime coverage.
-- `npm ci --ignore-scripts --prefix scripts/editor-tools && npm test --prefix scripts/editor-tools`: 7 passed, semantic references, outline, completion, rename and formatting.
-- `python3 scripts/verify_keyless_ai.py --free-inference`: HTTP 200, catalog 381 models / 11 free tool models; one capped anonymous `kilo-auto/free` request returned text. Evidence: keyless-report.json. This is external API inference from the build environment, not on-device UI inference.
-- Full JVM suite first run: 1943 executed, 1941 passed, 2 stale provider-directory expectation failures. Corrected exact provider roots and ordering expectations without altering valid endpoints.
-- Source scan for known API/private-key literal shapes in app/src/main: no matches. Not a comprehensive security audit.
+نسخه اصلی: [APK بومی و شواهد ساخت](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/41913010385/artifacts/13364354065).
 
-## Explicit limitations
+[اجرای موفق ساخت بومی و JNI](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/41913010385)؛ [اجرای موفق آزمون‌های ماندگاری و رابط](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/41913010323).
 
-No physical Android device is attached. ChatAnywhere and other keyed providers
-cannot be verified without authorized personal credentials. FCC Python, desktop
-CLIs, Discord and voice extras are not embedded Android capabilities.
+فایل تحویلی این جلسه: `/workspace/deliverables/SabaStudio-v0.1.0-alpha.2-release.apk`؛ 61557501 بایت. خروجی کمکی `no-local-runtime`، APK اصلی تحویل نیست.
 
-The original alpha Release uses the build runner's Debug certificate while the
-application is non-debuggable. The previous private signing key is unavailable.
-GitHub Secrets API returned `403 Resource not accessible by integration`, so a
-persistent confidential signing key cannot be installed with current access.
-No private key is committed or uploaded as a public build artifact. Installing
-over a previous alpha may fail with signature mismatch; do not uninstall an
-existing app without backing up its data.
+- Package ID: `ir.sabagostar.sabastudio`
+- versionCode: `2`؛ versionName: `0.1.0-alpha.2`
+- minSdk: 26؛ targetSdk: 36؛ compileSdk: 37
+- امضا آزمایشی با گواهی Android Debug، ولی نوع Build برابر Release و Manifest غیر Debug است. مناسب انتشار عمومی/Play نیست.
+- SHA-256 فایل APK: `6cd1864598fdc868ed64df52b35907eaa29096d3ecc7dcc3842ab73d912b6dea`
+- SHA-256 گواهی امضا: `dc1dd323cb84172ec54c5fa5712d8f4b175d279a10d6a443b2ba44013b5f3d56`
+- Artifactهای Actions برای ۱۴ روز نگه‌داری می‌شوند؛ نسخه محلی خروجی نیز تحویل داده شده است.
 
-Final artifact identifiers, checksums, CI links and remaining failures will be
-recorded after the in-flight verification jobs finish.
+## تغییرات عملی
+
+پالت بومی نئون فیروزه‌ای/بنفش/صورتی برای نصب تازه، با حفظ انتخاب ذخیره‌شده پالت و رنگ پویا؛ نام «صبا استودیو» برای ارائه‌دهنده داخلی با حفظ ID و پروتکل قبلی؛ یکپارچه‌سازی نام در آغاز، قفل، Share و اعلان‌ها با حفظ اعتباردهی و لینک‌های upstream؛ افزایش نسخه بدون تغییر Package ID. منابع تازه برای تمام زبان‌ها تکمیل و کنتراست روشن/تاریک/AMOLED آزموده شد.
+
+رقابت هنگام توقف استریم اصلاح شد: خواننده پیش از بستن سوکت لغو می‌شود و IOException ناشی از لغو، خطای شبکه کاربر نمی‌شود. خطاهای واقعی اتصال در جریان فعال همچنان گزارش می‌شوند. تست شکست‌خورده حذف یا سست نشده است.
+
+مسیرهای واقعی API ارائه‌دهندگان FCC/ChatAnywhere حفظ شدند؛ تست‌های قدیمی جایگاه فهرست و الزام اشتباه `/v1` اصلاح شدند. نمونه مهاجرت قدیمی از نظر schema و مسیر تا v25 اصلاح شد و حفظ متن پیام نیز بررسی می‌شود. امضای reflection اسکریپت JNI با API فعلی هماهنگ شد. هیچ قابلیت سالمی حذف نشد و درخت‌های third_party دست‌نخورده‌اند.
+
+## شواهد آزمون
+
+- مجموعه کامل JVM در هر دو پیکربندی معمولی و NDK: **۱۹۴۳ مورد در هر اجرا، صفر شکست/خطا/ردشده**؛ از جمله تست توقف استریم. فرمان: `./gradlew :app:testDebugUnitTest -Pdistribution=github --no-daemon`.
+- چهار تست واقعی روی شبیه‌ساز Android 15/API 35، x86_64: اتصال پایدار نشست/پروژه پس از بازکردن دیتابیس؛ ویرایش و Undo در دو پروژه هم‌زمان با ارائه‌دهنده مصنوعی؛ ماندگاری دسترسی چند پروژه؛ مهاجرت fixture دیتابیس v15 به v25 و حفظ متن پیام/عنوان/انتخاب مدل. فرمان: `:app:connectedDebugAndroidTest` با چهار فیلتر ثبت‌شده در Workflow. این تست‌ها روی نسخه Debug همان سورس هستند؛ آزمون چت زنده با مدل خارجی نیستند.
+- خود APK نهایی Release: اجرای `scripts/release-smoke/run.sh` روی شبیه‌ساز با مدل checksum-pinned `stories260K.gguf`؛ `RELEASE_PROBE_OK` و `LOCAL_NATIVE_OK backend=CPU` ثبت شد. آزمون مستقیم کلاس‌ها/JNI همان APK در `app_process` است؛ کیفیت پاسخ یا گردش‌کار کامل انتخاب مدل در رابط را اثبات نمی‌کند. ساخت پیام اولیه SPAKE2 و تولید کلید SSH RSA/ECDSA/ED25519 نیز موفق بود؛ اتصال واقعی ADB/SSH آزمایش نشده است.
+- اجرای `scripts/emulator-release-smoke.sh` روی همان Release: نصب موفق، دو شروع سرد، تنظیم واقعی locale=fa، الزام متن فارسی صبا استودیو در UIAutomator، بازبینی تصویر تاریک/RTL، ده ثانیه بررسی حیات و crash buffer خالی. فایل شاهد: [Artifact آزمون بومی](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/41913010385/artifacts/13364104565). هیچ گوشی فیزیکی آزمایش نشده است.
+
+- `python3 scripts/test_message_truncation.py`: چهار تست موفق روی SQLite میزبان با SQL واقعی Room؛ آزمون اندروید نیست.
+- `npm ci --ignore-scripts --prefix scripts/editor-tools && npm test --prefix scripts/editor-tools`: هفت تست موفق برای ارجاع/تعریف، تکمیل کد، outline، rename و formatting.
+- `scripts/verify_keyless_ai.py --free-inference`: کاتالوگ Kilo با ۳۸۱ مدل/۱۱ مدل رایگان دارای ابزار، و پاسخ متنی واقعی `kilo-auto/free` با HTTP 200. درخواست دوم، فراخوانی ابزار مصنوعی با نام و آرگومان صحیح تولید کرد؛ ابزار خارجی اجرا نشد. شواهد: `keyless-report.json` و `keyless-tool-report.json`. این درخواست‌ها از محیط اجرا ارسال شدند؛ آزمون چت واقعی در رابط اپ روی گوشی نیستند.
+- اسکن محدود literalهای شناخته‌شده کلید API/کلید خصوصی در `app/src/main`: بدون یافته؛ جایگزین ممیزی جامع امنیت نیست.
+- منابع تمام ده زبان ترجمه‌شده، از جمله فارسی: صفر شناسه رشته مفقود/اضافی نسبت به منابع قابل ترجمه اصلی.
+- تطبیق GPT API Free با `f4e4054594ec4998886e2bb7ae7650e22356d641`: هر ۱۶ فایل یکسان، با یک حذف عمدی کلید نمونه آموزشی. یکپارچگی درخت پین‌شده FCC و سورس بالادستی Android در CI بررسی شد.
+- ZIP خروجی دریافت و صحت آرشیو، hash، امضا و هویت APK دوباره روی همان فایل تحویلی بررسی شد.
+
+## خطاهای یافت‌شده و وضعیت
+
+| مورد | علت / وضعیت |
+|---|---|
+| SDK setup اولیه | بسته منسوخ `tools`؛ استفاده از sdkmanager فعلی با بسته‌های صریح |
+| تست فهرست ارائه‌دهندگان | انتظار قدیمی درباره ترتیب و `/v1`؛ اصلاح تست با آدرس دقیق |
+| ۱۸ شکست ترجمه | فایل منبع تازه فقط در default/fa؛ تکمیل همه زبان‌ها |
+| خطای توقف SSE | race لغو خواننده/بستن سوکت؛ اصلاح در Llm.kt و بازبینی مستقل |
+| آزمون مهاجرت | fixture و فهرست مهاجرت قدیمی تا v22؛ بازسازی v15 و مسیر کامل v25 |
+| تصویر فارسی اولیه | نخستین تصویر، انگلیسی و زیر پنجره مجوز بود؛ اصلاح ترتیب locale پس از اولین اجرای AppCompat و الزام متن فارسی در dump واقعی UI |
+| کرش پاکسازی cache بدون NDK | بارگذاری غیرضروری JNI در cache خالی؛ شرط وجود مدل بارگذاری‌شده افزوده شد و بررسی crash حفظ شد |
+| اسکریپت JNI | پارامترهای reflection قدیمی؛ تطبیق promptThreads/cacheKey |
+| امضای پایدار | مسدود: Secrets API با دسترسی فعلی HTTP 403 می‌دهد؛ کلید خصوصی قبلی موجود نیست |
+
+## قابلیت‌های فعال و غیر فعال
+
+[نقشه دقیق قابلیت‌ها](CAPABILITIES.md) بین پیاده‌سازی بومی، قابلیت آزموده‌شده، وابستگی خارجی و سورس آرشیوی تفکیک می‌کند. `source-inventory.json` فهرست ماژول‌ها، نسخه وابستگی‌ها و مؤلفه‌های Manifest است؛ خود فهرست، اثبات عملکرد نیست.
+
+FCC Python 3.14.10/FastAPI، tray/CLI دسکتاپ، Discord و افزونه‌های صوتی در APK نصب یا اجرا نشده‌اند. ChatAnywhere و ارائه‌دهندگان دارای کلید، بدون حساب و کلید شخصی مجاز تولید پاسخ تأییدشده ندارند. مثال‌های تصویر/صوت GPT API Free به‌تنهایی قابلیت فعال اندروید نیستند. ماژول اختیاری Play در این ساخت GitHub آزموده نشده است.
+
+GPU روی سخت‌افزار واقعی تأیید نشده و دریافت runtime هنوز به انتشار بالادستی `Sanuu7/AH-GPU-Runtime` وابسته است. وجود کتابخانه/Artifact به معنای کارکرد GPU نیست. روی معماری‌های ۳۲بیتی کتابخانه عدم پشتیبانی وجود دارد؛ inference محلی ۳۲بیتی تأیید نشده است.
+
+## اقدامات ضروری پیش از انتشار نهایی
+
+1. تهیه/بازیابی کلید خصوصی امضای ثابت با پشتیبان امن، پیکربندی signingConfig اختصاصی و نگهداری رمزها در Secrets؛ هیچ کلید خصوصی نباید وارد Git یا Artifact عمومی شود. کلید CI قبلی قابل بازیابی نیست؛ حفظ نصب روی alphaهای قبلی تضمین نمی‌شود. بدون نسخه پشتیبان، اپ قبلی را حذف نکنید.
+2. آزمون ارتقا با همان گواهی و داده واقعی، مهاجرت تاریخچه/پروژه/فایل و بازیابی پشتیبان؛ versionCode بعدی باید افزایش یابد.
+3. آزمون گوشی فیزیکی ARM64 در چند نسخه اندروید و اندازه صفحه، فارسی/RTL، صفحه‌کلید، چرخش، پس‌زمینه، مجوز پوشه و توقف/بازیابی. این اجرا فقط شبیه‌ساز/CI و میزبان بوده است.
+4. آزمون انتهابهانتهای چت، استریم، ابزار و خطاهای سهمیه/احراز هویت برای هر ارائه‌دهنده با حساب مجاز؛ عدم تضمین رایگان بودن یا در دسترس ماندن سرویس خارجی.
+5. آزمون CPU/GPU محلی با مدل و دستگاه هدف، و انتشار/تطبیق امن GPU runtime در صورت نیاز. کیفیت پاسخ یک مدل کوچک smoke از این اجرا نتیجه‌گیری نمی‌شود.
+6. اجرای lint کامل و ممیزی امنیت/وابستگی‌ها و مجوزهای Android. `checkReleaseBuilds=false` در پیکربندی قبلی باقی است؛ lint کامل در این اجرا انجام نشده است. Cleartext برای گردش‌کارهای محلی قبلی حفظ شده؛ مسیر آنلاین ارائه‌دهندگان انتخاب‌شده HTTPS است.
+7. بررسی الزامات توزیع مجوزهای upstream، به‌ویژه FCC با AGPL-3.0-only، و الزامات فروشگاه درباره مجوزهای ذخیره‌سازی/نصب/سرویس‌ها. متن مجوزهای موجود حفظ شده است.

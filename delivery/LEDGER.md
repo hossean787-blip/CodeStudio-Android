@@ -123,3 +123,31 @@ initializing JNI when its tracked cache is empty; keep actual loaded-model
 release behavior. Do not clear/ignore the crash evidence. Mark the auxiliary
 no-NDK release artifact explicitly no-local-runtime; the primary deliverable
 is the separate native release. Repeat tests on the changed app.
+
+## Final pre-merge evidence snapshot
+
+Source b84b476: both runs 41913010323 and 41913010385 completed successfully.
+JVM: 1943/1943 in each configuration, no skips; emulator persistence: 4/4;
+Release JNI CPU, install, Persian UI assertion and dark RTL screenshot passed.
+The no-NDK first-launch crash regression passed after the cache guard.
+Exact delivered APK and ZIP hash/signature/source identity reverified on host.
+See test-summary.json and REPORT.md for artifact IDs, hashes and scopes.
+
+R-01 verified. R-02 native-equivalent transports/presets verified by unit tests;
+external FCC account/runtime parity remains blocked/not tested. R-03 blocked
+for live keyed ChatAnywhere inference (native preset/wire tests passed).
+R-04 verified for Persian/dark/RTL startup only; other physical UI paths not tested.
+R-05 verified for recorded JVM/integration scopes. R-06 verified for anonymous
+Kilo host requests, including fresh text inference at 21:24 UTC. R-07 verified
+for the exact native Release test-signed APK. R-08 blocked for durable signing
+and previous-alpha upgrade compatibility. R-09 not tested: physical hardware.
+R-10 in progress at report generation: all artifacts verified; source main
+integration is the final operation through PR #3, whose merge state is authoritative.
+
+Artifact manifest: delivery/REPORT.md (human report), delivery/CAPABILITIES.md
+(feature/source mapping), delivery/test-summary.json (test/artifact facts),
+delivery/source-inventory.json (module/dependency/manifest inventory),
+delivery/keyless-report.json and keyless-tool-report.json (actual API evidence),
+baseline-commit.txt and baseline-status.txt (rollback records). Native APK,
+checksum, raw test reports and screenshots are retained in the linked Actions
+artifacts and /workspace/deliverables; no signing private key is included.
