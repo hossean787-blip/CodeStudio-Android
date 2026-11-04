@@ -64,3 +64,52 @@ jobs:
             app/build/test-results/
           if-no-files-found: warn
           retention-days: 14
+
+  native-runtime-emulator:
+    name: Release JNI smoke on emulator (not physical hardware)
+    needs: native-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/download-artifact@v4
+        with:
+          name: SabaStudio-native-alpha-release-test-signed
+          path: native-release
+      - name: Fetch checksum-pinned small inference test model
+        run: |
+          curl -fsSL --max-time 60 https://huggingface.co/ggml-org/models/resolve/main/tinyllamas/stories260K.gguf -o /tmp/stories260K.gguf
+          echo '270cba1bd5109f42d03350f60406024560464db173c0e387d91f0426d3bd256d  /tmp/stories260K.gguf' | sha256sum -c -
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0" "build-tools;37.0.0" "platform-tools"
+          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            mkdir -p native-runtime-evidence
+            bash scripts/release-smoke/run.sh emulator-5554 native-release/apk/release/app-release.apk /tmp/stories260K.gguf 2>&1 | tee native-runtime-evidence/probe.log
+            bash scripts/emulator-release-smoke.sh native-release/apk/release/app-release.apk
+      - name: Upload native runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-native-runtime-emulator-evidence
+          path: |
+            native-runtime-evidence/
+            delivery-emulator/
+          if-no-files-found: warn
+          retention-days: 14
