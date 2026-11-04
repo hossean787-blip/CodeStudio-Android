@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "project": "Saba Studio",
+  "main_backup_commit": "5dd78026d594f0cc476dab1f1e12ef4e9963ab9b",
+  "strategy": "git-submodules-pin-original-commits",
+  "integration_status": "source-mounted-not-runtime-integrated",
+  "sources": [
+    {
+      "id": "lyra-code",
+      "repo": "lyracode-app/Lyra-Code",
+      "commit": "90fde028c35f953fcab36d4460fa93852eacdd00",
+      "license": "AGPL-3.0",
+      "path": "third_party/ai-sources/lyra-code",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "and-code",
+      "repo": "yuga-hashimoto/and-code",
+      "commit": "b0be8ad5e2c9a1199a6be9fb79319579bb2d25df",
+      "license": "MIT",
+      "path": "third_party/ai-sources/and-code",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "termfold",
+      "repo": "Bibarud/TermFold",
+      "commit": "a9f678d794a9f9942da923161d6fe996b89b935f",
+      "license": "Apache-2.0",
+      "path": "third_party/ai-sources/termfold",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "androidassistant",
+      "repo": "xnylh502/AndroidAssistant",
+      "commit": "fdc6274d60a0920cb84aba6f2cf30df565b522dd",
+      "license": "MIT",
+      "path": "third_party/ai-sources/androidassistant",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "mobile-harness",
+      "repo": "techjarves/Mobile-Harness",
+      "commit": "ae299adc7ecef5d9ed63f46e3dbd9af30818968d",
+      "license": "MIT",
+      "path": "third_party/ai-sources/mobile-harness",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "antigem",
+      "repo": "Santoshkurmi/antigem",
+      "commit": "78cbb7aa5267d23a7077986d45ab9ffe565641bc",
+      "license": "GPL-3.0",
+      "path": "third_party/ai-sources/antigem",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "syntac",
+      "repo": "DraxonV1/Syntac",
+      "commit": "ce5180a51a7ed63bc2dfa1db43f0d00a3abe57c9",
+      "license": "UNVERIFIED",
+      "path": "third_party/ai-sources/syntac",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "pocket-pi",
+      "repo": "CelestialCreator/pocket-pi",
+      "commit": "9cf4660dfcbaf49381dc828c2a4144d660d385fc",
+      "license": "MIT",
+      "path": "third_party/ai-sources/pocket-pi",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests",
+      "license_note": "The repository's LICENSE is MIT, while third-party Termux bootstrap components retain GPL and other original terms."
+    },
+    {
+      "id": "zafiro",
+      "repo": "niki914/zafiro",
+      "commit": "c9b5b6a0d7f6e629e3d5983b32def4aa3eca25c3",
+      "license": "MIT",
+      "path": "third_party/ai-sources/zafiro",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "androidagent",
+      "repo": "mateuszsury/androidagent",
+      "commit": "447ae6508d05c7531379afa9c3a29919addeb275",
+      "license": "Apache-2.0",
+      "path": "third_party/ai-sources/androidagent",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "mobilekinetic-agent",
+      "repo": "Binary-Kinetics/mobileKinetic-Agent",
+      "commit": "3f1a5771b586b0c149f25d37b7aba0651c98a8dc",
+      "license": "GPL-3.0",
+      "path": "third_party/ai-sources/mobilekinetic-agent",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    },
+    {
+      "id": "openclaude-android",
+      "repo": "automationkit/openclaude-android",
+      "commit": "5866e38523c27b27382b7277cb9b30f9f2d42c37",
+      "license": "RESTRICTED-PROPRIETARY-DERIVED",
+      "path": "third_party/ai-sources/openclaude-android",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests",
+      "license_note": "Repository LICENSE/NOTICE says derived proprietary Claude Code content is not authorized for redistribution. Do not copy, build, or bundle into APK without rights-holder authorization."
+    },
+    {
+      "id": "droid-harness",
+      "repo": "eibragaa/droid-harness",
+      "commit": "a3438fddf3ec6dc319ebce5858906f9115ba6353",
+      "license": "MIT",
+      "path": "third_party/ai-sources/droid-harness",
+      "compilation": "excluded",
+      "functional_status": "pending-adapter-and-tests"
+    }
+  ]
+}

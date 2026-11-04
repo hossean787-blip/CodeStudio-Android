@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">Sumber AI</string>
+    <string name="ai_source_catalog_title">Pustaka sumber AI (13 proyek)</string>
+    <string name="ai_source_catalog_hint">Repositori asli telah dikunci ke revisi tertentu di Saba Studio. Ini adalah referensi kode sumber lengkap, bukan fitur yang terpasang atau aktif. Setiap proyek memerlukan adaptor yang sesuai dan pengujian sebelum digunakan.</string>
+    <string name="ai_source_license">Lisensi: %1$s</string>
+    <string name="ai_source_not_active">Status: sumber tersimpan; belum terintegrasi ke APK</string>
+    <string name="ai_source_open">Lihat revisi sumber yang dikunci</string>
+    <string name="ai_source_restricted">Kode ini tidak boleh disertakan dalam APK tanpa izin dari pemegang hak.</string>
+    <string name="ai_source_import_button">Impor sumber yang dikunci ke ruang kerja</string>
+    <string name="ai_source_import_confirm_title">Konfirmasi impor sumber</string>
+    <string name="ai_source_import_confirm_body">Impor %1$s sebagai ruang kerja terpisah pada commit yang telah dikunci? Kode eksternal hanya diunduh, tidak dijalankan. Perlu Git dan ruang penyimpanan. Proyek saat ini tidak berubah.</string>
+    <string name="ai_source_import_success">%1$s berhasil diimpor ke ruang kerja lokal baru.</string>
+</resources>

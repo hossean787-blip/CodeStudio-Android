@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">Fontes de IA</string>
+    <string name="ai_source_catalog_title">Biblioteca de código-fonte de IA (13 projetos)</string>
+    <string name="ai_source_catalog_hint">Os repositórios originais estão fixados em revisões específicas no Saba Studio. São referências ao código-fonte completo, não recursos instalados ou ativados. Cada projeto precisa de um adaptador compatível e de testes antes da execução.</string>
+    <string name="ai_source_license">Licença: %1$s</string>
+    <string name="ai_source_not_active">Status: código preservado; ainda não integrado ao APK</string>
+    <string name="ai_source_open">Ver versão fixada do código</string>
+    <string name="ai_source_restricted">Este código não pode ser incluído no APK sem autorização do detentor dos direitos.</string>
+    <string name="ai_source_import_button">Importar código fixado para uma área de trabalho</string>
+    <string name="ai_source_import_confirm_title">Confirmar importação</string>
+    <string name="ai_source_import_confirm_body">Importar %1$s como uma área de trabalho local separada, no commit exato? O código externo será baixado, mas não executado. São necessários Git e espaço de armazenamento. Seus projetos atuais não serão alterados.</string>
+    <string name="ai_source_import_success">%1$s foi importado para uma nova área de trabalho local.</string>
+</resources>

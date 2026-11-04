@@ -159,6 +159,15 @@ class GitHubRepositoryTest {
         }
     }
 
+    @Test fun `pinned source revisions reject injections and mutable tags`() {
+        val pinned = "90fde028c35f953fcab36d4460fa93852eacdd00"
+        assertEquals(pinned, gitHubCommitSha(pinned))
+        listOf("main", "v1.0.0", "", "abcdef", pinned.uppercase(), pinned + ";touch pwn",
+            "000000000000000000000000000000000000000g", pinned + "\n").forEach {
+            assertTrue("Rejected: $it", runCatching { gitHubCommitSha(it) }.isFailure)
+        }
+    }
+
     @Test fun `automation migration preserves old tasks and preset round trips`() {
         val old = Json.decodeFromString<AutomationTask>("""{"title":"Old","prompt":"Build","projectId":"a","projectName":"A"}""")
         assertNull(old.githubPush)

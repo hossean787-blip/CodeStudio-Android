@@ -1,0 +1,51 @@
+[submodule "third_party/ai-sources/lyra-code"]
+	path = third_party/ai-sources/lyra-code
+	url = https://github.com/lyracode-app/Lyra-Code.git
+
+[submodule "third_party/ai-sources/and-code"]
+	path = third_party/ai-sources/and-code
+	url = https://github.com/yuga-hashimoto/and-code.git
+
+[submodule "third_party/ai-sources/termfold"]
+	path = third_party/ai-sources/termfold
+	url = https://github.com/Bibarud/TermFold.git
+
+[submodule "third_party/ai-sources/androidassistant"]
+	path = third_party/ai-sources/androidassistant
+	url = https://github.com/xnylh502/AndroidAssistant.git
+
+[submodule "third_party/ai-sources/mobile-harness"]
+	path = third_party/ai-sources/mobile-harness
+	url = https://github.com/techjarves/Mobile-Harness.git
+
+[submodule "third_party/ai-sources/antigem"]
+	path = third_party/ai-sources/antigem
+	url = https://github.com/Santoshkurmi/antigem.git
+
+[submodule "third_party/ai-sources/syntac"]
+	path = third_party/ai-sources/syntac
+	url = https://github.com/DraxonV1/Syntac.git
+
+[submodule "third_party/ai-sources/pocket-pi"]
+	path = third_party/ai-sources/pocket-pi
+	url = https://github.com/CelestialCreator/pocket-pi.git
+
+[submodule "third_party/ai-sources/zafiro"]
+	path = third_party/ai-sources/zafiro
+	url = https://github.com/niki914/zafiro.git
+
+[submodule "third_party/ai-sources/androidagent"]
+	path = third_party/ai-sources/androidagent
+	url = https://github.com/mateuszsury/androidagent.git
+
+[submodule "third_party/ai-sources/mobilekinetic-agent"]
+	path = third_party/ai-sources/mobilekinetic-agent
+	url = https://github.com/Binary-Kinetics/mobileKinetic-Agent.git
+
+[submodule "third_party/ai-sources/openclaude-android"]
+	path = third_party/ai-sources/openclaude-android
+	url = https://github.com/automationkit/openclaude-android.git
+
+[submodule "third_party/ai-sources/droid-harness"]
+	path = third_party/ai-sources/droid-harness
+	url = https://github.com/eibragaa/droid-harness.git

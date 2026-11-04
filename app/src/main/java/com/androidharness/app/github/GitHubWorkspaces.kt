@@ -106,8 +106,19 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
             .mapNotNull { (it as? JsonObject)?.string("full_name") }
     }
 
-    suspend fun importRepository(input: String, activate: Boolean = true, onRegistered: (String) -> Unit = {}): String = imports.withLock { withContext(Dispatchers.IO) {
+    // Preserve the existing GitHub import API for all call sites (including trailing lambdas).
+    suspend fun importRepository(input: String, activate: Boolean = true, onRegistered: (String) -> Unit = {}): String =
+        importSource(input, activate, onRegistered, null)
+
+    /** Import an immutable source revision without affecting other workspaces. */
+    suspend fun importPinnedRepository(input: String, pinnedCommit: String, activate: Boolean = true,
+        onRegistered: (String) -> Unit = {}): String =
+        importSource(input, activate, onRegistered, gitHubCommitSha(pinnedCommit))
+
+    private suspend fun importSource(input: String, activate: Boolean, onRegistered: (String) -> Unit,
+        pinnedCommit: String?): String = imports.withLock { withContext(Dispatchers.IO) {
         val url = gitHubRepositoryUrl(input)
+        val expectedCommit = pinnedCommit?.let(::gitHubCommitSha)
         requireGitTools()
         check(root.isDirectory || root.mkdirs()) { "Could not create the repository storage folder." }
         val name = url.substringAfterLast('/').removeSuffix(".git")
@@ -122,6 +133,22 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
             }
             if (result.exitCode != 0 || result.timedOut) {
                 throw GitHubOperationFailure("Import", gitHubFailureHint(result.exitCode, result.rawStderr + result.rawOutput))
+            }
+            // A source-library import must point to exactly the reviewed upstream commit.
+            // Checkout and verify before creating a workspace; failed imports are removed.
+            if (expectedCommit != null) {
+                val folderFs = FileFs(root)
+                val checkout = c.shellRouter.runWorkspace(
+                    gitCommand(listOf("-C", folder.absolutePath, "checkout", "--detach", expectedCommit)),
+                    folderFs, timeoutMs = 180_000, maxOutput = 32_000)
+                if (checkout.exitCode != 0 || checkout.timedOut)
+                    throw GitHubOperationFailure("Pinned checkout", gitHubFailureHint(checkout.exitCode, checkout.rawStderr + checkout.rawOutput))
+                val revision = c.shellRouter.runWorkspace(
+                    gitCommand(listOf("-C", folder.absolutePath, "rev-parse", "--verify", "HEAD")),
+                    folderFs, timeoutMs = 30_000, maxOutput = 1024)
+                check(!revision.timedOut && revision.exitCode == 0 && revision.rawOutput.trim() == expectedCommit) {
+                    "Pinned source verification failed. The imported folder was not registered."
+                }
             }
             currentCoroutineContext().ensureActive()
             // Registration must finish once started, so cancellation cannot

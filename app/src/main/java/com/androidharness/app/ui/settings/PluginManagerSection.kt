@@ -47,6 +47,11 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
     val scope = rememberCoroutineScope()
     val revision by manager.revision.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
+    var sourceToImport by remember { mutableStateOf<AiSourceProject?>(null) }
+    var sourceImportRunning by remember { mutableStateOf(false) }
+    var sourceImportMessage by remember { mutableStateOf<String?>(null) }
+
+    val isPersian = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]?.language == "fa"
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
     LaunchedEffect(tab) { listState.scrollToItem(0) }
     var source by rememberSaveable { mutableStateOf("npm") }
@@ -106,7 +111,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
     }
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PrimaryScrollableTabRow(selectedTabIndex = tab, edgePadding = 0.dp, containerColor = MaterialTheme.colorScheme.surface) {
-            listOf(R.string.pm_installed, R.string.pm_discover, R.string.pm_add).forEachIndexed { index, title ->
+            listOf(R.string.pm_installed, R.string.pm_discover, R.string.pm_add, R.string.ai_source_catalog_tab).forEachIndexed { index, title ->
                 Tab(selected = tab == index, onClick = { tab = index }, text = { Text(stringResource(title)) })
             }
         }
@@ -219,6 +224,47 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                     if (searched && listings.isEmpty()) item { Text(stringResource(R.string.pm_no_results), style = MaterialTheme.typography.bodyMedium) }
                     items(listings, key = { "npm-${it.name}" }) { listing -> PluginListingCard(listing, !busy) { update = null; prepare(listing.origin, null) } }
                 }
+                3 -> {
+                    item {
+                        PluginPanel {
+                            Text(stringResource(R.string.ai_source_catalog_title), style = MaterialTheme.typography.titleLarge)
+                            Text(stringResource(R.string.ai_source_catalog_hint), style = MaterialTheme.typography.bodyMedium)
+                            if (sourceImportRunning) LinearProgressIndicator(Modifier.fillMaxWidth())
+                            sourceImportMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+                        }
+                    }
+                    items(AiSourceCatalog.projects, key = { "ai-source-${it.id}" }) { entry ->
+                        PluginPanel {
+                            Text(entry.repository.substringAfter('/'), style = MaterialTheme.typography.titleMedium)
+                            Text(if (isPersian) entry.descriptionFa else entry.descriptionEn, style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(R.string.ai_source_license, entry.license),
+                                style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.ai_source_not_active),
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (entry.license.startsWith("RESTRICTED")) {
+                                Text(stringResource(R.string.ai_source_restricted),
+                                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                            }
+                            OutlinedButton(onClick = {
+                                runCatching {
+                                    container.appContext.startActivity(
+                                        Intent(Intent.ACTION_VIEW, Uri.parse(entry.pinnedSourceUrl))
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    )
+                                }.onFailure { error = it.localizedMessage ?: "Unable to open GitHub" }
+                            }, modifier = Modifier.fillMaxWidth()) {
+                                Text(stringResource(R.string.ai_source_open))
+                            }
+                            if (entry.canImportAsWorkspace) {
+                                OutlinedButton(onClick = { sourceToImport = entry },
+                                    enabled = !busy && !sourceImportRunning, modifier = Modifier.fillMaxWidth()) {
+                                    Text(stringResource(R.string.ai_source_import_button))
+                                }
+                            }
+
+                        }
+                    }
+                }
                 2 -> {
                     item {
                         PluginPanel {
@@ -252,6 +298,45 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                 }
             }
         }
+    }
+    sourceToImport?.let { entry ->
+        AlertDialog(
+            onDismissRequest = { if (!sourceImportRunning) sourceToImport = null },
+            title = { Text(stringResource(R.string.ai_source_import_confirm_title)) },
+            text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.ai_source_import_confirm_body, entry.repository))
+                Text(entry.pinnedCommit, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                if (sourceImportRunning) LinearProgressIndicator(Modifier.fillMaxWidth())
+            } },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (sourceImportRunning || !entry.canImportAsWorkspace) return@TextButton
+                    sourceImportRunning = true
+                    sourceImportMessage = null
+                    scope.launch {
+                        try {
+                            container.githubRepositories.importPinnedRepository(entry.repository, entry.pinnedCommit)
+                            sourceImportMessage = container.appContext.getString(R.string.ai_source_import_success,
+                                entry.repository.substringAfter('/'))
+                            sourceToImport = null
+                        } catch (e: CancellationException) { throw e }
+                        catch (e: Exception) {
+                            sourceImportMessage = container.github.safeMessage(e)
+                            sourceToImport = null
+                        } finally {
+                            sourceImportRunning = false
+                        }
+                    }
+                }, enabled = !sourceImportRunning && entry.canImportAsWorkspace) {
+                    Text(stringResource(R.string.ai_source_import_button))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { sourceToImport = null }, enabled = !sourceImportRunning) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
     }
     prepared?.let { candidate ->
         PluginInstallDialog(candidate, reviewWorkspace, reviewLabel, manager, installed.firstOrNull { it.id == candidate.replacing }, busy,
