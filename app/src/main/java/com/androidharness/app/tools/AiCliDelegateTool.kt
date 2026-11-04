@@ -29,7 +29,7 @@ class AiCliDelegateTool(
         "Delegate one coding task to a user-installed and authenticated AI CLI in the current workspace. " +
         "Supported agents: codex, claude, opencode, gemini, pi, qwen, aider. " +
         "The CLI may call external AI services and use project files. Never installs a CLI or obtains API keys. " +
-        "allow_edits=false is supported only for codex and claude. This is a modifying tool requiring user approval."
+        "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. This is a modifying tool requiring user approval."
 
     override val parametersSchema: JsonObject = Schema.obj(
         mapOf(

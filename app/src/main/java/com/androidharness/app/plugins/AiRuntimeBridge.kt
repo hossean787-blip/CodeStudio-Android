@@ -19,10 +19,10 @@ object AiRuntimeBridge {
         AiCliProfile("codex", "codex", "Codex CLI", true),
         AiCliProfile("claude", "claude", "Claude Code", true),
         AiCliProfile("opencode", "opencode", "OpenCode", false),
-        AiCliProfile("gemini", "gemini", "Gemini CLI", false),
+        AiCliProfile("gemini", "gemini", "Gemini CLI", true),
         AiCliProfile("pi", "pi", "Pi Agent", false),
         AiCliProfile("qwen", "qwen", "Qwen Code", false),
-        AiCliProfile("aider", "aider", "Aider", false),
+        AiCliProfile("aider", "aider", "Aider", true),
     )
 
     private fun profile(id: String): AiCliProfile =
@@ -54,10 +54,10 @@ object AiRuntimeBridge {
             "codex" -> if (allowWorkspaceEdits) "codex exec --sandbox workspace-write" else "codex exec --sandbox read-only"
             "claude" -> if (allowWorkspaceEdits) "claude -p --permission-mode acceptEdits" else "claude -p --permission-mode plan"
             "opencode" -> "opencode run"
-            "gemini" -> "gemini -p"
+            "gemini" -> if (allowWorkspaceEdits) "gemini -p" else "gemini --approval-mode plan -p"
             "pi" -> "pi -p"
             "qwen" -> "qwen -p"
-            "aider" -> "aider --message"
+            "aider" -> if (allowWorkspaceEdits) "aider --message" else "aider --dry-run --message"
             else -> error("Unknown CLI")
         }
         return prefix + " " + quoteArgument("User request: " + message)

@@ -16,12 +16,12 @@
 | Codex | `command -v codex` | `codex exec --sandbox read-only` | `codex exec --sandbox workspace-write` |
 | Claude Code | `command -v claude` | `claude -p --permission-mode plan` | `claude -p --permission-mode acceptEdits` |
 | OpenCode | `command -v opencode` | تأیید نشده | `opencode run` |
-| Gemini CLI | `command -v gemini` | تأیید نشده | `gemini -p` |
+| Gemini CLI | `command -v gemini` | `gemini --approval-mode plan -p` | `gemini -p` |
 | Pi | `command -v pi` | تأیید نشده | `pi -p` |
 | Qwen Code | `command -v qwen` | تأیید نشده | `qwen -p` |
-| Aider | `command -v aider` | تأیید نشده | `aider --message` |
+| Aider | `command -v aider` | `aider --dry-run --message` | `aider --message` |
 
-**محدودیت‌های امنیتی:** موتور فقط از فهرست ثابت انتخاب می‌شود؛ ورودی کاربر به‌صورت یک آرگومان نقل‌قول‌شده به CLI منتقل می‌شود، نه عبارت Shell. در حالت بدون مجوز ویرایش، فقط Codex و Claude با flag مناسب راه‌اندازی می‌شوند؛ پنج عامل دیگر بدون تأیید ویرایش اجرا نمی‌شوند (در حال حاضر ۵ عامل دیگر از هفت عامل). هیچ `curl | sh` یا نصب خودکار، bypass مجوز، کلید جعلی یا تغییر مخفی تنظیمات اتفاق نمی‌افتد. محتوای خروجی حداکثر ۲۴٬۰۰۰ کاراکتر و زمان اجرای هر فرمان حداکثر ۱۸۰ ثانیه است. خروجی در همین نمای UI نگه داشته می‌شود، نه به GitHub ارسال می‌شود و نه در گزارش پروژه ذخیره می‌شود.
+**محدودیت‌های امنیتی:** موتور فقط از فهرست ثابت انتخاب می‌شود؛ ورودی کاربر به‌صورت یک آرگومان نقل‌قول‌شده به CLI منتقل می‌شود، نه عبارت Shell. در حالت بدون مجوز ویرایش، Codex، Claude، Gemini و Aider با flag مناسب راه‌اندازی می‌شوند؛ سه عامل دیگر بدون تأیید ویرایش اجرا نمی‌شوند (در حال حاضر ۵ عامل دیگر از هفت عامل). هیچ `curl | sh` یا نصب خودکار، bypass مجوز، کلید جعلی یا تغییر مخفی تنظیمات اتفاق نمی‌افتد. محتوای خروجی حداکثر ۲۴٬۰۰۰ کاراکتر و زمان اجرای هر فرمان حداکثر ۱۸۰ ثانیه است. خروجی در همین نمای UI نگه داشته می‌شود، نه به GitHub ارسال می‌شود و نه در گزارش پروژه ذخیره می‌شود.
 
 ## تفاوت پل با انتقال کامل ۱۳ محصول
 

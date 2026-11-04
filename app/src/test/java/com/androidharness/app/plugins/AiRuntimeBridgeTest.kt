@@ -58,7 +58,9 @@ class AiRuntimeBridgeTest {
     @Test fun readOnlyModeIsExplicitAndCannotRunUnknownCli() {
         assertTrue(AiRuntimeBridge.executionCommand("codex", "audit only", false).contains("--sandbox read-only"))
         assertTrue(AiRuntimeBridge.executionCommand("claude", "read files", false).contains("--permission-mode plan"))
-        for (name in listOf("opencode", "gemini", "pi", "qwen", "aider")) {
+        assertTrue(AiRuntimeBridge.executionCommand("gemini", "read files", false).contains("--approval-mode plan"))
+        assertTrue(AiRuntimeBridge.executionCommand("aider", "read files", false).contains("--dry-run --message"))
+        for (name in listOf("opencode", "pi", "qwen")) {
             assertThrows(IllegalArgumentException::class.java) {
                 AiRuntimeBridge.executionCommand(name, "hello", false)
             }
