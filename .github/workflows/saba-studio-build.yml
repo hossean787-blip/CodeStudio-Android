@@ -64,6 +64,20 @@ jobs:
           assert 'applicationId = "ir.sabagostar.sabastudio"' in gradle
           print('PASS: complete upstream source, licensed, Saba Studio brand and app ID')
           PY
+      - name: Verify complete pinned Free Claude Code source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Source integrity check: compare the exact Git tree of all vendored files,
+          # including executable bits, paths and binary content, to the pinned upstream commit.
+          git clone --no-checkout --filter=blob:none https://github.com/Alishahryar1/free-claude-code.git /tmp/fcc-integrity
+          git -C /tmp/fcc-integrity fetch --depth 1 origin 1c72f5fef14249936902aa7927348caec29939d6
+          original="$(git -C /tmp/fcc-integrity rev-parse FETCH_HEAD^{tree})"
+          imported="$(git rev-parse HEAD:third_party/free-claude-code)"
+          echo "Upstream tree: $original"
+          echo "Imported tree: $imported"
+          test "$original" = "$imported"
+          test "$original" = "7bfe09e414b1e7002e20fcb193488afe2d479e7a"
       - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
