@@ -1,0 +1,17 @@
+{
+  "repository": "hossean787-blip/CodeStudio-Android",
+  "main_commit": "5dd78026d594f0cc476dab1f1e12ef4e9963ab9b",
+  "main_worktree": "/workspace/CodeStudio-Android",
+  "isolated_worktree": "/workspace/CodeStudio-Android-issue8",
+  "branch": "codex/issue-8-phase-0",
+  "baseline_git_bundle": "/workspace/deliverables/issue8-baseline.bundle",
+  "pr_heads": {
+    "5": "f112db1f752849a54f9087638443d52bc74c0f94",
+    "6": "39057f5426f4325bf2b3cefc80abbaf478ce655a",
+    "7": "96819c6e460edd033d31cc9a78756cf578ee67da"
+  },
+  "signing_key_for_installed_version": "unknown; user does not know; upgrade compatibility blocked",
+  "sensitive_access_or_new_signing_key_approved": false,
+  "paid_services_approved": false,
+  "public_release_approved": false
+}

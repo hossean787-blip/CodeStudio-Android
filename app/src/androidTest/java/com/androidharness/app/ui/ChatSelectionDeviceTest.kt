@@ -57,7 +57,7 @@ class ChatSelectionDeviceTest {
                             Box(Modifier.width(280.dp).then(if (compact.value) Modifier.height(360.dp) else Modifier.fillMaxHeight()).safeDrawingPadding()) {
                                 ProjectNavigationSidebar(emptyList(), chats, null, null, emptySet(), emptySet(), "", {}, emptyList(), false, {},
                                     activity = { null }, onNewChat = {}, onChat = {}, onMessage = {}, onProjectChat = {}, onProjects = {},
-                                    onChatActions = {}, onAction = { _, _ -> }, onBuild = {}, onTerminal = {}, onAutomation = {}, onProviders = {}, onSettings = {},
+                                    onChatActions = {}, onAction = { _, _ -> }, onBuild = {}, onTerminal = {}, onAutomation = {}, onProviders = {}, onSkills = {}, onIntegrations = {}, onSettings = {},
                                     workspaceLabel = "Workspaces", workspaceSummary = "", onWorkspaces = {}, onCollapse = {}, currentRoute = null,
                                     chatOnly = chatOnly, selectedChats = selection, onSelectedChatsChange = { selection = it },
                                     onSelectedChatsAction = { ids, action -> if (action == SidebarChatAction.DETAILS) details.set(ids) })
@@ -146,7 +146,7 @@ class ChatSelectionDeviceTest {
             await { nodes().any { text(it) == "3 selected" } }
             assertTrue("Other section must stay outside this selection", nodes().none { text(it) == "4 selected" })
             click("Clear selection")
-            await { nodes().any { it.contentDescription?.toString() == "AndroidHarness icon" } }
+            await { nodes().any { it.contentDescription?.toString() == instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon) } }
             longClick("$prefix One"); click("Select"); click("$prefix Two")
             click("Delete")
             await { nodes().any { text(it) == "Delete selected chats?" } }

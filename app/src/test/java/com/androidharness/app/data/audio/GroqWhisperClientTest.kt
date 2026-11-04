@@ -9,6 +9,7 @@ import org.junit.Test
 import java.io.File
 import java.net.ServerSocket
 import java.net.Socket
+import java.net.SocketException
 import java.nio.file.Files
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
@@ -82,15 +83,35 @@ class GroqWhisperClientTest {
         val worker = kotlin.concurrent.thread(isDaemon = true) {
             try {
                 server.accept().use { socket ->
+                    // Read the complete POST before replying. An early response can
+                    // race the multipart upload and cancellation may reset TCP.
+                    val input = socket.getInputStream().buffered()
+                    val headers = StringBuilder()
+                    while (!headers.endsWith("\r\n\r\n")) {
+                        val next = input.read()
+                        check(next >= 0 && headers.length < 16_384)
+                        headers.append(next.toChar())
+                    }
+                    val size = Regex("(?im)^Content-Length: (\\d+)").find(headers)?.groupValues?.get(1)?.toInt()
+                        ?: error("Expected bounded multipart Content-Length")
+                    repeat(size) { check(input.read() >= 0) }
                     socket.getOutputStream().apply {
                         write("HTTP/1.1 200 OK\r\nContent-Length: 1000\r\nContent-Type: application/json\r\n\r\n{\"text\":\"".toByteArray())
                         flush()
                     }
                     sentHeaders.complete(socket)
-                    socket.getInputStream().readBytes()
+                    try {
+                        while (input.read() >= 0) { }
+                    } catch (_: SocketException) {
+                        // EOF and TCP reset both prove peer closure. A read timeout
+                        // is not SocketException and still fails the fixture.
+                    }
                     closedByClient.complete(Unit)
                 }
-            } catch (_: Exception) { }
+            } catch (error: Exception) {
+                sentHeaders.completeExceptionally(error)
+                closedByClient.completeExceptionally(error)
+            }
         }
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             chain.proceed(chain.request().newBuilder().url("http://127.0.0.1:${server.localPort}/transcribe").build())

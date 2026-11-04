@@ -83,6 +83,7 @@ class ProjectSidebarDeviceTest {
                                         if (value == SidebarChatAction.ARCHIVE) archived = archived + session.id
                                     }, onBuild = { destination.set("Build") }, onTerminal = { destination.set("Terminal") },
                                     onAutomation = { destination.set("Scheduled tasks") }, onProviders = { destination.set("Providers") },
+                                    onSkills = { destination.set("Skills") }, onIntegrations = { destination.set("Connections:$it") },
                                     onSettings = { destination.set("Settings") }, workspaceLabel = "Workspaces for this chat", workspaceSummary = "1 workspace · Primary: AndroidHarness",
                                     onWorkspaces = { destination.set("Workspaces") }, onCollapse = { destination.set("Collapse") }, currentRoute = null,
                                     projectsView = projectsView, onProjectsViewChange = { projectsView = it },
@@ -96,8 +97,8 @@ class ProjectSidebarDeviceTest {
                     }
                 }
             } }
-            await { find("AndroidHarness icon") != null }
-            assertWithin("AndroidHarness icon")
+            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
+            assertWithin(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon))
             screenshot("chats-view")
             assertNull(find("Collapse AndroidHarness"))
             scrollTo("Working"); assertNotNull(find("Working"))
@@ -162,7 +163,7 @@ class ProjectSidebarDeviceTest {
             await { find("Open navigation") != null }
             assertNull("A closed drawer must not expose its search field", find("Search chats and messages"))
             tap("Open navigation")
-            await { find("AndroidHarness icon") != null }
+            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
             assertSearchInactive(activity)
             tap("Search chats and messages")
             await { searchHasFocus() }
@@ -171,7 +172,7 @@ class ProjectSidebarDeviceTest {
             tap("Collapse sidebar")
             await { find("Open navigation") != null }
             tap("Open navigation")
-            await { find("AndroidHarness icon") != null }
+            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
             assertSearchInactive(activity)
             assertEquals("", nodes().first { it.isEditable && it.isVisibleToUser }.text?.toString().orEmpty())
             search("")
