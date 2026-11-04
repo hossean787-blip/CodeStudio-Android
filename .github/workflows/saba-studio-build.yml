@@ -38,7 +38,8 @@ jobs:
               'settings.gradle.kts',
               'app/src/main/java/com/androidharness/app/ui/chat/components/EmptyState.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
-              'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt'
+              'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
+              'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt'
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
