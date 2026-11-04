@@ -34,3 +34,9 @@ verified external-provider inference. Full native inference needs pinned NDK and
 model fixtures; a build without them must say so.
 
 Artifact manifest and test results are completed in REPORT.md after execution.
+
+CI diagnosis: first emulator setup failed before tests because
+`android-actions/setup-android@v3` requested removed SDK package `tools`.
+Use the runner's current sdkmanager with explicit supported packages instead.
+Local checks: SQLite truncation 4/4; editor semantic/formatting tests 7/7;
+anonymous Kilo inference HTTP 200 and non-empty text (keyless-report.json).
