@@ -1,0 +1,61 @@
+name: Saba Studio native release verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, "codex/**"]
+    paths:
+      - '.github/workflows/saba-native-release.yml'
+permissions:
+  contents: read
+jobs:
+  native-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install pinned Android native toolchain
+        run: |
+          set -euo pipefail
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platforms;android-37.0" "build-tools;37.0.0" "ndk;27.2.12479018" "cmake;3.22.1"
+          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y glslc
+          test -f "$ANDROID_HOME/ndk/27.2.12479018/source.properties"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Test and build Release with native libraries
+        run: ./gradlew :app:testDebugUnitTest :app:assembleRelease -Pdistribution=github --no-daemon --max-workers=2 --stacktrace
+      - name: Verify exact native release APK
+        run: |
+          bash scripts/verify_release.sh app/build/outputs/apk/release/app-release.apk
+          for abi in arm64-v8a x86_64 armeabi-v7a x86; do
+            grep -qx "lib/$abi/libharness_local.so" app/build/outputs/apk/release/native-libraries.txt
+          done
+      - name: Upload native release and evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SabaStudio-native-alpha-release-test-signed
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/*.txt
+            app/build/outputs/gpuRuntime/release/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-native-release-test-reports
+          path: |
+            app/build/reports/tests/
+            app/build/test-results/
+          if-no-files-found: warn
+          retention-days: 14

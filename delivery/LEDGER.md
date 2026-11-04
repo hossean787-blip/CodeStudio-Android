@@ -40,3 +40,10 @@ CI diagnosis: first emulator setup failed before tests because
 Use the runner's current sdkmanager with explicit supported packages instead.
 Local checks: SQLite truncation 4/4; editor semantic/formatting tests 7/7;
 anonymous Kilo inference HTTP 200 and non-empty text (keyless-report.json).
+
+Full JVM run `41900304316`: 1943 tests, 2 failures in ProviderBrandsTest.
+Root cause: older tests assumed OpenRouter was always second and every
+OpenAI-compatible wire used a /v1 URL. FCC includes valid /v4, /v3/compat,
+/v1/openai and gateway roots; ChatAnywhere is now second. Preserve correct
+production presets, update exact-root regression expectations, add checks
+against credentials/query parameters in compiled presets.
