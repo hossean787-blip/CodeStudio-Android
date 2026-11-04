@@ -13,5 +13,8 @@
   "signing_key_for_installed_version": "unknown; user does not know; upgrade compatibility blocked",
   "sensitive_access_or_new_signing_key_approved": false,
   "paid_services_approved": false,
-  "public_release_approved": false
+  "public_release_approved": false,
+  "main_refreshed_before_merge": "83d9f4ff21375640845f2781687d65ba36d3c388",
+  "main_refresh_bundle": "/workspace/deliverables/issue8-main-refresh.bundle",
+  "pr7_refreshed_head": "10b186f3b7dc8b9848a236e94c8535d0a68e4bdd"
 }

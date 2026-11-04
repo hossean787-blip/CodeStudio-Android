@@ -136,6 +136,7 @@ internal fun ProjectNavigationSidebar(
     var catalogOpen by rememberSaveable { mutableStateOf(false) }
     val density = LocalDensity.current
     var footerHeight by remember { mutableStateOf(0.dp) }
+    var headerHeight by remember { mutableStateOf(0.dp) }
     val currentProject = sessions.firstOrNull { it.id == selectedSession }?.projectId ?: selectedProject
     val expanded = expandedProjects
     val grouped = remember(projects, sessions, pinned, archived) { SidebarChats.of(projects, sessions, pinned, archived) }
@@ -227,12 +228,17 @@ internal fun ProjectNavigationSidebar(
             .focusable().semantics { contentDescription = uiContext.getString(R.string.ui_project_and_chat_sidebar) }) {
         CompositionLocalProvider(LocalHarnessGlassBackdrop provides (panelBackdrop ?: LocalHarnessGlassBackdrop.current)) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
+            // Header density depends only on viewport height. Keep it independent
+            // from measured content so selection cannot oscillate between modes.
             val short = maxHeight < 440.dp
+            // Expanded menus must leave usable space for chats. Scroll the footer
+            // with the list when it cannot be docked; the header keeps its size.
+            val scrollFooter = short || headerHeight + footerHeight + 144.dp > maxHeight
             val narrow = maxWidth < 280.dp
             val stackTabs = maxWidth < 180.dp * density.fontScale
             @Composable fun Header() {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
-                Column {
+                Column(Modifier.onSizeChanged { headerHeight = with(density) { it.height.toDp() } }) {
                     if (selecting) ChatSelectionToolbar(if (selectionBusy) selectedChats.size else selection.size, selectableIds.isNotEmpty() && selection.containsAll(selectableIds),
                         selection.all { it in archived }, selectionBusy,
                         onClose = { onSelectedChatsChange(emptySet()) },
@@ -411,11 +417,11 @@ internal fun ProjectNavigationSidebar(
                                 style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
                         }
                     }
-                    if (short) item { HorizontalDivider(color = scheme.outlineVariant); Footer() }
+                    if (scrollFooter) item { HorizontalDivider(color = scheme.outlineVariant); Footer() }
                 }
-                if (!short) { HorizontalDivider(color = scheme.outlineVariant); Footer() }
+                if (!scrollFooter) { HorizontalDivider(color = scheme.outlineVariant); Footer() }
             }
-            SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(bottom = if (short) 8.dp else footerHeight + 8.dp))
+            SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(bottom = if (scrollFooter) 8.dp else footerHeight + 8.dp))
         }
         }
     }
