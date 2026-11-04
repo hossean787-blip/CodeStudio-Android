@@ -81,3 +81,13 @@ claiming a native runtime result. Host Java compilation was unavailable because
 `javac` is absent (only a Java runtime is installed); compilation is pending CI.
 This changes only
 test tooling, not the shipped application's inference API.
+
+Native-enabled run 41902362561 failed the existing strict SSE cancellation test
+with SocketException: Socket closed (SseStreamTest, not a native compiler error).
+The 1943-test no-NDK run had passed; heavy native compilation exposed the race.
+Root cause: cleanup closed the HTTP call before marking its blocking reader
+cancelled, and the generic error path could close the flow with that IOException.
+Fix: mark reader cancelled before closing the socket and ensureActive before
+propagating generic failures. Keep genuine active HTTP failures intact. Also
+sequence full JVM tests before native compilation instead of co-scheduling them.
+Existing failing cancellation regression remains enabled and unmodified.

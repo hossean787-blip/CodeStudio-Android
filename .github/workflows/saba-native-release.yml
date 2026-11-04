@@ -37,8 +37,10 @@ jobs:
           sudo apt-get install -y glslc
           test -f "$ANDROID_HOME/ndk/27.2.12479018/source.properties"
       - uses: gradle/actions/setup-gradle@v4
-      - name: Test and build Release with native libraries
-        run: ./gradlew :app:testDebugUnitTest :app:assembleRelease -Pdistribution=github --no-daemon --max-workers=2 --stacktrace
+      - name: Run full JVM suite before native compilation
+        run: ./gradlew :app:testDebugUnitTest -Pdistribution=github --no-daemon --max-workers=2 --stacktrace
+      - name: Build Release with native libraries
+        run: ./gradlew :app:assembleRelease -Pdistribution=github --no-daemon --max-workers=2 --stacktrace
       - name: Verify exact native release APK
         run: |
           bash scripts/verify_release.sh app/build/outputs/apk/release/app-release.apk

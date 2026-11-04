@@ -2,6 +2,7 @@ package com.androidharness.app.llm
 
 import com.androidharness.app.core.ChatMessage
 import com.androidharness.app.core.ToolCallData
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.channels.awaitClose
@@ -271,12 +272,16 @@ object ProviderFactory {
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
+                // Closing the HTTP socket during Stop may wake this reader
+                // with IOException. Preserve cancellation instead of racing
+                // to close the flow with a spurious network failure.
+                coroutineContext.ensureActive()
                 close(e)
             }
         }
         awaitClose {
-            call.cancel()
             reader.cancel()
+            call.cancel()
         }
     }.flowOn(Dispatchers.IO)
 

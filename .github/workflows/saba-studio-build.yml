@@ -38,6 +38,7 @@ jobs:
           allowed_changes={
               'app/build.gradle.kts',
               'app/src/main/java/com/androidharness/app/llm/HarnessProvider.kt',
+              'app/src/main/java/com/androidharness/app/llm/Llm.kt',
               'app/src/test/java/com/androidharness/app/ui/settings/ProviderBrandsTest.kt',
               'app/src/test/java/com/androidharness/app/ui/theme/ThemePaletteTest.kt',
               'app/src/main/java/com/androidharness/app/data/ThemePalette.kt',
