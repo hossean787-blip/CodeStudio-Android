@@ -1,15 +1,14 @@
-# انتقال سورس Code Studio
+# وضعیت سورس صبا استودیو
 
-مخزن مستقل CodeStudio-Android ایجاد شده است. شاخه توسعه `develop/codestudio-alpha` برای ورود سورس مشتق‌شده از AndroidHarness اختصاص یافته است.
+سورس اندروید در مخزن مستقل `hossean787-blip/CodeStudio-Android` وارد شده است.
+متن قدیمی این فایل مربوط به پیش از ورود کامل سورس بود.
 
-## منبع
-`CodeStudio-Android-Source-v0.1.0-alpha.zip` شامل سورس تغییرنام‌یافته، مجوز MIT و مستندات اولیه است.
+- معماری بومی: Kotlin، Jetpack Compose، Room، DataStore، OkHttp و JNI.
+- نام محصول: «صبا استودیو»؛ شناسه بسته: `ir.sabagostar.sabastudio`.
+- سورس‌های `third_party/free-claude-code` و `third_party/GPT_API_free` حفظ شده‌اند؛
+  حضور سورس به معنای فعال بودن همه قابلیت‌های آن در APK نیست.
+- [نقشه قابلیت‌های فعال، خارجی و آرشیوی](delivery/CAPABILITIES.md)
+- [نتایج واقعی آزمون، APK و محدودیت‌های انتشار](delivery/REPORT.md)
+- [نقطه بازگشت و دفتر اجرای الزامات](delivery/LEDGER.md)
 
-## وضعیت
-- هنوز **تمام سورس** به این مخزن انتقال داده نشده است.
-- APK اختصاصی هنوز کامپایل و تست نشده است.
-- از انتقال فایل‌های حساس، رمزها و توکن‌های API اجتناب شود.
-- اطلاعیه حق نشر و متن LICENSE اصلی باید حفظ شود.
-
-## گام بعدی
-محتوای پوشه داخلی ZIP یعنی `CodeStudio-Android/` باید با حفظ ساختار مسیرهای فایل، به شاخه `develop/codestudio-alpha` وارد شود. سپس Gradle و تست‌های سازگاری Android اجرا شوند. شاخه `main` تا قبل از تأیید کیفیت تغییر نکند.
+وضعیت نهایی ساخت و آزمون فقط از گزارش اجرا و شواهد GitHub Actions تعیین می‌شود.

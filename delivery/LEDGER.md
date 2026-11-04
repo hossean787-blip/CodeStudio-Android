@@ -68,3 +68,8 @@ requires every UI resource group in all supported locales. Added translated
 resource groups for all nine other locales; did not weaken or exclude tests.
 Independent review found no important code bugs and one workflow path-filter
 gap, now fixed for native smoke scripts.
+
+Baseline-status clarification: `baseline-status.txt` contains `?? delivery/`
+because redirecting the baseline output created that directory before Git
+inspected untracked files. The checkout itself was clean before ledger creation
+(as observed immediately after clone); no pre-existing user edits were changed.
