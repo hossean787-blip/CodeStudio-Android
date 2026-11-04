@@ -14,6 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.androidharness.app.AppContainer
 import com.androidharness.app.R
 import com.androidharness.app.plugins.AiRuntimeBridge
+import com.androidharness.app.tools.ShellPolicy
+import com.androidharness.app.workspace.SshFs
+import java.io.File
 import com.androidharness.app.workspace.WorkspaceFs
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -37,8 +40,14 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var awaitingConfirmation by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf<String?>(null) }
     var failure by remember { mutableStateOf<String?>(null) }
+    // PATH checks belong to a specific workspace; never reuse availability from another one.
+    LaunchedEffect(workspace?.displayPath) {
+        availability = emptyMap()
+        result = null
+        failure = null
+    }
     val selected = AiRuntimeBridge.profiles.single { it.id == selectedId }
-    val canRun = workspace != null && !executing && !checking &&
+    val canRun = (workspace?.shellRoot != null || workspace is SshFs) && !executing && !checking &&
         availability[selectedId] == true && prompt.isNotBlank() &&
         (selected.supportsReadOnly || allowEdits)
 
@@ -57,7 +66,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                     color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
             OutlinedButton(onClick = {
-                val captured = workspace ?: return@OutlinedButton
+                val captured = workspace?.takeIf { it.shellRoot != null || it is SshFs } ?: return@OutlinedButton
                 checking = true
                 failure = null
                 scope.launch {
@@ -73,7 +82,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                     catch (e: Exception) { failure = e.localizedMessage?.take(400) ?: "Check failed." }
                     finally { checking = false }
                 }
-            }, enabled = workspace != null && !checking && !executing,
+            }, enabled = (workspace?.shellRoot != null || workspace is SshFs) && !checking && !executing,
                 modifier = Modifier.fillMaxWidth()) {
                 Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_check))
             }
@@ -145,6 +154,14 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                         AiRuntimeBridge.executionCommand(selectedId, prompt, allowEdits)
                     } catch (e: IllegalArgumentException) {
                         failure = e.message
+                        awaitingConfirmation = false
+                        return@TextButton
+                    }
+                    // Apply the same shell command policy as the coding agent's tool.
+                    val root = (captured as? SshFs)?.root?.let(::File) ?: captured.shellRoot
+                    val restriction = root?.let { ShellPolicy.denyReason(command, it, it) }
+                    if (root == null || restriction != null) {
+                        failure = restriction ?: "This workspace has no executable shell."
                         awaitingConfirmation = false
                         return@TextButton
                     }
