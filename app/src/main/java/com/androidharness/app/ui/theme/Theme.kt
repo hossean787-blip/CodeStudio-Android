@@ -19,7 +19,7 @@ import com.androidharness.app.data.ThemePalette
 val LocalProgressBarStyle = staticCompositionLocalOf { ProgressBarStyle.FLAT }
 
 /**
- * App theme: Saba Neon by default, with optional Material You dynamic color,
+ * App theme: minimal light Saba Studio by default, with optional Material You dynamic color,
  * selectable tonal palettes and Google Sans Flex typography.
  *
  * Motion uses the standard (non-expressive) scheme: the app ships its own subtle
@@ -30,10 +30,10 @@ val LocalProgressBarStyle = staticCompositionLocalOf { ProgressBarStyle.FLAT }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HarnessTheme(
-    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    themeMode: ThemeMode = ThemeMode.LIGHT,
     dynamicColor: Boolean = false,
     progressBarStyle: ProgressBarStyle = ProgressBarStyle.FLAT,
-    colorPalette: ThemePalette = ThemePalette.NEON,
+    colorPalette: ThemePalette = ThemePalette.SLATE,
     customPalette: com.androidharness.app.data.CustomThemePalette? = null,
     canvasSeed: Long? = null,
     glassEnabled: Boolean = false,

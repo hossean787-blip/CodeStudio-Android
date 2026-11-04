@@ -8,6 +8,7 @@ mkdir -p "$out"
 test "$(adb shell getprop ro.kernel.qemu | tr -d '\r')" = 1
 adb install -r "$apk" | tee "$out/install.txt"
 adb shell pm grant "$package" android.permission.POST_NOTIFICATIONS
+# A new install must use the approved light theme even on a dark-system phone.
 adb shell cmd uimode night yes
 adb logcat -c
 # AppCompat performs legacy locale migration on its first Activity launch.
@@ -39,7 +40,7 @@ text = Path(sys.argv[1]).read_text()
 assert "به صبا استودیو خوش آمدید" in text, "Persian Saba welcome text missing from real release UI"
 assert "Welcome to AndroidHarness" not in text
 PY
-adb shell screencap -p /sdcard/saba-release-fa-dark.png
-adb pull /sdcard/saba-release-fa-dark.png "$out/release-fa-dark.png"
+adb shell screencap -p /sdcard/saba-release-fa-light.png
+adb pull /sdcard/saba-release-fa-light.png "$out/release-fa-light.png"
 adb shell dumpsys package "$package" > "$out/package.txt"
 printf 'Emulator only: release install and 10-second startup liveness passed.\n' > "$out/result.txt"
