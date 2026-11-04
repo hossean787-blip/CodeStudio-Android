@@ -2,7 +2,7 @@
 
 نقطه بازگشت: `1f762648f1fb026b5cf938165b396222a466dc18`.
 سورس آزموده‌شده: `b84b476b367689407c7b6471cced846e88483219`؛ تغییرات بعدی گزارش، کد APK را تغییر نمی‌دهند.
-شاخه کاری: `codex/saba-stabilization-20261104`؛ وضعیت ادغام و Commit نهایی در [PR #3](https://github.com/hossean787-blip/CodeStudio-Android/pull/3) ثبت می‌شود.
+سورس از شاخه کاری `codex/saba-stabilization-20261104` طی [PR #3](https://github.com/hossean787-blip/CodeStudio-Android/pull/3) در `main` ادغام شد: `1d2f328683a6571cb57cdf0b645e79dc6b9ff730`. تطابق کامل درخت `app/` با Commit آزموده‌شده بررسی شد.
 
 ## خروجی
 

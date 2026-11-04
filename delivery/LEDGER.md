@@ -141,8 +141,10 @@ R-05 verified for recorded JVM/integration scopes. R-06 verified for anonymous
 Kilo host requests, including fresh text inference at 21:24 UTC. R-07 verified
 for the exact native Release test-signed APK. R-08 blocked for durable signing
 and previous-alpha upgrade compatibility. R-09 not tested: physical hardware.
-R-10 in progress at report generation: all artifacts verified; source main
-integration is the final operation through PR #3, whose merge state is authoritative.
+R-10 verified: all artifacts verified and PR #3 merged to main at
+1d2f328683a6571cb57cdf0b645e79dc6b9ff730 on 2026-11-04 21:35 UTC.
+The app tree on main is byte-identical to tested source b84b476. This final
+record update changes documentation/JSON only and is delivered on its own branch.
 
 Artifact manifest: delivery/REPORT.md (human report), delivery/CAPABILITIES.md
 (feature/source mapping), delivery/test-summary.json (test/artifact facts),
