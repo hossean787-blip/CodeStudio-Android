@@ -43,7 +43,7 @@ jobs:
           }
           for path, sha in want.items():
               b=(base/path).read_bytes()
-              actual=hashlib.sha1(('blob %d\\0'%len(b)).encode()+b).hexdigest()
+              actual=hashlib.sha1(('blob %d'%len(b)).encode()+bytes([0])+b).hexdigest()
               if actual!=sha:
                   raise SystemExit(f'Hash mismatch: {path}: {actual}')
           print('Source release identity checks passed')
