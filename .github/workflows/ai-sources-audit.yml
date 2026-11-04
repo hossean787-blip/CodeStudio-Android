@@ -1,0 +1,31 @@
+name: Saba AI source provenance audit
+
+on:
+  push:
+    branches: ["integration/ai-harness-suite-20261105"]
+    paths:
+      - ".gitmodules"
+      - "third_party/ai-sources/**"
+      - "scripts/verify_ai_source_pins.py"
+      - "app/src/main/java/com/androidharness/app/plugins/AiSourceCatalog.kt"
+      - ".github/workflows/ai-sources-audit.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-pinned-sources:
+    name: Verify 13 pinned source trees without executing them
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out Saba Studio without initializing external submodules
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          submodules: false
+      - name: Verify Gitlinks, license metadata, and in-app catalogue
+        run: python3 scripts/verify_ai_source_pins.py

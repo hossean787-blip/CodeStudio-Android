@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">منابع هوش مصنوعی</string>
+    <string name="ai_source_catalog_title">کتابخانه سورس هوش مصنوعی (۱۳ پروژه)</string>
+    <string name="ai_source_catalog_hint">سورس کامل پروژه‌ها با نسخه مشخص در مخزن صبا استودیو ثبت شده است. این موارد هنوز قابلیت فعال برنامه نیستند و برای اجرا به سازگارسازی و آزمون نیاز دارند.</string>
+    <string name="ai_source_license">مجوز: %1$s</string>
+    <string name="ai_source_not_active">وضعیت: سورس محفوظ است؛ هنوز در APK یکپارچه نشده</string>
+    <string name="ai_source_open">نمایش نسخه ثبت‌شده سورس</string>
+    <string name="ai_source_restricted">انتقال کد این مخزن به APK بدون مجوز صاحب حقوق مجاز نیست.</string>
+    <string name="ai_source_import_button">دریافت سورس در پروژه مستقل</string>
+    <string name="ai_source_import_confirm_title">تأیید دریافت سورس</string>
+    <string name="ai_source_import_confirm_body">مخزن %1$s با نسخه دقیق ثبت‌شده، به‌صورت پروژه مستقل روی گوشی دریافت شود؟ این کار فقط کد را دانلود می‌کند و آن را اجرا نمی‌کند. ابزار Git و فضای کافی لازم است. پروژه‌های موجود تغییر نمی‌کنند.</string>
+    <string name="ai_source_import_success">مخزن %1$s در یک پروژه مستقل روی گوشی دریافت شد.</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">AI sources</string>
+    <string name="ai_source_catalog_title">AI source library (13 projects)</string>
+    <string name="ai_source_catalog_hint">Original repositories are pinned in Saba Studio. These are complete source references, not installed or activated features. Each application needs a compatible adapter and tests before runtime use.</string>
+    <string name="ai_source_license">License: %1$s</string>
+    <string name="ai_source_not_active">Status: source preserved — not integrated into the APK</string>
+    <string name="ai_source_open">View pinned source</string>
+    <string name="ai_source_restricted">Code from this repository must not be bundled without rights-holder authorization.</string>
+    <string name="ai_source_import_button">Import pinned source into workspace</string>
+    <string name="ai_source_import_confirm_title">Import source workspace</string>
+    <string name="ai_source_import_confirm_body">Import %1$s as a separate local coding workspace at its exact pinned commit? This downloads external code and does not execute it. Git tools and storage space are required. Existing projects remain unchanged.</string>
+    <string name="ai_source_import_success">Imported %1$s into a new local workspace.</string>
+</resources>
