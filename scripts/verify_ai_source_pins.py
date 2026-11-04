@@ -38,4 +38,15 @@ for item in sources:
     )
     assert all(v in catalogue for v in (item["id"], sha, repo)), f"App catalog misses {repo}"
 
+# In-app source references must remain external to Gradle builds until each
+# license and Android runtime integration is separately approved.
+for gradle in ("settings.gradle.kts", "app/build.gradle.kts"):
+    assert "third_party/ai-sources/" not in (root / gradle).read_text(encoding="utf-8"), (
+        f"Unreviewed upstream source added to Android compilation: {gradle}"
+    )
+
+assert 'license != "UNVERIFIED" && !license.startsWith("RESTRICTED")' in catalogue, (
+    "Unlicensed or legally restricted sources must not have a workspace import action"
+)
+
 print(f"PASS: all {len(sources)} complete source gitlinks exactly pinned; no unreviewed code executed.")
