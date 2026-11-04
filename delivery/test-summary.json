@@ -1,6 +1,7 @@
 {
   "jvm": {
-    "workflow_run": 41902362533,
+    "workflow_run": 41905291602,
+    "source_commit": "c6260aea2886e39683d3e68f7e49518d3e339cae",
     "suites": 295,
     "tests": 1943,
     "failures": 0,
@@ -27,5 +28,14 @@
     "non_debuggable": true,
     "local_native_library_bundled": false,
     "host_signature_and_checksum_reverified": true
+  },
+  "current_no_ndk_release": {
+    "workflow_run": 41905291602,
+    "artifact_id": 13361096552,
+    "source_commit": "c6260aea2886e39683d3e68f7e49518d3e339cae",
+    "apk_sha256": "b93b3a6a2576acd2cfd47a91cd0ae9c007b04463f1c49bf18437087036d67bd0",
+    "certificate_sha256": "87dd466877b92dab445db9e14ecbbaf14395ff3c044d0394b64466edfa189409",
+    "host_signature_checksum_identity_verified": true,
+    "local_native_library_bundled": false
   }
 }

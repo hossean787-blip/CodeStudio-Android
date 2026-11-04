@@ -1249,7 +1249,7 @@
     <string name="ui_status">"وضعیت"</string>
     <string name="ui_retry_resume">"تلاش مجدد / از سرگیری"</string>
     <string name="ui_pause_telegram">"مکث تلگرام"</string>
-    <string name="ui_welcome_to_androidharness">"به AndroidHarness خوش آمدید"</string>
+    <string name="ui_welcome_to_androidharness">"به صبا استودیو خوش آمدید"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"اجازه دسترسی به فضای ذخیره سازی برای شروع کدنویسی. اعلان ها و سایر ابزارها اختیاری هستند."</string>
     <string name="ui_device_storage_access_granted">"دسترسی به فضای ذخیره‌سازی دستگاه داده شد"</string>
     <string name="ui_required_allow_access_to_device_files_and">"مورد نیاز: اجازه دسترسی به فایل ها و پوشه های دستگاه"</string>
@@ -1267,7 +1267,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"اختیاری: اجرای طولانی مدت را در OEM های تهاجمی زنده نگه می دارد"</string>
     <string name="ui_ready_to_begin">"آماده برای شروع"</string>
     <string name="ui_allow_storage_access_to_begin">"اجازه دهید دسترسی به فضای ذخیره‌سازی شروع شود"</string>
-    <string name="ui_start_harness">"مهار را شروع کنید"</string>
+    <string name="ui_start_harness">"ورود به صبا استودیو"</string>
     <string name="ui_optional">"اختیاری"</string>
     <string name="ui_model_activity_and_ai_code_changes">"فعالیت مدل و کد هوش مصنوعی تغییر می کند"</string>
     <string name="ui_model_activity">"فعالیت مدل"</string>

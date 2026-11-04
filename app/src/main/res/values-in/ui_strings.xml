@@ -1247,7 +1247,7 @@
     <string name="ui_status">"Status"</string>
     <string name="ui_retry_resume">"Coba lagi / lanjutkan"</string>
     <string name="ui_pause_telegram">"Jeda Telegram"</string>
-    <string name="ui_welcome_to_androidharness">"Selamat datang di AndroidHarness"</string>
+    <string name="ui_welcome_to_androidharness">"Selamat datang di Saba Studio"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"Berikan akses penyimpanan untuk mulai membuat kode. Notifikasi dan alat lain bersifat opsional."</string>
     <string name="ui_device_storage_access_granted">"Akses penyimpanan perangkat diberikan"</string>
     <string name="ui_required_allow_access_to_device_files_and">"Wajib: izinkan akses berkas dan folder perangkat"</string>
@@ -1265,7 +1265,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"Opsional: menjaga eksekusi panjang di perangkat dengan pembatasan ketat"</string>
     <string name="ui_ready_to_begin">"Siap memulai"</string>
     <string name="ui_allow_storage_access_to_begin">"Izinkan akses penyimpanan untuk memulai"</string>
-    <string name="ui_start_harness">"Mulai harness"</string>
+    <string name="ui_start_harness">"Mulai Saba Studio"</string>
     <string name="ui_optional">"Opsional"</string>
     <string name="ui_model_activity_and_ai_code_changes">"Aktivitas model dan perubahan kode AI"</string>
     <string name="ui_model_activity">"AKTIVITAS MODEL"</string>

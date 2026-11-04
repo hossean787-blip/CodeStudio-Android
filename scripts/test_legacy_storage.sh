@@ -6,7 +6,7 @@ storage_repo=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 storage_serial=${1:-emulator-5560}
 storage_sdk=${ANDROID_HOME:-$(sed -n 's/^sdk.dir=//p' "$storage_repo/local.properties")}
 storage_adb="$storage_sdk/platform-tools/adb"
-storage_package=com.androidharness.app.debug
+storage_package=ir.sabagostar.sabastudio.debug
 storage_tests=com.androidharness.app.ui.common.StorageAccessDeviceTest
 storage_reports="$storage_repo/app/build/reports/android${2:-9}-storage"
 

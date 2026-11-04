@@ -1247,7 +1247,7 @@
     <string name="ui_status">"状态"</string>
     <string name="ui_retry_resume">"重试 / 恢复"</string>
     <string name="ui_pause_telegram">"暂停 Telegram"</string>
-    <string name="ui_welcome_to_androidharness">"欢迎使用 AndroidHarness"</string>
+    <string name="ui_welcome_to_androidharness">"欢迎使用 Saba Studio"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"授予存储访问权限以开始编程。通知和其他工具为可选项。"</string>
     <string name="ui_device_storage_access_granted">"已获得设备存储访问权限"</string>
     <string name="ui_required_allow_access_to_device_files_and">"必需：允许访问设备文件和文件夹"</string>
@@ -1265,7 +1265,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"可选：避免严格的厂商后台限制终止长时间任务"</string>
     <string name="ui_ready_to_begin">"准备就绪"</string>
     <string name="ui_allow_storage_access_to_begin">"允许存储访问以开始"</string>
-    <string name="ui_start_harness">"启动 Harness"</string>
+    <string name="ui_start_harness">"启动 Saba Studio"</string>
     <string name="ui_optional">"可选"</string>
     <string name="ui_model_activity_and_ai_code_changes">"模型活动和 AI 代码更改"</string>
     <string name="ui_model_activity">"模型活动"</string>

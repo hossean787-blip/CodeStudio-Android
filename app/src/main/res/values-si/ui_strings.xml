@@ -1249,7 +1249,7 @@
     <string name="ui_status">"තත්ත්වය"</string>
     <string name="ui_retry_resume">"නැවත උත්සාහ කරන්න / ඉදිරියට ගෙනයන්න"</string>
     <string name="ui_pause_telegram">"විවේකය Telegram"</string>
-    <string name="ui_welcome_to_androidharness">"සාදරයෙන් පිළිගනිමු AndroidHarness"</string>
+    <string name="ui_welcome_to_androidharness">"සාදරයෙන් පිළිගනිමු Saba Studio"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"කේතය ආරම්භ කිරීම සඳහා ගබඩා ප්‍රවේශය ලබා දීම. දැනුම් දීමනා සහ අනෙකුත් මෙවලම් විකල්ප වේ."</string>
     <string name="ui_device_storage_access_granted">"උපාංග ගබඩා කිරීමේ ප්‍රවේශය ලබා දෙයි"</string>
     <string name="ui_required_allow_access_to_device_files_and">"අවශ් යතාවය: උපකරණ ගොනු හා ෆෝල්ඩර් වෙත ප්‍රවේශය ලබා දෙයි"</string>
@@ -1267,7 +1267,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"විකල්පය: ආක්රමීය OEM මත දිගු ධාවනය තබා"</string>
     <string name="ui_ready_to_begin">"ආරම්භ කිරීමට සූදානම්"</string>
     <string name="ui_allow_storage_access_to_begin">"ගබඩා කිරීමේ ප්‍රවේශය ආරම්භ කිරීමට ඉඩ දෙන්න"</string>
-    <string name="ui_start_harness">"හර්නස් ආරම්භ කරන්න"</string>
+    <string name="ui_start_harness">"Saba Studio ආරම්භ කරන්න"</string>
     <string name="ui_optional">"විකල්පයි"</string>
     <string name="ui_model_activity_and_ai_code_changes">"ආකෘති ක්‍රියාකාරකම් සහ AI කේත වෙනස්කම්"</string>
     <string name="ui_model_activity">"ආකෘතිය ක්‍රියාකාරකම්"</string>

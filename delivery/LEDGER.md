@@ -99,3 +99,13 @@ the v15 fixture completely (remove post-v15 tables/columns), registered the
 full path in the test, and added a persisted message assertion after migration.
 No destructive migration fallback or weakened assertion was added. Also added
 the intentionally modified upstream JNI probe to source-audit change tracking.
+
+Visual audit of the successful native startup screenshot found English
+AndroidHarness onboarding, covered by a notification dialog. Startup liveness
+was valid, but this was NOT Persian/RTL evidence. Rebrand the two onboarding
+strings in all locales; grant notifications only in the emulator probe, prime
+AppCompat's first launch before setting fa, and require Persian welcome text
+in a UIAutomator dump before accepting a Persian screenshot. Rebuild the
+changed deliverable and repeat native/persistence/startup verification.
+Legacy Android 9/10 storage test default package corrected to Saba debug ID;
+only shell syntax checked, those older OS tests remain unexecuted.

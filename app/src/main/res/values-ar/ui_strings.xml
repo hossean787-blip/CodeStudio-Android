@@ -1247,7 +1247,7 @@
     <string name="ui_status">"الحالة"</string>
     <string name="ui_retry_resume">"إعادة المحاولة / الاستئناف"</string>
     <string name="ui_pause_telegram">"إيقاف Telegram مؤقتاً"</string>
-    <string name="ui_welcome_to_androidharness">"مرحباً بك في AndroidHarness"</string>
+    <string name="ui_welcome_to_androidharness">"مرحباً بك في Saba Studio"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"امنح الوصول إلى التخزين لبدء البرمجة. الإشعارات والأدوات الأخرى اختيارية."</string>
     <string name="ui_device_storage_access_granted">"مُنح الوصول إلى تخزين الجهاز"</string>
     <string name="ui_required_allow_access_to_device_files_and">"مطلوب: السماح بالوصول إلى ملفات الجهاز ومجلداته"</string>
@@ -1265,7 +1265,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"اختياري: يحافظ على التشغيل الطويل في الأجهزة شديدة التقييد"</string>
     <string name="ui_ready_to_begin">"جاهز للبدء"</string>
     <string name="ui_allow_storage_access_to_begin">"اسمح بالوصول إلى التخزين للبدء"</string>
-    <string name="ui_start_harness">"بدء Harness"</string>
+    <string name="ui_start_harness">"بدء Saba Studio"</string>
     <string name="ui_optional">"اختياري"</string>
     <string name="ui_model_activity_and_ai_code_changes">"نشاط النماذج وتغييرات الكود بالذكاء الاصطناعي"</string>
     <string name="ui_model_activity">"نشاط النماذج"</string>
