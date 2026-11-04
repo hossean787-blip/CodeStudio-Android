@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">තත්ත්වය: මූලාශ්‍ර සුරක්ෂිතයි; තවම APK තුළ ඒකාබද්ධ කර නැත</string>
     <string name="ai_source_open">නිශ්චිත මූලාශ්‍ර අනුවාදය බලන්න</string>
     <string name="ai_source_restricted">අයිතිකරුගේ අවසරය නොමැතිව මෙම කේතය APK තුළ ඇතුළත් කළ නොහැක.</string>
+    <string name="ai_source_import_button">නිශ්චිත මූලාශ්‍රය ව්‍යාපෘතියකට ආනයනය</string>
+    <string name="ai_source_import_confirm_title">මූලාශ්‍ර ආනයනය තහවුරු කරන්න</string>
+    <string name="ai_source_import_confirm_body">%1$s නිශ්චිත commit එකෙන් වෙනම වැඩබිමකට ආනයනය කරන්නද? බාහිර කේතය බාගත කරන නමුත් ක්‍රියාත්මක නොකරයි. Git සහ ඉඩ අවශ්‍ය වන අතර පවතින ව්‍යාපෘති වෙනස් නොවේ.</string>
+    <string name="ai_source_import_success">%1$s නව දේශීය වැඩබිමකට ආනයනය කරන ලදී.</string>
 </resources>

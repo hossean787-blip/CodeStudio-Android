@@ -29,5 +29,10 @@ class AiSourceCatalogTest {
         assertEquals("UNVERIFIED", byId.getValue("syntac").license)
         assertEquals("MIT", byId.getValue("pocket-pi").license)
         assertEquals("RESTRICTED-PROPRIETARY-DERIVED", byId.getValue("openclaude-android").license)
+        assertTrue(byId.getValue("lyra-code").canImportAsWorkspace)
+        assertTrue(byId.getValue("and-code").canImportAsWorkspace)
+        assertTrue(byId.getValue("pocket-pi").canImportAsWorkspace)
+        assertTrue(!byId.getValue("syntac").canImportAsWorkspace)
+        assertTrue(!byId.getValue("openclaude-android").canImportAsWorkspace)
     }
 }

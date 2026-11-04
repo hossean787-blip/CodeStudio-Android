@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">Статус: исходники сохранены, но еще не интегрированы в APK</string>
     <string name="ai_source_open">Показать закрепленную версию исходников</string>
     <string name="ai_source_restricted">Без разрешения правообладателя этот код нельзя включать в APK.</string>
+    <string name="ai_source_import_button">Импортировать закреплённый код в проект</string>
+    <string name="ai_source_import_confirm_title">Подтвердить импорт исходников</string>
+    <string name="ai_source_import_confirm_body">Импортировать %1$s в отдельный локальный проект на точном закреплённом коммите? Внешний код будет скачан, но не запущен. Нужны Git и свободное место. Существующие проекты не изменятся.</string>
+    <string name="ai_source_import_success">%1$s импортирован в новый локальный проект.</string>
 </resources>

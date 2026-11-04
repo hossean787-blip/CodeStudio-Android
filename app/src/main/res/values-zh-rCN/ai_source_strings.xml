@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">状态：源码已保留，尚未集成到 APK</string>
     <string name="ai_source_open">查看固定版本的源码</string>
     <string name="ai_source_restricted">未经权利人授权，不得将此代码打包进 APK。</string>
+    <string name="ai_source_import_button">将固定版本源码导入工作区</string>
+    <string name="ai_source_import_confirm_title">确认导入源码</string>
+    <string name="ai_source_import_confirm_body">将 %1$s 按精确固定的提交导入独立本地工作区吗？只下载外部代码，不会执行。需要 Git 工具和足够存储空间，现有项目不会改变。</string>
+    <string name="ai_source_import_success">已将 %1$s 导入新的本地工作区。</string>
 </resources>

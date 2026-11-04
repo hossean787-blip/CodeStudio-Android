@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">الحالة: المصدر محفوظ ولم يدمج في ملف APK بعد</string>
     <string name="ai_source_open">عرض الإصدار المثبت من المصدر</string>
     <string name="ai_source_restricted">لا يجوز تضمين هذا الرمز في التطبيق دون تصريح من صاحب الحقوق.</string>
+    <string name="ai_source_import_button">استيراد المصدر المثبت إلى مشروع مستقل</string>
+    <string name="ai_source_import_confirm_title">تأكيد استيراد المصدر</string>
+    <string name="ai_source_import_confirm_body">هل تريد استيراد %1$s إلى مساحة عمل مستقلة عند الإصدار المثبت؟ سيتم تنزيل الكود الخارجي دون تشغيله. يلزم Git ومساحة تخزين كافية ولن تتغير مشاريعك الحالية.</string>
+    <string name="ai_source_import_success">تم استيراد %1$s إلى مساحة عمل محلية جديدة.</string>
 </resources>

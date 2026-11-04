@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">状態: ソースを保全済み、APK には未統合</string>
     <string name="ai_source_open">固定されたソースを表示</string>
     <string name="ai_source_restricted">権利者の許可なく、このコードを APK に組み込むことはできません。</string>
+    <string name="ai_source_import_button">固定ソースをワークスペースに取り込む</string>
+    <string name="ai_source_import_confirm_title">ソースの取り込みを確認</string>
+    <string name="ai_source_import_confirm_body">%1$s を固定された正確なコミットで独立したワークスペースに取り込みますか？外部コードをダウンロードしますが実行しません。Git ツールと空き容量が必要です。既存のプロジェクトは変更されません。</string>
+    <string name="ai_source_import_success">%1$s を新しいローカルワークスペースに取り込みました。</string>
 </resources>

@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">وضعیت: سورس محفوظ است؛ هنوز در APK یکپارچه نشده</string>
     <string name="ai_source_open">نمایش نسخه ثبت‌شده سورس</string>
     <string name="ai_source_restricted">انتقال کد این مخزن به APK بدون مجوز صاحب حقوق مجاز نیست.</string>
+    <string name="ai_source_import_button">دریافت سورس در پروژه مستقل</string>
+    <string name="ai_source_import_confirm_title">تأیید دریافت سورس</string>
+    <string name="ai_source_import_confirm_body">مخزن %1$s با نسخه دقیق ثبت‌شده، به‌صورت پروژه مستقل روی گوشی دریافت شود؟ این کار فقط کد را دانلود می‌کند و آن را اجرا نمی‌کند. ابزار Git و فضای کافی لازم است. پروژه‌های موجود تغییر نمی‌کنند.</string>
+    <string name="ai_source_import_success">مخزن %1$s در یک پروژه مستقل روی گوشی دریافت شد.</string>
 </resources>

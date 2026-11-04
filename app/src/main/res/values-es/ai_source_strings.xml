@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">Estado: código conservado; aún no integrado en el APK</string>
     <string name="ai_source_open">Ver versión fijada del código</string>
     <string name="ai_source_restricted">No se puede incluir este código en el APK sin autorización del titular de los derechos.</string>
+    <string name="ai_source_import_button">Importar código fijado a un espacio de trabajo</string>
+    <string name="ai_source_import_confirm_title">Confirmar importación</string>
+    <string name="ai_source_import_confirm_body">¿Importar %1$s como un espacio de trabajo local independiente en su versión exacta? Se descarga código externo, pero no se ejecuta. Se necesitan Git y espacio libre. Tus proyectos actuales no cambian.</string>
+    <string name="ai_source_import_success">Se importó %1$s a un nuevo espacio de trabajo local.</string>
 </resources>

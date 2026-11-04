@@ -21,6 +21,12 @@ fun gitHubRepositoryUrl(input: String): String {
     return "https://github.com/$path.git"
 }
 
+/** Only immutable lowercase forty-character commit IDs may drive source-library checkout. */
+fun gitHubCommitSha(value: String): String {
+    require(value.matches(Regex("[a-f0-9]{40}"))) { "Select a verified pinned GitHub commit." }
+    return value
+}
+
 fun gitQuote(value: String): String = "'" + value.replace("'", "'\\''") + "'"
 fun gitCommand(args: List<String>): String = "GIT_TERMINAL_PROMPT=0 GIT_LITERAL_PATHSPECS=1 git -c safe.directory='*' -c gc.auto=0 -c maintenance.auto=false " + args.joinToString(" ", transform = ::gitQuote)
 

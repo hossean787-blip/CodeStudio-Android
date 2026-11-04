@@ -15,6 +15,7 @@ data class AiSourceProject(
     val descriptionFa: String,
     val descriptionEn: String,
 ) {
+    val canImportAsWorkspace: Boolean get() = license != "UNVERIFIED" && !license.startsWith("RESTRICTED")
     val pinnedSourceUrl: String get() = "https://github.com/$repository/tree/$pinnedCommit"
 }
 

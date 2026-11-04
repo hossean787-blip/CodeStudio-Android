@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">Status: sumber tersimpan; belum terintegrasi ke APK</string>
     <string name="ai_source_open">Lihat revisi sumber yang dikunci</string>
     <string name="ai_source_restricted">Kode ini tidak boleh disertakan dalam APK tanpa izin dari pemegang hak.</string>
+    <string name="ai_source_import_button">Impor sumber yang dikunci ke ruang kerja</string>
+    <string name="ai_source_import_confirm_title">Konfirmasi impor sumber</string>
+    <string name="ai_source_import_confirm_body">Impor %1$s sebagai ruang kerja terpisah pada commit yang telah dikunci? Kode eksternal hanya diunduh, tidak dijalankan. Perlu Git dan ruang penyimpanan. Proyek saat ini tidak berubah.</string>
+    <string name="ai_source_import_success">%1$s berhasil diimpor ke ruang kerja lokal baru.</string>
 </resources>

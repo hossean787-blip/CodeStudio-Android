@@ -7,4 +7,8 @@
     <string name="ai_source_not_active">Status: Quellcode gesichert, noch nicht in die APK integriert</string>
     <string name="ai_source_open">Fixierte Quellcodeversion anzeigen</string>
     <string name="ai_source_restricted">Dieser Quellcode darf ohne Genehmigung des Rechteinhabers nicht in die APK integriert werden.</string>
+    <string name="ai_source_import_button">Fixierten Quellcode in Workspace importieren</string>
+    <string name="ai_source_import_confirm_title">Quellcode-Import bestätigen</string>
+    <string name="ai_source_import_confirm_body">%1$s als separaten lokalen Workspace beim exakt fixierten Commit importieren? Fremdcode wird heruntergeladen, aber nicht ausgeführt. Git-Werkzeuge und Speicherplatz sind erforderlich. Vorhandene Projekte bleiben unverändert.</string>
+    <string name="ai_source_import_success">%1$s wurde in einen neuen lokalen Workspace importiert.</string>
 </resources>
