@@ -8,10 +8,10 @@
 
 ## Implemented on Android
 - The existing AndroidHarness-derived native chat, agent, code editor and model-management runtime remains authoritative.
-- 43 API-key/OpenAI-compatible provider connection presets from Free Claude Code's `config/provider_catalog.py` were integrated into `ProviderSheet.kt`.
+- 47 API-key/OpenAI-compatible and local provider connection presets based on Free Claude Code's `config/provider_catalog.py` were integrated into `ProviderSheet.kt`.
 - Each preset is handled by Android's existing `ProviderRepository`, `ModelCatalog` and `OpenAiCompatProvider` implementation. Keys remain in the application's existing encrypted key store; no upstream credentials are included.
 - Model availability, access tiers and costs come from the chosen provider; presets do not enable free paid access.
-- JVM tests check presence, HTTPS endpoints, duplicate endpoints, and absence of embedded credentials.
+- JVM tests check provider presence, HTTPS cloud endpoints, explicitly local HTTP endpoints, duplicate endpoints, and absence of embedded credentials.
 
 ## Not implemented / architectural limits
 - Python Free Claude Code's runtime, admin dashboard, CLI harnesses, messaging bots, subscription OAuth sessions and local background server are NOT running inside the Android APK.
