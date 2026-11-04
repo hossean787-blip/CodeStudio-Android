@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">Fuentes de IA</string>
+    <string name="ai_source_catalog_title">Biblioteca de código fuente de IA (13 proyectos)</string>
+    <string name="ai_source_catalog_hint">Los repositorios originales están fijados en Saba Studio. Son referencias completas al código fuente, no funciones instaladas o activas. Cada proyecto requiere un adaptador compatible y pruebas antes de ejecutarse.</string>
+    <string name="ai_source_license">Licencia: %1$s</string>
+    <string name="ai_source_not_active">Estado: código conservado; aún no integrado en el APK</string>
+    <string name="ai_source_open">Ver versión fijada del código</string>
+    <string name="ai_source_restricted">No se puede incluir este código en el APK sin autorización del titular de los derechos.</string>
+</resources>

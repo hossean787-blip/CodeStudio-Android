@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">AIソース</string>
+    <string name="ai_source_catalog_title">AIソースライブラリ（13プロジェクト）</string>
+    <string name="ai_source_catalog_hint">元のリポジトリは Saba Studio で特定のコミットに固定されています。完全なソースコードへの参照であり、インストール済みまたは有効化済みの機能ではありません。実行前に互換性アダプターとテストが必要です。</string>
+    <string name="ai_source_license">ライセンス: %1$s</string>
+    <string name="ai_source_not_active">状態: ソースを保全済み、APK には未統合</string>
+    <string name="ai_source_open">固定されたソースを表示</string>
+    <string name="ai_source_restricted">権利者の許可なく、このコードを APK に組み込むことはできません。</string>
+</resources>

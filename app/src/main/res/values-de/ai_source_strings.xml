@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">KI-Quellprojekte</string>
+    <string name="ai_source_catalog_title">KI-Quellcodebibliothek (13 Projekte)</string>
+    <string name="ai_source_catalog_hint">Die Original-Repositories sind in Saba Studio auf feste Versionen gesetzt. Dies sind vollständige Quellcodeverweise, keine installierten oder aktivierten Funktionen. Jedes Projekt benötigt einen kompatiblen Adapter und Tests.</string>
+    <string name="ai_source_license">Lizenz: %1$s</string>
+    <string name="ai_source_not_active">Status: Quellcode gesichert, noch nicht in die APK integriert</string>
+    <string name="ai_source_open">Fixierte Quellcodeversion anzeigen</string>
+    <string name="ai_source_restricted">Dieser Quellcode darf ohne Genehmigung des Rechteinhabers nicht in die APK integriert werden.</string>
+</resources>

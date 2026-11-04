@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">AI මූලාශ්‍ර</string>
+    <string name="ai_source_catalog_title">AI මූලාශ්‍ර පුස්තකාලය (ව්‍යාපෘති 13)</string>
+    <string name="ai_source_catalog_hint">මුල් කේත ගබඩා Saba Studio තුළ නිශ්චිත අනුවාදවලට සම්බන්ධ කර ඇත. මේවා සම්පූර්ණ මූලාශ්‍ර කේත යොමු පමණක් වන අතර ස්ථාපිත හෝ සක්‍රීය විශේෂාංග නොවේ. භාවිතයට පෙර එක් එක් ව්‍යාපෘතියට ගැළපෙන සම්බන්ධකයක් සහ පරීක්ෂණ අවශ්‍ය වේ.</string>
+    <string name="ai_source_license">බලපත්‍රය: %1$s</string>
+    <string name="ai_source_not_active">තත්ත්වය: මූලාශ්‍ර සුරක්ෂිතයි; තවම APK තුළ ඒකාබද්ධ කර නැත</string>
+    <string name="ai_source_open">නිශ්චිත මූලාශ්‍ර අනුවාදය බලන්න</string>
+    <string name="ai_source_restricted">අයිතිකරුගේ අවසරය නොමැතිව මෙම කේතය APK තුළ ඇතුළත් කළ නොහැක.</string>
+</resources>

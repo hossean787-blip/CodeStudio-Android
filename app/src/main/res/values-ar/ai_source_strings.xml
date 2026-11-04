@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">مصادر الذكاء الاصطناعي</string>
+    <string name="ai_source_catalog_title">مكتبة مصادر الذكاء الاصطناعي (13 مشروعًا)</string>
+    <string name="ai_source_catalog_hint">تم تثبيت مراجع المستودعات الأصلية في صبا استوديو. هذه مراجع للمصادر الكاملة وليست ميزات مثبتة أو مفعلة. يحتاج كل مشروع إلى موائم واختبارات قبل استخدامه.</string>
+    <string name="ai_source_license">الترخيص: %1$s</string>
+    <string name="ai_source_not_active">الحالة: المصدر محفوظ ولم يدمج في ملف APK بعد</string>
+    <string name="ai_source_open">عرض الإصدار المثبت من المصدر</string>
+    <string name="ai_source_restricted">لا يجوز تضمين هذا الرمز في التطبيق دون تصريح من صاحب الحقوق.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">Исходники ИИ</string>
+    <string name="ai_source_catalog_title">Библиотека исходников ИИ (13 проектов)</string>
+    <string name="ai_source_catalog_hint">Оригинальные репозитории закреплены за точными коммитами в Saba Studio. Это ссылки на полный исходный код, а не установленные или активные функции. Для запуска каждого проекта требуются совместимый адаптер и тесты.</string>
+    <string name="ai_source_license">Лицензия: %1$s</string>
+    <string name="ai_source_not_active">Статус: исходники сохранены, но еще не интегрированы в APK</string>
+    <string name="ai_source_open">Показать закрепленную версию исходников</string>
+    <string name="ai_source_restricted">Без разрешения правообладателя этот код нельзя включать в APK.</string>
+</resources>
