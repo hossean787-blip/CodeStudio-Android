@@ -47,3 +47,9 @@ OpenAI-compatible wire used a /v1 URL. FCC includes valid /v4, /v3/compat,
 /v1/openai and gateway roots; ChatAnywhere is now second. Preserve correct
 production presets, update exact-root regression expectations, add checks
 against credentials/query parameters in compiled presets.
+
+Expand emulator evidence: actual file-edit/undo tool flow with a deterministic
+provider fixture, plus install/start the exact Release artifact in Persian dark
+mode and capture screenshot/crash buffer. Fixture tests do not prove live AI
+inference. Also attempt a separate full native Release with pinned NDK/CMake;
+do not equate the existing no-NDK alpha with working local inference.
