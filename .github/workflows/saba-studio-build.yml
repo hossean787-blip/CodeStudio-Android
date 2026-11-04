@@ -136,7 +136,10 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
-              'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt'
+              'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
+              'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
+              'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
+              'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt'
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
