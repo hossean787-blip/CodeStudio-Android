@@ -102,7 +102,7 @@ internal fun ProjectNavigationSidebar(
     onNewChat: () -> Unit, onChat: (String) -> Unit, onMessage: (MessageHit) -> Unit,
     onProjectChat: (ProjectEntity) -> Unit, onProjects: () -> Unit,
     onChatActions: (SessionEntity) -> Unit, onAction: (SessionEntity, SidebarChatAction) -> Unit,
-    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onSettings: () -> Unit,
+    onBuild: () -> Unit, onTerminal: () -> Unit, onAutomation: () -> Unit, onProviders: () -> Unit, onSkills: () -> Unit, onSettings: () -> Unit,
     workspaceLabel: String, workspaceSummary: String, onWorkspaces: () -> Unit,
     onCollapse: () -> Unit, currentRoute: String?, projectCreationEnabled: Boolean = true,
     changesSummary: String? = null, onChanges: () -> Unit = {},
@@ -174,6 +174,7 @@ internal fun ProjectNavigationSidebar(
                 SidebarNavRow(workspaceLabel, Icons.Outlined.FolderOpen, subtitle = workspaceSummary, onClick = onWorkspaces)
                 changesSummary?.let { SidebarNavRow(it, Icons.Outlined.Difference, onClick = onChanges) }
             }
+            SidebarNavRow(uiContext.getString(R.string.saba_claude_skills_nav), Icons.Outlined.AutoAwesome, currentRoute == "skills", onClick = onSkills)
             SidebarNavRow(uiContext.getString(R.string.settings_providers_title), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
             SidebarNavRow(uiContext.getString(R.string.settings_page_title), Icons.Outlined.Settings, currentRoute == "settings", onClick = onSettings)
         }

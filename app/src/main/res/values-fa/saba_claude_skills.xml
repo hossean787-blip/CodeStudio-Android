@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_claude_skills_nav">اسکیل‌های Claude</string>
+    <string name="saba_claude_skills_hint">اسکیل‌های سازگار با Agent Skills را با هر مدل متصل استفاده کنید. خود فرمت به اشتراک Claude نیاز ندارد؛ دسترسی مدل و ابزارها مستقل است.</string>
+    <string name="saba_claude_skills_import">واردکردن SKILL.md</string>
+    <string name="saba_claude_skills_repository">نمونه‌های رسمی</string>
+    <string name="saba_claude_skills_review">پیش از ذخیره دستورالعمل‌ها را بررسی کنید. فقط SKILL.md وارد می‌شود؛ نه اسکریپت‌ها یا فایل‌های همراه. فقط منابع معتبر را انتخاب کنید.</string>
+    <string name="saba_claude_skills_import_error">واردکردن اسکیل ممکن نشد: %1$s</string>
+    <string name="saba_claude_skills_import_title">بازبینی اسکیل واردشده</string>
+</resources>
