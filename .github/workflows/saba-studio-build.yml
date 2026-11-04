@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, feature/chat-first-ui, "codex/**"]
+    branches: [main, develop/codestudio-alpha, feature/chat-first-ui, "codex/**", "feature/saba-hide-cache-telemetry-20261105"]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -134,6 +134,7 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/EmptyState.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
+              'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt'
           }
@@ -300,7 +301,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion' --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion' --no-daemon --stacktrace
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
       - name: Upload emulator evidence
         if: always()
