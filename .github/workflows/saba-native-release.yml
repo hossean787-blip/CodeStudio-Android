@@ -101,7 +101,7 @@ jobs:
           disable-animations: true
           script: |
             mkdir -p native-runtime-evidence
-            bash scripts/release-smoke/run.sh emulator-5554 native-release/apk/release/app-release.apk /tmp/stories260K.gguf 2>&1 | tee native-runtime-evidence/probe.log
+            bash scripts/release-smoke/run.sh emulator-5554 native-release/apk/release/app-release.apk /tmp/stories260K.gguf > native-runtime-evidence/probe.log 2>&1
             bash scripts/emulator-release-smoke.sh native-release/apk/release/app-release.apk
       - name: Upload native runtime evidence
         if: always()
