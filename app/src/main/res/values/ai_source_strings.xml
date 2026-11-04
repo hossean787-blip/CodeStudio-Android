@@ -6,4 +6,5 @@
     <string name="ai_source_license">License: %1$s</string>
     <string name="ai_source_not_active">Status: source preserved — not integrated into the APK</string>
     <string name="ai_source_open">View pinned source</string>
+    <string name="ai_source_restricted">Code from this repository must not be bundled without rights-holder authorization.</string>
 </resources>

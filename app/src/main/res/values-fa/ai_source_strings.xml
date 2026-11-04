@@ -6,4 +6,5 @@
     <string name="ai_source_license">مجوز: %1$s</string>
     <string name="ai_source_not_active">وضعیت: سورس محفوظ است؛ هنوز در APK یکپارچه نشده</string>
     <string name="ai_source_open">نمایش نسخه ثبت‌شده سورس</string>
+    <string name="ai_source_restricted">انتقال کد این مخزن به APK بدون مجوز صاحب حقوق مجاز نیست.</string>
 </resources>

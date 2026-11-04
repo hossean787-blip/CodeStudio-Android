@@ -235,6 +235,10 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                                 style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(stringResource(R.string.ai_source_not_active),
                                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (entry.license.startsWith("RESTRICTED")) {
+                                Text(stringResource(R.string.ai_source_restricted),
+                                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                            }
                             OutlinedButton(onClick = {
                                 runCatching {
                                     container.appContext.startActivity(

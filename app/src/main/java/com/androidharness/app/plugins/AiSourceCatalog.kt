@@ -27,11 +27,11 @@ object AiSourceCatalog {
         AiSourceProject("mobile-harness", "techjarves/Mobile-Harness", "ae299adc7ecef5d9ed63f46e3dbd9af30818968d", "MIT", "محیط کدنویسی موبایل با بررسی تغییرات و پیش‌نمایش", "Mobile coding IDE with diffs and preview"),
         AiSourceProject("antigem", "Santoshkurmi/antigem", "78cbb7aa5267d23a7077986d45ab9ffe565641bc", "GPL-3.0", "محیط توسعه مبتنی بر Antigravity و Claude", "Development UI built around Antigravity and Claude"),
         AiSourceProject("syntac", "DraxonV1/Syntac", "ce5180a51a7ed63bc2dfa1db43f0d00a3abe57c9", "UNVERIFIED", "عامل محلی برنامه‌نویسی در اندروید", "Local coding agent for Android"),
-        AiSourceProject("pocket-pi", "CelestialCreator/pocket-pi", "9cf4660dfcbaf49381dc828c2a4144d660d385fc", "NOASSERTION", "عامل Pi همراه با محیط اندروید", "Pi coding agent for Android"),
+        AiSourceProject("pocket-pi", "CelestialCreator/pocket-pi", "9cf4660dfcbaf49381dc828c2a4144d660d385fc", "MIT", "عامل Pi همراه با محیط اندروید", "Pi coding agent for Android"),
         AiSourceProject("zafiro", "niki914/zafiro", "c9b5b6a0d7f6e629e3d5983b32def4aa3eca25c3", "MIT", "عامل کنترل گوشی با Skills و MCP", "Phone control agent with Skills and MCP"),
         AiSourceProject("androidagent", "mateuszsury/androidagent", "447ae6508d05c7531379afa9c3a29919addeb275", "Apache-2.0", "اجرای Codex و Claude همراه با ترمینال", "Codex and Claude with embedded terminal"),
         AiSourceProject("mobilekinetic-agent", "Binary-Kinetics/mobileKinetic-Agent", "3f1a5771b586b0c149f25d37b7aba0651c98a8dc", "GPL-3.0", "بستر ساخت عامل با ابزارهای MCP و Python", "Agent platform with MCP and Python"),
-        AiSourceProject("openclaude-android", "automationkit/openclaude-android", "5866e38523c27b27382b7277cb9b30f9f2d42c37", "NOASSERTION", "عامل برنامه‌نویسی با چند ارائه‌دهنده مدل", "Multi-provider coding agent"),
+        AiSourceProject("openclaude-android", "automationkit/openclaude-android", "5866e38523c27b27382b7277cb9b30f9f2d42c37", "RESTRICTED-PROPRIETARY-DERIVED", "هشدار: بخشی از سورس از کد مالکیتی بدون مجوز انتشار مشتق شده است", "Warning: proprietary-derived code is not authorized for redistribution"),
         AiSourceProject("droid-harness", "eibragaa/droid-harness", "a3438fddf3ec6dc319ebce5858906f9115ba6353", "MIT", "اجرای عامل‌های کدنویسی روی گوشی‌های Snapdragon", "Coding agents on Snapdragon Android devices"),
     )
 }

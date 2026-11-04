@@ -72,10 +72,11 @@
       "id": "pocket-pi",
       "repo": "CelestialCreator/pocket-pi",
       "commit": "9cf4660dfcbaf49381dc828c2a4144d660d385fc",
-      "license": "NOASSERTION",
+      "license": "MIT",
       "path": "third_party/ai-sources/pocket-pi",
       "compilation": "excluded",
-      "functional_status": "pending-adapter-and-tests"
+      "functional_status": "pending-adapter-and-tests",
+      "license_note": "The repository's LICENSE is MIT, while third-party Termux bootstrap components retain GPL and other original terms."
     },
     {
       "id": "zafiro",
@@ -108,10 +109,11 @@
       "id": "openclaude-android",
       "repo": "automationkit/openclaude-android",
       "commit": "5866e38523c27b27382b7277cb9b30f9f2d42c37",
-      "license": "NOASSERTION",
+      "license": "RESTRICTED-PROPRIETARY-DERIVED",
       "path": "third_party/ai-sources/openclaude-android",
       "compilation": "excluded",
-      "functional_status": "pending-adapter-and-tests"
+      "functional_status": "pending-adapter-and-tests",
+      "license_note": "Repository LICENSE/NOTICE says derived proprietary Claude Code content is not authorized for redistribution. Do not copy, build, or bundle into APK without rights-holder authorization."
     },
     {
       "id": "droid-harness",

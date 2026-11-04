@@ -27,7 +27,7 @@ class AiSourceCatalogTest {
         assertEquals("GPL-3.0", byId.getValue("antigem").license)
         assertEquals("GPL-3.0", byId.getValue("mobilekinetic-agent").license)
         assertEquals("UNVERIFIED", byId.getValue("syntac").license)
-        assertEquals("NOASSERTION", byId.getValue("pocket-pi").license)
-        assertEquals("NOASSERTION", byId.getValue("openclaude-android").license)
+        assertEquals("MIT", byId.getValue("pocket-pi").license)
+        assertEquals("RESTRICTED-PROPRIETARY-DERIVED", byId.getValue("openclaude-android").license)
     }
 }

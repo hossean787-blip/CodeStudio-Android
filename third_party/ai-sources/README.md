@@ -32,3 +32,11 @@ To prove an exact source pin, run `git -C third_party/ai-sources/lyra-code rev-p
 4. Unit, integration and Android device tests; permission and secret isolation; build signed APK; compare feature behavior to upstream.
 
 **Never claim a project has been functionally integrated based only on its Git submodule.**
+
+## Specific license findings (2026-11-05)
+
+- `pocket-pi`: its LICENSE file is MIT, but the repository documents separate upstream terms for Termux bootstrap and other runtime components. Do not assume downstream binaries are all MIT.
+- `openclaude-android`: its LICENSE/NOTICE explicitly says that portions are derived from proprietary Anthropic Claude Code without permission to redistribute. **This is a provenance link only. Do not vendor, build, run, distribute, or merge its code without rights-holder authorization.**
+- `syntac`: no license was verified in the public repository root; treat as all-rights-reserved until verified otherwise.
+
+A Git submodule/gitlink records an external upstream commit; it is not a license grant or permission to redistribute those sources.
