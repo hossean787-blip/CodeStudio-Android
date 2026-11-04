@@ -80,7 +80,12 @@ jobs:
           fi
           test -x "$SDKMANAGER"
           yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses > /dev/null || true
-          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-37" "build-tools;37.0.0"
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" "platforms;android-37.0" "build-tools;37.0.0"
+          test -f "$ANDROID_HOME/platforms/android-37.0/android.jar"
+          # AGP may resolve compileSdk=37 by the bare android-37 target path.
+          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
           test -f "$ANDROID_HOME/platforms/android-37/android.jar"
       - name: Set up Gradle cache
         uses: gradle/actions/setup-gradle@v4
