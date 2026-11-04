@@ -4,14 +4,19 @@
     {
       "id": "R-01",
       "requirement": "رفع واقعی خطاهای 403/مدل‌های رایگان/ChatGPT OAuth و پیام‌های محدودیت منطقه، بدون ادعای رایگان بودن نامحدود.",
-      "status": "not tested",
-      "evidence": []
+      "status": "partial: anonymous network inference passed; native and authenticated providers pending",
+      "evidence": [
+        "phase-1/keyless-network-check.json",
+        "phase-1/ERRORS.md"
+      ]
     },
     {
       "id": "R-02",
       "requirement": "جلوگیری از تبدیل پیام‌های داخلی «Resume interrupted task» و تلاش‌های مجدد سیستم به حباب‌های کاربر؛ حفظ ثبت رویداد داخلی.",
-      "status": "not tested",
-      "evidence": []
+      "status": "implemented: unit and device checks pending",
+      "evidence": [
+        "phase-1/INTERNAL-RESUME.md"
+      ]
     },
     {
       "id": "R-03",
@@ -34,14 +39,18 @@
     {
       "id": "R-06",
       "requirement": "نوار کناری مینیمال شبیه ChatGPT با چت‌ها، پروژه‌ها، تاریخچه، جستجو و آیکون‌های منظم؛ بدون طراحی قبلی نئونیِ نامطلوب.",
-      "status": "not tested",
-      "evidence": []
+      "status": "partial: light-default increment implemented; emulator screenshot pending",
+      "evidence": [
+        "phase-1/UI.md"
+      ]
     },
     {
       "id": "R-07",
       "requirement": "مرکز خطا و بازیابی فارسی: شرح دقیق خطای API، راه‌حل، Retry، وضعیت اتصال و گزارش قابل کپی بدون اسرار.",
-      "status": "not tested",
-      "evidence": []
+      "status": "partial: catalog diagnostics implemented; full recovery center pending",
+      "evidence": [
+        "phase-1/ERRORS.md"
+      ]
     },
     {
       "id": "R-08",
@@ -58,8 +67,10 @@
     {
       "id": "R-10",
       "requirement": "اجرای UI تأییدشده روشن، حرفه‌ای، فارسی RTL، Compose، خوانا با تایپوگرافی مناسب؛ اسکرین‌شات واقعی، نه فقط ماکاپ.",
-      "status": "not tested",
-      "evidence": []
+      "status": "partial: light-default increment implemented; emulator screenshot pending",
+      "evidence": [
+        "phase-1/UI.md"
+      ]
     },
     {
       "id": "R-11",

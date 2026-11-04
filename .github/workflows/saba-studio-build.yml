@@ -36,6 +36,16 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
+              'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
+              'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
+              'app/src/main/java/com/androidharness/app/data/SessionRepository.kt',
+              'app/src/main/java/com/androidharness/app/data/db/Database.kt',
+              'app/src/main/java/com/androidharness/app/tools/ChatRecallTools.kt',
+              'app/src/main/java/com/androidharness/app/ui/chat/ChatViewModel.kt',
+              'app/src/test/java/com/androidharness/app/agent/TaskControlTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ChatBackupTest.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/chat/ChatExperienceDeviceTest.kt',
               'app/src/main/java/com/androidharness/app/llm/ModelCatalog.kt',
               'app/src/main/java/com/androidharness/app/ui/common/LocalizedOptionLabels.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/DiagnosticReport.kt',
@@ -317,7 +327,9 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout' --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true --no-daemon --stacktrace
+            mkdir -p delivery-emulator
+            adb pull /sdcard/Android/data/ir.sabagostar.sabastudio/files/issue8 delivery-emulator/issue8-live
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
       - name: Upload emulator evidence
         if: always()
