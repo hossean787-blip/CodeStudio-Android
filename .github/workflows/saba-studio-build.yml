@@ -1,0 +1,85 @@
+name: Saba Studio source audit and Android debug APK
+
+on:
+  push:
+    branches: [develop/codestudio-alpha]
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - 'settings.gradle.kts'
+      - '.github/workflows/saba-studio-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-and-build:
+    name: Audit source and build Saba Studio APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out Saba Studio source
+        uses: actions/checkout@v4
+      - name: Check upstream source completeness and preserved license
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v3.2-release https://github.com/Sanuu7/AndroidHarness.git /tmp/androidharness-audit
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          upstream=Path('/tmp/androidharness-audit')
+          current=Path('.')
+          allowed_changes={
+              'app/build.gradle.kts',
+              'app/src/main/res/values/strings.xml',
+              'app/src/main/java/com/androidharness/app/data/update/UpdateManager.kt',
+              'settings.gradle.kts'
+          }
+          originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
+          missing=[]; different=[]
+          for original in originals:
+              rel=original.relative_to(upstream).as_posix()
+              dest=current/('upstream-github-workflows/'+original.name if rel.startswith('.github/workflows/') else rel)
+              if not dest.is_file():
+                  missing.append(rel)
+              elif rel not in allowed_changes and dest.read_bytes()!=original.read_bytes():
+                  different.append(rel)
+          print(f'Upstream files checked: {len(originals)}')
+          print(f'Allowed application changes: {sorted(allowed_changes)}')
+          print(f'Missing: {missing[:30]}')
+          print(f'Unexpected changed files: {different[:30]}')
+          assert len(originals) == 1546, 'Upstream release file count changed'
+          assert not missing and not different, 'Imported source missing or unexpectedly modified'
+          assert (current/'LICENSE').read_bytes()==(upstream/'LICENSE').read_bytes()
+          text=(current/'app/src/main/res/values/strings.xml').read_text()
+          assert '<string name="app_name" translatable="false">صبا استودیو</string>' in text
+          gradle=(current/'app/build.gradle.kts').read_text()
+          assert 'applicationId = "ir.sabagostar.sabastudio"' in gradle
+          print('PASS: complete upstream source, licensed, Saba Studio brand and app ID')
+          PY
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android SDK platform 37
+        run: sdkmanager "platforms;android-37" "build-tools;37.0.0"
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build Saba Studio debug APK
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:assembleDebug -Pdistribution=github --no-daemon --stacktrace
+      - name: Upload debug APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SabaStudio-v0.1.0-alpha-debug
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
