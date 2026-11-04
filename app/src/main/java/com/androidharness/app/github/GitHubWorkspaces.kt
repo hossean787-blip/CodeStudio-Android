@@ -106,7 +106,17 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
             .mapNotNull { (it as? JsonObject)?.string("full_name") }
     }
 
-    suspend fun importRepository(input: String, activate: Boolean = true, onRegistered: (String) -> Unit = {}, pinnedCommit: String? = null): String = imports.withLock { withContext(Dispatchers.IO) {
+    // Preserve the existing GitHub import API for all call sites (including trailing lambdas).
+    suspend fun importRepository(input: String, activate: Boolean = true, onRegistered: (String) -> Unit = {}): String =
+        importSource(input, activate, onRegistered, null)
+
+    /** Import an immutable source revision without affecting other workspaces. */
+    suspend fun importPinnedRepository(input: String, pinnedCommit: String, activate: Boolean = true,
+        onRegistered: (String) -> Unit = {}): String =
+        importSource(input, activate, onRegistered, gitHubCommitSha(pinnedCommit))
+
+    private suspend fun importSource(input: String, activate: Boolean, onRegistered: (String) -> Unit,
+        pinnedCommit: String?): String = imports.withLock { withContext(Dispatchers.IO) {
         val url = gitHubRepositoryUrl(input)
         val expectedCommit = pinnedCommit?.let(::gitHubCommitSha)
         requireGitTools()

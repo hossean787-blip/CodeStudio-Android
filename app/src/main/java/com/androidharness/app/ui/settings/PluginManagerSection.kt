@@ -315,7 +315,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                     sourceImportMessage = null
                     scope.launch {
                         try {
-                            container.githubRepositories.importRepository(entry.repository, pinnedCommit = entry.pinnedCommit)
+                            container.githubRepositories.importPinnedRepository(entry.repository, entry.pinnedCommit)
                             sourceImportMessage = container.appContext.getString(R.string.ai_source_import_success,
                                 entry.repository.substringAfter('/'))
                             sourceToImport = null
