@@ -156,6 +156,11 @@ internal val ProviderBrands: List<ProviderBrand?> = listOf(
     ProviderBrand("Wafer", ProviderType.OPENAI_COMPAT, "https://pass.wafer.ai/v1", true),
     ProviderBrand("MiniMax", ProviderType.OPENAI_COMPAT, "https://api.minimax.io/v1", true),
     ProviderBrand("ClinePass", ProviderType.OPENAI_COMPAT, "https://api.cline.bot/api/v1", true),
+    // Additional Free Claude Code gateways and local runtime adapters.
+    ProviderBrand("Kilo AI Gateway", ProviderType.OPENAI_COMPAT, "https://api.kilo.ai/api/gateway", true),
+    ProviderBrand("Amazon Bedrock Mantle", ProviderType.OPENAI_COMPAT, "https://bedrock-mantle.us-east-1.api.aws/v1", true),
+    ProviderBrand("Gemini (OpenAI Compatible)", ProviderType.OPENAI_COMPAT, "https://generativelanguage.googleapis.com/v1beta/openai", true),
+    ProviderBrand("llama.cpp", ProviderType.OPENAI_COMPAT, "http://127.0.0.1:8080/v1", false),
     // Custom endpoints get their own tile that reveals the advanced fields.
     null,
 )
