@@ -47,6 +47,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
     val scope = rememberCoroutineScope()
     val revision by manager.revision.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
+    val isPersian = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]?.language == "fa"
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
     LaunchedEffect(tab) { listState.scrollToItem(0) }
     var source by rememberSaveable { mutableStateOf("npm") }
@@ -106,7 +107,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
     }
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PrimaryScrollableTabRow(selectedTabIndex = tab, edgePadding = 0.dp, containerColor = MaterialTheme.colorScheme.surface) {
-            listOf(R.string.pm_installed, R.string.pm_discover, R.string.pm_add).forEachIndexed { index, title ->
+            listOf(R.string.pm_installed, R.string.pm_discover, R.string.pm_add, R.string.ai_source_catalog_tab).forEachIndexed { index, title ->
                 Tab(selected = tab == index, onClick = { tab = index }, text = { Text(stringResource(title)) })
             }
         }
@@ -218,6 +219,34 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                     }
                     if (searched && listings.isEmpty()) item { Text(stringResource(R.string.pm_no_results), style = MaterialTheme.typography.bodyMedium) }
                     items(listings, key = { "npm-${it.name}" }) { listing -> PluginListingCard(listing, !busy) { update = null; prepare(listing.origin, null) } }
+                }
+                3 -> {
+                    item {
+                        PluginPanel {
+                            Text(stringResource(R.string.ai_source_catalog_title), style = MaterialTheme.typography.titleLarge)
+                            Text(stringResource(R.string.ai_source_catalog_hint), style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                    items(AiSourceCatalog.projects, key = { "ai-source-${it.id}" }) { entry ->
+                        PluginPanel {
+                            Text(entry.repository.substringAfter('/'), style = MaterialTheme.typography.titleMedium)
+                            Text(if (isPersian) entry.descriptionFa else entry.descriptionEn, style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(R.string.ai_source_license, entry.license),
+                                style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.ai_source_not_active),
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            OutlinedButton(onClick = {
+                                runCatching {
+                                    container.appContext.startActivity(
+                                        Intent(Intent.ACTION_VIEW, Uri.parse(entry.pinnedSourceUrl))
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    )
+                                }.onFailure { error = it.localizedMessage ?: "Unable to open GitHub" }
+                            }, modifier = Modifier.fillMaxWidth()) {
+                                Text(stringResource(R.string.ai_source_open))
+                            }
+                        }
+                    }
                 }
                 2 -> {
                     item {

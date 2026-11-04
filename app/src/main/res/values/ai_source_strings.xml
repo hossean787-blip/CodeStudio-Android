@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_source_catalog_tab">AI sources</string>
+    <string name="ai_source_catalog_title">AI source library (13 projects)</string>
+    <string name="ai_source_catalog_hint">Original repositories are pinned in Saba Studio. These are complete source references, not installed or activated features. Each application needs a compatible adapter and tests before runtime use.</string>
+    <string name="ai_source_license">License: %1$s</string>
+    <string name="ai_source_not_active">Status: source preserved — not integrated into the APK</string>
+    <string name="ai_source_open">View pinned source</string>
+</resources>
