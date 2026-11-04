@@ -439,11 +439,16 @@ private val paletteSchemes = mapOf(
     ),
 );
 
-internal fun ThemePalette.colorScheme(dark: Boolean): ColorScheme {
-    if (this == ThemePalette.NEON) return com.androidharness.app.data.CustomThemePalette(
+private val sabaNeonSchemes by lazy {
+    val palette = com.androidharness.app.data.CustomThemePalette(
         id = "saba-neon", name = "Neon Studio",
         primary = 0xFF00E5FF, secondary = 0xFF9B7BFF, tertiary = 0xFFFF63CD,
-    ).colorScheme(dark)
+    )
+    palette.colorScheme(false) to palette.colorScheme(true)
+}
+
+internal fun ThemePalette.colorScheme(dark: Boolean): ColorScheme {
+    if (this == ThemePalette.NEON) return if (dark) sabaNeonSchemes.second else sabaNeonSchemes.first
     if (this == ThemePalette.BLUE) return if (dark) DarkColors else LightColors
     val pair = paletteSchemes.getValue(this)
     return if (dark) pair.second else pair.first

@@ -5,6 +5,11 @@ on:
     branches: [main, "codex/**"]
     paths:
       - '.github/workflows/saba-native-release.yml'
+      - 'app/**'
+      - 'gradle/**'
+      - 'scripts/verify_release.sh'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
 permissions:
   contents: read
 jobs:

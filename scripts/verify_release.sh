@@ -8,7 +8,7 @@ tools="$sdk/build-tools/37.0.0"
 test -s "$apk"
 "$tools/apksigner" verify --verbose --print-certs "$apk" | tee "$out/signature.txt"
 "$tools/aapt" dump badging "$apk" > "$out/identity.txt"
-grep -q "package: name='ir.sabagostar.sabastudio'" "$out/identity.txt"
+grep -q "package: name='ir.sabagostar.sabastudio' versionCode='2' versionName='0.1.0-alpha.2'" "$out/identity.txt"
 if grep -q '^application-debuggable' "$out/identity.txt"; then
     echo 'Refusing debuggable APK' >&2
     exit 1
