@@ -36,6 +36,7 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
               'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
               'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
@@ -327,7 +328,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true --no-daemon --stacktrace
             mkdir -p delivery-emulator
             adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk

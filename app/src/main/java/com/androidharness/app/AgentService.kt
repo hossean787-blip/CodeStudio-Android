@@ -169,6 +169,7 @@ object RunResultNotifications {
             .setContentText(compactPreview)
             .setSubText(result.title)
             .setStyle(Notification.BigTextStyle().bigText(preview.take(4000)))
+            .setVisibility(Notification.VISIBILITY_PRIVATE)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
@@ -309,7 +310,7 @@ class AgentService : Service() {
                 NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 description = getString(R.string.ui_agent_prompts_you_can_answer_right_from)
-                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             },
         )
     }
@@ -327,8 +328,9 @@ class AgentService : Service() {
     private fun buildNotification(text: String): Notification {
         val alertsEnabled = AppNotifications.enabled(this)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("AndroidHarness")
+            .setContentTitle(getString(R.string.app_name))
             .setContentText(if (alertsEnabled) localizedOptionLabel(text) else getString(R.string.background_service_notice))
+            .setVisibility(Notification.VISIBILITY_PRIVATE)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(appPendingIntent())
             .setOnlyAlertOnce(true)
@@ -422,6 +424,7 @@ class AgentService : Service() {
             p.detail?.let { append("\n\n").append(it) }
         }
         val builder = Notification.Builder(this, ALERT_CHANNEL_ID)
+            .setVisibility(Notification.VISIBILITY_PRIVATE)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(
                 when (p.kind) {
