@@ -17,7 +17,7 @@ jobs:
         run: |
           git clone --quiet --filter=blob:none https://github.com/chatanywhere/GPT_API_free.git /tmp/gpt-api-free
           git -C /tmp/gpt-api-free checkout --quiet f4e4054594ec4998886e2bb7ae7650e22356d641
-      - name: Copy and verify all upstream files byte-for-byte
+      - name: Copy and verify upstream files (redact sample credential)
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -31,10 +31,18 @@ jobs:
               relative = path.relative_to(source)
               destination = target / relative
               destination.parent.mkdir(parents=True, exist_ok=True)
-              if not destination.exists() or destination.read_bytes() != path.read_bytes():
-                  shutil.copyfile(path, destination)
+              expected = path.read_bytes()
+              # Never re-introduce an upstream credential into our public mirror.
+              if relative.as_posix() == 'demo/openai_chat_completion_audio_demo.py':
+                  import re
+                  expected, replacements = re.subn(
+                      rb'api_key="[^"]+"', b'api_key="YOUR_CHATANYWHERE_API_KEY"', expected, count=1
+                  )
+                  assert replacements == 1, 'Expected upstream audio demo key assignment'
+              if not destination.exists() or destination.read_bytes() != expected:
+                  destination.write_bytes(expected)
                   updated.append(str(relative))
-              assert hashlib.sha256(path.read_bytes()).digest() == hashlib.sha256(destination.read_bytes()).digest(), relative
+              assert hashlib.sha256(expected).digest() == hashlib.sha256(destination.read_bytes()).digest(), relative
           mirrored = sorted(p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file())
           upstream = sorted(p.relative_to(source).as_posix() for p in files)
           assert upstream == mirrored, f'File list mismatch: missing={set(upstream)-set(mirrored)} unexpected={set(mirrored)-set(upstream)}'
@@ -48,7 +56,7 @@ jobs:
           # Upstream tracks .DS_Store despite its own ignore rule; preserve exact archive.
           git add -f -- third_party/GPT_API_free/images/.DS_Store
           if ! git diff --cached --quiet; then
-            git commit -m "chore: complete byte-for-byte GPT API Free snapshot"
+            git commit -m "chore: reconcile redacted GPT API Free snapshot"
             git push
           else
             echo "Snapshot already identical"
