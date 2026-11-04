@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, feature/chat-first-ui, "codex/**"]
+    branches: [main, develop/codestudio-alpha, "feature/**", "codex/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -135,6 +135,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
+              'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt'
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
