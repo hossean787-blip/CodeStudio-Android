@@ -138,6 +138,7 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
+              'app/src/main/java/com/androidharness/app/tools/Tool.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
               'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt'
           }
