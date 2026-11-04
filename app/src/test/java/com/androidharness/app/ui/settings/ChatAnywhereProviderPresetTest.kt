@@ -16,6 +16,13 @@ class ChatAnywhereProviderPresetTest {
         assertFalse(brand.baseUrl.contains('?'))
     }
 
+    @Test fun mainlandEndpointIsConfiguredSeparatelyAndRequiresUserKey() {
+        val brand = ProviderBrands.filterNotNull().single { it.label == "ChatAnywhere (China)" }
+        assertEquals(ProviderType.OPENAI_COMPAT, brand.type)
+        assertEquals("https://api.chatanywhere.tech/v1", brand.baseUrl)
+        assertTrue(brand.needsKey)
+    }
+
     @Test fun bothThirdPartyAndOfficialOpenAiAreAvailableSeparately() {
         val brands = ProviderBrands.filterNotNull()
         assertEquals(1, brands.count { it.label == "ChatAnywhere (GPT API Free)" })
