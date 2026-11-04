@@ -37,6 +37,8 @@ jobs:
           current=Path('.')
           allowed_changes={
               'app/build.gradle.kts',
+              'scripts/release-smoke/ReleaseProbe.java',
+              'app/src/androidTest/java/com/androidharness/app/workspace/MultiWorkspaceDeviceTest.kt',
               'app/src/main/java/com/androidharness/app/llm/HarnessProvider.kt',
               'app/src/main/java/com/androidharness/app/llm/Llm.kt',
               'app/src/test/java/com/androidharness/app/ui/settings/ProviderBrandsTest.kt',

@@ -91,3 +91,11 @@ Fix: mark reader cancelled before closing the socket and ensureActive before
 propagating generic failures. Keep genuine active HTTP failures intact. Also
 sequence full JVM tests before native compilation instead of co-scheduling them.
 Existing failing cancellation regression remains enabled and unmodified.
+
+Emulator run 41902362533: three selected tests passed; the v15 migration fixture
+failed because its manually supplied migration list stopped at v22 while the
+real app is v25. Production registers all v15->v25 migrations. Reconstructed
+the v15 fixture completely (remove post-v15 tables/columns), registered the
+full path in the test, and added a persisted message assertion after migration.
+No destructive migration fallback or weakened assertion was added. Also added
+the intentionally modified upstream JNI probe to source-audit change tracking.

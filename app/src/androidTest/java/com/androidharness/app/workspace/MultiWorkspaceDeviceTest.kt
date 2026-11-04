@@ -40,18 +40,32 @@ class MultiWorkspaceDeviceTest {
         try {
             val initial = Room.databaseBuilder(context, AppDatabase::class.java, name).build()
             initial.dao().insertSession(SessionEntity("legacy", "Keep this chat", 1, 2, projectId = "original", modelSelectionJson = "saved model"))
+            initial.dao().insertMessage(com.androidharness.app.data.db.MessageEntity(
+                "legacy-message", "legacy", "user", "Keep this message", "[]", null, null, false, createdAt = 1,
+            ))
             initial.close()
             android.database.sqlite.SQLiteDatabase.openDatabase(context.getDatabasePath(name).path, null, 0).use { old ->
                 old.execSQL("ALTER TABLE sessions DROP COLUMN workspaceSelectionJson")
                 old.execSQL("ALTER TABLE messages DROP COLUMN artifactJson")
                 old.execSQL("ALTER TABLE messages DROP COLUMN generationJson")
+                old.execSQL("ALTER TABLE sessions DROP COLUMN conversationJson")
+                // Reconstruct v15 rather than keeping tables/columns added in v18+.
+                for (table in listOf("code_activity", "memories", "chat_answer_versions", "saved_answers")) {
+                    old.execSQL("DROP TABLE $table")
+                }
                 old.version = 15
             }
-            val migrated = Room.databaseBuilder(context, AppDatabase::class.java, name).addMigrations(AppDatabase.MIGRATION_21_22, AppDatabase.MIGRATION_20_21, AppDatabase.MIGRATION_15_16, AppDatabase.MIGRATION_16_17, AppDatabase.MIGRATION_17_18, AppDatabase.MIGRATION_19_20, AppDatabase.MIGRATION_18_19).build()
+            val migrated = Room.databaseBuilder(context, AppDatabase::class.java, name).addMigrations(
+                AppDatabase.MIGRATION_15_16, AppDatabase.MIGRATION_16_17, AppDatabase.MIGRATION_17_18,
+                AppDatabase.MIGRATION_18_19, AppDatabase.MIGRATION_19_20, AppDatabase.MIGRATION_20_21,
+                AppDatabase.MIGRATION_21_22, AppDatabase.MIGRATION_22_23, AppDatabase.MIGRATION_23_24,
+                AppDatabase.MIGRATION_24_25,
+            ).build()
             try {
                 val row = requireNotNull(migrated.dao().session("legacy"))
                 assertEquals("Keep this chat", row.title); assertEquals("original", row.projectId)
                 assertEquals("saved model", row.modelSelectionJson); assertNull(row.workspaceSelectionJson)
+                assertEquals("Keep this message", migrated.dao().messages("legacy").single().text)
             } finally { migrated.close() }
         } finally { context.deleteDatabase(name) }
     }
