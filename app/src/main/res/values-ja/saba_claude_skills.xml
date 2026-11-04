@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_claude_skills_nav">Claudeスキル</string>
+    <string name="saba_claude_skills_hint">Use compatible Agent Skills with any configured model. The skill format needs no Claude subscription; model access and tools are separate.</string>
+    <string name="saba_claude_skills_import">SKILL.md を読み込む</string>
+    <string name="saba_claude_skills_repository">Official examples</string>
+    <string name="saba_claude_skills_review">Review skill instructions before saving. Only SKILL.md is imported, without scripts or assets. Skills may ask to use tools or data; trust the source.</string>
+    <string name="saba_claude_skills_import_error">Cannot import this skill: %1$s</string>
+    <string name="saba_claude_skills_import_title">Review imported skill</string>
+</resources>

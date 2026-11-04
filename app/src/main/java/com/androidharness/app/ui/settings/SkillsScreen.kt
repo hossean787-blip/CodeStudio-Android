@@ -1,6 +1,10 @@
 package com.androidharness.app.ui.settings
 
 import com.androidharness.app.ui.theme.HarnessGlassSwitch as Switch
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -38,6 +43,7 @@ import com.androidharness.app.AppContainer
 import com.androidharness.app.R
 import com.androidharness.app.data.AppSettings
 import com.androidharness.app.skills.SkillMeta
+import com.androidharness.app.skills.readSkillDocument
 import com.androidharness.app.skills.SkillParseException
 import com.androidharness.app.skills.SkillParser
 import com.androidharness.app.skills.SkillSource
@@ -55,10 +61,26 @@ fun SkillsScreen(
 ) {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
     val settings by container.settings.settings.collectAsStateWithLifecycle(initialValue = AppSettings())
-    val skills = remember(settings.disabledSkills, settings.cavemanInstalled) { container.skills.list() }
+    var skillsRevision by remember { mutableIntStateOf(0) }
+    val skills = remember(settings.disabledSkills, settings.cavemanInstalled, skillsRevision) { container.skills.list() }
     val scope = rememberCoroutineScope()
     var showAdd by remember { mutableStateOf(false) }
     var editing by remember { mutableStateOf<SkillMeta?>(null) }
+    var importDraft by remember { mutableStateOf<String?>(null) }
+    var importError by remember { mutableStateOf<String?>(null) }
+    // A user-selected SKILL.md is untrusted. Import instructions only after explicit review.
+    val importSkill = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) {
+            try {
+                val stream = uiContext.contentResolver.openInputStream(uri)
+                    ?: throw IllegalArgumentException("Could not open selected file")
+                importDraft = stream.bufferedReader(Charsets.UTF_8).use(::readSkillDocument)
+                showAdd = true
+            } catch (e: Exception) {
+                importError = uiContext.getString(R.string.saba_claude_skills_import_error, e.message.orEmpty())
+            }
+        }
+    }
 
     val bundled = skills.filter { it.source == SkillSource.BUNDLED }
     val user = skills.filter { it.source == SkillSource.USER }
@@ -88,6 +110,26 @@ fun SkillsScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            OutlinedCard(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.saba_claude_skills_nav), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.saba_claude_skills_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TextButton(onClick = { importSkill.launch(arrayOf("*/*")) }) {
+                            Text(stringResource(R.string.saba_claude_skills_import))
+                        }
+                        TextButton(onClick = {
+                            uiContext.startActivity(Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/anthropics/skills")))
+                        }) { Text(stringResource(R.string.saba_claude_skills_repository)) }
+                    }
+                    Text(stringResource(R.string.saba_claude_skills_review),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
             Text(
                 uiContext.getString(R.string.ui_the_model_sees_these_names_every_turn),
                 style = MaterialTheme.typography.bodySmall,
@@ -95,7 +137,8 @@ fun SkillsScreen(
             )
             SkillGroup(uiContext.getString(R.string.ui_bundled), bundled, container, scope, onEdit = null)
             if (user.isNotEmpty()) {
-                SkillGroup(uiContext.getString(R.string.ui_your_skills), user, container, scope, onEdit = { editing = it })
+                SkillGroup(uiContext.getString(R.string.ui_your_skills), user, container, scope,
+                    onEdit = { editing = it }, onDeleted = { skillsRevision++ })
             }
             if (project.isNotEmpty()) {
                 SkillGroup(uiContext.getString(R.string.ui_this_workspace), project, container, scope, onEdit = null)
@@ -106,12 +149,15 @@ fun SkillsScreen(
 
     if (showAdd) {
         SkillEditorDialog(
-            title = stringResource(R.string.settings_skills_add),
-            initial = skillTemplate(),
-            onDismiss = { showAdd = false },
+            title = if (importDraft != null) stringResource(R.string.saba_claude_skills_import_title)
+                else stringResource(R.string.settings_skills_add),
+            initial = importDraft ?: skillTemplate(),
+            onDismiss = { showAdd = false; importDraft = null },
             onSave = { content ->
                 container.skills.saveUser(content)
+                skillsRevision++
                 showAdd = false
+                importDraft = null
             },
         )
     }
@@ -123,8 +169,17 @@ fun SkillsScreen(
             onDismiss = { editing = null },
             onSave = { content ->
                 container.skills.saveUser(content)
+                skillsRevision++
                 editing = null
             },
+        )
+    }
+    importError?.let { message ->
+        AlertDialog(
+            onDismissRequest = { importError = null },
+            title = { Text(stringResource(R.string.saba_claude_skills_import_title)) },
+            text = { Text(message) },
+            confirmButton = { TextButton(onClick = { importError = null }) { Text("OK") } },
         )
     }
 }
@@ -136,6 +191,7 @@ private fun SkillGroup(
     container: AppContainer,
     scope: kotlinx.coroutines.CoroutineScope,
     onEdit: ((SkillMeta) -> Unit)?,
+    onDeleted: () -> Unit = {},
 ) {
     Text(title, style = MaterialTheme.typography.titleSmall)
     OutlinedCard(Modifier.fillMaxWidth()) {
@@ -163,7 +219,7 @@ private fun SkillGroup(
                         IconButton(onClick = { onEdit(skill) }) {
                             Text(stringResource(R.string.settings_action_edit), style = MaterialTheme.typography.labelSmall)
                         }
-                        IconButton(onClick = { container.skills.deleteUser(skill.name) }) {
+                        IconButton(onClick = { if (container.skills.deleteUser(skill.name)) onDeleted() }) {
                             Icon(Icons.Outlined.Delete, contentDescription = stringResource(R.string.settings_action_delete), modifier = Modifier.padding(0.dp))
                         }
                     }
