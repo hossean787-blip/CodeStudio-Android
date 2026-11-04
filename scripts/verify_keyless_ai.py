@@ -53,10 +53,10 @@ def check_free_inference() -> dict:
     url = "https://api.kilo.ai/api/gateway/chat/completions"
     result = {"provider": "kilo", "model": "kilo-auto/free",
               "status": "unavailable", "http_status": None,
-              "returned_text": False, "response_shape": [], "diagnostic": ""}
+              "returned_text": False, "response_shape": [], "choice_shape": [], "finish_reason": None, "diagnostic": ""}
     payload = json.dumps({"model": "kilo-auto/free",
                           "messages": [{"role": "user", "content": "Reply OK"}],
-                          "max_tokens": 8, "stream": False}).encode("utf-8")
+                          "max_tokens": 128, "stream": False}).encode("utf-8")
     req = urllib.request.Request(
         url, data=payload, method="POST",
         headers={"Accept": "application/json", "Content-Type": "application/json",
@@ -72,7 +72,10 @@ def check_free_inference() -> dict:
                 raise ValueError("unexpected response root")
             result["response_shape"] = sorted(list(body.keys()))[:12]
             choices = body.get("choices", [])
-            text = choices[0].get("message", {}).get("content") if choices and isinstance(choices[0], dict) and isinstance(choices[0].get("message"), dict) else None
+            first = choices[0] if choices and isinstance(choices[0], dict) else {}
+            result["choice_shape"] = sorted(first.keys())[:12]
+            result["finish_reason"] = first.get("finish_reason")
+            text = first.get("message", {}).get("content") if isinstance(first.get("message"), dict) else None
             result["returned_text"] = bool(text and str(text).strip())
             result["status"] = "working" if result["returned_text"] else "unexpected_response"
             result["diagnostic"] = "Anonymous free-model response received" if result["returned_text"] else "No text returned"
