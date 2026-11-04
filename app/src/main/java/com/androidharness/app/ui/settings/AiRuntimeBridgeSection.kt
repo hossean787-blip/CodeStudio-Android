@@ -1,0 +1,178 @@
+package com.androidharness.app.ui.settings
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
+import com.androidharness.app.AppContainer
+import com.androidharness.app.R
+import com.androidharness.app.plugins.AiRuntimeBridge
+import com.androidharness.app.workspace.WorkspaceFs
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
+
+/**
+ * An opt-in bridge to independently installed coding CLIs.
+ * It never downloads executable packages or uses credentials itself.
+ *
+ * The command is executed via the currently selected project's existing
+ * shell policy. Outputs remain in this view and are not saved or uploaded.
+ */
+@Composable
+internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: WorkspaceFs?) {
+    val scope = rememberCoroutineScope()
+    var checking by remember { mutableStateOf(false) }
+    var executing by remember { mutableStateOf(false) }
+    var availability by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
+    var selectedId by rememberSaveable { mutableStateOf("codex") }
+    var prompt by rememberSaveable { mutableStateOf("") }
+    var allowEdits by rememberSaveable { mutableStateOf(false) }
+    var awaitingConfirmation by remember { mutableStateOf(false) }
+    var result by remember { mutableStateOf<String?>(null) }
+    var failure by remember { mutableStateOf<String?>(null) }
+    val selected = AiRuntimeBridge.profiles.single { it.id == selectedId }
+    val canRun = workspace != null && !executing && !checking &&
+        availability[selectedId] == true && prompt.isNotBlank() &&
+        (selected.supportsReadOnly || allowEdits)
+
+    Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow) {
+        Column(
+            Modifier.fillMaxWidth().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(text = androidx.compose.ui.res.stringResource(R.string.ai_runtime_title),
+                style = MaterialTheme.typography.titleLarge)
+            Text(text = androidx.compose.ui.res.stringResource(R.string.ai_runtime_description),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (workspace == null) {
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_no_workspace),
+                    color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
+            OutlinedButton(onClick = {
+                val captured = workspace ?: return@OutlinedButton
+                checking = true
+                failure = null
+                scope.launch {
+                    try {
+                        val checked = mutableMapOf<String, Boolean>()
+                        for (profile in AiRuntimeBridge.profiles) {
+                            val response = container.shellRouter.runWorkspace(
+                                AiRuntimeBridge.checkCommand(profile.id), captured, 12_000, 500)
+                            checked[profile.id] = !response.timedOut && response.exitCode == 0
+                            availability = checked.toMap()
+                        }
+                    } catch (e: CancellationException) { throw e }
+                    catch (e: Exception) { failure = e.localizedMessage?.take(400) ?: "Check failed." }
+                    finally { checking = false }
+                }
+            }, enabled = workspace != null && !checking && !executing,
+                modifier = Modifier.fillMaxWidth()) {
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_check))
+            }
+            if (checking || executing) LinearProgressIndicator(Modifier.fillMaxWidth())
+            AiRuntimeBridge.profiles.forEach { backend ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(selected = selectedId == backend.id,
+                        onClick = { if (!executing && !checking) selectedId = backend.id },
+                        enabled = !executing && !checking)
+                    Text(backend.label, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                    val ready = availability[backend.id]
+                    Text(
+                        text = androidx.compose.ui.res.stringResource(
+                            if (ready == true) R.string.ai_runtime_ready
+                            else if (ready == false) R.string.ai_runtime_missing
+                            else R.string.ai_runtime_unchecked
+                        ),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (ready == true) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            OutlinedTextField(
+                value = prompt,
+                onValueChange = { prompt = it.take(2400) },
+                label = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_prompt)) },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 3,
+                maxLines = 6,
+                enabled = !executing,
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = allowEdits, onCheckedChange = { allowEdits = it }, enabled = !executing)
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_edit_ack),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(1f))
+            }
+            Button(
+                onClick = { awaitingConfirmation = true },
+                enabled = canRun,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_run))
+            }
+            failure?.let {
+                Text(it, color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall)
+            }
+            result?.let { output ->
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_output),
+                    style = MaterialTheme.typography.titleSmall)
+                Text(output, modifier = Modifier.fillMaxWidth().heightIn(max = 280.dp)
+                    .verticalScroll(rememberScrollState()),
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
+    if (awaitingConfirmation) {
+        AlertDialog(onDismissRequest = { if (!executing) awaitingConfirmation = false },
+            title = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_confirm_title)) },
+            text = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_confirm_body,
+                selected.label)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    val captured = workspace ?: return@TextButton
+                    val command = try {
+                        AiRuntimeBridge.executionCommand(selectedId, prompt, allowEdits)
+                    } catch (e: IllegalArgumentException) {
+                        failure = e.message
+                        awaitingConfirmation = false
+                        return@TextButton
+                    }
+                    awaitingConfirmation = false
+                    executing = true
+                    result = null
+                    failure = null
+                    scope.launch {
+                        try {
+                            val response = container.shellRouter.runWorkspace(command, captured, 180_000, 24_000)
+                            val text = listOf(response.rawOutput, response.rawStderr).filter(String::isNotBlank)
+                                .joinToString("\n").takeLast(24_000)
+                            result = if (text.isNotBlank()) text else "(No output)"
+                            if (response.timedOut) failure = "Command timed out. Verify the CLI process before retrying."
+                            else if (response.exitCode != 0) failure = "CLI returned exit code ${response.exitCode}."
+                        } catch (e: CancellationException) { throw e }
+                        catch (e: Exception) { failure = e.localizedMessage?.take(400) ?: "Execution failed." }
+                        finally { executing = false }
+                    }
+                }, enabled = !executing) {
+                    Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_run))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { awaitingConfirmation = false }, enabled = !executing) {
+                    Text(androidx.compose.ui.res.stringResource(android.R.string.cancel))
+                }
+            },
+        )
+    }
+}

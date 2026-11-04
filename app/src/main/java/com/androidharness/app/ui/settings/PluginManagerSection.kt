@@ -225,6 +225,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                     items(listings, key = { "npm-${it.name}" }) { listing -> PluginListingCard(listing, !busy) { update = null; prepare(listing.origin, null) } }
                 }
                 3 -> {
+                    item { AiRuntimeBridgeSection(container, fs) }
                     item {
                         PluginPanel {
                             Text(stringResource(R.string.ai_source_catalog_title), style = MaterialTheme.typography.titleLarge)
