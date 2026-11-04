@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">Ausgabe des Agenten</string>
     <string name="ai_runtime_confirm_title">Ausführung bestätigen</string>
     <string name="ai_runtime_confirm_body">%1$s im ausgewählten Workspace ausführen? Das kann Werkzeuge starten, Dateien lesen oder einen verbundenen KI-Dienst nutzen. Bitte Berechtigungen prüfen.</string>
+    <string name="ai_source_license_ack">Ich bestätige, dass ich die erforderlichen Nutzungsrechte an diesem Quellcode besitze. Der Download erlaubt keine Weiterverbreitung.</string>
 </resources>

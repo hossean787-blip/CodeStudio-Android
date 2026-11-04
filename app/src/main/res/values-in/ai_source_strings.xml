@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">Keluaran agen</string>
     <string name="ai_runtime_confirm_title">Konfirmasi eksekusi agen</string>
     <string name="ai_runtime_confirm_body">Jalankan %1$s di ruang kerja ini? Agen dapat menjalankan alat, membuka file, atau memakai layanan AI. Periksa izin terlebih dahulu.</string>
+    <string name="ai_source_license_ack">Saya menyatakan memiliki izin untuk memperoleh dan menggunakan sumber ini. Unduhan tidak memberikan hak untuk mendistribusikannya.</string>
 </resources>

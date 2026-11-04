@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">CLI output</string>
     <string name="ai_runtime_confirm_title">Confirm agent execution</string>
     <string name="ai_runtime_confirm_body">Run %1$s in the selected workspace? This may execute tools, access files or use a connected AI service. Review your prompt, shell access and permissions first.</string>
+    <string name="ai_source_license_ack">I confirm I have the required rights to obtain and use this source. Download does not grant redistribution rights.</string>
 </resources>

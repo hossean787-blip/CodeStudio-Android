@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">智能体输出</string>
     <string name="ai_runtime_confirm_title">确认执行智能体</string>
     <string name="ai_runtime_confirm_body">在当前工作区运行 %1$s 吗？这可能运行工具、访问文件或使用已连接的 AI 服务。请先检查权限。</string>
+    <string name="ai_source_license_ack">我确认拥有获取和使用此源码所需的授权。下载不代表获得重新分发的许可。</string>
 </resources>

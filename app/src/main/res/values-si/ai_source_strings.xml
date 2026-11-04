@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">නියෝජිත ප්‍රතිදානය</string>
     <string name="ai_runtime_confirm_title">ධාවනය තහවුරු කරන්න</string>
     <string name="ai_runtime_confirm_body">තෝරාගත් වැඩබිමේ %1$s ධාවනය කරන්නද? මෙය මෙවලම් ක්‍රියාත්මක කිරීමට, ගොනු විවෘත කිරීමට හෝ සම්බන්ධ AI සේවාවක් භාවිතා කිරීමට ඉඩ ඇත.</string>
+    <string name="ai_source_license_ack">මෙම මූලාශ්‍රය ලබා ගැනීමට සහ භාවිතයට අවශ්‍ය අවසර මට ඇති බව තහවුරු කරමි. බාගත කිරීම නැවත බෙදාහැරීමට අයිතියක් නොදේ.</string>
 </resources>

@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">エージェントの出力</string>
     <string name="ai_runtime_confirm_title">実行の確認</string>
     <string name="ai_runtime_confirm_body">選択したワークスペースで %1$s を実行しますか？ツールの実行、ファイルへのアクセス、接続されたAIサービスの使用が行われる可能性があります。権限を確認してください。</string>
+    <string name="ai_source_license_ack">このソースを取得・利用するための権利を持っていることを確認します。ダウンロードは再配布を許可しません。</string>
 </resources>

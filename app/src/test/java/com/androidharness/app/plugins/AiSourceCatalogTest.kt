@@ -32,7 +32,10 @@ class AiSourceCatalogTest {
         assertTrue(byId.getValue("lyra-code").canImportAsWorkspace)
         assertTrue(byId.getValue("and-code").canImportAsWorkspace)
         assertTrue(byId.getValue("pocket-pi").canImportAsWorkspace)
-        assertTrue(!byId.getValue("syntac").canImportAsWorkspace)
-        assertTrue(!byId.getValue("openclaude-android").canImportAsWorkspace)
+        assertTrue(byId.getValue("syntac").canImportAsWorkspace)
+        assertTrue(byId.getValue("openclaude-android").canImportAsWorkspace)
+        assertTrue(byId.getValue("syntac").requiresLicenseAcknowledgement)
+        assertTrue(byId.getValue("openclaude-android").requiresLicenseAcknowledgement)
+        assertTrue(!byId.getValue("pocket-pi").requiresLicenseAcknowledgement)
     }
 }

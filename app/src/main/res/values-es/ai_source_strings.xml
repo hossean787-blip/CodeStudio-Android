@@ -24,4 +24,5 @@
     <string name="ai_runtime_output">Salida del agente</string>
     <string name="ai_runtime_confirm_title">Confirmar ejecución del agente</string>
     <string name="ai_runtime_confirm_body">¿Ejecutar %1$s en el espacio elegido? Puede usar herramientas, acceder a archivos o conectarse a un servicio de IA. Revisa los permisos primero.</string>
+    <string name="ai_source_license_ack">Confirmo que tengo los derechos necesarios para obtener y usar este código. La descarga no autoriza su redistribución.</string>
 </resources>
