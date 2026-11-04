@@ -1,0 +1,7 @@
+commit 1f762648f1fb026b5cf938165b396222a466dc18
+Author:     حسین <hossean787@gmail.com>
+AuthorDate: Wed Nov 4 22:52:46 2026 +0330
+Commit:     حسین <hossean787@gmail.com>
+CommitDate: Wed Nov 4 22:52:46 2026 +0330
+
+    docs: record verified anonymous Kilo model inference and remaining runtime limits
