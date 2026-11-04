@@ -122,7 +122,7 @@ class ChatBackupTest {
         val decoded = ChatBackupCodec.decode(encoded)
         assertEquals(file.memories, decoded.memories)
         assertEquals(file.snippets, decoded.snippets)
-        assertEquals(5, ChatBackupCodec.VERSION)
+        assertEquals(6, ChatBackupCodec.VERSION)
         assertTrue(encoded.contains("\"version\":${ChatBackupCodec.VERSION}"))
     }
 
