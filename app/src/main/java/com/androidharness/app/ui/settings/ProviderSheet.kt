@@ -101,6 +101,7 @@ internal val ProviderBrands: List<ProviderBrand?> = listOf(
     // ChatAnywhere is a third-party OpenAI-compatible relay. Users supply their own key.
     // Its free tier is restricted to personal/non-commercial use; no credential is bundled.
     ProviderBrand("ChatAnywhere (GPT API Free)", ProviderType.OPENAI_COMPAT, "https://api.chatanywhere.org/v1", true),
+    ProviderBrand("ChatAnywhere (China)", ProviderType.OPENAI_COMPAT, "https://api.chatanywhere.tech/v1", true),
     ProviderBrand("OpenRouter", ProviderType.OPENAI_COMPAT, "https://openrouter.ai/api/v1", true),
     ProviderBrand("Anthropic", ProviderType.ANTHROPIC, "https://api.anthropic.com", true, "claude-sonnet-4-5"),
     ProviderBrand("Gemini", ProviderType.GEMINI, "https://generativelanguage.googleapis.com/v1beta", true, "gemini-2.5-flash"),
