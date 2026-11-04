@@ -143,6 +143,15 @@ class ProjectSidebarDeviceTest {
             scrollTo("Tools"); tap("Tools")
             scrollTo("Providers"); assertWithin("Providers"); tap("Providers")
             assertEquals("Providers", destination.get())
+            val skills = instrumentation.targetContext.getString(com.androidharness.app.R.string.saba_claude_skills_nav)
+            scrollTo(skills); tap(skills)
+            assertEquals("Skills", destination.get())
+            val apps = instrumentation.targetContext.getString(com.androidharness.app.R.string.saba_apps_nav)
+            scrollTo(apps); tap(apps)
+            for ((label, id) in listOf("GitHub" to "github", "Gmail" to "gmail", "Google Drive" to "drive")) {
+                scrollTo(label); tap(label)
+                assertEquals("Connections:$id", destination.get())
+            }
         }
     }
 

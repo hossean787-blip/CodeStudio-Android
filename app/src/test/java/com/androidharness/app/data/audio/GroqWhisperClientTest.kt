@@ -123,7 +123,8 @@ class GroqWhisperClientTest {
                 withTimeout(1000) { job.cancelAndJoin() }
                 withContext(Dispatchers.IO) { closedByClient.get(3, TimeUnit.SECONDS) }
             } finally {
-                sentHeaders.getNow(null)?.close(); server.close(); client.dispatcher.cancelAll(); job.cancelAndJoin(); worker.join(1000)
+                runCatching { sentHeaders.getNow(null)?.close() }
+                server.close(); client.dispatcher.cancelAll(); job.cancelAndJoin(); worker.join(1000)
             }
         }
     }
