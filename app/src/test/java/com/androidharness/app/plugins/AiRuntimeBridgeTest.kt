@@ -2,8 +2,36 @@ package com.androidharness.app.plugins
 
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.Rule
+import org.junit.Assume.assumeTrue
+import org.junit.rules.TemporaryFolder
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 class AiRuntimeBridgeTest {
+    @get:Rule val temp = TemporaryFolder()
+
+    @Test fun quotedPromptRunsAsExactlyOneArgumentAndNeverExecutesShellPayload() {
+        assumeTrue(File("/bin/sh").canExecute())
+        val bin = temp.newFolder("bin")
+        val fake = File(bin, "codex")
+        fake.writeText("#!/bin/sh\\nprintf '%s\\\\n' \\"\\$#\\" \\"\\$1\\" \\"\\$2\\" \\"\\$3\\" \\"\\$4\\"\\n")
+        assertTrue(fake.setExecutable(true))
+        val marker = File(temp.root, "must-not-create")
+        val attack = "hello'; \\$(touch " + marker.absolutePath + "); echo 'bye"
+        val command = AiRuntimeBridge.executionCommand("codex", attack, true)
+        val shell = ProcessBuilder("sh", "-c", command)
+            .directory(temp.root)
+            .redirectErrorStream(true)
+        shell.environment()["PATH"] = bin.absolutePath + ":" + System.getenv("PATH").orEmpty()
+        val process = shell.start()
+        assertTrue(process.waitFor(6, TimeUnit.SECONDS))
+        val received = process.inputStream.bufferedReader().readLines()
+        assertEquals(0, process.exitValue())
+        assertEquals(listOf("4", "exec", "--sandbox", "workspace-write", "User request: " + attack), received)
+        assertFalse("Shell metacharacters must stay inside the prompt argument", marker.exists())
+    }
+
     @Test fun profilesAreUniqueAndCheckOnlyFixedExecutables() {
         assertEquals(7, AiRuntimeBridge.profiles.size)
         assertEquals(7, AiRuntimeBridge.profiles.map { it.id }.distinct().size)
