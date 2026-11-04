@@ -71,5 +71,10 @@
     "No stable release signing private key; Secrets API access is forbidden",
     "Full lint and Play build not executed",
     "FCC Python desktop runtime not embedded"
-  ]
+  ],
+  "main_integration": {
+    "pull_request": 3,
+    "merge_commit": "1d2f328683a6571cb57cdf0b645e79dc6b9ff730",
+    "app_tree_matches_tested_commit": true
+  }
 }
