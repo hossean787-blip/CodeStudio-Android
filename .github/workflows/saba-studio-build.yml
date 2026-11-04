@@ -36,6 +36,12 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              'app/src/main/java/com/androidharness/app/llm/ModelCatalog.kt',
+              'app/src/main/java/com/androidharness/app/ui/common/LocalizedOptionLabels.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/DiagnosticReport.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/TroubleshootingSection.kt',
+              'app/src/test/java/com/androidharness/app/llm/ModelCatalogTest.kt',
+              'app/src/test/java/com/androidharness/app/ui/settings/DiagnosticReportTest.kt',
               'app/build.gradle.kts',
               'app/src/androidTest/java/com/androidharness/app/ui/ChatSelectionDeviceTest.kt',
               'app/src/androidTest/java/com/androidharness/app/ui/ProjectSidebarDeviceTest.kt',

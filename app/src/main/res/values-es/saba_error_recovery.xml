@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_forbidden">The provider denied access (403). Check account permissions and model access. A 403 alone does not prove a regional restriction.</string>
+    <string name="saba_error_region">The provider explicitly reported an unsupported region. Check its official availability policy; retrying or changing keys will not fix that restriction.</string>
+    <string name="saba_error_credits">The provider reported exhausted credits or quota. Review its dashboard and costs before any further request.</string>
+</resources>
