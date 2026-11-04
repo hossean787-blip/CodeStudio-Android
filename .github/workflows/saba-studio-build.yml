@@ -7,6 +7,7 @@ on:
       - 'app/**'
       - 'gradle/**'
       - 'scripts/verify_release.sh'
+      - 'scripts/emulator-release-smoke.sh'
       - 'build.gradle.kts'
       - 'gradle.properties'
       - 'settings.gradle.kts'
@@ -36,6 +37,15 @@ jobs:
           current=Path('.')
           allowed_changes={
               'app/build.gradle.kts',
+              'app/src/test/java/com/androidharness/app/ui/settings/ProviderBrandsTest.kt',
+              'app/src/test/java/com/androidharness/app/ui/theme/ThemePaletteTest.kt',
+              'app/src/main/java/com/androidharness/app/data/ThemePalette.kt',
+              'app/src/main/java/com/androidharness/app/data/SettingsRepository.kt',
+              'app/src/main/java/com/androidharness/app/ui/theme/Theme.kt',
+              'app/src/main/java/com/androidharness/app/ui/theme/PaletteColors.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/ThemeColorSection.kt',
+              'app/src/main/res/values-fa/saba_studio.xml',
+              'app/src/main/res/values/saba_studio.xml',
               'app/src/main/res/values/strings.xml',
               'app/src/main/java/com/androidharness/app/data/update/UpdateManager.kt',
               'settings.gradle.kts',

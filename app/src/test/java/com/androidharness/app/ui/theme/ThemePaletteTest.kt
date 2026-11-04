@@ -43,8 +43,12 @@ class ThemePaletteTest {
         }
     }
 
-    @Test fun `old settings retain their defaults and new palette survives portable backup`() {
-        assertEquals(ThemePalette.BLUE, Json.decodeFromString<AppSettings>("{}").colorPalette)
+    @Test fun `new installs use Saba Neon while explicit older palettes survive backup`() {
+        assertEquals("NEON", AppSettings().colorPalette.name)
+        assertFalse(AppSettings().dynamicColor)
+        assertEquals("NEON", ThemePalette.fromStored(null).name)
+        assertEquals("NEON", Json.decodeFromString<AppSettings>("{}").colorPalette.name)
+        assertEquals(ThemePalette.BLUE, Json.decodeFromString<AppSettings>("{\"colorPalette\":\"BLUE\",\"dynamicColor\":true}").colorPalette)
         assertEquals(ThemePalette.BLUE, ThemePalette.fromStored("future-palette"))
         val settings = AppSettings(colorPalette = ThemePalette.ROSE, dynamicColor = false)
         assertEquals(settings, Json.decodeFromString<AppSettings>(Json.encodeToString(settings)))
