@@ -1,4 +1,4 @@
-name: Saba Studio source audit and Android debug APK
+name: Saba Studio Android APK build and verification
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
   audit-and-build:
     name: Audit source and build Saba Studio APK
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Check out Saba Studio source
         uses: actions/checkout@v4
@@ -135,5 +135,33 @@ jobs:
         with:
           name: SabaStudio-v0.1.0-alpha-debug
           path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
+      - name: Build non-debuggable alpha release APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew :app:assembleRelease -Pdistribution=github --no-daemon --stacktrace
+          test -s app/build/outputs/apk/release/app-release.apk
+      - name: Verify alpha release identity and signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release.apk
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          TOOLS="$SDK/build-tools/37.0.0"
+          "$TOOLS/apksigner" verify --verbose --print-certs "$APK"
+          "$TOOLS/aapt" dump badging "$APK" | tee app/build/outputs/apk/release/identity.txt
+          grep -q "package: name='ir.sabagostar.sabastudio'" app/build/outputs/apk/release/identity.txt
+          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
+      - name: Upload installable alpha release APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SabaStudio-v0.1.0-alpha-release-test-signed
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/apk/release/identity.txt
+            app/build/outputs/apk/release/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 14
