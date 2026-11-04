@@ -159,7 +159,7 @@ internal fun ProjectNavigationSidebar(
             onAction = { if (it == SidebarChatAction.SELECT) onSelectedChatsChange(selection + chat.id) else onAction(chat, it) },
             selecting = selecting, checked = chat.id in selection)
         if (glass) HorizontalDivider(Modifier.padding(start = if (indented) 40.dp else 20.dp, end = 20.dp),
-            color = scheme.onSurface.copy(alpha = .16f))
+            color = scheme.onSurface.copy(alpha = .08f))
     }
     @Composable fun Footer() {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
@@ -203,7 +203,7 @@ internal fun ProjectNavigationSidebar(
                     Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 18.dp, end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                         HarnessMark(26.dp, Modifier.semantics { contentDescription = uiContext.getString(R.string.ui_androidharness_icon) })
-                        Text("AndroidHarness", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
+                        Text("صبا استودیو", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         ExpressiveIconButton(onClick = onCollapse) { Icon(Icons.AutoMirrored.Outlined.MenuOpen, uiContext.getString(R.string.ui_collapse_sidebar), Modifier.size(19.dp)) }
                     }
@@ -217,7 +217,7 @@ internal fun ProjectNavigationSidebar(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp).heightIn(min = 44.dp)
                             .then(if (glass) Modifier.harnessGlass(scheme.primaryContainer, RoundedCornerShape(28.dp)) else Modifier)) {
                         Icon(Icons.Outlined.EditNote, null, Modifier.size(19.dp)); Spacer(Modifier.width(8.dp))
-                        Text(uiContext.getString(if (chatOnly) R.string.settings_telegram_new_chat else R.string.conversation_new_code_chat), style = MaterialTheme.typography.labelLarge)
+                        Text("گفت‌وگوی جدید", style = MaterialTheme.typography.labelLarge)
                     }
                     }
                     if (!selecting || !short) {
