@@ -45,6 +45,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- third_party/GPT_API_free
+          # Upstream tracks .DS_Store despite its own ignore rule; preserve exact archive.
+          git add -f -- third_party/GPT_API_free/images/.DS_Store
           if ! git diff --cached --quiet; then
             git commit -m "chore: complete byte-for-byte GPT API Free snapshot"
             git push
