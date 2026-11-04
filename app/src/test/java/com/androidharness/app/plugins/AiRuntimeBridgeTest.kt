@@ -15,10 +15,13 @@ class AiRuntimeBridgeTest {
         assumeTrue(File("/bin/sh").canExecute())
         val bin = temp.newFolder("bin")
         val fake = File(bin, "codex")
-        fake.writeText("#!/bin/sh\\nprintf '%s\\\\n' \\"\\$#\\" \\"\\$1\\" \\"\\$2\\" \\"\\$3\\" \\"\\$4\\"\\n")
+        fake.writeText("""
+            #!/bin/sh
+            printf '%s\n' "$#" "$1" "$2" "$3" "$4"
+        """.trimIndent() + "\n")
         assertTrue(fake.setExecutable(true))
         val marker = File(temp.root, "must-not-create")
-        val attack = "hello'; \\$(touch " + marker.absolutePath + "); echo 'bye"
+        val attack = "hello'; \$(touch " + marker.absolutePath + "); echo 'bye"
         val command = AiRuntimeBridge.executionCommand("codex", attack, true)
         val shell = ProcessBuilder("sh", "-c", command)
             .directory(temp.root)
