@@ -8,6 +8,8 @@ on:
       - 'app/**'
       - 'gradle/**'
       - 'scripts/verify_release.sh'
+      - 'scripts/emulator-release-smoke.sh'
+      - 'scripts/release-smoke/**'
       - 'build.gradle.kts'
       - 'settings.gradle.kts'
 permissions:

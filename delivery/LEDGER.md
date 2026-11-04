@@ -61,3 +61,10 @@ new-install default with wallpaper dynamic color opt-in; explicit stored
 palettes and dynamic-color settings remain honored. Existing contrast tests
 cover every palette in light/dark/AMOLED modes. Version advances to
 versionCode=2, versionName=0.1.0-alpha.2; package stays unchanged.
+
+Full JVM run 41901585622: 1943 tests, 18 localization coverage failures.
+New Neon resource existed only in default/Persian groups; the existing suite
+requires every UI resource group in all supported locales. Added translated
+resource groups for all nine other locales; did not weaken or exclude tests.
+Independent review found no important code bugs and one workflow path-filter
+gap, now fixed for native smoke scripts.
