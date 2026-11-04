@@ -6,6 +6,40 @@ import org.junit.Test
 
 class ChatBackupTest {
 
+    @Test fun `backup separates recovery audit and restores exact order and user text`() {
+        val text = com.androidharness.app.agent.RunRecovery.CONTINUE_PROMPT
+        val resume = message(com.androidharness.app.agent.RunRecovery.CHAT_CONTINUATION_ID_PREFIX + "fixture", text)
+        val original = session("chat", resume, message("user", text), resume.copy(id = resume.id + "2"), message("answer"))
+        val decoded = ChatBackupCodec.decode(ChatBackupCodec.encode(ChatBackupFile(sessions = listOf(original)))).sessions.single()
+        assertEquals(listOf("user", "answer"), decoded.messages.map { it.id })
+        assertEquals(listOf(0, 2), decoded.recoveryAudit.map { it.position })
+        assertEquals(original.messages, decoded.allMessages())
+        assertEquals(text, decoded.messages.first().text)
+        assertEquals(decoded, decoded.withSeparatedRecoveryAudit())
+    }
+
+    @Test fun `legacy backup reserved ids become audit without guessing ordinary user text`() {
+        val prefix = com.androidharness.app.agent.RunRecovery.CHAT_CONTINUATION_ID_PREFIX
+        val text = """{"format":"androidharness-chats","version":5,"sessions":[{"id":"legacy","title":"Legacy","createdAt":1,"updatedAt":1,"messages":[{"id":"${prefix}old","role":"USER","text":"identical","createdAt":1},{"id":"user","role":"USER","text":"identical","createdAt":1}]}]}"""
+        val restored = ChatBackupCodec.decode(text).sessions.single()
+        assertEquals(listOf("user"), restored.messages.map { it.id })
+        assertEquals(listOf(prefix + "old", "user"), restored.allMessages().map { it.id })
+        // An older importer must reject the new format instead of ignoring its recoveryAudit section.
+        val reexported = ChatBackupCodec.encode(ChatBackupFile(version = 5, sessions = listOf(restored)))
+        assertTrue(reexported.contains("\"version\":6"))
+        assertEquals(restored.allMessages(), ChatBackupCodec.decode(reexported).sessions.single().allMessages())
+    }
+
+    @Test fun `malformed audit cannot reclassify an ordinary user message`() {
+        val text = """{"sessions":[{"id":"s","title":"S","createdAt":1,"updatedAt":1,"recoveryAudit":[{"position":0,"message":{"id":"user","role":"USER","text":"ordinary","createdAt":1}}]}]}"""
+        try {
+            ChatBackupCodec.decode(text)
+            org.junit.Assert.fail("Expected invalid audit rejection")
+        } catch (expected: ChatBackupException) {
+            assertTrue(expected.message!!.contains("Invalid recovery audit"))
+        }
+    }
+
     private fun session(id: String, vararg messages: BackupMessage) = BackupSession(
         id = id,
         title = "Chat $id",

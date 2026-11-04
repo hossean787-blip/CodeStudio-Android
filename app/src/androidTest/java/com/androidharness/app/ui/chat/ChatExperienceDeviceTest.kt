@@ -194,8 +194,8 @@ class ChatExperienceDeviceTest {
             c.sessions.addMessage(sid, ChatMessage(Role.TOOL, "RAW_PRIVATE_TOOL_OUTPUT", toolCallId = "search", toolName = "web_search"), turn)
             c.sessions.addMessage(sid, ChatMessage(Role.ASSISTANT, "Start with one small idea you can test this week."), turn)
         }
-        c.sessions.addMessage(chat, ChatMessage(Role.USER, RunRecovery.CONTINUE_PROMPT,
-            id = RunRecovery.CHAT_CONTINUATION_ID_PREFIX + "fixture"), turn)
+        for (sid in listOf(chat, code)) c.sessions.addMessage(sid, ChatMessage(Role.USER, RunRecovery.CONTINUE_PROMPT,
+            id = RunRecovery.CHAT_CONTINUATION_ID_PREFIX + sid), turn)
         try {
             assertEquals("Help me brainstorm an idea", c.sessions.session(chat)?.title)
             assertTrue(c.sessions.messages(chat).any { it.text == RunRecovery.CONTINUE_PROMPT })
@@ -247,6 +247,7 @@ class ChatExperienceDeviceTest {
                 tap("Close workspace picker")
                 scenario.onActivity { selected.value = ConversationKind.CODE }
                 await("Work summary")
+                assertNull(find(RunRecovery.CONTINUE_PROMPT))
                 screenshot("code-summary-preserved")
             }
         } finally {

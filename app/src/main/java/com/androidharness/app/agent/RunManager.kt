@@ -449,7 +449,7 @@ class RunManager(
             }
             if (conversation.isChat) {
                 val rows = sessions.messages(sid)
-                val question = rows.lastOrNull { it.role == Role.USER }
+                val question = rows.lastOrNull { it.role == Role.USER && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) }
                 if (question?.id == replacementMessageId && question.text == text) {
                     sessions.archiveChatAnswer(sid, replacementMessageId)
                 }
@@ -504,9 +504,7 @@ class RunManager(
         if (!resume && conversation.draftText.isNotBlank()) sessions.saveConversation(sid, conversation.copy(draftText = ""))
         controls.update(sid) { it.copy(queue = it.queue.filterNot { q -> q.id == initialId }) }
         dropDeliveredSteering(sid)
-        if (resume) sessions.addMessage(sid, ChatMessage(role = Role.USER,
-            text = RunRecovery.CONTINUE_PROMPT,
-            id = if (conversation.isChat) RunRecovery.CHAT_CONTINUATION_ID_PREFIX + UUID.randomUUID() else null), turnId)
+        if (resume) sessions.addMessage(sid, RunRecovery.continuationMessage(), turnId)
         // A new run replaces any plan approval still pending on this session.
         runCatching { sessions.setPendingPlan(sid, null) }
         live.update {
