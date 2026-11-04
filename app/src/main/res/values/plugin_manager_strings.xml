@@ -22,7 +22,7 @@
     <string name="pm_next_run">Changes apply to the next Code run. Existing runs keep their captured configuration.</string>
     <string name="pm_starters">Starter packs</string>
     <string name="pm_community">Community packages</string>
-    <string name="pm_community_hint">Search npm packages tagged androidharness-plugin. Community results are not verified by AndroidHarness; compatibility is checked before installation.</string>
+    <string name="pm_community_hint">Search npm packages tagged androidharness-plugin. Community results are not verified by Saba Studio; compatibility is checked before installation.</string>
     <string name="pm_search_hint">Search plugins</string>
     <string name="pm_search">Search npm</string>
     <string name="pm_no_results">No matching packages found. You can also add a package name, GitHub repository or local bundle.</string>

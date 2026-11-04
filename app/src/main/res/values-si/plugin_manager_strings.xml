@@ -22,7 +22,7 @@
     <string name="pm_next_run">වෙනස්කම් ඊළඟ Code ධාවනයට බලපායි. දැනට පවතින ධාවන ඒවායේ සුරැකි සැකසුම් තබාගනී.</string>
     <string name="pm_starters">ආරම්භක පැකේජ</string>
     <string name="pm_community">ප්‍රජා පැකේජ</string>
-    <string name="pm_community_hint">androidharness-plugin ටැගය සහිත npm පැකේජ සොයන්න. ප්‍රජා ප්‍රතිඵල AndroidHarness මගින් තහවුරු කර නැත; ස්ථාපනයට පෙර ගැළපීම පරීක්ෂා කෙරේ.</string>
+    <string name="pm_community_hint">androidharness-plugin ටැගය සහිත npm පැකේජ සොයන්න. ප්‍රජා ප්‍රතිඵල Saba Studio මගින් තහවුරු කර නැත; ස්ථාපනයට පෙර ගැළපීම පරීක්ෂා කෙරේ.</string>
     <string name="pm_search_hint">ප්ලගින සොයන්න</string>
     <string name="pm_search">npm හි සොයන්න</string>
     <string name="pm_no_results">ගැළපෙන පැකේජ හමු නොවීය. පැකේජ නමක්, GitHub ගබඩාවක් හෝ ස්ථානීය පැකේජයක්ද එක් කළ හැක.</string>

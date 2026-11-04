@@ -22,7 +22,7 @@
     <string name="pm_next_run">更改在下次 Code 运行时生效。现有运行保留已加载的配置。</string>
     <string name="pm_starters">入门包</string>
     <string name="pm_community">社区软件包</string>
-    <string name="pm_community_hint">搜索标有 androidharness-plugin 的 npm 包。社区结果未经 AndroidHarness 验证；安装前会检查兼容性。</string>
+    <string name="pm_community_hint">搜索标有 androidharness-plugin 的 npm 包。社区结果未经 Saba Studio 验证；安装前会检查兼容性。</string>
     <string name="pm_search_hint">搜索插件</string>
     <string name="pm_search">搜索 npm</string>
     <string name="pm_no_results">未找到匹配的软件包。也可以添加包名、GitHub 仓库或本地包。</string>

@@ -109,3 +109,8 @@ in a UIAutomator dump before accepting a Persian screenshot. Rebuild the
 changed deliverable and repeat native/persistence/startup verification.
 Legacy Android 9/10 storage test default package corrected to Saba debug ID;
 only shell syntax checked, those older OS tests remain unexecuted.
+
+Complete display-brand audit: lock screen, Share target, notification setup,
+router lifecycle, TTS sample and app-facing tips now name Saba Studio. Resource
+keys, namespaces, protocol IDs, upstream attribution/fundraising/contribution
+links and the technical AndroidHarness bundle format are preserved.

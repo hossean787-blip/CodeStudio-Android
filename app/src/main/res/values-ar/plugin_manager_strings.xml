@@ -22,7 +22,7 @@
     <string name="pm_next_run">تسري التغييرات على تشغيل Code التالي. تحتفظ عمليات التشغيل الحالية بإعداداتها المحفوظة.</string>
     <string name="pm_starters">حزم البداية</string>
     <string name="pm_community">حزم المجتمع</string>
-    <string name="pm_community_hint">ابحث عن حزم npm الموسومة androidharness-plugin. لم تتحقق AndroidHarness من نتائج المجتمع؛ يُفحص التوافق قبل التثبيت.</string>
+    <string name="pm_community_hint">ابحث عن حزم npm الموسومة androidharness-plugin. لم تتحقق Saba Studio من نتائج المجتمع؛ يُفحص التوافق قبل التثبيت.</string>
     <string name="pm_search_hint">البحث عن إضافات</string>
     <string name="pm_search">البحث في npm</string>
     <string name="pm_no_results">لم يُعثر على حزم مطابقة. يمكنك أيضًا إضافة اسم حزمة أو مستودع GitHub أو حزمة محلية.</string>

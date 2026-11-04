@@ -22,7 +22,7 @@
     <string name="pm_next_run">Изменения действуют со следующего запуска Code. Текущие запуски сохраняют свою конфигурацию.</string>
     <string name="pm_starters">Стартовые наборы</string>
     <string name="pm_community">Пакеты сообщества</string>
-    <string name="pm_community_hint">Поиск npm-пакетов с меткой androidharness-plugin. Результаты сообщества не проверены AndroidHarness; совместимость проверяется перед установкой.</string>
+    <string name="pm_community_hint">Поиск npm-пакетов с меткой androidharness-plugin. Результаты сообщества не проверены Saba Studio; совместимость проверяется перед установкой.</string>
     <string name="pm_search_hint">Поиск плагинов</string>
     <string name="pm_search">Искать в npm</string>
     <string name="pm_no_results">Подходящие пакеты не найдены. Можно указать имя пакета, репозиторий GitHub или локальный пакет.</string>

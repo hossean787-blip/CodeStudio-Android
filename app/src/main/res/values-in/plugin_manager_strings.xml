@@ -22,7 +22,7 @@
     <string name="pm_next_run">Perubahan berlaku pada proses Code berikutnya. Proses yang sedang berjalan menyimpan konfigurasi awalnya.</string>
     <string name="pm_starters">Paket awal</string>
     <string name="pm_community">Paket komunitas</string>
-    <string name="pm_community_hint">Cari paket npm bertag androidharness-plugin. Hasil komunitas tidak diverifikasi oleh AndroidHarness; kompatibilitas diperiksa sebelum instalasi.</string>
+    <string name="pm_community_hint">Cari paket npm bertag androidharness-plugin. Hasil komunitas tidak diverifikasi oleh Saba Studio; kompatibilitas diperiksa sebelum instalasi.</string>
     <string name="pm_search_hint">Cari plugin</string>
     <string name="pm_search">Cari di npm</string>
     <string name="pm_no_results">Tidak ada paket yang cocok. Anda juga dapat menambahkan nama paket, repositori GitHub, atau paket lokal.</string>
