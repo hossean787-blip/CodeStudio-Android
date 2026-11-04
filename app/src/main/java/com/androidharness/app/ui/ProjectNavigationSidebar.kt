@@ -364,7 +364,7 @@ internal fun ProjectNavigationSidebar(
                         }
                         val recent = sessions.filter { it.id !in pinned && it.id !in archived }
                         if (recent.isNotEmpty()) {
-                            item { SidebarSectionHeader(uiContext.getString(if (chatOnly) R.string.ui_recent_chats else R.string.conversation_recent_code_chats), true, null) }
+                            item { SidebarSectionHeader(if (chatOnly) "گفتگوهای اخیر" else uiContext.getString(R.string.conversation_recent_code_chats), true, null) }
                             items(recent, key = { "chat:${it.id}" }) { Chat(it, showProject = true) }
                         }
                         if (recent.isEmpty() && grouped.pinned.isEmpty()) item {
@@ -491,14 +491,14 @@ private fun SidebarChatRow(chat: SessionEntity, selected: Boolean, pinned: Boole
     val hasDraft = remember(chat.conversationJson) {
         com.androidharness.app.data.ConversationConfig.decode(chat.conversationJson).draftText.isNotBlank()
     }
-    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) scheme.primary.copy(alpha = .07f)
+    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) androidx.compose.ui.graphics.Color(0xFF38DDF7).copy(alpha = .10f)
         else if (focused) scheme.surfaceContainerHigh else scheme.surface, expressiveEffectsSpec(), label = "Chat selection")
     Row(Modifier.fillMaxWidth().padding(start = if (indented) 30.dp else 10.dp, end = 10.dp, top = 2.dp, bottom = 2.dp)) {
         if (indented) Box(Modifier.width(1.dp).height(56.dp).background(scheme.outlineVariant))
         Row(Modifier.weight(1f).padding(start = if (indented) 5.dp else 0.dp)
-            .background(rowColor, RoundedCornerShape(10.dp)),
+            .background(rowColor, RoundedCornerShape(14.dp)),
             verticalAlignment = Alignment.CenterVertically) {
-            Row(Modifier.weight(1f).expressivePressFeedback(press).clip(RoundedCornerShape(10.dp)).secondaryClick(onActions).pointerHoverIcon(PointerIcon.Hand)
+            Row(Modifier.weight(1f).expressivePressFeedback(press).clip(RoundedCornerShape(14.dp)).secondaryClick(onActions).pointerHoverIcon(PointerIcon.Hand)
                 .onFocusChanged { focused = it.isFocused }.onPreviewKeyEvent { event ->
                     if (event.key == Key.Menu || event.key == Key.F10 && event.isShiftPressed) {
                         if (event.type == KeyEventType.KeyUp) onActions(); true
