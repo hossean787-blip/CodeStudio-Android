@@ -22,9 +22,10 @@ Head13d1b9010a68ce81d0cd8ed48849121002713266:
 - Local source-pin verifier passed all13 gitlinks; no engine code was executed.
 
 ## Current correction
-Sidebar now uses actual measured header/footer heights to choose its existing
-unified-scroll layout when fewer than144dp would remain for chats; it retains
-pinned header/footer on displays where content fits. This fixes a product
+Sidebar now uses actual measured header/footer heights to scroll its footer
+with the chat list when fewer than144dp would remain for chats; it retains
+docked controls where content fits. Header density still depends only on the
+viewport, avoiding selection-mode measurement oscillation. This fixes a product
 layout defect rather than removing the failing assertion. Same five-case
 emulator selection and all previous checks must pass on the amended tree.
 
