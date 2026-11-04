@@ -34,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p third_party/free-claude-code
-          git -C /tmp/free-claude-code ls-files -z | tar --null -T - -C /tmp/free-claude-code -cf - | tar -C third_party/free-claude-code -xf -
+          git -C /tmp/free-claude-code ls-files -z | (cd /tmp/free-claude-code && tar -cf - --null -T -) | tar -C third_party/free-claude-code -xf -
           echo "Source file count: $(git -C /tmp/free-claude-code ls-files | wc -l)"
           test -f third_party/free-claude-code/LICENSE
           test -f third_party/free-claude-code/pyproject.toml
