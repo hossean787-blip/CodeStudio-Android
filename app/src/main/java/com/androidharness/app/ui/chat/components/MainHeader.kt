@@ -163,6 +163,20 @@ internal fun MainHeader(
                 else Modifier.harnessGlassBar(scheme.surface).statusBarsPadding()),
     ) {
         Column(Modifier.fillMaxWidth()) {
+            if (conversation.isChat) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, bottom = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = "✦ صبا استودیو",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = scheme.onSurface,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+            }
             Column {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
