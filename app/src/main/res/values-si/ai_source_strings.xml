@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">මූලාශ්‍ර ආනයනය තහවුරු කරන්න</string>
     <string name="ai_source_import_confirm_body">%1$s නිශ්චිත commit එකෙන් වෙනම වැඩබිමකට ආනයනය කරන්නද? බාහිර කේතය බාගත කරන නමුත් ක්‍රියාත්මක නොකරයි. Git සහ ඉඩ අවශ්‍ය වන අතර පවතින ව්‍යාපෘති වෙනස් නොවේ.</string>
     <string name="ai_source_import_success">%1$s නව දේශීය වැඩබිමකට ආනයනය කරන ලදී.</string>
+    <string name="ai_runtime_title">AI නියෝජිත ධාවන පාලම</string>
+    <string name="ai_runtime_description">තෝරාගත් ව්‍යාපෘතියේ ස්ථාපිත coding CLI පරීක්ෂා කරන්න. එක් එක් CLI සඳහා වෙනම පිවිසීම අවශ්‍යයි. කිසිවක් ස්වයංක්‍රීයව ස්ථාපනය හෝ ධාවනය නොවේ.</string>
+    <string name="ai_runtime_no_workspace">පළමුව shell ප්‍රවේශය සහිත වැඩබිමක් තෝරන්න.</string>
+    <string name="ai_runtime_check">ස්ථාපිත නියෝජිතයන් පරීක්ෂා කරන්න</string>
+    <string name="ai_runtime_ready">සූදානම්</string>
+    <string name="ai_runtime_missing">ස්ථාපනය කර නැත</string>
+    <string name="ai_runtime_unchecked">පරීක්ෂා කර නැත</string>
+    <string name="ai_runtime_prompt">තෝරාගත් නියෝජිතයාට කාර්යය</string>
+    <string name="ai_runtime_edit_ack">මෙම නියෝජිතයාට ව්‍යාපෘති ගොනු කියවීමට හෝ වෙනස් කිරීමට හැකි බව මට තේරේ. අවශ්‍ය විට සංස්කරණයට ඉඩ දෙමි.</string>
+    <string name="ai_runtime_run">නියෝජිත කාර්යය ධාවනය</string>
+    <string name="ai_runtime_output">නියෝජිත ප්‍රතිදානය</string>
+    <string name="ai_runtime_confirm_title">ධාවනය තහවුරු කරන්න</string>
+    <string name="ai_runtime_confirm_body">තෝරාගත් වැඩබිමේ %1$s ධාවනය කරන්නද? මෙය මෙවලම් ක්‍රියාත්මක කිරීමට, ගොනු විවෘත කිරීමට හෝ සම්බන්ධ AI සේවාවක් භාවිතා කිරීමට ඉඩ ඇත.</string>
 </resources>

@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">ソースの取り込みを確認</string>
     <string name="ai_source_import_confirm_body">%1$s を固定された正確なコミットで独立したワークスペースに取り込みますか？外部コードをダウンロードしますが実行しません。Git ツールと空き容量が必要です。既存のプロジェクトは変更されません。</string>
     <string name="ai_source_import_success">%1$s を新しいローカルワークスペースに取り込みました。</string>
+    <string name="ai_runtime_title">AIエージェント実行ブリッジ</string>
+    <string name="ai_runtime_description">選択したワークスペース内にインストール済みのコーディングCLIを検出します。認証は各CLIで別途必要です。自動インストールや実行は行いません。</string>
+    <string name="ai_runtime_no_workspace">シェルを使えるワークスペースを先に選択してください。</string>
+    <string name="ai_runtime_check">インストール済みエージェントを確認</string>
+    <string name="ai_runtime_ready">準備完了</string>
+    <string name="ai_runtime_missing">未インストール</string>
+    <string name="ai_runtime_unchecked">未確認</string>
+    <string name="ai_runtime_prompt">選択したエージェントへの依頼</string>
+    <string name="ai_runtime_edit_ack">このエージェントはプロジェクトファイルを読み取ったり変更したりできます。必要に応じて編集を許可します。</string>
+    <string name="ai_runtime_run">エージェントを実行</string>
+    <string name="ai_runtime_output">エージェントの出力</string>
+    <string name="ai_runtime_confirm_title">実行の確認</string>
+    <string name="ai_runtime_confirm_body">選択したワークスペースで %1$s を実行しますか？ツールの実行、ファイルへのアクセス、接続されたAIサービスの使用が行われる可能性があります。権限を確認してください。</string>
 </resources>

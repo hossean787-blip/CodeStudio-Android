@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">确认导入源码</string>
     <string name="ai_source_import_confirm_body">将 %1$s 按精确固定的提交导入独立本地工作区吗？只下载外部代码，不会执行。需要 Git 工具和足够存储空间，现有项目不会改变。</string>
     <string name="ai_source_import_success">已将 %1$s 导入新的本地工作区。</string>
+    <string name="ai_runtime_title">AI 智能体运行桥接</string>
+    <string name="ai_runtime_description">检测当前工作区中已安装的编程 CLI。各个工具需要分别登录。不会自动安装或运行任何软件。</string>
+    <string name="ai_runtime_no_workspace">请先选择具有 Shell 权限的工作区。</string>
+    <string name="ai_runtime_check">检查已安装智能体</string>
+    <string name="ai_runtime_ready">就绪</string>
+    <string name="ai_runtime_missing">未安装</string>
+    <string name="ai_runtime_unchecked">未检查</string>
+    <string name="ai_runtime_prompt">给选定智能体的任务</string>
+    <string name="ai_runtime_edit_ack">我了解该智能体可能读取或修改项目文件，并在需要时允许编辑。</string>
+    <string name="ai_runtime_run">运行智能体任务</string>
+    <string name="ai_runtime_output">智能体输出</string>
+    <string name="ai_runtime_confirm_title">确认执行智能体</string>
+    <string name="ai_runtime_confirm_body">在当前工作区运行 %1$s 吗？这可能运行工具、访问文件或使用已连接的 AI 服务。请先检查权限。</string>
 </resources>

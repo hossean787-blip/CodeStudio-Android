@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">Confirmar importação</string>
     <string name="ai_source_import_confirm_body">Importar %1$s como uma área de trabalho local separada, no commit exato? O código externo será baixado, mas não executado. São necessários Git e espaço de armazenamento. Seus projetos atuais não serão alterados.</string>
     <string name="ai_source_import_success">%1$s foi importado para uma nova área de trabalho local.</string>
+    <string name="ai_runtime_title">Ponte de execução de agentes de IA</string>
+    <string name="ai_runtime_description">Detecta agentes de programação já instalados no espaço de trabalho. Cada agente requer autenticação própria. Nada é instalado ou executado automaticamente.</string>
+    <string name="ai_runtime_no_workspace">Selecione primeiro um espaço de trabalho com acesso ao shell.</string>
+    <string name="ai_runtime_check">Verificar agentes instalados</string>
+    <string name="ai_runtime_ready">Pronto</string>
+    <string name="ai_runtime_missing">Não instalado</string>
+    <string name="ai_runtime_unchecked">Não verificado</string>
+    <string name="ai_runtime_prompt">Tarefa para o agente selecionado</string>
+    <string name="ai_runtime_edit_ack">Entendo que o agente pode acessar ou modificar arquivos do projeto. Permito edições quando necessário.</string>
+    <string name="ai_runtime_run">Executar tarefa do agente</string>
+    <string name="ai_runtime_output">Saída do agente</string>
+    <string name="ai_runtime_confirm_title">Confirmar execução do agente</string>
+    <string name="ai_runtime_confirm_body">Executar %1$s neste espaço de trabalho? Ele pode executar ferramentas, acessar arquivos ou usar serviços de IA conectados. Confira as permissões.</string>
 </resources>

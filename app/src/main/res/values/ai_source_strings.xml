@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">Import source workspace</string>
     <string name="ai_source_import_confirm_body">Import %1$s as a separate local coding workspace at its exact pinned commit? This downloads external code and does not execute it. Git tools and storage space are required. Existing projects remain unchanged.</string>
     <string name="ai_source_import_success">Imported %1$s into a new local workspace.</string>
+    <string name="ai_runtime_title">Agent runtime bridge</string>
+    <string name="ai_runtime_description">Detect locally installed coding CLIs in the selected workspace. You must sign in to each CLI separately. Nothing is installed or run automatically.</string>
+    <string name="ai_runtime_no_workspace">Select a workspace with shell access first.</string>
+    <string name="ai_runtime_check">Check installed agent CLIs</string>
+    <string name="ai_runtime_ready">Ready</string>
+    <string name="ai_runtime_missing">Not installed</string>
+    <string name="ai_runtime_unchecked">Not checked</string>
+    <string name="ai_runtime_prompt">Task for selected agent</string>
+    <string name="ai_runtime_edit_ack">I understand this CLI may access or modify project files. Allow editing when required.</string>
+    <string name="ai_runtime_run">Run agent task</string>
+    <string name="ai_runtime_output">CLI output</string>
+    <string name="ai_runtime_confirm_title">Confirm agent execution</string>
+    <string name="ai_runtime_confirm_body">Run %1$s in the selected workspace? This may execute tools, access files or use a connected AI service. Review your prompt, shell access and permissions first.</string>
 </resources>

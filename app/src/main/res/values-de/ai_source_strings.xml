@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">Quellcode-Import bestätigen</string>
     <string name="ai_source_import_confirm_body">%1$s als separaten lokalen Workspace beim exakt fixierten Commit importieren? Fremdcode wird heruntergeladen, aber nicht ausgeführt. Git-Werkzeuge und Speicherplatz sind erforderlich. Vorhandene Projekte bleiben unverändert.</string>
     <string name="ai_source_import_success">%1$s wurde in einen neuen lokalen Workspace importiert.</string>
+    <string name="ai_runtime_title">KI-Agenten-Laufzeitbrücke</string>
+    <string name="ai_runtime_description">Prüft lokal installierte Programmieragenten im gewählten Workspace. Jeder Agent benötigt eine eigene Anmeldung. Nichts wird automatisch installiert oder gestartet.</string>
+    <string name="ai_runtime_no_workspace">Bitte zuerst einen Workspace mit Shellzugriff auswählen.</string>
+    <string name="ai_runtime_check">Installierte Agenten prüfen</string>
+    <string name="ai_runtime_ready">Bereit</string>
+    <string name="ai_runtime_missing">Nicht installiert</string>
+    <string name="ai_runtime_unchecked">Nicht geprüft</string>
+    <string name="ai_runtime_prompt">Aufgabe für den ausgewählten Agenten</string>
+    <string name="ai_runtime_edit_ack">Dieser Agent kann Projektdateien lesen oder ändern. Ich erlaube Bearbeitungen bei Bedarf.</string>
+    <string name="ai_runtime_run">Agentenaufgabe ausführen</string>
+    <string name="ai_runtime_output">Ausgabe des Agenten</string>
+    <string name="ai_runtime_confirm_title">Ausführung bestätigen</string>
+    <string name="ai_runtime_confirm_body">%1$s im ausgewählten Workspace ausführen? Das kann Werkzeuge starten, Dateien lesen oder einen verbundenen KI-Dienst nutzen. Bitte Berechtigungen prüfen.</string>
 </resources>

@@ -11,4 +11,17 @@
     <string name="ai_source_import_confirm_title">Konfirmasi impor sumber</string>
     <string name="ai_source_import_confirm_body">Impor %1$s sebagai ruang kerja terpisah pada commit yang telah dikunci? Kode eksternal hanya diunduh, tidak dijalankan. Perlu Git dan ruang penyimpanan. Proyek saat ini tidak berubah.</string>
     <string name="ai_source_import_success">%1$s berhasil diimpor ke ruang kerja lokal baru.</string>
+    <string name="ai_runtime_title">Jembatan runtime agen AI</string>
+    <string name="ai_runtime_description">Periksa agen pemrograman yang sudah terpasang di ruang kerja yang dipilih. Setiap agen memerlukan login tersendiri. Tidak ada yang dipasang atau dijalankan otomatis.</string>
+    <string name="ai_runtime_no_workspace">Pilih ruang kerja dengan akses shell terlebih dahulu.</string>
+    <string name="ai_runtime_check">Periksa agen terpasang</string>
+    <string name="ai_runtime_ready">Siap</string>
+    <string name="ai_runtime_missing">Belum terpasang</string>
+    <string name="ai_runtime_unchecked">Belum diperiksa</string>
+    <string name="ai_runtime_prompt">Tugas untuk agen terpilih</string>
+    <string name="ai_runtime_edit_ack">Saya memahami agen ini dapat mengakses atau mengubah file proyek. Izinkan pengeditan bila diperlukan.</string>
+    <string name="ai_runtime_run">Jalankan tugas agen</string>
+    <string name="ai_runtime_output">Keluaran agen</string>
+    <string name="ai_runtime_confirm_title">Konfirmasi eksekusi agen</string>
+    <string name="ai_runtime_confirm_body">Jalankan %1$s di ruang kerja ini? Agen dapat menjalankan alat, membuka file, atau memakai layanan AI. Periksa izin terlebih dahulu.</string>
 </resources>
