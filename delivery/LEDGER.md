@@ -114,3 +114,12 @@ Complete display-brand audit: lock screen, Share target, notification setup,
 router lifecycle, TTS sample and app-facing tips now name Saba Studio. Resource
 keys, namespaces, protocol IDs, upstream attribution/fundraising/contribution
 links and the technical AndroidHarness bundle format are preserved.
+
+Strict two-launch Persian startup probe found a real background crash in the
+no-NDK variant: UnsatisfiedLinkError for libharness_local.so from memory-trim
+cache release, even though no local model had ever loaded. Native release
+contained the library and had passed earlier. Fix LocalModelManager to avoid
+initializing JNI when its tracked cache is empty; keep actual loaded-model
+release behavior. Do not clear/ignore the crash evidence. Mark the auxiliary
+no-NDK release artifact explicitly no-local-runtime; the primary deliverable
+is the separate native release. Repeat tests on the changed app.

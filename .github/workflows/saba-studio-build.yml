@@ -37,6 +37,7 @@ jobs:
           current=Path('.')
           allowed_changes={
               'app/build.gradle.kts',
+              'app/src/main/java/com/androidharness/app/local/LocalModelManager.kt',
               'app/src/main/res/values/tips_strings.xml',
               'app/src/main/res/values/nine_router_strings.xml',
               'app/src/main/res/values/plugin_manager_strings.xml',
@@ -246,7 +247,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha.2-release-test-signed
+          name: SabaStudio-v0.1.0-alpha.2-release-no-local-runtime-test-signed
           path: |
             app/build/outputs/apk/release/app-release.apk
             app/build/outputs/apk/release/*.txt
@@ -284,7 +285,7 @@ jobs:
       - name: Download the exact verified release APK
         uses: actions/download-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha.2-release-test-signed
+          name: SabaStudio-v0.1.0-alpha.2-release-no-local-runtime-test-signed
           path: verified-release
       - name: Enable KVM
         run: |
