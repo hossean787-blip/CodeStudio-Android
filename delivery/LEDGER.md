@@ -77,5 +77,7 @@ inspected untracked files. The checkout itself was clean before ledger creation
 Native probe audit found an existing stale reflection signature: LocalNative's
 current generateChat adds promptThreads and cacheKey, while ReleaseProbe still
 looked up the older method. Updated the probe to the actual JNI API before
-claiming a native runtime result; Java compilation passed. This changes only
+claiming a native runtime result. Host Java compilation was unavailable because
+`javac` is absent (only a Java runtime is installed); compilation is pending CI.
+This changes only
 test tooling, not the shipped application's inference API.
