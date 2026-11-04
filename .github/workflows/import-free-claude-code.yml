@@ -1,0 +1,54 @@
+name: Import Free Claude Code source into Saba Studio
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-free-claude-code.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-fcc-main
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Saba Studio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: Download pinned upstream source
+        run: |
+          set -euo pipefail
+          git clone --no-checkout --filter=blob:none https://github.com/Alishahryar1/free-claude-code.git /tmp/free-claude-code
+          git -C /tmp/free-claude-code checkout --detach 1c72f5fef14249936902aa7927348caec29939d6
+
+      - name: Import all tracked files without overwriting Saba Studio
+        run: |
+          set -euo pipefail
+          mkdir -p third_party/free-claude-code
+          git -C /tmp/free-claude-code ls-files -z | tar --null -T - -C /tmp/free-claude-code -cf - | tar -C third_party/free-claude-code -xf -
+          echo "Source file count: $(git -C /tmp/free-claude-code ls-files | wc -l)"
+          test -f third_party/free-claude-code/LICENSE
+          test -f third_party/free-claude-code/pyproject.toml
+          git diff --check
+
+      - name: Commit source on main
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f third_party/free-claude-code
+          if git diff --cached --quiet; then
+            echo "No new changes"
+            exit 0
+          fi
+          git commit -m "vendor: import pinned Free Claude Code source (AGPL-3.0)"
+          git push origin HEAD:main
