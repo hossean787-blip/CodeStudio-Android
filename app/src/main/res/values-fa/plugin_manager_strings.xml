@@ -22,7 +22,7 @@
     <string name="pm_next_run">تغییرات در اجرای بعدی Code اعمال می‌شوند. اجراهای جاری پیکربندی ذخیره‌شدهٔ خود را حفظ می‌کنند.</string>
     <string name="pm_starters">بسته‌های آغازین</string>
     <string name="pm_community">بسته‌های جامعه</string>
-    <string name="pm_community_hint">جستجوی بسته‌های npm با برچسب androidharness-plugin. نتایج جامعه توسط AndroidHarness تأیید نشده‌اند؛ سازگاری پیش از نصب بررسی می‌شود.</string>
+    <string name="pm_community_hint">جستجوی بسته‌های npm با برچسب androidharness-plugin. نتایج جامعه توسط صبا استودیو تأیید نشده‌اند؛ سازگاری پیش از نصب بررسی می‌شود.</string>
     <string name="pm_search_hint">جستجوی افزونه‌ها</string>
     <string name="pm_search">جستجو در npm</string>
     <string name="pm_no_results">بستهٔ مطابقی پیدا نشد. می‌توانید نام بسته، مخزن GitHub یا بستهٔ محلی را نیز اضافه کنید.</string>

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Read-only anonymous API catalog diagnostic for Saba Studio.
 
-Never transmits secret values, never uses authenticated endpoints and never
-makes chat-completion requests that may consume paid or limited credits.
+Never transmits secret values or uses authenticated endpoints. By default only
+reads public catalogs; --free-inference explicitly sends one capped request to
+the anonymous kilo-auto/free chat route, which may consume its free quota.
 """
 from __future__ import annotations
 import argparse

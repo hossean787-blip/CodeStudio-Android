@@ -1,0 +1,9 @@
+{
+  "checked_at_utc": "2026-11-04T19:56:02.519074+00:00",
+  "provider": "kilo",
+  "model": "kilo-auto/free",
+  "test": "synthetic tool-call generation only; no tool executed",
+  "status": "working",
+  "http_status": 200,
+  "valid_tool_call": true
+}

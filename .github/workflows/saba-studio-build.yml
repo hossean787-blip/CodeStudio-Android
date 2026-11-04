@@ -2,10 +2,14 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, feature/chat-first-ui]
+    branches: [main, develop/codestudio-alpha, feature/chat-first-ui, "codex/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
+      - 'scripts/verify_release.sh'
+      - 'scripts/emulator-release-smoke.sh'
+      - 'build.gradle.kts'
+      - 'gradle.properties'
       - 'settings.gradle.kts'
       - '.github/workflows/saba-studio-build.yml'
   workflow_dispatch:
@@ -33,6 +37,97 @@ jobs:
           current=Path('.')
           allowed_changes={
               'app/build.gradle.kts',
+              'app/src/main/java/com/androidharness/app/local/LocalModelManager.kt',
+              'app/src/main/res/values/tips_strings.xml',
+              'app/src/main/res/values/nine_router_strings.xml',
+              'app/src/main/res/values/plugin_manager_strings.xml',
+              'app/src/main/res/values/ui_extra_strings.xml',
+              'app/src/main/res/values/learn_strings.xml',
+              'app/src/main/res/values-fa/tips_strings.xml',
+              'app/src/main/res/values-fa/nine_router_strings.xml',
+              'app/src/main/res/values-fa/strings.xml',
+              'app/src/main/res/values-fa/plugin_manager_strings.xml',
+              'app/src/main/res/values-fa/ui_extra_strings.xml',
+              'app/src/main/res/values-fa/learn_strings.xml',
+              'app/src/main/res/values-zh-rCN/tips_strings.xml',
+              'app/src/main/res/values-zh-rCN/nine_router_strings.xml',
+              'app/src/main/res/values-zh-rCN/strings.xml',
+              'app/src/main/res/values-zh-rCN/plugin_manager_strings.xml',
+              'app/src/main/res/values-zh-rCN/ui_extra_strings.xml',
+              'app/src/main/res/values-zh-rCN/learn_strings.xml',
+              'app/src/main/res/values-de/tips_strings.xml',
+              'app/src/main/res/values-de/nine_router_strings.xml',
+              'app/src/main/res/values-de/strings.xml',
+              'app/src/main/res/values-de/plugin_manager_strings.xml',
+              'app/src/main/res/values-de/ui_extra_strings.xml',
+              'app/src/main/res/values-de/learn_strings.xml',
+              'app/src/main/res/values-ja/tips_strings.xml',
+              'app/src/main/res/values-ja/nine_router_strings.xml',
+              'app/src/main/res/values-ja/strings.xml',
+              'app/src/main/res/values-ja/plugin_manager_strings.xml',
+              'app/src/main/res/values-ja/ui_extra_strings.xml',
+              'app/src/main/res/values-ja/learn_strings.xml',
+              'app/src/main/res/values-pt-rBR/tips_strings.xml',
+              'app/src/main/res/values-pt-rBR/nine_router_strings.xml',
+              'app/src/main/res/values-pt-rBR/strings.xml',
+              'app/src/main/res/values-pt-rBR/plugin_manager_strings.xml',
+              'app/src/main/res/values-pt-rBR/ui_extra_strings.xml',
+              'app/src/main/res/values-pt-rBR/learn_strings.xml',
+              'app/src/main/res/values-si/tips_strings.xml',
+              'app/src/main/res/values-si/nine_router_strings.xml',
+              'app/src/main/res/values-si/strings.xml',
+              'app/src/main/res/values-si/plugin_manager_strings.xml',
+              'app/src/main/res/values-si/ui_extra_strings.xml',
+              'app/src/main/res/values-si/learn_strings.xml',
+              'app/src/main/res/values-ru/tips_strings.xml',
+              'app/src/main/res/values-ru/nine_router_strings.xml',
+              'app/src/main/res/values-ru/strings.xml',
+              'app/src/main/res/values-ru/plugin_manager_strings.xml',
+              'app/src/main/res/values-ru/ui_extra_strings.xml',
+              'app/src/main/res/values-ru/learn_strings.xml',
+              'app/src/main/res/values-ar/tips_strings.xml',
+              'app/src/main/res/values-ar/nine_router_strings.xml',
+              'app/src/main/res/values-ar/strings.xml',
+              'app/src/main/res/values-ar/plugin_manager_strings.xml',
+              'app/src/main/res/values-ar/ui_extra_strings.xml',
+              'app/src/main/res/values-ar/learn_strings.xml',
+              'app/src/main/res/values-es/tips_strings.xml',
+              'app/src/main/res/values-es/nine_router_strings.xml',
+              'app/src/main/res/values-es/strings.xml',
+              'app/src/main/res/values-es/plugin_manager_strings.xml',
+              'app/src/main/res/values-es/ui_extra_strings.xml',
+              'app/src/main/res/values-es/learn_strings.xml',
+              'app/src/main/res/values-in/tips_strings.xml',
+              'app/src/main/res/values-in/nine_router_strings.xml',
+              'app/src/main/res/values-in/strings.xml',
+              'app/src/main/res/values-in/plugin_manager_strings.xml',
+              'app/src/main/res/values-in/ui_extra_strings.xml',
+              'app/src/main/res/values-in/learn_strings.xml',
+              'app/src/main/res/values/ui_strings.xml',
+              'app/src/main/res/values-fa/ui_strings.xml',
+              'app/src/main/res/values-ar/ui_strings.xml',
+              'app/src/main/res/values-de/ui_strings.xml',
+              'app/src/main/res/values-es/ui_strings.xml',
+              'app/src/main/res/values-in/ui_strings.xml',
+              'app/src/main/res/values-ja/ui_strings.xml',
+              'app/src/main/res/values-pt-rBR/ui_strings.xml',
+              'app/src/main/res/values-ru/ui_strings.xml',
+              'app/src/main/res/values-si/ui_strings.xml',
+              'app/src/main/res/values-zh-rCN/ui_strings.xml',
+              'scripts/release-smoke/ReleaseProbe.java',
+              'scripts/test_legacy_storage.sh',
+              'app/src/androidTest/java/com/androidharness/app/workspace/MultiWorkspaceDeviceTest.kt',
+              'app/src/main/java/com/androidharness/app/llm/HarnessProvider.kt',
+              'app/src/main/java/com/androidharness/app/llm/Llm.kt',
+              'app/src/test/java/com/androidharness/app/ui/settings/ProviderBrandsTest.kt',
+              'app/src/test/java/com/androidharness/app/ui/theme/ThemePaletteTest.kt',
+              'app/src/main/java/com/androidharness/app/data/ThemePalette.kt',
+              'app/src/main/java/com/androidharness/app/data/SettingsRepository.kt',
+              'app/src/main/java/com/androidharness/app/ui/theme/Theme.kt',
+              'app/src/main/java/com/androidharness/app/ui/theme/PaletteColors.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/ThemeColorSection.kt',
+              'app/src/main/res/values-fa/saba_studio.xml',
+              'app/src/main/res/values/saba_studio.xml',
               'app/src/main/res/values/strings.xml',
               'app/src/main/java/com/androidharness/app/data/update/UpdateManager.kt',
               'settings.gradle.kts',
@@ -119,11 +214,11 @@ jobs:
           test "$code" -eq 4
           grep -q 'requires exactly 3.14.10' /tmp/fcc-preflight.out
           test -f app/src/main/assets/skills/free-claude-code/SKILL.md
-      - name: Verify Free Claude Code mobile provider integration
+      - name: Run full JVM regression suite
         shell: bash
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:testDebugUnitTest --tests 'com.androidharness.app.ui.settings.FreeClaudeCodeProviderPresetsTest' --tests 'com.androidharness.app.ui.settings.ChatAnywhereProviderPresetTest' -Pdistribution=github --no-daemon
+          ./gradlew :app:testDebugUnitTest -Pdistribution=github --no-daemon
       - name: Build Saba Studio debug APK
         shell: bash
         run: |
@@ -133,7 +228,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha-debug
+          name: SabaStudio-v0.1.0-alpha.2-debug
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
@@ -147,21 +242,74 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK=app/build/outputs/apk/release/app-release.apk
-          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          TOOLS="$SDK/build-tools/37.0.0"
-          "$TOOLS/apksigner" verify --verbose --print-certs "$APK"
-          "$TOOLS/aapt" dump badging "$APK" | tee app/build/outputs/apk/release/identity.txt
-          grep -q "package: name='ir.sabagostar.sabastudio'" app/build/outputs/apk/release/identity.txt
-          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
+          bash scripts/verify_release.sh app/build/outputs/apk/release/app-release.apk
       - name: Upload installable alpha release APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: SabaStudio-v0.1.0-alpha-release-test-signed
+          name: SabaStudio-v0.1.0-alpha.2-release-no-local-runtime-test-signed
           path: |
             app/build/outputs/apk/release/app-release.apk
-            app/build/outputs/apk/release/identity.txt
-            app/build/outputs/apk/release/SHA256SUMS.txt
+            app/build/outputs/apk/release/*.txt
           if-no-files-found: error
+          retention-days: 14
+      - name: Upload regression reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-jvm-test-reports
+          path: |
+            app/build/reports/tests/
+            app/build/test-results/
+          if-no-files-found: warn
+          retention-days: 14
+
+  emulator-persistence:
+    needs: audit-and-build
+    name: Android emulator persistence and integration (not a physical device)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install compile SDK
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0" "build-tools;37.0.0" "platform-tools"
+          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Download the exact verified release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: SabaStudio-v0.1.0-alpha.2-release-no-local-runtime-test-signed
+          path: verified-release
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run database migration and workspace persistence on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion' --no-daemon --stacktrace
+            bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
+      - name: Upload emulator evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-emulator-test-reports
+          path: |
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+            delivery-emulator/
+          if-no-files-found: warn
           retention-days: 14

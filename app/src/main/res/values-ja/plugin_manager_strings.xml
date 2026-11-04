@@ -22,7 +22,7 @@
     <string name="pm_next_run">変更は次回の Code 実行から適用されます。実行中の処理は開始時の構成を保持します。</string>
     <string name="pm_starters">スターターパック</string>
     <string name="pm_community">コミュニティパッケージ</string>
-    <string name="pm_community_hint">androidharness-plugin タグの npm パッケージを検索します。コミュニティの結果は AndroidHarness による検証済みではありません。インストール前に互換性を確認します。</string>
+    <string name="pm_community_hint">androidharness-plugin タグの npm パッケージを検索します。コミュニティの結果は Saba Studio による検証済みではありません。インストール前に互換性を確認します。</string>
     <string name="pm_search_hint">プラグインを検索</string>
     <string name="pm_search">npm を検索</string>
     <string name="pm_no_results">一致するパッケージはありません。パッケージ名、GitHub リポジトリ、ローカルパッケージも追加できます。</string>

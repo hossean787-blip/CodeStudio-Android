@@ -26,12 +26,12 @@
     <string name="nine_router_checking">Verificando…</string>
     <string name="nine_router_update">Atualizar para %1$s</string>
     <string name="nine_router_auto_start">Iniciar o 9Router automaticamente</string>
-    <string name="nine_router_auto_start_body">Inicia o roteador instalado quando o AndroidHarness abre.</string>
+    <string name="nine_router_auto_start_body">Inicia o roteador instalado quando o Saba Studio abre.</string>
     <string name="nine_router_add_provider">Adicionar o 9Router aos provedores</string>
     <string name="nine_router_refresh_provider">Atualizar o provedor 9Router</string>
     <string name="nine_router_provider_body">Inicia o 9Router se necessário e preenche o endpoint local e a chave de API automaticamente. Os modelos conectados aparecem nos seletores de modelos do Chat e do Código.</string>
     <string name="nine_router_remove_provider">Remover dos provedores</string>
-    <string name="nine_router_remove_provider_body">Remove as conexões do 9Router do AndroidHarness. O roteador e suas contas continuam instalados.</string>
+    <string name="nine_router_remove_provider_body">Remove as conexões do 9Router do Saba Studio. O roteador e suas contas continuam instalados.</string>
     <string name="nine_router_uninstall">Desinstalar o 9Router</string>
     <string name="nine_router_uninstall_title">Desinstalar o 9Router por completo?</string>
     <string name="nine_router_uninstall_body">Para o 9Router e exclui a instalação, as contas salvas, as chaves de API do roteador, a configuração, o cache, a preferência de início automático e as conexões de provedor do app. Isso não pode ser desfeito. A cadeia de ferramentas Linux compartilhada continua disponível para outros recursos.</string>

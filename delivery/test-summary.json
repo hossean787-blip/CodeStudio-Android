@@ -1,0 +1,75 @@
+{
+  "tested_source_commit": "b84b476b367689407c7b6471cced846e88483219",
+  "primary_native_release": {
+    "filename": "SabaStudio-v0.1.0-alpha.2-release.apk",
+    "bytes": 61557501,
+    "apk_sha256": "6cd1864598fdc868ed64df52b35907eaa29096d3ecc7dcc3842ab73d912b6dea",
+    "certificate_sha256": "dc1dd323cb84172ec54c5fa5712d8f4b175d279a10d6a443b2ba44013b5f3d56",
+    "package_id": "ir.sabagostar.sabastudio",
+    "versionCode": 2,
+    "versionName": "0.1.0-alpha.2",
+    "debuggable": false,
+    "signing": "Ephemeral Android Debug certificate, test distribution only",
+    "artifact_id": 13364354065,
+    "run_id": 41913010385,
+    "artifact_zip_sha256": "fcb43721668630fcb22c4ef13961be6d16e9454b9f688f9c6cf69bb9004f487a",
+    "host_signature_identity_checksum_and_zip_verified": true
+  },
+  "jvm_regular": {
+    "tests": 1943,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "jvm_native_configuration": {
+    "tests": 1943,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "android_emulator_integration": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "emulator": {
+    "api": 35,
+    "abi": "x86_64",
+    "physical_device": false,
+    "native_cpu_probe_passed": true,
+    "spake2_message_and_ssh_key_generation_passed": true,
+    "persian_welcome_ui_assertion_passed": true,
+    "dark_rtl_screenshot_visually_reviewed": true,
+    "release_install_and_10_second_liveness_passed": true,
+    "gpu_runtime_verified": false,
+    "runtime_evidence_artifact_id": 13364104565,
+    "persistence_evidence_artifact_id": 13364693312
+  },
+  "host_sqlite": {
+    "tests": 4,
+    "failures": 0
+  },
+  "host_editor": {
+    "tests": 7,
+    "failures": 0
+  },
+  "ci_runs": [
+    {
+      "id": 41913010323,
+      "conclusion": "success"
+    },
+    {
+      "id": 41913010385,
+      "conclusion": "success"
+    }
+  ],
+  "limitations": [
+    "No physical device tests",
+    "No authenticated ChatAnywhere or other keyed-provider inference",
+    "No verified hardware GPU inference",
+    "No stable release signing private key; Secrets API access is forbidden",
+    "Full lint and Play build not executed",
+    "FCC Python desktop runtime not embedded"
+  ]
+}

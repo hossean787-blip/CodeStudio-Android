@@ -22,7 +22,7 @@
     <string name="pm_next_run">Los cambios se aplican en la siguiente ejecución de Code. Las ejecuciones actuales conservan su configuración.</string>
     <string name="pm_starters">Paquetes iniciales</string>
     <string name="pm_community">Paquetes de la comunidad</string>
-    <string name="pm_community_hint">Busca paquetes npm con la etiqueta androidharness-plugin. AndroidHarness no verifica los resultados de la comunidad; la compatibilidad se comprueba antes de instalar.</string>
+    <string name="pm_community_hint">Busca paquetes npm con la etiqueta androidharness-plugin. Saba Studio no verifica los resultados de la comunidad; la compatibilidad se comprueba antes de instalar.</string>
     <string name="pm_search_hint">Buscar plugins</string>
     <string name="pm_search">Buscar en npm</string>
     <string name="pm_no_results">No se encontraron paquetes. También puedes añadir un nombre de paquete, un repositorio GitHub o un paquete local.</string>

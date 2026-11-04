@@ -637,7 +637,7 @@
     <string name="ui_shizuku_is_disabled">"Shizuku ist deaktiviert"</string>
     <string name="ui_shizuku_is_no_longer_available_its_server">"Shizuku ist nicht mehr verfügbar. Der Server wurde möglicherweise gestoppt oder beendet "</string>
     <string name="ui_in_the_background_or_this_app_s">"im Hintergrund, oder der Zugriff dieser App wurde widerrufen. "</string>
-    <string name="ui_start_shizuku_and_allow_androidharness_access_to">"Starte Shizuku und erlaube AndroidHarness den Zugriff, um es erneut zu verwenden."</string>
+    <string name="ui_start_shizuku_and_allow_androidharness_access_to">"Starte Shizuku und erlaube Saba Studio den Zugriff, um es erneut zu verwenden."</string>
     <string name="ui_never_show_this_message_again">"Diese Meldung nicht mehr anzeigen"</string>
     <string name="ui_limits_resets">"Limits &amp; Zurücksetzungen"</string>
     <string name="ui_view_live_limits_in_chatgpt">"Live-Limits in ChatGPT ansehen"</string>
@@ -1110,7 +1110,7 @@
     <string name="ui_the_app_needs_node_python_from_the">"der App. Benötigt node/python aus der Linux-Umgebung."</string>
     <string name="ui_not_installed_optional">"Nicht installiert: optional."</string>
     <string name="ui_installed_not_running">"Installiert, läuft nicht."</string>
-    <string name="ui_running_grant_androidharness_access">"Läuft: AndroidHarness Zugriff gewähren."</string>
+    <string name="ui_running_grant_androidharness_access">"Läuft: Saba Studio Zugriff gewähren."</string>
     <string name="ui_connected_shell_privileges_ready">"Verbunden: Shell-Rechte bereit."</string>
     <string name="ui_connected_in_compatibility_mode_shell_privileges_ready">"Im Kompatibilitätsmodus verbunden: Shell-Rechte bereit."</string>
     <string name="ui_access_granted_connecting_to_the_shell_runner">"Zugriff gewährt. Verbinde mit dem Shell-Runner…"</string>
@@ -1160,7 +1160,7 @@
     <string name="ui_androidharness_is_built_on_open_source_work">"AndroidHarness basiert auf quelloffener Arbeit und leiht sich Ideen von den Agenten, die vor ihm kamen."</string>
     <string name="ui_built_with">"Erstellt mit"</string>
     <string name="ui_inspired_by">"Inspiriert von"</string>
-    <string name="ui_every_project_keeps_its_own_license_androidharness">"Jedes Projekt behält seine eigene Lizenz. AndroidHarness ist nicht mit ihnen verbunden."</string>
+    <string name="ui_every_project_keeps_its_own_license_androidharness">"Jedes Projekt behält seine eigene Lizenz. Saba Studio ist nicht mit ihnen verbunden."</string>
     <string name="ui_exported_chats_messages">"Exportiert: %1$s Chats (%2$s Nachrichten, %3$s Erinnerungen)."</string>
     <string name="ui_export_failed">"Export fehlgeschlagen."</string>
     <string name="ui_export_failed_1230">"Export fehlgeschlagen: %1$s"</string>
@@ -1249,7 +1249,7 @@
     <string name="ui_status">"Status"</string>
     <string name="ui_retry_resume">"Wiederholen / Fortsetzen"</string>
     <string name="ui_pause_telegram">"Telegram pausieren"</string>
-    <string name="ui_welcome_to_androidharness">"Willkommen bei AndroidHarness"</string>
+    <string name="ui_welcome_to_androidharness">"Willkommen bei Saba Studio"</string>
     <string name="ui_grant_storage_access_to_start_coding_notifications">"Gewähre Speicherzugriff, um mit dem Coden zu beginnen. Benachrichtigungen und andere Tools sind optional."</string>
     <string name="ui_device_storage_access_granted">"Gerätespeicherzugriff gewährt"</string>
     <string name="ui_required_allow_access_to_device_files_and">"Erforderlich: Zugriff auf Gerätedateien und -ordner erlauben"</string>
@@ -1267,7 +1267,7 @@
     <string name="ui_optional_keeps_long_runs_alive_on_aggressive">"Optional: hält lange Läufe auf aggressiven OEMs am Leben"</string>
     <string name="ui_ready_to_begin">"Bereit zum Start"</string>
     <string name="ui_allow_storage_access_to_begin">"Speicherzugriff erlauben, um zu beginnen"</string>
-    <string name="ui_start_harness">"Harness starten"</string>
+    <string name="ui_start_harness">"Saba Studio starten"</string>
     <string name="ui_optional">"Optional"</string>
     <string name="ui_model_activity_and_ai_code_changes">"Modellaktivität und KI-Codeänderungen"</string>
     <string name="ui_model_activity">"MODELLAKTIVITÄT"</string>
@@ -1587,7 +1587,7 @@
     <string name="ui_access_mode">"Zugriffsmodus: %1$s"</string>
     <string name="ui_scheduled_tasks">"Geplante Aufgaben"</string>
     <string name="ui_project_and_chat_sidebar">"Projekt- und Chat-Seitenleiste"</string>
-    <string name="ui_androidharness_icon">"AndroidHarness-Symbol"</string>
+    <string name="ui_androidharness_icon">"Saba Studio-Symbol"</string>
     <string name="ui_collapse_sidebar">"Seitenleiste einklappen"</string>
     <string name="ui_search_chats_and_messages">"Chats und Nachrichten durchsuchen"</string>
     <string name="ui_search_chats">"Chats durchsuchen"</string>
@@ -1657,7 +1657,7 @@
     <string name="background_notifications_description">App-Hinweise erlauben. Android verwaltet Diensthinweise.</string>
     <string name="background_android_title">Android-Benachrichtigungseinstellungen</string>
     <string name="background_android_description">Alle Android-Benachrichtigungseinstellungen verwalten.</string>
-    <string name="background_run_blocked">Hintergrundausführung ist aus. Öffne AndroidHarness, um eine Aufgabe zu starten oder fortzusetzen.</string>
+    <string name="background_run_blocked">Hintergrundausführung ist aus. Öffne Saba Studio, um eine Aufgabe zu starten oder fortzusetzen.</string>
     <string name="background_service_notice">Hintergrunddienst läuft</string>
     <string name="local_gpu_download_title">GPU-Unterstützung</string>
     <string name="local_gpu_runtime_repository">Quelle: Sanuu7/AH-GPU-Runtime</string>

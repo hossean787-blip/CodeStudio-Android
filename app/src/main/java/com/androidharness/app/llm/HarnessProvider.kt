@@ -27,7 +27,7 @@ object HarnessProvider {
     const val KEYLESS = "harness-keyless"
     const val SESSION_HEADER = "x-opencode-session"
     const val USER_AGENT = "AndroidHarness"
-    val config = ProviderConfig(ID, "Harness", ProviderType.OPENAI_COMPAT, BASE_URL, DEFAULT_MODEL)
+    val config = ProviderConfig(ID, "صبا استودیو", ProviderType.OPENAI_COMPAT, BASE_URL, DEFAULT_MODEL)
 
     /** Routing for the last successful free catalog, restored from disk on startup. */
     data class Pool(val baseUrl: String, val note: String)

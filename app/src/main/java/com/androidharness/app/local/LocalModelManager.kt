@@ -53,7 +53,9 @@ class LocalModelManager(private val context: Context) {
     }
     suspend fun releaseCachedModel() = withContext(Dispatchers.IO) {
         inference.withLock {
-            if (Process.is64Bit()) LocalNative.releaseCachedModel()
+            // Memory trim must not initialize JNI just to release an empty cache.
+            // In tooling/no-NDK builds that library is deliberately absent.
+            if (_loaded.value != null && Process.is64Bit()) LocalNative.releaseCachedModel()
             _loaded.value?.let { id -> _status.update { it - id } }
             _loaded.value = null
         }

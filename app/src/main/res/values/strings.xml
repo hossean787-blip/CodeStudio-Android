@@ -309,10 +309,10 @@
     <string name="settings_restore_reconnect_title">Reconnect restored chats</string>
     <string name="settings_restore_reconnect_note">Read-only access stays read-only. Chats that used multiple workspaces need separate folders for each one.</string>
     <string name="settings_accounts_using_plan">You\'re using your ChatGPT plan</string>
-    <string name="settings_accounts_using_plan_desc">Eligible requests in AndroidHarness use your ChatGPT plan or credits. Review usage and manage this app\'s access in ChatGPT settings.</string>
+    <string name="settings_accounts_using_plan_desc">Eligible requests in Saba Studio use your ChatGPT plan or credits. Review usage and manage this app\'s access in ChatGPT settings.</string>
     <string name="settings_action_got_it">Got it</string>
     <string name="settings_accounts_signout_title">Sign out of this account?</string>
-    <string name="settings_accounts_signout_message">This disconnects the account from AndroidHarness and removes it from automatic switching. You can sign in again later.</string>
+    <string name="settings_accounts_signout_message">This disconnects the account from Saba Studio and removes it from automatic switching. You can sign in again later.</string>
     <string name="settings_action_continue">Continue</string>
     <string name="settings_progress_bar_subtitle">Choose how progress bars look. Applies immediately.</string>
     <string name="settings_provider_select">Select</string>
@@ -930,7 +930,7 @@
     <string name="chat_handoff_picker_note">Choose where to build. Your Chat plan comes along.</string>
     <string name="chat_handoff_close">Close workspace picker</string>
     <string name="chat_handoff_no_workspace">Add a workspace in Code to continue.</string>
-    <string name="chat_share_target">AndroidHarness Chat</string>
+    <string name="chat_share_target">Saba Studio Chat</string>
     <string name="chat_share_title">Share to Chat</string>
     <string name="chat_share_review">Review your shared items, choose a Chat, and add a question. Nothing is sent until you tap Send in Chat.</string>
     <string name="chat_share_new">New Chat</string>
@@ -999,7 +999,7 @@
     <string name="glass_unsupported">Glass effects need Android 12 or later.</string>
     <string name="glass_liquid_unsupported">Liquid Glass needs Android 13 or later. Frosted glass is available on this device.</string>
     <string name="glass_preview_label">Glass preview</string>
-    <string name="glass_preview_title">AndroidHarness</string>
+    <string name="glass_preview_title">Saba Studio</string>
     <string name="glass_preview_text">Clear text. A softer background.</string>
     <string name="glass_transparency">Transparency</string>
     <string name="glass_transparency_percent">%1$d%%</string>

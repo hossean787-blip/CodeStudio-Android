@@ -105,11 +105,11 @@ public final class ReleaseProbe {
             });
         String request = "{\"messages\":[{\"role\":\"user\",\"content\":\"Tell a short story.\"}],\"tools\":[],\"enable_thinking\":false}";
         Method generate = local.getMethod("generateChat", long.class, byte[].class, byte[].class,
-            byte[].class, byte[][].class, int.class, int.class, int.class, int.class, boolean.class, callback);
+            byte[].class, byte[][].class, int.class, int.class, int.class, int.class, int.class, boolean.class, byte[].class, callback);
         long started = System.nanoTime();
         try {
             byte[] result = (byte[]) generate.invoke(instance, handle, modelPath.getBytes(StandardCharsets.UTF_8),
-                new byte[0], request.getBytes(StandardCharsets.UTF_8), new byte[0][], 256, 192, 16, 2, gpu, receiver);
+                new byte[0], request.getBytes(StandardCharsets.UTF_8), new byte[0][], 256, 192, 16, 2, 2, gpu, new byte[0], receiver);
             String text = new String(result, StandardCharsets.UTF_8);
             if (!text.contains("\"backend\":\"" + (gpu ? "GPU" : "CPU") + "\""))
                 throw new AssertionError("Unexpected backend: " + text);

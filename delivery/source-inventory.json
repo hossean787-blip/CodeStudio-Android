@@ -1,0 +1,130 @@
+{
+  "modules": [
+    ":app",
+    ":local_gpu (Play only; not validated in this GitHub APK run)"
+  ],
+  "versions": {
+    "agp": "9.3.1",
+    "kotlin": "2.4.10",
+    "ksp": "2.3.11",
+    "composeBom": "2026.08.00",
+    "material3": "1.5.0-alpha26",
+    "coreKtx": "1.17.0",
+    "activityCompose": "1.12.4",
+    "lifecycle": "2.9.4",
+    "navigation": "2.9.8",
+    "room": "2.8.4",
+    "datastore": "1.2.1",
+    "work": "2.10.5",
+    "documentfile": "1.1.0",
+    "fragment": "1.8.6",
+    "browser": "1.10.0",
+    "webkit": "1.14.0",
+    "securityCrypto": "1.1.0",
+    "biometric": "1.2.0-alpha05",
+    "okhttp": "4.12.0",
+    "kotlinxSerialization": "1.9.0",
+    "coroutines": "1.10.2",
+    "commonsCompress": "1.28.0",
+    "commonsNet": "3.13.0",
+    "xz": "1.12",
+    "shizuku": "13.1.5",
+    "soraEditor": "0.23.6"
+  },
+  "manifest_components": {
+    "activity": [
+      {
+        "name": ".MainActivity",
+        "exported": "true",
+        "permission": null
+      }
+    ],
+    "activity-alias": [
+      {
+        "name": ".ShareToChat",
+        "exported": "true",
+        "permission": null
+      }
+    ],
+    "service": [
+      {
+        "name": ".data.transfer.FtpShareService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".data.env.adb.AdbPairingService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".data.env.adb.WirelessAdbService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": "androidx.appcompat.app.AppLocalesMetadataHolderService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".AgentService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".telegram.TelegramService",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": "androidx.work.impl.foreground.SystemForegroundService",
+        "exported": null,
+        "permission": null
+      }
+    ],
+    "receiver": [
+      {
+        "name": ".data.env.adb.WirelessAdbReconnectReceiver",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".agent.NotificationActionReceiver",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".automation.AutomationActionReceiver",
+        "exported": "false",
+        "permission": null
+      },
+      {
+        "name": ".telegram.TelegramBootReceiver",
+        "exported": "false",
+        "permission": null
+      }
+    ],
+    "provider": [
+      {
+        "name": "rikka.shizuku.ShizukuProvider",
+        "exported": "true",
+        "permission": null
+      },
+      {
+        "name": "androidx.core.content.FileProvider",
+        "exported": "false",
+        "permission": null
+      }
+    ]
+  },
+  "workflows": [
+    ".github/workflows/import-free-claude-code.yml",
+    ".github/workflows/verify-keyless-ai.yml",
+    ".github/workflows/saba-studio-build.yml",
+    ".github/workflows/verify-gpt-api-free-import.yml",
+    ".github/workflows/saba-native-release.yml",
+    ".github/workflows/import-androidharness-source.yml"
+  ],
+  "not_runtime_evidence": true
+}
