@@ -59,11 +59,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.androidharness.app"
+        applicationId = "ir.sabagostar.sabastudio"
         minSdk = 26
         targetSdk = 36
-        versionCode = 35
-        versionName = "3.1"
+        versionCode = 1
+        versionName = "0.1.0-alpha"
         buildConfigField("String", "GITHUB_CLIENT_ID", "\"$githubClientId\"")
         buildConfigField("boolean", "PLAY_DISTRIBUTION", (distributionChannel == "play").toString())
         if (hasNdk) {
