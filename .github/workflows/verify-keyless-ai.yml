@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Inspect anonymous model catalogs (no API keys)
         run: |
-          python3 scripts/verify_keyless_ai.py --output keyless-report.json
+          python3 scripts/verify_keyless_ai.py --free-inference --output keyless-report.json
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
