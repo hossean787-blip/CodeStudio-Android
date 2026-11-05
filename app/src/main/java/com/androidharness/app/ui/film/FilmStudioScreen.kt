@@ -48,6 +48,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
     var exporting by remember { mutableStateOf(false) }
     var active by remember { mutableStateOf<Transformer?>(null) }
     var output by remember { mutableStateOf<File?>(null) }
+    var workingFile by remember { mutableStateOf<File?>(null) }
     fun project(): FilmCutProject? {
         val start = startSeconds.trim().toLongOrNull()?.takeIf { it in 0L..21_600L } ?: return null
         val end = endSeconds.trim().toLongOrNull()?.takeIf { it in 1L..21_600L } ?: return null
@@ -122,6 +123,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
     DisposableEffect(Unit) {
         onDispose {
             active?.cancel()
+            workingFile?.delete()
             output?.delete()
         }
     }
@@ -164,6 +166,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                 val spec = current ?: return@Button
                 val dir = File(context.cacheDir, "saba-film-exports").apply { mkdirs() }
                 val candidate = File(dir, UUID.randomUUID().toString() + ".mp4")
+                workingFile = candidate
                 exporting = true
                 message = ""
                 try {
@@ -172,6 +175,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                             .setStartPositionMs(spec.startMs).setEndPositionMs(spec.endMs).build()).build()
                     active = Transformer.Builder(context).addListener(object : Transformer.Listener {
                         override fun onCompleted(composition: Composition, exportResult: ExportResult) {
+                            workingFile = null
                             active = null
                             exporting = false
                             if (candidate.isFile && candidate.length() > 0) {
@@ -184,6 +188,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                             }
                         }
                         override fun onError(composition: Composition, exportResult: ExportResult, exportException: ExportException) {
+                            workingFile = null
                             active = null
                             exporting = false
                             candidate.delete()
@@ -192,6 +197,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                     }).build().also { it.start(input, candidate.absolutePath) }
                 } catch (_: Exception) {
                     candidate.delete()
+                    workingFile = null
                     active = null
                     exporting = false
                     message = context.getString(R.string.film_export_failed)
@@ -201,6 +207,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
                 TextButton(onClick = {
                     active?.cancel(); active = null
+                    workingFile?.delete(); workingFile = null
                     exporting = false
                     message = context.getString(R.string.film_cancelled)
                 }) { Text(stringResource(R.string.film_cancel)) }
