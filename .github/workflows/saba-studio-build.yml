@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, "feature/**", "codex/**", "integration/**"]
+    branches: [main, develop/codestudio-alpha, "feature/**", "feat/**", "codex/**", "integration/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -170,6 +170,7 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
+              'app/src/main/java/com/androidharness/app/ui/library/LibraryDesignScreen.kt',
               'app/src/main/java/com/androidharness/app/MainActivity.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/ChatScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/projects/ProjectsScreen.kt',
