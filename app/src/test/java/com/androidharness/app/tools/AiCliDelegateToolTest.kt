@@ -76,7 +76,7 @@ class AiCliDelegateToolTest {
         val tool = AiCliDelegateTool { _, _, _, _ ->
             calls++
             result(stdout = if (calls == 2)
-                "GROQ_API_KEY=$vendorKey\\nAWS_SECRET_ACCESS_KEY=$assignedSecret\\ncommit $commitSha"
+                "GROQ_API_KEY=$vendorKey\nAWS_SECRET_ACCESS_KEY=$assignedSecret\ncommit $commitSha"
                 else "")
         }
         val outcome = tool.execute(buildJsonObject {
