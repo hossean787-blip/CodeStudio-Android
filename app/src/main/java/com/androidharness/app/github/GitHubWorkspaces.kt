@@ -30,6 +30,12 @@ internal fun pinnedSubmodulesMatchGitlinks(output: String): Boolean {
     }
 }
 
+/** Git LFS uses '*' for materialized files and '-' for pointer-only worktrees. */
+internal fun lfsCheckoutIsHydrated(output: String): Boolean {
+    val materialized = Regex("^[0-9a-fA-F]{64} \\* .+$")
+    return output.lineSequence().filter { it.isNotBlank() }.all { materialized.matches(it) }
+}
+
 /** Detect tracked Git LFS filter declarations, including nested source trees. */
 internal fun sourceUsesGitLfs(sourceRoot: File): Boolean {
     val marker = Regex("""(?:^|\s)filter=lfs(?:\s|$)""")
@@ -249,6 +255,16 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
                             pull.rawOutput.length >= 128_000 || pull.rawStderr.length >= 128_000)
                             throw GitHubOperationFailure("Pinned Git LFS download",
                                 gitHubFailureHint(pull.exitCode, pull.rawStderr + pull.rawOutput))
+                        // A successful pull may still leave pointers due to LFS include/exclude settings.
+                        // Require every tracked LFS file in this checkout to be materialized.
+                        val lfsListing = c.shellRouter.runWorkspace(
+                            gitCommand(listOf("-C", repoRoot.absolutePath, "lfs", "ls-files", "--long")),
+                            folderFs, timeoutMs = 60_000, maxOutput = 128_000)
+                        check(!lfsListing.timedOut && lfsListing.exitCode == 0 &&
+                            lfsListing.rawOutput.length < 128_000 &&
+                            lfsCheckoutIsHydrated(lfsListing.rawOutput)) {
+                            "Git LFS assets are still pointers or their status could not be verified. The incomplete project was not registered."
+                        }
                     }
                 }
                 // Nested checkout must not move the already verified parent HEAD.
