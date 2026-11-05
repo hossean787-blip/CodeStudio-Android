@@ -25,4 +25,12 @@
     <string name="ai_runtime_confirm_title">Konfirmasi eksekusi agen</string>
     <string name="ai_runtime_confirm_body">Jalankan %1$s di ruang kerja ini? Agen dapat menjalankan alat, membuka file, atau memakai layanan AI. Periksa izin terlebih dahulu.</string>
     <string name="ai_source_license_ack">Saya menyatakan memiliki izin untuk memperoleh dan menggunakan sumber ini. Unduhan tidak memberikan hak untuk mendistribusikannya.</string>
+    <string name="ai_source_nested_warning">Submodul Git juga diunduh; ini mungkin memerlukan banyak ruang dan memiliki lisensi tersendiri. Unduhan tidak lengkap tidak akan didaftarkan.</string>
+    <string name="ai_compare_title">Bandingkan beberapa agen AI</string>
+    <string name="ai_compare_hint">Pilih 2–4 agen terpasang untuk meninjau tugas yang sama dalam mode baca, rencana, atau simulasi. Masing-masing dapat memakai kredit API berbayar.</string>
+    <string name="ai_compare_run">Bandingkan agen terpilih</string>
+    <string name="ai_compare_confirm_title">Konfirmasi perbandingan agen</string>
+    <string name="ai_compare_confirm_body">Kirim tugas ini ke %1$d agen AI? Mereka mungkin menghubungi layanan eksternal dan memakai kredit akun Anda. Tidak ada perubahan file yang diminta.</string>
+    <string name="ai_runtime_resume_session">Lanjutkan sesi Claude Code (UUID, opsional)</string>
+    <string name="ai_runtime_resume_warning">Melanjutkan sesi yang ada di ruang kerja ini; riwayat percakapan dapat diakses. Login dan persetujuan tetap diperlukan.</string>
 </resources>

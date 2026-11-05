@@ -25,4 +25,12 @@
     <string name="ai_runtime_confirm_title">تأیید اجرای عامل</string>
     <string name="ai_runtime_confirm_body">عامل %1$s در پروژه انتخاب‌شده اجرا شود؟ ممکن است ابزارها را اجرا کند، فایل‌ها را بخواند یا از سرویس هوش مصنوعی متصل استفاده کند. ابتدا دستور و مجوزها را بررسی کنید.</string>
     <string name="ai_source_license_ack">تأیید می‌کنم برای دریافت و استفاده از این سورس، مجوز لازم را دارم. دریافت سورس به‌معنای مجوز انتشار مجدد آن نیست.</string>
+    <string name="ai_source_nested_warning">زیرمخزن‌های Git هم دریافت می‌شوند و ممکن است فضای زیادی لازم داشته باشند یا مجوزهای جداگانه داشته باشند. دانلود ناقص ثبت نخواهد شد.</string>
+    <string name="ai_compare_title">مقایسه چند عامل هوش مصنوعی</string>
+    <string name="ai_compare_hint">۲ تا ۴ عامل نصب‌شده را انتخاب کنید تا یک درخواست را در حالت فقط‌خواندن یا برنامه‌ریزی بررسی کنند. هر عامل ممکن است از اعتبار API استفاده کند.</string>
+    <string name="ai_compare_run">مقایسه عامل‌های انتخاب‌شده</string>
+    <string name="ai_compare_confirm_title">تأیید مقایسه چندعامل</string>
+    <string name="ai_compare_confirm_body">این درخواست برای %1$d عامل فرستاده شود؟ ممکن است به سرویس‌های هوش مصنوعی متصل شوند و اعتبار حساب مصرف کنند. هیچ تغییری در فایل‌ها درخواست نمی‌شود.</string>
+    <string name="ai_runtime_resume_session">ادامه نشست Claude Code (شناسه UUID، اختیاری)</string>
+    <string name="ai_runtime_resume_warning">فقط نشست قبلی همین محیط را ادامه می‌دهد؛ ممکن است به متن گفت‌وگوی پیشین دسترسی داشته باشد. ورود و تأیید همچنان لازم است.</string>
 </resources>

@@ -33,9 +33,19 @@ emulator selection and all previous checks must pass on the amended tree.
 Skills/Connections routes are preserved; the navigation test does not prove
 Gmail/Drive OAuth or external service operation. Drive uses explicit SAF file
 selection; Gmail uses an Android composer. Thirteen AI repositories remain
-pinned source references, not engines linked into the APK. Restricted sources
-remain disabled. Production signature compatibility remains unknown because
+pinned source references, not engines linked into the APK. The preserved baseline
+allows source-only imports; UNVERIFIED/RESTRICTED entries require explicit license
+acknowledgment. This is not permission to redistribute, relicense or execute code. Production signature compatibility remains unknown because
 the installed version's private signing key is unavailable/unknown. CI alpha
 signing is test signing; no retained-data real-device upgrade was tested.
 
 No Phase0 acceptance or main merge is claimed until amended checks pass.
+
+## Subsequent exact result
+Head a2c4e86 ordinary workflow41975534416 PASSED: complete JVM, all
+instrumentation compilation, five emulator persistence/sidebar cases and exact
+Release Persian startup. The earlier static text-leaf state assertion was
+replaced by actual visible-menu behavior; callback assertions remain.
+Main then independently advanced toe7d7a79 with opt-in CLI bridge; preserved
+by merge beb352d. Its configured CLI runtimes/auth are not activated by this
+verification. The refreshed merged head requires new CI before main merge.

@@ -67,4 +67,101 @@ class AiCliDelegateToolTest {
         assertFalse(denied.ok)
         assertTrue(commands.isEmpty())
     }
+
+    @Test fun editedWorkspacesShowGitStatusWithoutStagingOrCommitting() = runBlocking {
+        val commands = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            commands += cmd
+            when {
+                "status" in cmd && "--short" in cmd ->
+                    result(stdout = " M app/src/Main.kt\n?? notes.txt\n")
+                "codex exec" in cmd -> result(stdout = "Finished edits")
+                else -> result()
+            }
+        }
+        val response = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Edit one Kotlin file")
+            put("allow_edits", true)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(response.ok)
+        assertEquals(3, commands.size)
+        assertTrue(commands[2].contains("status"))
+        assertTrue(commands[2].contains("core.fsmonitor=false"))
+        assertFalse(commands.any { " add " in it || " commit " in it || " push " in it })
+        assertTrue(response.output.contains(" M app/src/Main.kt"))
+        assertTrue(response.output.contains("notes.txt"))
+        assertTrue(response.output.contains("pre-existing changes"))
+    }
+
+    @Test fun failedGitReviewDoesNotHideCompletedAgentWork() = runBlocking {
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            when {
+                "status" in cmd -> result(exit = 128)
+                "codex exec" in cmd -> result(stdout = "Completed safely")
+                else -> result()
+            }
+        }
+        val response = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Edit some code")
+            put("allow_edits", true)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(response.ok)
+        assertTrue(response.output.contains("Completed safely"))
+        assertTrue(response.output.contains("Unavailable"))
+    }
+
+    @Test fun resumesExistingClaudeSessionOnlyAfterAllowlistAndUuidValidation() = runBlocking {
+        val calls = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            calls += cmd
+            result(stdout = if (calls.size == 2) "Session continued" else "")
+        }
+        val ctx = ToolContext(FileFs(temp.root))
+        val session = "123e4567-e89b-12d3-a456-426614174000"
+        val invalid = tool.execute(buildJsonObject {
+            put("agent", "claude"); put("prompt", "Review"); put("session_id", "bad; id")
+        }, ctx)
+        assertFalse(invalid.ok)
+        assertTrue(calls.isEmpty())
+        val wrongAgent = tool.execute(buildJsonObject {
+            put("agent", "codex"); put("prompt", "Review"); put("session_id", session)
+        }, ctx)
+        assertFalse(wrongAgent.ok)
+        assertTrue(calls.isEmpty())
+        val resumed = tool.execute(buildJsonObject {
+            put("agent", "claude"); put("prompt", "Review"); put("session_id", session)
+        }, ctx)
+        assertTrue(resumed.output, resumed.ok)
+        assertEquals(2, calls.size)
+        assertEquals("command -v claude >/dev/null 2>&1", calls[0])
+        assertTrue(calls[1].contains("--permission-mode plan --resume '$session'"))
+        assertFalse(calls.any { "login" in it || "install" in it || "push" in it })
+    }
+
+    @Test fun delegatedCliOutputMasksCredentialsButKeepsUsefulDiagnostics() = runBlocking {
+        val vendorKey = "gsk_" + "Aa0".repeat(20)
+        val assignedSecret = "Bb1".repeat(20)
+        val commitSha = "0123456789abcdef".repeat(4)
+        var calls = 0
+        val tool = AiCliDelegateTool { _, _, _, _ ->
+            calls++
+            result(stdout = if (calls == 2)
+                "GROQ_API_KEY=$vendorKey\nAWS_SECRET_ACCESS_KEY=$assignedSecret\ncommit $commitSha"
+                else "")
+        }
+        val outcome = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Read only")
+            put("allow_edits", false)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(outcome.ok)
+        assertEquals(2, calls)
+        assertFalse(outcome.output.contains(vendorKey))
+        assertFalse(outcome.output.contains(assignedSecret))
+        assertTrue(outcome.output.contains("GROQ_API_KEY=[redacted]"))
+        assertTrue(outcome.output.contains("AWS_SECRET_ACCESS_KEY=[redacted]"))
+        assertTrue(outcome.output.contains("commit $commitSha"))
+    }
 }
