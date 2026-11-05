@@ -147,7 +147,11 @@ class ProjectSidebarDeviceTest {
             scrollTo(skills); tap(skills)
             assertEquals("Skills", destination.get())
             val apps = instrumentation.targetContext.getString(com.androidharness.app.R.string.saba_apps_nav)
-            scrollTo(apps); tap(apps)
+            scrollTo(apps)
+            // The label may be an accessibility text leaf, not the clickable
+            // row carrying stateDescription. Exercise visible menu behavior.
+            val alreadyOpen = try { scrollTo("GitHub"); true } catch (_: IllegalStateException) { false }
+            if (!alreadyOpen) { scrollTo(apps); tap(apps) }
             for ((label, id) in listOf("GitHub" to "github", "Gmail" to "gmail", "Google Drive" to "drive")) {
                 scrollTo(label); tap(label)
                 assertEquals("Connections:$id", destination.get())

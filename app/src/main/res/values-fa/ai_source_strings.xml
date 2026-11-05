@@ -11,4 +11,18 @@
     <string name="ai_source_import_confirm_title">تأیید دریافت سورس</string>
     <string name="ai_source_import_confirm_body">مخزن %1$s با نسخه دقیق ثبت‌شده، به‌صورت پروژه مستقل روی گوشی دریافت شود؟ این کار فقط کد را دانلود می‌کند و آن را اجرا نمی‌کند. ابزار Git و فضای کافی لازم است. پروژه‌های موجود تغییر نمی‌کنند.</string>
     <string name="ai_source_import_success">مخزن %1$s در یک پروژه مستقل روی گوشی دریافت شد.</string>
+    <string name="ai_runtime_title">پل اجرایی عامل‌های هوش مصنوعی</string>
+    <string name="ai_runtime_description">عامل‌های کدنویسی نصب‌شده در محیط پروژه انتخابی شناسایی می‌شوند. ورود به هر عامل جداگانه است. هیچ ابزاری خودکار نصب یا اجرا نمی‌شود.</string>
+    <string name="ai_runtime_no_workspace">ابتدا یک پروژه دارای دسترسی به ترمینال انتخاب کنید.</string>
+    <string name="ai_runtime_check">بررسی عامل‌های نصب‌شده</string>
+    <string name="ai_runtime_ready">آماده</string>
+    <string name="ai_runtime_missing">نصب نیست</string>
+    <string name="ai_runtime_unchecked">بررسی نشده</string>
+    <string name="ai_runtime_prompt">دستور برای عامل انتخاب‌شده</string>
+    <string name="ai_runtime_edit_ack">می‌دانم این عامل می‌تواند به فایل‌های پروژه دسترسی داشته باشد یا آن‌ها را تغییر دهد. در صورت نیاز، اجازه ویرایش می‌دهم.</string>
+    <string name="ai_runtime_run">اجرای دستور عامل</string>
+    <string name="ai_runtime_output">خروجی عامل</string>
+    <string name="ai_runtime_confirm_title">تأیید اجرای عامل</string>
+    <string name="ai_runtime_confirm_body">عامل %1$s در پروژه انتخاب‌شده اجرا شود؟ ممکن است ابزارها را اجرا کند، فایل‌ها را بخواند یا از سرویس هوش مصنوعی متصل استفاده کند. ابتدا دستور و مجوزها را بررسی کنید.</string>
+    <string name="ai_source_license_ack">تأیید می‌کنم برای دریافت و استفاده از این سورس، مجوز لازم را دارم. دریافت سورس به‌معنای مجوز انتشار مجدد آن نیست.</string>
 </resources>
