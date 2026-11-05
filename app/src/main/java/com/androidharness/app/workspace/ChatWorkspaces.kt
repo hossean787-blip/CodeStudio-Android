@@ -91,31 +91,20 @@ class ChatWorkspaceFs(val primaryId: String, val bindings: List<ChatWorkspaceBin
     }
 
     /** Use for tool execution as well as UI file operations; every node operation retains the grant. */
-    fun fileAccess(binding: ChatWorkspaceBinding): WorkspaceFs {
-        val view = object : WorkspaceFs {
-            override val displayPath = binding.fs.displayPath
-            override val shellRoot: File? = null
-            override val isSaf = binding.fs.isSaf
-            override fun resolve(path: String): FsNode {
-                key(binding.id, path)
-                checkLocalPath(binding, path)
-                return BoundNode(binding, binding.fs.resolve(path), qualified = false)
-            }
-            override fun walk(path: String): Sequence<FsNode> {
-                key(binding.id, path)
-                checkLocalPath(binding, path)
-                return binding.fs.walk(path).map { BoundNode(binding, it, qualified = false) }
-            }
+    fun fileAccess(binding: ChatWorkspaceBinding): WorkspaceFs = object : WorkspaceFs {
+        override val displayPath = binding.fs.displayPath
+        override val shellRoot: File? = null
+        override val isSaf = binding.fs.isSaf
+        override fun resolve(path: String): FsNode {
+            key(binding.id, path)
+            checkLocalPath(binding, path)
+            return BoundNode(binding, binding.fs.resolve(path), qualified = false)
         }
-        val sink = binding.fs as? com.androidharness.app.documents.DocumentExportSink
-        return if (binding.canEdit && sink != null) object : WorkspaceFs by view, com.androidharness.app.documents.DocumentExportSink {
-            override fun publishDocumentExclusive(relativePath: String, bytes: ByteArray): String {
-                key(binding.id, relativePath)
-                checkLocalPath(binding, relativePath)
-                check(binding.canEdit) { "Workspace is read only in this chat" }
-                return sink.publishDocumentExclusive(relativePath, bytes)
-            }
-        } else view
+        override fun walk(path: String): Sequence<FsNode> {
+            key(binding.id, path)
+            checkLocalPath(binding, path)
+            return binding.fs.walk(path).map { BoundNode(binding, it, qualified = false) }
+        }
     }
 
     private fun checkLocalPath(binding: ChatWorkspaceBinding, path: String) {

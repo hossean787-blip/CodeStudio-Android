@@ -1372,49 +1372,23 @@ class AgentEngine(
             if (call.name in setOf("git_push", "git_pull", "github_create_pull_request", "http_request", "shell", "shell_background") &&
                 workspace !is com.androidharness.app.workspace.SshFs) prepareGitHub()
             val execute = suspend {
-                // Record only successful exclusive creations: a refused collision
-                // must never create an undo entry that could delete another file.
-                val executionContext = if (call.name == "create_document" && workspace is com.androidharness.app.documents.DocumentExportSink) {
-                    val recordingWorkspace = object : WorkspaceFs by workspace, com.androidharness.app.documents.DocumentExportSink {
-                        override fun publishDocumentExclusive(relativePath: String, bytes: ByteArray): String =
-                            kotlinx.coroutines.runBlocking(kotlinx.coroutines.NonCancellable) {
-                                val actual = workspace.publishDocumentExclusive(relativePath, bytes)
-                                try {
-                                    checkpointer.recordExclusiveCreation(sessionId, turnId, route.path(actual))
-                                    checkpointer.saveVersion(sessionId, checkpointWorkspace, route.path(actual), "after create_document")
-                                } catch (_: Exception) {
-                                    throw com.androidharness.app.tools.ToolFailure("Document was created at $actual, but recovery metadata could not be saved. Inspect it before retrying.")
-                                }
-                                beforeTexts[actual] = false to null
-                                actual
-                            }
-                    }
-                    toolContext.copy(workspace = recordingWorkspace)
-                } else toolContext
                 var outcome: ToolResult? = null
                 try {
                     val completed = deviceAccess?.traceTool(route.binding?.id ?: (route.workspace as? ChatWorkspaceFs)?.primaryId, sessionId, args["access"]?.jsonPrimitive?.content == "root", args["access"]?.jsonPrimitive?.content == "shizuku") {
-                        tool.execute(args, executionContext)
-                    } ?: tool.execute(args, executionContext)
+                        tool.execute(args, toolContext)
+                    } ?: tool.execute(args, toolContext)
                     outcome = completed
                     completed
                 } finally {
-                    val preserveRecovery: suspend () -> Unit = {
-                        beforeTexts.keys.forEach { path ->
-                            checkpointer.saveVersion(sessionId, checkpointWorkspace, route.path(path), "after ${call.name}",
-                                recordMissing = outcome?.ok == true && call.name in setOf("delete_file", "move_file", "apply_patch"))
-                        }
+                    beforeTexts.keys.forEach { path ->
+                        checkpointer.saveVersion(sessionId, checkpointWorkspace, route.path(path), "after ${call.name}",
+                            recordMissing = outcome?.ok == true && call.name in setOf("delete_file", "move_file", "apply_patch"))
                     }
-                    if (call.name == "create_document") kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) {
-                        preserveRecovery()
-                    } else preserveRecovery()
                 }
             }
             // Native file writes and their durable recovery copies finish as
             // one action even if the screen/task is paused during the write.
-            // Document encoding remains cancellable; its synchronous exclusive
-            // publication and the recovery-copy finally block commit separately.
-            val raw = if (beforeTexts.isEmpty() || call.name == "create_document") execute() else kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { execute() }
+            val raw = if (beforeTexts.isEmpty()) execute() else kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { execute() }
             raw.redacted()
         } catch (ce: CancellationException) {
             throw ce
@@ -1520,10 +1494,9 @@ class AgentEngine(
                 runCatching {
                     val node = workspace.resolve(path)
                     val nodeIsFile = node.exists && node.isFile
-                    val binaryDocument = call.name == "create_document" && args["format"]?.jsonPrimitive?.content in setOf("pdf", "docx", "xlsx", "pptx", "png", "zip")
                     val after =
-                        if (nodeIsFile && node.length <= 512_000 && !binaryDocument) node.readText() else ""
-                    val textsKnown = !binaryDocument && (!existedBefore || before != null) && (!nodeIsFile || node.length <= 512_000) &&
+                        if (nodeIsFile && node.length <= 512_000) node.readText() else ""
+                    val textsKnown = (!existedBefore || before != null) && (!nodeIsFile || node.length <= 512_000) &&
                         before?.contains('\u0000') != true && !after.contains('\u0000')
                     val exactCounts = if (textsKnown) com.androidharness.app.core.Diff.exactLineCounts(before.orEmpty(), after) else null
                     val (added, removed) = exactCounts ?: com.androidharness.app.core.Diff.lineCounts(before.orEmpty(), after)

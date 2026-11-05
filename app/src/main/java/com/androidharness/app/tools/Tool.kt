@@ -104,7 +104,6 @@ class ToolRegistry(private val tools: List<Tool>) {
                 ReadFileTool(),
                 FileInfoTool(),
                 WriteFileTool(),
-                CreateDocumentTool(),
                 EditFileTool(),
                 MultiEditTool(),
                 ApplyPatchTool(),
