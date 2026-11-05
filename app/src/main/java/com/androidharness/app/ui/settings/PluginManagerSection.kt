@@ -308,6 +308,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
             text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.ai_source_import_confirm_body, entry.repository))
                 Text(entry.pinnedCommit, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                Text(stringResource(R.string.ai_source_nested_warning), style = MaterialTheme.typography.bodySmall)
                 if (entry.requiresLicenseAcknowledgement) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(checked = licenseApproved, onCheckedChange = { licenseApproved = it },

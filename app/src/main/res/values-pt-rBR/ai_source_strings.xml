@@ -25,4 +25,5 @@
     <string name="ai_runtime_confirm_title">Confirmar execução do agente</string>
     <string name="ai_runtime_confirm_body">Executar %1$s neste espaço de trabalho? Ele pode executar ferramentas, acessar arquivos ou usar serviços de IA conectados. Confira as permissões.</string>
     <string name="ai_source_license_ack">Confirmo que tenho os direitos necessários para obter e usar este código. O download não autoriza sua redistribuição.</string>
+    <string name="ai_source_nested_warning">Os submódulos Git também serão baixados. Eles podem exigir muito espaço e ter licenças próprias. Downloads incompletos não serão registrados.</string>
 </resources>
