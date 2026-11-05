@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skills_import_loading">در حال خواندن و بررسی SKILL.md…</string>
+    <string name="skills_import_failed">وارد کردن انجام نشد. دسترسی فایل و قالب SKILL.md را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="skills_global_scope">این مهارت در فضای کاربری سراسری ذخیره می‌شود و در همهٔ پروژه‌ها و گفتگوها در دسترس خواهد بود. پیش از ذخیره، محتوای خصوصی را بررسی کنید. فقط متن SKILL.md وارد می‌شود؛ اسکریپت‌ها و دارایی‌ها وارد یا اجرا نمی‌شوند.</string>
+    <string name="skills_save_globally">ذخیره برای همهٔ پروژه‌ها</string>
+</resources>
