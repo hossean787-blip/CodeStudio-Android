@@ -1,9 +1,9 @@
 <resources>
     <string name="saba_error_center_title">مرکز خطا و بازیابی</string>
     <string name="saba_error_auth">احراز هویت رد شد (۴۰۱)</string>
-    <string name="saba_error_forbidden">دسترسی به سرویس رد شد (۴۰۳)</string>
-    <string name="saba_error_region">سرویس منطقه شما را پشتیبانی نمی‌کند</string>
-    <string name="saba_error_credits">اعتبار یا سهمیه حساب به پایان رسیده است</string>
+    <string name="saba_chat_failure_forbidden">دسترسی به سرویس رد شد (۴۰۳)</string>
+    <string name="saba_chat_failure_region">سرویس منطقه شما را پشتیبانی نمی‌کند</string>
+    <string name="saba_chat_failure_credits">اعتبار یا سهمیه حساب به پایان رسیده است</string>
     <string name="saba_error_rate">تعداد درخواست‌ها بیش از حد مجاز است (۴۲۹)</string>
     <string name="saba_error_model">مدل یا نشانی سرویس پیدا نشد (۴۰۴)</string>
     <string name="saba_error_timeout">مهلت اتصال به پایان رسید</string>
