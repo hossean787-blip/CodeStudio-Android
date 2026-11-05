@@ -45,6 +45,20 @@ class AiRuntimeBridgeTest {
         assertThrows(IllegalArgumentException::class.java) { AiRuntimeBridge.checkCommand("codex; echo owned") }
     }
 
+    @Test fun versionProbeUsesOnlyFixedCliNamesAndNeverDisplaysRawOutput() {
+        assertEquals("codex --version", AiRuntimeBridge.versionCommand("codex"))
+        assertEquals("pi --version", AiRuntimeBridge.versionCommand("pi"))
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.versionCommand("codex; curl bad.example")
+        }
+        assertEquals("1.2.3", AiRuntimeBridge.parseVersion("codex-cli v1.2.3\\n"))
+        assertEquals("0.25.1-beta.2", AiRuntimeBridge.parseVersion("claude 0.25.1-beta.2"))
+        assertNull(AiRuntimeBridge.parseVersion("Authentication required"))
+        assertNull(AiRuntimeBridge.parseVersion("API_KEY=secret-12345"))
+        assertNull(AiRuntimeBridge.parseVersion("No version\\n1.2.3 on later line"))
+        assertEquals("2.4.1", AiRuntimeBridge.parseVersion("agent 2.4.1; TOKEN=secret-value"))
+    }
+
     @Test fun shellPayloadCannotEscapeSingleArgument() {
         val dangerous = "edit John's project; \$(touch /tmp/SHOULD_NOT_EXIST) `id` --dangerously-skip-permissions"
         val command = AiRuntimeBridge.executionCommand("codex", dangerous, true)
