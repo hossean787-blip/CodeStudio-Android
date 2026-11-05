@@ -160,6 +160,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
+              # Explicitly modified by the free API bank navigation; keep all upstream comparisons on.
+              'app/src/main/java/com/androidharness/app/ui/settings/ProvidersScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',
