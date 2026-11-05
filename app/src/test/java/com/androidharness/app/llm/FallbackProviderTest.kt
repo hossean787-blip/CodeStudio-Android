@@ -90,6 +90,23 @@ class FallbackProviderTest {
         assertTrue(diagnostics.all { "[redacted]" in it.reason && "key-a" !in it.reason })
     }
 
+    @Test fun `without fallback consent error batches still hide the selected api key`() = runBlocking {
+        val nested = StreamEvent.Batch(listOf(StreamEvent.Failure("failed with initial-key", 401),
+            StreamEvent.Retrying(1, 50L, "credential initial-key rejected")))
+        val result = events(router({ _, _, _ -> listOf(nested) }))
+        val batch = result.filterIsInstance<StreamEvent.Batch>().single()
+        val failure = batch.events.filterIsInstance<StreamEvent.Failure>().single()
+        val notice = batch.events.filterIsInstance<StreamEvent.Retrying>().single()
+        assertFalse(failure.message.contains("initial-key"))
+        assertFalse(notice.reason.contains("initial-key"))
+        assertTrue(failure.message.contains("[redacted]"))
+    }
+
+    @Test fun `fallback disabled still redacts echoed upstream credentials`() = runBlocking(FallbackRun { FallbackPolicy() }) {
+        val result = events(router({ _, _, _ -> listOf(StreamEvent.Failure("token: initial-key", 401)) }))
+        assertFalse(result.filterIsInstance<StreamEvent.Failure>().single().message.contains("initial-key"))
+    }
+
     @Test fun `permanent auth invalid request and context errors never advance`() = runBlocking(FallbackRun { policy }) {
         for (failure in listOf(StreamEvent.Failure("Auth", 401), StreamEvent.Failure("Policy", 403),
             StreamEvent.Failure("Context too large", 400), StreamEvent.Failure("Model removed", 404))) {
