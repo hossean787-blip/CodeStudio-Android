@@ -147,7 +147,12 @@ class ProjectSidebarDeviceTest {
             scrollTo(skills); tap(skills)
             assertEquals("Skills", destination.get())
             val apps = instrumentation.targetContext.getString(com.androidharness.app.R.string.saba_apps_nav)
-            scrollTo(apps); tap(apps)
+            scrollTo(apps)
+            val appsState = androidx.core.view.accessibility.AccessibilityNodeInfoCompat.wrap(requireNotNull(find(apps))).stateDescription?.toString()
+            val expanded = instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_expanded)
+            val collapsed = instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_collapsed)
+            assertTrue("Apps must expose its expansion state", appsState == expanded || appsState == collapsed)
+            if (appsState == collapsed) tap(apps)
             for ((label, id) in listOf("GitHub" to "github", "Gmail" to "gmail", "Google Drive" to "drive")) {
                 scrollTo(label); tap(label)
                 assertEquals("Connections:$id", destination.get())
