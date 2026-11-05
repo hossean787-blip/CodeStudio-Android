@@ -47,20 +47,45 @@ object AndroidDocumentRenderer {
             start = end
         }
         val out = BoundedDocumentOutput()
-        PdfDocument().use { doc ->
+        val doc = PdfDocument()
+        var documentFailure: Throwable? = null
+        try {
             pages.forEachIndexed { index, (from, to) ->
                 check()
                 val page = doc.startPage(PdfDocument.PageInfo.Builder(595, 842, index + 1).create())
-                val canvas = page.canvas
-                canvas.save()
-                canvas.translate(48f, 48f)
-                canvas.clipRect(0, 0, 499, layout.getLineTop(to) - layout.getLineTop(from))
-                canvas.translate(0f, -layout.getLineTop(from).toFloat())
-                layout.draw(canvas)
-                canvas.restore()
-                doc.finishPage(page)
+                var pageFailure: Throwable? = null
+                try {
+                    check()
+                    val canvas = page.canvas
+                    // Each page owns a fresh canvas; no saved canvas state needs cleanup.
+                    canvas.translate(48f, 48f)
+                    canvas.clipRect(0, 0, 499, layout.getLineTop(to) - layout.getLineTop(from))
+                    canvas.translate(0f, -layout.getLineTop(from).toFloat())
+                    layout.draw(canvas)
+                    check()
+                } catch (failure: Throwable) {
+                    pageFailure = failure
+                    throw failure
+                } finally {
+                    try {
+                        doc.finishPage(page)
+                    } catch (cleanupFailure: Throwable) {
+                        val original = pageFailure
+                        if (original != null) original.addSuppressed(cleanupFailure) else throw cleanupFailure
+                    }
+                }
             }
             check(); doc.writeTo(out)
+        } catch (failure: Throwable) {
+            documentFailure = failure
+            throw failure
+        } finally {
+            try {
+                doc.close()
+            } catch (cleanupFailure: Throwable) {
+                val original = documentFailure
+                if (original != null) original.addSuppressed(cleanupFailure) else throw cleanupFailure
+            }
         }
         return out.toByteArray()
     }

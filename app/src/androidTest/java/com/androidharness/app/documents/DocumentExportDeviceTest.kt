@@ -30,6 +30,22 @@ class DocumentExportDeviceTest {
         } catch (_: IllegalArgumentException) { }
     }
 
+    @Test fun pdfCancellationAfterPageStartPreservesOriginalFailure() {
+        val cancelled = kotlinx.coroutines.CancellationException("cancel while page is open")
+        var checks = 0
+        try {
+            AndroidDocumentRenderer.encode(DocumentSpec("pdf", text = "سلام")) {
+                // Initial, pagination, pre-page, then the check immediately after startPage.
+                if (++checks == 4) throw cancelled
+            }
+            fail("Cancellation must escape page/document cleanup")
+        } catch (failure: kotlinx.coroutines.CancellationException) {
+            assertSame(cancelled, failure)
+            assertTrue("Native cleanup should succeed", failure.suppressed.isEmpty())
+        }
+        assertTrue(AndroidDocumentRenderer.encode(DocumentSpec("pdf", text = "سلام")).isNotEmpty())
+    }
+
     @Test fun generateAndReopenNativeDocuments() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val dir = File(context.getExternalFilesDir(null), "issue8/documents").apply { mkdirs() }
