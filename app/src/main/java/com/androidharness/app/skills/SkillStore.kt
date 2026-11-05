@@ -133,16 +133,64 @@ class SkillStore(
 
     fun saveUser(content: String): ParsedSkill {
         val parsed = SkillParser.validateUserContent(content)
-        val dir = File(userDir, parsed.name)
-        dir.mkdirs()
-        File(dir, "SKILL.md").writeText(parsed.raw)
+        writeUserSkill(parsed)
         return parsed
     }
 
+    /**
+     * Imported SKILL.md is untrusted input. Do not follow symlinked skill directories or
+     * documents, and never expose a partly written instruction file to other readers.
+     */
+    private fun writeUserSkill(parsed: ParsedSkill) {
+        val root = userDir.toPath()
+        require(!java.nio.file.Files.isSymbolicLink(root)) { "Unsafe skills directory." }
+        java.nio.file.Files.createDirectories(root)
+        val dir = root.resolve(parsed.name)
+        require(!java.nio.file.Files.isSymbolicLink(dir)) { "Unsafe skill directory." }
+        if (!java.nio.file.Files.exists(dir)) java.nio.file.Files.createDirectory(dir)
+        check(java.nio.file.Files.isDirectory(dir, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+            "The selected skill path is not a directory."
+        }
+        check(dir.toRealPath() == root.toRealPath().resolve(parsed.name)) { "Unsafe skill path." }
+        val target = dir.resolve("SKILL.md")
+        require(!java.nio.file.Files.isSymbolicLink(target)) { "Unsafe skill document." }
+        val staged = java.nio.file.Files.createTempFile(dir, ".skill-", ".tmp")
+        try {
+            java.nio.file.Files.write(staged, parsed.raw.toByteArray(Charsets.UTF_8))
+            try {
+                java.nio.file.Files.move(staged, target,
+                    java.nio.file.StandardCopyOption.ATOMIC_MOVE,
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                java.nio.file.Files.move(staged, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            }
+        } finally {
+            java.nio.file.Files.deleteIfExists(staged)
+        }
+    }
+
+    /** Delete only a well-formed user skill; walk without following child symlinks. */
     fun deleteUser(name: String): Boolean {
-        val dir = File(userDir, name)
-        if (!dir.exists()) return false
-        return dir.deleteRecursively()
+        if (!ParsedSkill.NAME_REGEX.matches(name)) return false
+        val root = userDir.toPath()
+        if (java.nio.file.Files.isSymbolicLink(root)) return false
+        val dir = root.resolve(name)
+        if (!java.nio.file.Files.isDirectory(dir, java.nio.file.LinkOption.NOFOLLOW_LINKS)) return false
+        check(dir.toRealPath() == root.toRealPath().resolve(name)) { "Unsafe skill path." }
+        java.nio.file.Files.walkFileTree(dir, object : java.nio.file.SimpleFileVisitor<java.nio.file.Path>() {
+            override fun visitFile(path: java.nio.file.Path, attrs: java.nio.file.attribute.BasicFileAttributes)
+                : java.nio.file.FileVisitResult {
+                java.nio.file.Files.delete(path)
+                return java.nio.file.FileVisitResult.CONTINUE
+            }
+            override fun postVisitDirectory(path: java.nio.file.Path, error: java.io.IOException?)
+                : java.nio.file.FileVisitResult {
+                if (error != null) throw error
+                java.nio.file.Files.delete(path)
+                return java.nio.file.FileVisitResult.CONTINUE
+            }
+        })
+        return !java.nio.file.Files.exists(dir, java.nio.file.LinkOption.NOFOLLOW_LINKS)
     }
 
     fun patchUserOrCopy(name: String, oldString: String, newString: String): Result<String> {
@@ -162,9 +210,7 @@ class SkillStore(
         val next = current.replaceFirst(oldString, newString)
         val parsed = runCatching { SkillParser.validateUserContent(next) }
             .getOrElse { return Result.failure(it) }
-        val dir = File(userDir, parsed.name)
-        dir.mkdirs()
-        File(dir, "SKILL.md").writeText(parsed.raw)
+        writeUserSkill(parsed)
         return Result.success("Patched ${parsed.name} (saved to your skills).")
     }
 
