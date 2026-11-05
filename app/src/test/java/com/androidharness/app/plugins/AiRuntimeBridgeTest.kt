@@ -51,7 +51,7 @@ class AiRuntimeBridgeTest {
         assertThrows(IllegalArgumentException::class.java) {
             AiRuntimeBridge.versionCommand("codex; curl bad.example")
         }
-        assertEquals("1.2.3", AiRuntimeBridge.parseVersion("codex-cli v1.2.3\\n"))
+        assertEquals("1.2.3", AiRuntimeBridge.parseVersion("codex-cli v1.2.3\n"))
         assertEquals("0.25.1-beta.2", AiRuntimeBridge.parseVersion("claude 0.25.1-beta.2"))
         assertNull(AiRuntimeBridge.parseVersion("Authentication required"))
         assertNull(AiRuntimeBridge.parseVersion("API_KEY=secret-12345"))
