@@ -149,6 +149,7 @@ class ToolRegistry(private val tools: List<Tool>) {
                 SkillViewTool(skills),
                 SkillsListTool(skills),
                 SkillManageTool(skills),
+                StudyPracticeTool(),
                 CodeGraphExploreTool(codeGraph),
                 CodeGraphNodeTool(codeGraph),
                 CodeGraphImpactTool(codeGraph),
