@@ -189,11 +189,13 @@ jobs:
               'app/src/main/java/com/androidharness/app/data/ConversationConfig.kt',
               'app/src/main/java/com/androidharness/app/data/ChatAgents.kt',
               'app/src/main/java/com/androidharness/app/data/ProjectHistoryAccess.kt',
+              'app/src/main/java/com/androidharness/app/data/MemoryRepository.kt',
               'app/src/main/java/com/androidharness/app/agent/AgentEngine.kt',
               'app/src/test/java/com/androidharness/app/skills/SkillStoreTest.kt',
               'app/src/test/java/com/androidharness/app/data/ConversationConfigTest.kt',
               'app/src/test/java/com/androidharness/app/data/ChatAgentsTest.kt',
               'app/src/test/java/com/androidharness/app/data/ProjectHistoryAccessTest.kt',
+              'app/src/test/java/com/androidharness/app/data/PrivateAgentProjectPolicyTest.kt',
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
