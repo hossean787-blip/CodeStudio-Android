@@ -383,8 +383,9 @@ jobs:
   document-readers:
     needs: emulator-persistence
     name: Independently open native document exports
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The independent LibreOffice check must run, not time out during apt mirror downloads.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -398,7 +399,7 @@ jobs:
         run: |
           python -m pip install python-docx==1.2.0 openpyxl==3.1.5 python-pptx==1.0.2 Pillow==11.3.0 pypdf==6.1.1
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=60 install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
           libreoffice --version
       - name: Open all formats and verify real Office conversions
         run: python scripts/validate_document_exports.py native-evidence --output document-reader-evidence --libreoffice
