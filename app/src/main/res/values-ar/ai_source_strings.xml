@@ -31,6 +31,6 @@
     <string name="ai_compare_run">مقارنة الوكلاء المحددين</string>
     <string name="ai_compare_confirm_title">تأكيد مقارنة الوكلاء</string>
     <string name="ai_compare_confirm_body">إرسال هذه المهمة إلى %1$d وكلاء؟ قد يتصلون بخدمات ذكاء اصطناعي خارجية ويستهلكون رصيد الحساب. لن يطلب تعديل الملفات.</string>
-    <string name="ai_runtime_resume_session">استئناف جلسة Claude Code (معرّف UUID اختياري)</string>
+    <string name="ai_runtime_resume_session">استئناف الجلسة (UUID لـ Claude/Gemini أو ses_ لـ OpenCode، اختياري)</string>
     <string name="ai_runtime_resume_warning">تُستأنف جلسة موجودة في مساحة العمل هذه وقد يُقرأ سياق المحادثة السابق. يلزم تسجيل الدخول والموافقة.</string>
 </resources>

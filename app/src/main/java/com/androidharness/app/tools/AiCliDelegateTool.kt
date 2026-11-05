@@ -31,7 +31,7 @@ class AiCliDelegateTool(
         "Supported agents: codex, claude, opencode, gemini, pi, qwen, aider. " +
         "The CLI may call external AI services and use project files. Never installs a CLI or obtains API keys. " +
         "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. " +
-        "Optional session_id resumes a pre-existing Claude Code session UUID; no sessions or credentials are created. " +
+        "Optional session_id resumes a pre-existing Claude/Gemini UUID or OpenCode ses_ session; no accounts, sessions or credentials are created. " +
         "This is a modifying tool requiring user approval."
 
     override val parametersSchema: JsonObject = Schema.obj(
@@ -39,7 +39,7 @@ class AiCliDelegateTool(
             "agent" to Schema.string("One of codex, claude, opencode, gemini, pi, qwen, aider."),
             "prompt" to Schema.string("Explicit coding task (1-2400 characters). Do not include secrets."),
             "allow_edits" to Schema.boolean("False requests read-only mode for codex/claude; true explicitly permits edits."),
-            "session_id" to Schema.string("Optional UUID of an existing Claude Code session in this workspace. Other agents cannot resume."),
+            "session_id" to Schema.string("Optional existing Claude/Gemini UUID or OpenCode ses_ session ID in this workspace. Other agents cannot resume."),
         ),
         required = listOf("agent", "prompt"),
     )
