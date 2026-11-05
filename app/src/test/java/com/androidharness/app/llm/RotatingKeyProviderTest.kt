@@ -21,12 +21,13 @@ class RotatingKeyProviderTest {
         assertEquals(saved, pool())
     }
 
-    @Test fun authenticationAndRateLimitsCanRecoverBeforeAnyResponseOutput() = runBlocking {
-        for (status in listOf(401, 402, 403, 429)) {
+    @Test fun rejectedAuthenticationCanUseAnotherSavedCredentialBeforeOutput() = runBlocking {
+        for (rejected in listOf(StreamEvent.Failure("rejected", 401),
+            StreamEvent.Failure("rejected", errorCode = "authentication_error"))) {
             val keys = mutableListOf<String>()
             val rotating = RotatingKeyProvider(provider { key ->
                 keys += key
-                if (key == "alpha-key") emit(StreamEvent.Failure("rejected", status))
+                if (key == "alpha-key") emit(rejected)
                 else { emit(StreamEvent.TextDelta("Recovered")); emit(StreamEvent.Done()) }
             }, { pool(false) })
             val events = rotating.streamChat(config, "ignored", "", emptyList(), emptyList(), RequestOptions()).toList()
@@ -34,6 +35,34 @@ class RotatingKeyProviderTest {
             assertEquals(1, events.filterIsInstance<StreamEvent.Retrying>().size)
             assertEquals("Recovered", events.filterIsInstance<StreamEvent.TextDelta>().single().text)
             assertTrue(events.none { it is StreamEvent.Failure })
+        }
+    }
+
+    @Test fun quotasCreditsForbiddenAndRegionsNeverRetryOnAnotherKey() = runBlocking {
+        val rejections = listOf(
+            StreamEvent.Failure("credits", 402), StreamEvent.Failure("forbidden", 403),
+            StreamEvent.Failure("rate limited", 429),
+            StreamEvent.Failure("quota", 429, errorCode = "insufficient_quota"),
+            StreamEvent.Failure("region", 403, errorCode = "unsupported_country_region_territory"),
+            StreamEvent.Failure("quota", errorCode = "resource_exhausted"),
+            StreamEvent.Failure("quota", errorCode = "quota_exceeded"),
+            StreamEvent.Failure("credit", errorCode = "credit_balance_too_low"),
+            StreamEvent.Failure("region", errorCode = "unsupported_region"),
+            StreamEvent.Failure("mixed", 401, errorCode = "insufficient_quota"))
+        for (rejection in rejections) for (batched in listOf(false, true)) {
+            val keys = mutableListOf<String>()
+            val rotating = RotatingKeyProvider(provider { key ->
+                keys += key
+                val failure = rejection.copy(message = "${rejection.message}: alpha-key / beta-key")
+                emit(if (batched) StreamEvent.Batch(listOf(StreamEvent.Batch(listOf(failure)))) else failure)
+            }, { pool(false) })
+            val events = rotating.streamChat(config, "ignored", "", emptyList(), emptyList(), RequestOptions()).toList()
+            assertEquals(listOf("alpha-key"), keys)
+            assertTrue(events.none { it is StreamEvent.Retrying })
+            val failure = events.filterIsInstance<StreamEvent.Failure>().single()
+            assertEquals(rejection.code, failure.code)
+            assertEquals(rejection.errorCode, failure.errorCode)
+            assertFalse(failure.message.contains("alpha-key")); assertFalse(failure.message.contains("beta-key"))
         }
     }
 
@@ -74,7 +103,7 @@ class RotatingKeyProviderTest {
             var calls = 0
             val rotating = RotatingKeyProvider(provider { key ->
                 calls++
-                if (key == "alpha-key") emit(StreamEvent.Batch(listOf(StreamEvent.Batch(prefix + StreamEvent.Failure("limited", 429)))))
+                if (key == "alpha-key") emit(StreamEvent.Batch(listOf(StreamEvent.Batch(prefix + StreamEvent.Failure("authentication rejected", 401)))))
                 else emit(StreamEvent.TextDelta("recovered"))
             }, { pool(false) })
             val events = rotating.streamChat(config, "ignored", "", emptyList(), emptyList(), RequestOptions()).toList()
