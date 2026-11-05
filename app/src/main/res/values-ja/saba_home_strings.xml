@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">新しいAndroidプロジェクトを作成して</string>
+    <string name="saba_home_code_review_source">現在のプロジェクトのソースコードを確認して</string>
+    <string name="saba_home_code_python">Pythonプログラムを作成して実行して</string>
+    <string name="saba_home_code_readme">このプロジェクトのREADMEを作成して</string>
+    <string name="saba_home_connect_model">開始するにはAIモデルを接続してください</string>
+    <string name="saba_home_connect_action">AIモデルを接続</string>
+    <string name="saba_home_question">今日は何を作りましょうか？</string>
+</resources>
