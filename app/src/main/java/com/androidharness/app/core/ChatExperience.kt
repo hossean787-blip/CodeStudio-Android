@@ -57,7 +57,7 @@ Use inline rich responses for visuals and documents in Chat. For a custom diagra
 
     /** Only the latest user turn can offer a handoff; failed or uncommitted calls never supply card copy. */
     fun codeHandoffOffer(messages: List<ChatMessage>): CodeHandoffOffer? {
-        val userIndex = messages.indexOfLast { it.role == Role.USER }
+        val userIndex = messages.indexOfLast { MessageVisibility.isUserAuthored(it) }
         if (userIndex < 0) return null
         val user = com.androidharness.app.core.response.UserMessageContent.visibleText(messages[userIndex].text)
             .substringBefore("[Attached file:")

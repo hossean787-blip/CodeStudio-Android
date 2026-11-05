@@ -45,6 +45,18 @@ class ChatExperienceTest {
         assertEquals(80, offer("""{"title":"${"x".repeat(200)}"}""")?.title?.length)
     }
 
+    @Test fun internalRecoveryControlsCannotBecomeUserHandoffInstructions() {
+        val control = com.androidharness.app.agent.RunRecovery.continuationMessage()
+        val user = ChatMessage(Role.USER, "Please continue in Code", id = "real-user-turn")
+        assertNull(ChatExperience.codeHandoffOffer(listOf(control)))
+        assertTrue(ChatExperience.offersCode(listOf(user, control)))
+        assertFalse(ChatExperience.offersCode(listOf(ChatMessage(Role.USER, "Explain it", id = "real"), control)))
+        assertTrue(MessageVisibility.visible(listOf(user, control)).single().id == user.id)
+        // Identical wording typed by a real user is not an internal control.
+        val legitimate = ChatMessage(Role.USER, control.text, id = "real-same-text")
+        assertEquals(listOf(legitimate), MessageVisibility.visible(listOf(control, legitimate)))
+    }
+
     @Test fun chatPromptUsesTheLocalCalendarDateAcrossTimezoneBoundaries() {
         val instant = java.time.Instant.parse("2026-10-21T20:00:00Z")
         val india = ChatExperience.systemPrompt(instant.atZone(java.time.ZoneId.of("Asia/Kolkata")))

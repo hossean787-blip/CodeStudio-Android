@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">یک پروژه اندرویدی جدید بساز</string>
+    <string name="saba_home_code_review_source">سورس پروژه فعلی‌ام را بررسی کن</string>
+    <string name="saba_home_code_python">یک برنامه پایتون بساز و اجرا کن</string>
+    <string name="saba_home_code_readme">برای این پروژه یک فایل README بساز</string>
+    <string name="saba_home_connect_model">برای شروع، یک مدل هوش مصنوعی متصل کنید</string>
+    <string name="saba_home_connect_action">اتصال مدل هوش مصنوعی</string>
+    <string name="saba_home_question">امروز چه چیزی بسازیم؟</string>
+</resources>

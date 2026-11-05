@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">أنشئ مشروع أندرويد جديدًا</string>
+    <string name="saba_home_code_review_source">راجع الشيفرة المصدرية لمشروعي الحالي</string>
+    <string name="saba_home_code_python">أنشئ برنامج بايثون وشغّله</string>
+    <string name="saba_home_code_readme">أنشئ ملف README لهذا المشروع</string>
+    <string name="saba_home_connect_model">وصّل نموذج ذكاء اصطناعي للبدء</string>
+    <string name="saba_home_connect_action">توصيل نموذج ذكاء اصطناعي</string>
+    <string name="saba_home_question">ماذا سننشئ اليوم؟</string>
+</resources>

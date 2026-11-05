@@ -41,12 +41,17 @@ jobs:
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/llm/OpenAiCompatProvider.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
-              # Issue #8 item 04: provenance-reviewed upstream README attribution, launcher and splash.
+              # Issue #8 item 04: reviewed upstream attribution and branding.
               'README.md',
-              # Issue #8 item 04: reviewed Saba launcher and splash resources.
               'app/src/main/res/drawable/ic_launcher_foreground.xml',
               'app/src/main/res/values/colors.xml',
               'app/src/main/res/values/themes.xml',
+              # Debug label must match the installed Saba Studio identity.
+              'app/src/debug/res/values/strings.xml',
+              # Issue #8 item 02: internal controls must not be editable user messages.
+              'app/src/main/java/com/androidharness/app/core/MessageVisibility.kt',
+              'app/src/main/java/com/androidharness/app/core/ChatExperience.kt',
+              'app/src/test/java/com/androidharness/app/core/ChatExperienceTest.kt',
               'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
               'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
               'app/src/main/java/com/androidharness/app/data/SessionRepository.kt',
@@ -170,6 +175,12 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
+              'app/src/main/java/com/androidharness/app/MainActivity.kt',
+              'app/src/main/java/com/androidharness/app/ui/chat/ChatScreen.kt',
+              'app/src/main/java/com/androidharness/app/ui/projects/ProjectsScreen.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/LanguageSection.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/settings/LocalizationDeviceTest.kt',
+              'app/src/main/res/xml/locales_config.xml',
               'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
               # Free API bank's reviewed provider discovery entry point.
@@ -345,7 +356,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
             mkdir -p delivery-emulator
             adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk

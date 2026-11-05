@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        com.androidharness.app.ui.common.SabaFirstRunLocale.applyIfNeeded(this)
         enableEdgeToEdge()
         container = (application as HarnessApp).container
         lifecycleScope.launch {

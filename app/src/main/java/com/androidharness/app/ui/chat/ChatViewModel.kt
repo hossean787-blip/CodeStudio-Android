@@ -1943,13 +1943,13 @@ class ChatViewModel(
      * as a fresh run. The UI warns before calling this.
      */
     fun editAndResend(message: ChatMessage, newText: String, retryModel: com.androidharness.app.data.ModelShortcut? = null) {
-        if (sessionId == null || message.id == null || message.role != Role.USER || newText.isBlank()) return
+        if (sessionId == null || message.id == null || !com.androidharness.app.core.MessageVisibility.isUserAuthored(message) || newText.isBlank()) return
         startRun(newText, replacement = message, retryModel = retryModel)
     }
 
     fun retryLatestResponse(retryModel: com.androidharness.app.data.ModelShortcut? = null) {
         if (_state.value.busy || !_state.value.conversation.isChat) return
-        val question = _state.value.messages.lastOrNull { it.role == Role.USER } ?: return
+        val question = _state.value.messages.lastOrNull { com.androidharness.app.core.MessageVisibility.isUserAuthored(it) } ?: return
         editAndResend(question, question.text, retryModel)
     }
 

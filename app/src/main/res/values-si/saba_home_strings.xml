@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">නව Android ව්‍යාපෘතියක් සාදන්න</string>
+    <string name="saba_home_code_review_source">මගේ වත්මන් ව්‍යාපෘතියේ මූලාශ්‍ර කේතය පරීක්ෂා කරන්න</string>
+    <string name="saba_home_code_python">Python වැඩසටහනක් සාදා ක්‍රියාත්මක කරන්න</string>
+    <string name="saba_home_code_readme">මෙම ව්‍යාපෘතියට README ගොනුවක් සාදන්න</string>
+    <string name="saba_home_connect_model">ආරම්භ කිරීමට AI ආකෘතියක් සම්බන්ධ කරන්න</string>
+    <string name="saba_home_connect_action">AI ආකෘතියක් සම්බන්ධ කරන්න</string>
+    <string name="saba_home_question">අද අපි මොනවාද නිර්මාණය කරන්නේ?</string>
+</resources>

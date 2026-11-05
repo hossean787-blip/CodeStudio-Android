@@ -174,8 +174,8 @@ internal fun ProjectNavigationSidebar(
             verticalArrangement = Arrangement.spacedBy(if (glass) 8.dp else 0.dp)) {
             if (!chatOnly) SidebarNavRow(uiContext.getString(R.string.ui_tools), Icons.Outlined.Widgets, expanded = toolsOpen, onClick = { toolsOpen = !toolsOpen })
             if (toolsOpen && !chatOnly) Column(Modifier.padding(start = 16.dp), verticalArrangement = Arrangement.spacedBy(if (glass) 8.dp else 0.dp)) {
-                SidebarNavRow("Terminal", Icons.Outlined.Terminal, currentRoute?.startsWith("terminal") == true, onClick = onTerminal)
-                SidebarNavRow("Build & test", Icons.Outlined.Build, currentRoute?.startsWith("build-test") == true, onClick = onBuild)
+                SidebarNavRow(uiContext.getString(R.string.ui_terminal), Icons.Outlined.Terminal, currentRoute?.startsWith("terminal") == true, onClick = onTerminal)
+                SidebarNavRow(uiContext.getString(R.string.ui_build_test), Icons.Outlined.Build, currentRoute?.startsWith("build-test") == true, onClick = onBuild)
                 SidebarNavRow(uiContext.getString(R.string.ui_scheduled_tasks), Icons.Outlined.Schedule, currentRoute == "automation", onClick = onAutomation)
                 SidebarNavRow(workspaceLabel, Icons.Outlined.FolderOpen, subtitle = workspaceSummary, onClick = onWorkspaces)
                 changesSummary?.let { SidebarNavRow(it, Icons.Outlined.Difference, onClick = onChanges) }
@@ -266,7 +266,7 @@ internal fun ProjectNavigationSidebar(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp).heightIn(min = 44.dp)
                             .then(if (glass) Modifier.harnessGlass(scheme.primaryContainer, RoundedCornerShape(28.dp)) else Modifier)) {
                         Icon(Icons.Outlined.EditNote, null, Modifier.size(19.dp)); Spacer(Modifier.width(8.dp))
-                        Text("گفت‌وگوی جدید", style = MaterialTheme.typography.labelLarge)
+                        Text(uiContext.getString(R.string.settings_chat_start_new), style = MaterialTheme.typography.labelLarge)
                     }
                     }
                     if (!selecting || !short) {
@@ -324,7 +324,7 @@ internal fun ProjectNavigationSidebar(
                         }
                         ExpressiveIconButton(onClick = { onQueryChange(""); showArchived = !showArchived }) {
                             Icon(if (showArchived) Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Archive,
-                                if (showArchived) uiContext.getString(R.string.ui_back_to_active, (if (projectsView) "projects" else "chats").toString()) else uiContext.getString(R.string.ui_show_archived, (if (projectsView) "projects" else "chats").toString()),
+                                if (showArchived) uiContext.getString(R.string.ui_back_to_active, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])) else uiContext.getString(R.string.ui_show_archived, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])),
                                 Modifier.size(19.dp), tint = if (showArchived) scheme.primary else scheme.onSurfaceVariant)
                         }
                     }
@@ -413,7 +413,7 @@ internal fun ProjectNavigationSidebar(
                         }
                         val recent = sessions.filter { it.id !in pinned && it.id !in archived }
                         if (recent.isNotEmpty()) {
-                            item { SidebarSectionHeader(if (chatOnly) "گفتگوهای اخیر" else uiContext.getString(R.string.conversation_recent_code_chats), true, null) }
+                            item { SidebarSectionHeader(if (chatOnly) uiContext.getString(R.string.ui_recent_chats) else uiContext.getString(R.string.conversation_recent_code_chats), true, null) }
                             items(recent, key = { "chat:${it.id}" }) { Chat(it, showProject = true) }
                         }
                         if (recent.isEmpty() && grouped.pinned.isEmpty()) item {
@@ -517,7 +517,7 @@ private fun SidebarNavRow(label: String, icon: ImageVector, selected: Boolean = 
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(if (glass) 12.dp else 10.dp)) {
             Icon(icon, null, Modifier.size(18.dp), tint = scheme.onSurfaceVariant)
             Column(Modifier.weight(1f)) {
-                Text(label, style = MaterialTheme.typography.bodySmall)
+                Text(label, style = MaterialTheme.typography.bodyMedium)
                 subtitle?.let { Text(it, style = MaterialTheme.typography.labelSmall, color = scheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis) }
             }
             if (expanded != null) Icon(if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
@@ -540,7 +540,7 @@ private fun SidebarChatRow(chat: SessionEntity, selected: Boolean, pinned: Boole
     val hasDraft = remember(chat.conversationJson) {
         com.androidharness.app.data.ConversationConfig.decode(chat.conversationJson).draftText.isNotBlank()
     }
-    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) androidx.compose.ui.graphics.Color(0xFF38DDF7).copy(alpha = .10f)
+    val rowColor by animateColorAsState(if (selecting && checked) scheme.secondaryContainer else if (selected) scheme.primary.copy(alpha = .10f)
         else if (focused) scheme.surfaceContainerHigh else scheme.surface, expressiveEffectsSpec(), label = "Chat selection")
     Row(Modifier.fillMaxWidth().padding(start = if (indented) 30.dp else 10.dp, end = 10.dp, top = 2.dp, bottom = 2.dp)) {
         if (indented) Box(Modifier.width(1.dp).height(56.dp).background(scheme.outlineVariant))

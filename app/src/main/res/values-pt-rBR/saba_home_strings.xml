@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">Crie um novo projeto Android</string>
+    <string name="saba_home_code_review_source">Revise o código-fonte do meu projeto atual</string>
+    <string name="saba_home_code_python">Crie e execute um programa Python</string>
+    <string name="saba_home_code_readme">Crie um README para este projeto</string>
+    <string name="saba_home_connect_model">Conecte um modelo de IA para começar</string>
+    <string name="saba_home_connect_action">Conectar modelo de IA</string>
+    <string name="saba_home_question">O que vamos criar hoje?</string>
+</resources>
