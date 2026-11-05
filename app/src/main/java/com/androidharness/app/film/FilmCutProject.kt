@@ -29,7 +29,7 @@ data class FilmCutProject(
 
     fun toPortableJson(): String {
         require(validationError() == null) { "The film project is invalid." }
-        return Json.encodeToString(serializer(), this)
+        return Json { encodeDefaults = true }.encodeToString(serializer(), this)
     }
 
     companion object {
