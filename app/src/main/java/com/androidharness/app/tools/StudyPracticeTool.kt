@@ -15,6 +15,7 @@ class StudyPracticeTool : Tool {
             "notes" to Schema.string("User-supplied term: definition lines; maximum 20,000 chars. Do not use another project's notes."),
             "mode" to Schema.string("flashcards, quiz or plan"),
             "max_cards" to Schema.integer("Maximum number of pairs (1–30), default 20."),
+            "language" to Schema.string("Optional fa/en/auto; default auto based on note language."),
         ),
         required = listOf("notes", "mode"),
     )
@@ -23,8 +24,9 @@ class StudyPracticeTool : Tool {
         val notes = args["notes"]?.jsonPrimitive?.contentOrNull ?: throw ToolFailure("Missing notes.")
         val mode = args["mode"]?.jsonPrimitive?.contentOrNull ?: throw ToolFailure("Missing mode.")
         val count = args["max_cards"]?.jsonPrimitive?.contentOrNull?.toIntOrNull() ?: 20
+        val language = args["language"]?.jsonPrimitive?.contentOrNull ?: "auto"
         return try {
-            ToolResult(true, StudyPractice.render(notes, mode, count))
+            ToolResult(true, StudyPractice.render(notes, mode, count, language))
         } catch (e: IllegalArgumentException) {
             throw ToolFailure(e.message ?: "Invalid study notes.")
         }
