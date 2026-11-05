@@ -44,11 +44,11 @@ internal fun LanguageSection() {
     val uriHandler = LocalUriHandler.current
     val languages = listOf(
         "" to R.string.settings_language_system,
+        "fa" to R.string.settings_language_persian,
         "en" to R.string.settings_language_english,
         "zh-CN" to R.string.settings_language_chinese,
         "ru" to R.string.settings_language_russian,
         "ar" to R.string.settings_language_arabic,
-        "fa" to R.string.settings_language_persian,
         "pt-BR" to R.string.settings_language_portuguese,
         "de" to R.string.settings_language_german,
         "es" to R.string.settings_language_spanish,
