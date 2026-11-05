@@ -74,8 +74,7 @@ object DocumentPackagePreview {
         // invariants before invoking any parser, even on devices lacking the flags.
         // The limited input also caps decompressed ZIP content (ZIP-bomb defense).
         val bytes = input.readBytes()
-        val prolog = "<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"yes\\\"?>"
-            .replace("\\\"", "\"").toByteArray(Charsets.UTF_8)
+        val prolog = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""".toByteArray(Charsets.UTF_8)
         require(bytes.size >= prolog.size && prolog.indices.all { bytes[it] == prolog[it] }) {
             "Only generated UTF-8 XML is supported"
         }
