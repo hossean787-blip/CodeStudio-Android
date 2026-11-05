@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">创建一个新的 Android 项目</string>
+    <string name="saba_home_code_review_source">检查我当前项目的源代码</string>
+    <string name="saba_home_code_python">创建并运行一个 Python 程序</string>
+    <string name="saba_home_code_readme">为此项目创建 README</string>
+    <string name="saba_home_connect_model">连接 AI 模型以开始使用</string>
+    <string name="saba_home_connect_action">连接 AI 模型</string>
+    <string name="saba_home_question">今天我们来创建什么？</string>
+</resources>

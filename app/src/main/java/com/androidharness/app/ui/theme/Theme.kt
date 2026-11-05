@@ -47,6 +47,8 @@ fun HarnessTheme(
         ThemeMode.DARK, ThemeMode.AMOLED -> true
     }
     val context = LocalContext.current
+    val language = context.resources.configuration.locales[0]?.language
+    val typography = if (language == "fa" || language == "ar") PersianTypography else HarnessTypography
     val personal = remember(customPalette, canvasSeed, dark) {
         when {
             canvasSeed != null -> canvasColorScheme(canvasSeed, dark)
@@ -76,7 +78,7 @@ fun HarnessTheme(
                 background = androidx.compose.ui.graphics.Color.Transparent,
                 surface = androidx.compose.ui.graphics.Color.Transparent,
             ),
-            typography = HarnessTypography,
+            typography = typography,
             shapes = HarnessShapes,
             motionScheme = MotionScheme.standard(),
             content = { HarnessGlassRoot(glass, content) },

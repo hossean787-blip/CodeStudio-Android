@@ -67,6 +67,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidharness.app.R
+import com.androidharness.app.ui.common.HarnessMark
 import kotlinx.coroutines.delay
 import com.androidharness.app.ui.common.Button
 
@@ -98,9 +99,9 @@ internal fun EmptyState(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val cyan = Color(0xFF38DDF7)
-    val violet = Color(0xFF9877FF)
     val scheme = MaterialTheme.colorScheme
+    val cyan = scheme.primary
+    val violet = scheme.tertiary
     val ideas = if (chatOnly && agent != null && agent.starters.isNotEmpty()) {
         agent.starters.take(4).map { Icons.Outlined.Lightbulb to it }
     } else if (chatOnly) {
@@ -110,10 +111,10 @@ internal fun EmptyState(
             Icons.Outlined.EditNote to context.getString(R.string.chat_suggestion_draft),
         )
     } else listOf(
-        Icons.Outlined.Code to "یک پروژه اندرویدی جدید بساز",
-        Icons.Outlined.Folder to "سورس پروژه فعلی را بررسی کن",
-        Icons.Outlined.Terminal to "یک برنامه پایتون بساز و اجرا کن",
-        Icons.Outlined.CreateNewFolder to "برای پروژه یک README ایجاد کن",
+        Icons.Outlined.Code to context.getString(R.string.saba_home_code_new_android),
+        Icons.Outlined.Folder to context.getString(R.string.saba_home_code_review_source),
+        Icons.Outlined.Terminal to context.getString(R.string.saba_home_code_python),
+        Icons.Outlined.CreateNewFolder to context.getString(R.string.saba_home_code_readme),
     )
 
     Box(
@@ -138,12 +139,7 @@ internal fun EmptyState(
                         .background(violet.copy(alpha = 0.12f)),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(
-                        Icons.Outlined.Code,
-                        contentDescription = null,
-                        tint = cyan,
-                        modifier = Modifier.size(32.dp),
-                    )
+                    HarnessMark(36.dp)
                 }
             }
             Spacer(Modifier.height(22.dp))
@@ -155,9 +151,9 @@ internal fun EmptyState(
             )
             Spacer(Modifier.height(10.dp))
             Text(
-                text = if (!hasProvider) "برای شروع، یک مدل هوش مصنوعی را متصل کنید"
+                text = if (!hasProvider) context.getString(R.string.saba_home_connect_model)
                 else if (chatOnly && agent != null && agent.description.isNotBlank()) agent.description
-                else "امروز چه چیزی بسازیم؟",
+                else context.getString(R.string.saba_home_question),
                 style = MaterialTheme.typography.bodyLarge,
                 color = scheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -167,7 +163,7 @@ internal fun EmptyState(
                 Button(onClick = onAddProvider) {
                     Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("اتصال مدل هوش مصنوعی")
+                    Text(context.getString(R.string.saba_home_connect_action))
                 }
             } else {
                 Spacer(Modifier.height(30.dp))

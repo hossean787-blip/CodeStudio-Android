@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_home_code_new_android">Buat proyek Android baru</string>
+    <string name="saba_home_code_review_source">Tinjau kode sumber proyek saya saat ini</string>
+    <string name="saba_home_code_python">Buat dan jalankan program Python</string>
+    <string name="saba_home_code_readme">Buat README untuk proyek ini</string>
+    <string name="saba_home_connect_model">Hubungkan model AI untuk memulai</string>
+    <string name="saba_home_connect_action">Hubungkan model AI</string>
+    <string name="saba_home_question">Apa yang akan kita buat hari ini?</string>
+</resources>
