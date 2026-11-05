@@ -170,10 +170,15 @@ fun SkillsScreen(
             initial = importDraft ?: skillTemplate(),
             onDismiss = { showAdd = false; importDraft = null },
             onSave = { content ->
-                container.skills.saveUser(content)
-                skillsRevision++
-                showAdd = false
-                importDraft = null
+                try {
+                    container.skills.saveUser(content)
+                    skillsRevision++
+                    showAdd = false
+                    importDraft = null
+                } catch (e: Exception) {
+                    // Never expose file paths or untrusted parser details in UI.
+                    importError = uiContext.getString(R.string.skills_import_failed)
+                }
             },
         )
     }
