@@ -57,6 +57,21 @@ class DocumentPackagePreviewTest {
         } finally { file.delete() }
     }
 
+    @Test fun editableWorkbookRoundTripTreatsFormulaLookingCellsAsLiteralText() {
+        val file = File.createTempFile("saba-xlsx-literal-draft-", ".xlsx")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec(
+                "xlsx", rows = listOf(listOf("عنوان", "=1+1", "عدد ۱۲")),
+            )))
+            val draft = DocumentPackagePreview.extractEditable(file, "xlsx")
+            assertTrue(draft.contains("=1+1"))
+            val reconstructed = DocumentStudioInput.parse("xlsx", "بازنویسی", draft)
+            assertTrue(reconstructed.rows.flatten().contains("=1+1"))
+            file.writeBytes(DocumentEncoder.encode(reconstructed))
+            assertTrue(DocumentPackagePreview.extractEditable(file, "xlsx").contains("=1+1"))
+        } finally { file.delete() }
+    }
+
     @Test fun previewRejectsDoctypeAndUntrustedExternalXmlEntities() {
         val file = File.createTempFile("saba-unsafe-preview-", ".zip")
         try {
@@ -66,6 +81,7 @@ class DocumentPackagePreviewTest {
                 zip.closeEntry()
             }
             assertTrue(runCatching { DocumentPackagePreview.extract(file, "docx") }.isFailure)
+            assertTrue(runCatching { DocumentPackagePreview.extractEditable(file, "docx") }.isFailure)
         } finally { file.delete() }
     }
 
