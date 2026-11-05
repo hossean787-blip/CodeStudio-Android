@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">Pusat galat dan pemulihan</string>
+    <string name="saba_error_auth">Autentikasi ditolak (401)</string>
+    <string name="saba_chat_failure_forbidden">Penyedia menolak akses (403)</string>
+    <string name="saba_chat_failure_region">Penyedia melaporkan wilayah tidak didukung</string>
+    <string name="saba_chat_failure_credits">Kredit atau kuota habis</string>
+    <string name="saba_error_rate">Terlalu banyak permintaan (429)</string>
+    <string name="saba_error_model">Model atau endpoint tidak ditemukan (404)</string>
+    <string name="saba_error_timeout">Waktu sambungan habis</string>
+    <string name="saba_error_server">Layanan penyedia sementara tidak tersedia</string>
+    <string name="saba_error_tls">Verifikasi sambungan aman gagal</string>
+    <string name="saba_error_network">Sambungan jaringan gagal</string>
+    <string name="saba_error_other">Permintaan tidak dapat diselesaikan</string>
+    <string name="saba_advice_auth">Periksa kunci tersimpan atau otorisasi akun. Jangan tempelkan kredensial ke laporan.</string>
+    <string name="saba_advice_forbidden">Periksa izin akun dan akses model. Kode 403 saja bukan bukti pembatasan wilayah.</string>
+    <string name="saba_advice_region">Periksa kebijakan ketersediaan resmi penyedia. Mengganti kunci tidak menghapus pembatasan.</string>
+    <string name="saba_advice_credits">Periksa pemakaian akun dan harga sebelum mengirim permintaan baru.</string>
+    <string name="saba_advice_rate">Tunggu hingga batas penyedia diatur ulang, lalu coba sekali lagi. Jangan mengulang permintaan terus-menerus.</string>
+    <string name="saba_advice_model">Pilih model yang tersedia dan periksa alamat penyedia.</string>
+    <string name="saba_advice_timeout">Periksa koneksi internet lalu coba lagi. Permintaan mungkin sudah diterima penyedia.</string>
+    <string name="saba_advice_server">Periksa status penyedia lalu coba lagi nanti.</string>
+    <string name="saba_advice_tls">Periksa tanggal perangkat dan keamanan sambungan. Jangan nonaktifkan validasi sertifikat.</string>
+    <string name="saba_advice_network">Periksa data seluler atau Wi-Fi lalu coba lagi.</string>
+    <string name="saba_advice_other">Buka pemecahan masalah untuk memeriksa koneksi dan penyedia terpilih. Detail galat mentah disembunyikan demi privasi.</string>
+    <string name="saba_error_http">Status HTTP: %1$d</string>
+    <string name="saba_network_validated">Internet: divalidasi sistem (penyedia belum diperiksa)</string>
+    <string name="saba_network_offline">Internet: tidak ada koneksi aktif</string>
+    <string name="saba_network_unverified">Internet: jaringan aktif, validasi tidak tersedia</string>
+    <string name="saba_network_unknown">Internet: tidak dapat diperiksa</string>
+    <string name="saba_error_retry">Coba ulang jawaban</string>
+    <string name="saba_error_resume">Lanjutkan tugas tersimpan</string>
+    <string name="saba_error_settings">Pemecahan masalah</string>
+    <string name="saba_error_copy">Salin laporan aman</string>
+    <string name="saba_error_copied">Laporan disalin</string>
+    <string name="saba_error_close">Tutup</string>
+    <string name="saba_chat_share">Bagikan percakapan sebagai Markdown</string>
+    <string name="saba_chat_share_title">Bagikan percakapan ini?</string>
+    <string name="saba_chat_share_note">Riwayat yang diekspor berisi pesan Anda dan jawaban asisten. Periksa informasi sensitif sebelum memilih aplikasi berbagi.</string>
+    <string name="saba_chat_share_confirm">Pilih aplikasi berbagi</string>
+    <string name="saba_chat_share_failed">Tidak dapat menyiapkan riwayat percakapan.</string>
+    <string name="saba_chat_share_empty">Percakapan ini tidak memiliki pesan untuk diekspor.</string>
+    <string name="saba_chat_share_limit">Sebagian konten lama dihilangkan agar berbagi di Android tetap andal.</string>
+</resources>
