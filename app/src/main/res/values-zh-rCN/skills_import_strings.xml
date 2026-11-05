@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skills_import_loading">Reading and validating SKILL.md…</string>
+    <string name="skills_import_failed">Import failed. Check file access and SKILL.md format, then try again.</string>
+    <string name="skills_global_scope">This skill is saved globally for your user and is available across all projects and chats. Review private content before saving. Only SKILL.md text is imported; scripts and assets are not imported or executed.</string>
+    <string name="skills_save_globally">Save for all projects</string>
+</resources>

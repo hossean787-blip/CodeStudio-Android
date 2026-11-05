@@ -43,7 +43,9 @@ import com.androidharness.app.AppContainer
 import com.androidharness.app.R
 import com.androidharness.app.data.AppSettings
 import com.androidharness.app.skills.SkillMeta
-import com.androidharness.app.skills.readSkillDocument
+import com.androidharness.app.skills.loadSkillDocument
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.TimeoutCancellationException
 import com.androidharness.app.skills.SkillParseException
 import com.androidharness.app.skills.SkillParser
 import com.androidharness.app.skills.SkillSource
@@ -68,16 +70,29 @@ fun SkillsScreen(
     var editing by remember { mutableStateOf<SkillMeta?>(null) }
     var importDraft by remember { mutableStateOf<String?>(null) }
     var importError by remember { mutableStateOf<String?>(null) }
+    var importLoading by remember { mutableStateOf(false) }
     // A user-selected SKILL.md is untrusted. Import instructions only after explicit review.
     val importSkill = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) {
-            try {
-                val stream = uiContext.contentResolver.openInputStream(uri)
-                    ?: throw IllegalArgumentException("Could not open selected file")
-                importDraft = stream.bufferedReader(Charsets.UTF_8).use(::readSkillDocument)
-                showAdd = true
-            } catch (e: Exception) {
-                importError = uiContext.getString(R.string.saba_claude_skills_import_error, e.message.orEmpty())
+        if (uri != null && !importLoading) {
+            importLoading = true
+            scope.launch {
+                try {
+                    importDraft = loadSkillDocument {
+                        val stream = uiContext.contentResolver.openInputStream(uri)
+                            ?: throw IllegalArgumentException("Could not open selected file")
+                        stream.bufferedReader(Charsets.UTF_8)
+                    }
+                    showAdd = true
+                } catch (e: TimeoutCancellationException) {
+                    importError = uiContext.getString(R.string.skills_import_failed)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    // Provider messages may contain private URIs/content: show a generic error.
+                    importError = uiContext.getString(R.string.skills_import_failed)
+                } finally {
+                    importLoading = false
+                }
             }
         }
     }
@@ -97,7 +112,7 @@ fun SkillsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showAdd = true }) {
+            FloatingActionButton(onClick = { if (!importLoading) showAdd = true }) {
                 Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.settings_skills_add))
             }
         },
@@ -117,7 +132,7 @@ fun SkillsScreen(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TextButton(onClick = { importSkill.launch(arrayOf("*/*")) }) {
+                        TextButton(enabled = !importLoading, onClick = { importSkill.launch(arrayOf("*/*")) }) {
                             Text(stringResource(R.string.saba_claude_skills_import))
                         }
                         TextButton(onClick = {
@@ -125,6 +140,7 @@ fun SkillsScreen(
                                 Uri.parse("https://github.com/anthropics/skills")))
                         }) { Text(stringResource(R.string.saba_claude_skills_repository)) }
                     }
+                    if (importLoading) Text(stringResource(R.string.skills_import_loading))
                     Text(stringResource(R.string.saba_claude_skills_review),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -256,6 +272,8 @@ private fun SkillEditorDialog(
         title = { Text(title) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.skills_global_scope),
+                    style = MaterialTheme.typography.bodySmall)
                 OutlinedTextField(
                     value = text,
                     onValueChange = {
@@ -289,7 +307,7 @@ private fun SkillEditorDialog(
                     }
                 },
                 enabled = error == null,
-            ) { Text(stringResource(R.string.settings_action_save)) }
+            ) { Text(stringResource(R.string.skills_save_globally)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_action_cancel)) } },
     )
