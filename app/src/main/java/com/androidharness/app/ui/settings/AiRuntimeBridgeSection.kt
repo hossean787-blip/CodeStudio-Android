@@ -55,7 +55,8 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var result by remember { mutableStateOf<String?>(null) }
     var failure by remember { mutableStateOf<String?>(null) }
     // PATH checks belong to a specific workspace; never reuse availability from another one.
-    LaunchedEffect(workspace?.displayPath, selectedId) {
+    LaunchedEffect(selectedId) { resumeSessionId = "" }
+    LaunchedEffect(workspace?.displayPath) {
         resumeSessionId = ""
         availability = emptyMap()
         result = null
