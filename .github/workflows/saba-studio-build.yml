@@ -37,6 +37,8 @@ jobs:
           current=Path('.')
           allowed_changes={
               'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
+              # Issue #8 item 26: redact upstream credential echoes in fallback status messages.
+              'app/src/main/java/com/androidharness/app/llm/FallbackProvider.kt',
               # Issue #8 item 11: reviewed secure provider endpoint validation.
               'app/src/main/java/com/androidharness/app/data/ProviderRepository.kt',
               'app/src/test/java/com/androidharness/app/llm/RotatingKeyProviderTest.kt',
