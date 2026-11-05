@@ -31,4 +31,6 @@
     <string name="ai_compare_run">Сравнить выбранных агентов</string>
     <string name="ai_compare_confirm_title">Подтвердить сравнение агентов</string>
     <string name="ai_compare_confirm_body">Отправить задачу %1$d ИИ-агентам? Они могут обратиться к внешним сервисам и потратить кредиты аккаунта. Изменение файлов не запрашивается.</string>
+    <string name="ai_runtime_resume_session">Продолжить сеанс Claude Code (UUID, необязательно)</string>
+    <string name="ai_runtime_resume_warning">Возобновляет сеанс этой рабочей области и может читать прошлый контекст. Вход и подтверждение обязательны.</string>
 </resources>
