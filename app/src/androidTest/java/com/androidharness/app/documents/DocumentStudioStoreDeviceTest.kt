@@ -95,6 +95,33 @@ class DocumentStudioStoreDeviceTest {
         try { unrelated.writeText("synthetic"); unrelated.setLastModified(1); store.cleanup(); assertTrue(unrelated.exists()) }
         finally { unrelated.delete() }
     }
+    @Test fun editableOfficeDraftImportIsBoundedAndDoesNotOverwriteSource() = runBlocking {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val store = DocumentStudioStore(context)
+        val fixture = File(context.cacheDir, "saba-private-office-draft-${System.nanoTime()}.docx")
+        val invalid = File(context.cacheDir, "saba-private-invalid-text-${System.nanoTime()}.txt")
+        try {
+            val original = DocumentEncoder.encode(DocumentSpec(
+                "docx", title = "گزارش", text = "سلام دنیا",
+            ))
+            fixture.writeBytes(original)
+            val extracted = store.importEditableText(android.net.Uri.fromFile(fixture), "docx")
+            assertTrue(extracted.contains("سلام دنیا"))
+            assertTrue(fixture.readBytes().contentEquals(original))
+            val (draftName, draftHash) = store.generate(DocumentStudioInput.parse(
+                "docx", "گزارش ویرایش‌شده", extracted + "\nپاراگراف جدید",
+            ))
+            try {
+                assertTrue(store.previewText(draftName, draftHash,
+                    DocumentEncoder.mimeTypes.getValue("docx")).contains("پاراگراف جدید"))
+            } finally { store.delete(draftName) }
+            invalid.writeBytes(byteArrayOf(0xC3.toByte(), 0x28))
+            assertTrue(runCatching { store.importEditableText(android.net.Uri.fromFile(invalid), "txt") }.isFailure)
+            assertTrue(runCatching { store.importEditableText(android.net.Uri.fromFile(fixture), "pdf") }.isFailure)
+            assertTrue(fixture.readBytes().contentEquals(original))
+        } finally { fixture.delete(); invalid.delete() }
+    }
+
     @Test fun realOfficeAndZipExportsArePreviewedFromVerifiedPrivateBytes() = runBlocking {
         val store = DocumentStudioStore(InstrumentationRegistry.getInstrumentation().targetContext)
         val content = "گزارش فارسی صبا"

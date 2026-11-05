@@ -7,6 +7,8 @@ import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import java.io.File
+import java.nio.ByteBuffer
+import java.nio.charset.CodingErrorAction
 import java.security.MessageDigest
 import java.util.UUID
 import kotlinx.coroutines.ensureActive
@@ -68,6 +70,54 @@ class DocumentStudioStore(context: Context) {
             else -> ""
         }
     }
+    /**
+     * SAF-selected source is read once into a bounded, disposable private file.
+     * Only text and the limited generated OOXML subset are supported. This is
+     * an extracted-text draft, NOT in-place or layout-preserving Office editing.
+     */
+    suspend fun importEditableText(uri: Uri, format: String): String {
+        require(format in setOf("txt", "code", "docx", "xlsx", "pptx")) {
+            "This file format cannot be imported as an editable text draft"
+        }
+        val job = coroutineContext
+        val temporary = File(directory, "studio-${UUID.randomUUID()}.bin")
+        try {
+            resolver.openInputStream(uri)?.use { input ->
+                temporary.outputStream().use { output ->
+                    val buffer = ByteArray(16_384)
+                    var total = 0L
+                    while (true) {
+                        job.ensureActive()
+                        val count = input.read(buffer)
+                        if (count == -1) break
+                        require(count > 0) { "No progress reading selected document" }
+                        total += count
+                        require(total <= DocumentEncoder.MAX_OUTPUT) { "Selected document exceeds the 8 MiB limit" }
+                        output.write(buffer, 0, count)
+                    }
+                }
+            } ?: error("Selected document could not be read")
+            job.ensureActive()
+            require(temporary.length() in 1..DocumentEncoder.MAX_OUTPUT.toLong()) { "Empty or oversized document" }
+            val draft = when (format) {
+                "txt", "code" -> {
+                    val decoder = Charsets.UTF_8.newDecoder()
+                        .onMalformedInput(CodingErrorAction.REPORT)
+                        .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    decoder.decode(ByteBuffer.wrap(temporary.readBytes())).toString()
+                }
+                else -> DocumentPackagePreview.extractEditable(temporary, format)
+            }
+            require(draft.isNotBlank() && draft.length <= 100_000) { "Empty or excessive editable content" }
+            require(!draft.endsWith("\n…")) { "Document text preview was truncated; edit rejected" }
+            DocumentEncoder.validText(draft)
+            return draft
+        } finally {
+            // Never retain a second copy of a user-selected external document.
+            temporary.delete()
+        }
+    }
+
     suspend fun save(uri: Uri, name: String, hash: String) {
         val file = recover(name, hash)
         val job = coroutineContext
