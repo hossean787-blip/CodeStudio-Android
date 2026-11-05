@@ -68,6 +68,50 @@ class AiCliDelegateToolTest {
         assertTrue(commands.isEmpty())
     }
 
+    @Test fun editedWorkspacesShowGitStatusWithoutStagingOrCommitting() = runBlocking {
+        val commands = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            commands += cmd
+            when {
+                "status" in cmd && "--short" in cmd ->
+                    result(stdout = " M app/src/Main.kt\\n?? notes.txt\\n")
+                "codex exec" in cmd -> result(stdout = "Finished edits")
+                else -> result()
+            }
+        }
+        val response = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Edit one Kotlin file")
+            put("allow_edits", true)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(response.ok)
+        assertEquals(3, commands.size)
+        assertTrue(commands[2].contains("status"))
+        assertTrue(commands[2].contains("core.fsmonitor=false"))
+        assertFalse(commands.any { " add " in it || " commit " in it || " push " in it })
+        assertTrue(response.output.contains(" M app/src/Main.kt"))
+        assertTrue(response.output.contains("notes.txt"))
+        assertTrue(response.output.contains("pre-existing changes"))
+    }
+
+    @Test fun failedGitReviewDoesNotHideCompletedAgentWork() = runBlocking {
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            when {
+                "status" in cmd -> result(exit = 128)
+                "codex exec" in cmd -> result(stdout = "Completed safely")
+                else -> result()
+            }
+        }
+        val response = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Edit some code")
+            put("allow_edits", true)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(response.ok)
+        assertTrue(response.output.contains("Completed safely"))
+        assertTrue(response.output.contains("Unavailable"))
+    }
+
     @Test fun delegatedCliOutputMasksCredentialsButKeepsUsefulDiagnostics() = runBlocking {
         val vendorKey = "gsk_" + "Aa0".repeat(20)
         val assignedSecret = "Bb1".repeat(20)
