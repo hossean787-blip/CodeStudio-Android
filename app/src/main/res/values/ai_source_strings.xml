@@ -31,4 +31,6 @@
     <string name="ai_compare_run">Compare selected agents</string>
     <string name="ai_compare_confirm_title">Confirm multi-agent comparison</string>
     <string name="ai_compare_confirm_body">Send this task to %1$d AI agents? They may contact remote AI providers and consume your account credits. No source files are intentionally modified.</string>
+    <string name="ai_runtime_resume_session">Resume Claude Code session (UUID, optional)</string>
+    <string name="ai_runtime_resume_warning">Uses an existing session in this workspace; prior conversation context may be accessed. Sign-in and approval remain required.</string>
 </resources>
