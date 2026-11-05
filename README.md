@@ -1,3 +1,5 @@
+> **صبا استودیو | Saba Studio:** این مخزن یک فورک توسعه‌ای مستقل از AndroidHarness با شناسهٔ `ir.sabagostar.sabastudio` است. لینک فروشگاه و نشان‌های AndroidHarness در ادامه فقط به پروژهٔ بالادستی اشاره دارند؛ هیچ انتشار عمومی صبا از آن‌ها نتیجه نمی‌شود. مجوز MIT و انتساب سازندگان اصلی محفوظ‌اند. [هویت و مجوزها](SABA_STUDIO_BRANDING.md).
+
 # AndroidHarness
 
 <p>
