@@ -298,21 +298,26 @@ class SkillStore(
         }
 
     private fun scanDirFiles(dir: File): List<Quad> {
-        if (!dir.exists() || !dir.isDirectory) return emptyList()
+        if (!dir.exists() || !dir.isDirectory ||
+            java.nio.file.Files.isSymbolicLink(dir.toPath())) return emptyList()
         return dir.listFiles().orEmpty()
-            .filter { it.isDirectory }
+            .filter { it.isDirectory && !java.nio.file.Files.isSymbolicLink(it.toPath()) }
             .mapNotNull { child ->
                 val skillMd = File(child, "SKILL.md")
-                if (!skillMd.isFile) return@mapNotNull null
+                if (!skillMd.isFile || java.nio.file.Files.isSymbolicLink(skillMd.toPath()) ||
+                    skillMd.length() > ParsedSkill.MAX_USER_CHARS * 4L) return@mapNotNull null
                 val content = runCatching { skillMd.readText() }.getOrNull() ?: return@mapNotNull null
                 val files = mutableMapOf<String, String>()
                 for (folder in SUPPORT_DIRS) {
                     val sub = File(child, folder)
-                    if (!sub.isDirectory) continue
-                    sub.walkTopDown().filter { it.isFile }.forEach { f ->
-                        val rel = "${folder}/${f.relativeTo(sub).invariantSeparatorsPath}"
-                        files[rel] = runCatching { f.readText() }.getOrDefault("")
-                    }
+                    if (!sub.isDirectory || java.nio.file.Files.isSymbolicLink(sub.toPath())) continue
+                    // Do not follow a nested link out of the selected project or load unlimited assets.
+                    sub.walkTopDown().onEnter { node -> !java.nio.file.Files.isSymbolicLink(node.toPath()) }
+                        .filter { it.isFile && !java.nio.file.Files.isSymbolicLink(it.toPath()) && it.length() <= 128_000L }
+                        .take(64).forEach { support ->
+                            val rel = "${folder}/${support.relativeTo(sub).invariantSeparatorsPath}"
+                            files[rel] = runCatching { support.readText() }.getOrDefault("")
+                        }
                 }
                 Quad(child.name, content, files, child.name)
             }
