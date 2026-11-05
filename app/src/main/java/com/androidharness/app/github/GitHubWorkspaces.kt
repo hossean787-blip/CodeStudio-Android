@@ -14,6 +14,16 @@ import kotlinx.serialization.json.*
 import java.io.File
 import java.util.UUID
 
+/**
+ * Git prints a leading space for each initialized submodule at its pinned
+ * gitlink commit. '-' means not initialized, '+' means moved, and 'U' means a
+ * merge conflict. Never register partial or divergent nested source trees.
+ */
+internal fun pinnedSubmodulesMatchGitlinks(output: String): Boolean {
+    val clean = Regex("^ [0-9a-f]{40} .+$")
+    return output.lineSequence().filter { it.isNotBlank() }.all(clean::matches)
+}
+
 /** Phone-owned clones use private app storage and need no broad storage grant. */
 class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
     private val imports = Mutex()
@@ -148,6 +158,39 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
                     folderFs, timeoutMs = 30_000, maxOutput = 1024)
                 check(!revision.timedOut && revision.exitCode == 0 && revision.rawOutput.trim() == expectedCommit) {
                     "Pinned source verification failed. The imported folder was not registered."
+                }
+                // Do not silently lose source trees referenced by upstream gitlinks.
+                // Git's protocol allowlist prevents recursive file/ssh/ext/git transport.
+                // Only the pinned-source import performs this additional network operation.
+                val nested = c.shellRouter.runWorkspace(
+                    gitCommand(listOf(
+                        "-C", folder.absolutePath,
+                        "-c", "protocol.allow=never",
+                        "-c", "protocol.https.allow=always",
+                        "submodule", "update", "--init", "--recursive", "--jobs=2"
+                    )),
+                    folderFs, timeoutMs = 600_000, maxOutput = 128_000)
+                if (nested.exitCode != 0 || nested.timedOut ||
+                    nested.rawOutput.length >= 128_000 || nested.rawStderr.length >= 128_000)
+                    throw GitHubOperationFailure(
+                        "Pinned nested source checkout",
+                        gitHubFailureHint(nested.exitCode, nested.rawStderr + nested.rawOutput)
+                    )
+                val submoduleStatus = c.shellRouter.runWorkspace(
+                    gitCommand(listOf("-C", folder.absolutePath, "submodule", "status", "--recursive")),
+                    folderFs, timeoutMs = 60_000, maxOutput = 128_000)
+                check(!submoduleStatus.timedOut && submoduleStatus.exitCode == 0 &&
+                    submoduleStatus.rawOutput.length < 128_000 &&
+                    pinnedSubmodulesMatchGitlinks(submoduleStatus.rawOutput)) {
+                    "Nested repositories are missing or do not match their pinned commits. The incomplete project was not registered."
+                }
+                // Nested checkout must not move the already verified parent HEAD.
+                val finalRevision = c.shellRouter.runWorkspace(
+                    gitCommand(listOf("-C", folder.absolutePath, "rev-parse", "--verify", "HEAD")),
+                    folderFs, timeoutMs = 30_000, maxOutput = 1024)
+                check(!finalRevision.timedOut && finalRevision.exitCode == 0 &&
+                    finalRevision.rawOutput.trim() == expectedCommit) {
+                    "Pinned parent revision changed during nested checkout."
                 }
             }
             currentCoroutineContext().ensureActive()
