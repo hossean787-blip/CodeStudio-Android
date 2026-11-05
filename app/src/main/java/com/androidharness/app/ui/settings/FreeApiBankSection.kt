@@ -21,6 +21,8 @@ internal fun FreeApiBankSection(onConnect: (ProviderBrand) -> Unit) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     var onlyConnectable by rememberSaveable { mutableStateOf(false) }
+    var onlyNoCard by rememberSaveable { mutableStateOf(false) }
+    var onlyNoCloudKey by rememberSaveable { mutableStateOf(false) }
     val links = LocalUriHandler.current
 
     OutlinedCard(shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
@@ -37,9 +39,18 @@ internal fun FreeApiBankSection(onConnect: (ProviderBrand) -> Unit) {
                     label = { Text(stringResource(R.string.free_api_bank_search)) },
                     singleLine = true, modifier = Modifier.fillMaxWidth(),
                 )
-                FilterChip(selected = onlyConnectable, onClick = { onlyConnectable = !onlyConnectable },
-                    label = { Text(stringResource(R.string.free_api_bank_ready_filter)) })
-                FreeApiCatalog.search(query, onlyConnectable).forEach { entry ->
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FilterChip(selected = onlyConnectable, onClick = { onlyConnectable = !onlyConnectable },
+                        label = { Text(stringResource(R.string.free_api_bank_ready_filter)) })
+                    FilterChip(selected = onlyNoCard, onClick = { onlyNoCard = !onlyNoCard },
+                        label = { Text(stringResource(R.string.free_api_bank_no_card_filter)) })
+                    FilterChip(selected = onlyNoCloudKey, onClick = { onlyNoCloudKey = !onlyNoCloudKey },
+                        label = { Text(stringResource(R.string.free_api_bank_keyless_filter)) })
+                }
+                val matching = FreeApiCatalog.search(query, onlyConnectable, onlyNoCard, onlyNoCloudKey)
+                if (matching.isEmpty()) Text(stringResource(R.string.free_api_bank_no_matches),
+                    style = MaterialTheme.typography.bodySmall)
+                matching.forEach { entry ->
                     val preset = entry.connectionPreset()
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {

@@ -44,6 +44,9 @@ class FreeApiCatalogTest {
     @Test fun searchAndConnectedFilterDoNotAlterTheBank() {
         assertEquals(listOf("openrouter"), FreeApiCatalog.search("ROUTER").map { it.id })
         assertEquals(emptyList<FreeApiEntry>(), FreeApiCatalog.search("cloudflare", onlyConnectable = true))
+        assertEquals(listOf("ollama"), FreeApiCatalog.search("", onlyNoCloudKey = true).map { it.id })
+        assertEquals(listOf("gemini", "mistral"), FreeApiCatalog.search("", onlyNoCard = true).map { it.id })
+        assertEquals(emptyList<FreeApiEntry>(), FreeApiCatalog.search("", onlyNoCard = true, onlyNoCloudKey = true))
         assertEquals(FreeApiCatalog.entries.size, FreeApiCatalog.search(" ").size)
         assertEquals(FreeApiCatalog.entries.size, FreeApiCatalog.search("").size)
     }

@@ -14,5 +14,8 @@
     <string name="free_api_bank_no_card">طبق مستندات رسمی، حالت رایگان کارت بانکی نمی‌خواهد</string>
     <string name="free_api_bank_official_docs">راهنمای رسمی</string>
     <string name="free_api_bank_connect">تنظیم اتصال</string>
+    <string name="free_api_bank_no_card_filter">بدون کارت بانکی</string>
+    <string name="free_api_bank_keyless_filter">بدون کلید ابری</string>
+    <string name="free_api_bank_no_matches">نتیجه‌ای پیدا نشد؛ فیلترها را تغییر دهید.</string>
     <string name="free_api_bank_warning">فقط کلید حساب خودتان را وارد کنید. دسترسی نامحدود، ساخت خودکار حساب، دورزدن سقف سرویس یا هزینه‌تراشی خودکار وجود ندارد. پیش از استفاده قیمت، مدل و حریم خصوصی را بررسی کنید. چرخش کلید و تغییر ارائه‌دهنده از کنترل‌های تأییدی موجود استفاده می‌کنند.</string>
 </resources>

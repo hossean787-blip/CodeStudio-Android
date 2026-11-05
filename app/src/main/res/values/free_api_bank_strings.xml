@@ -14,5 +14,8 @@
     <string name="free_api_bank_no_card">Official documentation states no payment card is needed for free mode</string>
     <string name="free_api_bank_official_docs">Official guide</string>
     <string name="free_api_bank_connect">Configure provider</string>
+    <string name="free_api_bank_no_card_filter">No card documented</string>
+    <string name="free_api_bank_keyless_filter">No cloud key</string>
+    <string name="free_api_bank_no_matches">No matching options. Clear a filter to browse more.</string>
     <string name="free_api_bank_warning">Only use credentials obtained in your own account. No unlimited access, automatic account creation, rate-limit bypass, or automatic charges. Check pricing, model and data policies before use. Key rotation and cross-provider fallback use the existing opt-in controls.</string>
 </resources>

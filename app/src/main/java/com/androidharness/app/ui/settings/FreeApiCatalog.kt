@@ -42,7 +42,7 @@ internal object FreeApiCatalog {
             "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
             "Mistral", noCardConfirmed = true),
         FreeApiEntry("cohere", "Cohere Trial", FreeApiTier.TRIAL,
-            "https://docs.cohere.com/", "Cohere"),
+            "https://docs.cohere.com/v2/docs/rate-limits", "Cohere"),
         FreeApiEntry("cloudflare", "Cloudflare Workers AI", FreeApiTier.SETUP_REQUIRED,
             "https://developers.cloudflare.com/workers-ai/platform/pricing/"),
         FreeApiEntry("ollama", "Ollama (on-device server)", FreeApiTier.LOCAL_NO_KEY,
@@ -53,9 +53,12 @@ internal object FreeApiCatalog {
             "https://free-for.dev/"),
     )
 
-    fun search(query: String, onlyConnectable: Boolean = false): List<FreeApiEntry> {
+    fun search(query: String, onlyConnectable: Boolean = false, onlyNoCard: Boolean = false,
+        onlyNoCloudKey: Boolean = false): List<FreeApiEntry> {
         val q = query.trim()
         return entries.filter { (!onlyConnectable || it.connectionPreset() != null) &&
+            (!onlyNoCard || it.noCardConfirmed) &&
+            (!onlyNoCloudKey || it.tier == FreeApiTier.LOCAL_NO_KEY) &&
             (q.isEmpty() || it.title.contains(q, ignoreCase = true) || it.id.contains(q, ignoreCase = true)) }
     }
 }
