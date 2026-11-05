@@ -14,6 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.androidharness.app.AppContainer
 import com.androidharness.app.R
 import com.androidharness.app.plugins.AiRuntimeBridge
+import com.androidharness.app.tools.AiCliCompareTool
+import com.androidharness.app.tools.ToolContext
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.put
 import com.androidharness.app.tools.ShellPolicy
 import com.androidharness.app.workspace.SshFs
 import java.io.File
@@ -35,6 +41,11 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var executing by remember { mutableStateOf(false) }
     var availability by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
     var selectedId by rememberSaveable { mutableStateOf("codex") }
+    var comparisonAgents by remember { mutableStateOf(setOf("codex", "claude")) }
+    var comparing by remember { mutableStateOf(false) }
+    var compareConfirmation by remember { mutableStateOf(false) }
+    var compareResult by remember { mutableStateOf<String?>(null) }
+
     var prompt by rememberSaveable { mutableStateOf("") }
     var allowEdits by rememberSaveable { mutableStateOf(false) }
     var awaitingConfirmation by remember { mutableStateOf(false) }
@@ -47,6 +58,9 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
         failure = null
     }
     val selected = AiRuntimeBridge.profiles.single { it.id == selectedId }
+    val canCompare = (workspace?.shellRoot != null || workspace is SshFs) &&
+        !executing && !checking && !comparing && prompt.isNotBlank() &&
+        comparisonAgents.size in 2..4 && comparisonAgents.all { availability[it] == true }
     val canRun = (workspace?.shellRoot != null || workspace is SshFs) && !executing && !checking &&
         availability[selectedId] == true && prompt.isNotBlank() &&
         (selected.supportsReadOnly || allowEdits)
@@ -128,6 +142,39 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
             ) {
                 Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_run))
             }
+            HorizontalDivider()
+            Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_title),
+                style = MaterialTheme.typography.titleMedium)
+            Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            AiRuntimeBridge.profiles.filter { it.supportsReadOnly }.forEach { agent ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = agent.id in comparisonAgents,
+                        onCheckedChange = { checked ->
+                            comparisonAgents = if (checked) comparisonAgents + agent.id
+                                else comparisonAgents - agent.id
+                        },
+                        enabled = !comparing && !executing && availability[agent.id] == true,
+                    )
+                    Text(agent.label)
+                }
+            }
+            Button(
+                onClick = { compareConfirmation = true },
+                enabled = canCompare,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_run))
+            }
+            if (comparing) LinearProgressIndicator(Modifier.fillMaxWidth())
+            compareResult?.let {
+                Text(it, modifier = Modifier.fillMaxWidth().heightIn(max = 320.dp)
+                    .verticalScroll(rememberScrollState()),
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.bodySmall)
+            }
             failure?.let {
                 Text(it, color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall)
@@ -141,6 +188,44 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                     style = MaterialTheme.typography.bodySmall)
             }
         }
+    }
+    if (compareConfirmation) {
+        AlertDialog(
+            onDismissRequest = { if (!comparing) compareConfirmation = false },
+            title = { Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_confirm_title)) },
+            text = { Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_confirm_body,
+                comparisonAgents.size)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    val captured = workspace ?: return@TextButton
+                    val chosen = AiRuntimeBridge.profiles.map { it.id }
+                        .filter { it in comparisonAgents }
+                    compareConfirmation = false
+                    comparing = true
+                    compareResult = null
+                    scope.launch {
+                        try {
+                            val args = buildJsonObject {
+                                put("agents", buildJsonArray { chosen.forEach { add(it) } })
+                                put("prompt", prompt)
+                            }
+                            val output = AiCliCompareTool(container.shellRouter)
+                                .execute(args, ToolContext(captured))
+                            compareResult = output.output
+                        } catch (e: CancellationException) { throw e }
+                        catch (e: Exception) { compareResult = e.localizedMessage?.take(400) ?: "Comparison failed." }
+                        finally { comparing = false }
+                    }
+                }, enabled = !comparing) {
+                    Text(androidx.compose.ui.res.stringResource(R.string.ai_compare_run))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { compareConfirmation = false }, enabled = !comparing) {
+                    Text(androidx.compose.ui.res.stringResource(android.R.string.cancel))
+                }
+            }
+        )
     }
     if (awaitingConfirmation) {
         AlertDialog(onDismissRequest = { if (!executing) awaitingConfirmation = false },
