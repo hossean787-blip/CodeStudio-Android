@@ -54,6 +54,8 @@ fun ProvidersScreen(
     var controlsFor by remember { mutableStateOf<ProviderConfig?>(null) }
     var showControls by remember { mutableStateOf(false) }
     var saveFailed by remember { mutableStateOf(false) }
+    // A check is manual and ephemeral: a saved provider is never shown as online by default.
+    val catalogChecks = remember { androidx.compose.runtime.mutableStateMapOf<String, ProviderCatalogCheck>() }
     var showAllModels by remember { mutableStateOf(false) }
     val visibility by com.androidharness.app.data.ModelVisibility.get(LocalContext.current).state.collectAsStateWithLifecycle()
     val selection = rememberProviderSelection()
@@ -65,8 +67,8 @@ fun ProvidersScreen(
         containerColor = scheme.surface,
         topBar = {
             AppHeader(
-                title = stringResource(R.string.settings_providers_title),
-                subtitle = stringResource(R.string.settings_providers_intro),
+                title = stringResource(R.string.saba_api_management_title),
+                subtitle = stringResource(R.string.saba_api_management_summary),
                 onBack = onBack,
             )
         },
@@ -105,6 +107,13 @@ fun ProvidersScreen(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.settings_providers_add))
                     }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.saba_api_management_cost_note),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = scheme.onSurfaceVariant,
+                    )
                 }
                 item {
                     FreeApiBankSection(onConnect = { preset ->
@@ -166,6 +175,28 @@ fun ProvidersScreen(
                         selected = provider.id in selection.ids,
                         onToggleSelection = { if (!selection.busy) selection.toggle(provider.id) },
                         onLongPress = { if (!selection.busy) selection.start(provider.id) },
+                    )
+                    if (!selection.selecting) ProviderApiStatusSection(
+                        provider = provider,
+                        modelId = if (provider.id == settings.activeProviderId) {
+                            settings.activeModel?.takeIf { it.isNotBlank() } ?: provider.model
+                        } else provider.model,
+                        status = catalogChecks[provider.id] ?: ProviderCatalogCheck.NOT_TESTED,
+                        onCheck = {
+                            catalogChecks[provider.id] = ProviderCatalogCheck.CHECKING
+                            scope.launch {
+                                try {
+                                    val error = container.providers.refreshCatalog(provider.id, automatic = false)
+                                    catalogChecks[provider.id] = if (error == null) ProviderCatalogCheck.CATALOG_ACCESSIBLE
+                                        else ProviderCatalogCheck.FAILED
+                                } catch (e: kotlinx.coroutines.CancellationException) {
+                                    catalogChecks.remove(provider.id)
+                                    throw e
+                                } catch (_: Exception) {
+                                    catalogChecks[provider.id] = ProviderCatalogCheck.FAILED
+                                }
+                            }
+                        },
                     )
                 }
                 if (visibleProviders.isEmpty()) {
@@ -230,6 +261,7 @@ fun ProvidersScreen(
                                 apiKey,
                             )
                         }
+                        if (existingConfig != null) catalogChecks.remove(existingConfig.id)
                         showDialog = false
                         freeApiPreset = null
                     } catch (e: kotlinx.coroutines.CancellationException) { throw e }

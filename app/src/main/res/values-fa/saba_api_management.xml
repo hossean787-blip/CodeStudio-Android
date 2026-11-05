@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">مدیریت API هوش مصنوعی</string>
+    <string name="saba_api_management_title">مدیریت API هوش مصنوعی</string>
+    <string name="saba_api_management_summary">مدل‌ها، اتصال‌ها، تنظیمات و هزینه تخمینی API</string>
+    <string name="saba_api_management_connection_test">آزمون دسترسی به فهرست مدل‌ها</string>
+    <string name="saba_api_management_untested">آزمون‌نشده</string>
+    <string name="saba_api_management_testing">در حال بررسی اتصال…</string>
+    <string name="saba_api_management_catalog_ok">فهرست مدل‌ها دریافت شد؛ آزمون گفتگو نیست</string>
+    <string name="saba_api_management_catalog_failed">فهرست مدل‌ها در دسترس نیست؛ کلید، شبکه یا آدرس را بررسی کنید</string>
+    <string name="saba_api_management_price">نرخ کاتالوگ: %1$s دلار ورودی / %2$s دلار خروجی به‌ازای یک میلیون توکن</string>
+    <string name="saba_api_management_price_unknown">نرخ این ارائه‌دهنده یا مدل مشخص نیست</string>
+    <string name="saba_api_management_local_price">مدل محلی: هزینه API ابری ندارد</string>
+    <string name="saba_api_management_cost_note">نرخ‌ها تخمینی‌اند، نه صورتحساب. درگاه‌های واسط ممکن است قیمت متفاوتی داشته باشند؛ نرخ را از سایت ارائه‌دهنده تأیید کنید.</string>
+    <string name="saba_api_endpoint_invalid">آدرس معتبر سرور با http یا https و بدون فاصله وارد کنید.</string>
+    <string name="saba_api_endpoint_insecure">سرور راه‌دور باید HTTPS داشته باشد؛ HTTP فقط برای localhost همین دستگاه مجاز است.</string>
+    <string name="saba_api_endpoint_credentials">نام کاربری و رمز عبور را داخل آدرس سرور وارد نکنید.</string>
+    <string name="saba_api_endpoint_components">پارامترهای query و fragment را از آدرس سرور حذف کنید.</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">AI API 管理</string>
+    <string name="saba_api_management_title">AI API 管理</string>
+    <string name="saba_api_management_summary">模型、连接、设置及预计 API 费用</string>
+    <string name="saba_api_management_connection_test">检查模型列表连接</string>
+    <string name="saba_api_management_untested">尚未测试</string>
+    <string name="saba_api_management_testing">正在检查连接…</string>
+    <string name="saba_api_management_catalog_ok">模型列表可访问（并非聊天测试）</string>
+    <string name="saba_api_management_catalog_failed">无法获取模型列表；请检查密钥、网络或端点</string>
+    <string name="saba_api_management_price">目录价格：输入 %1$s 美元 / 输出 %2$s 美元（每百万 token）</string>
+    <string name="saba_api_management_price_unknown">该提供商或模型的价格未知</string>
+    <string name="saba_api_management_local_price">本地端点：无云 API 费用</string>
+    <string name="saba_api_management_cost_note">目录价格仅供估算，并非账单。中转服务可能收费不同，请以提供商官网为准。</string>
+    <string name="saba_api_endpoint_invalid">请输入不含空格的有效 http(s) 服务器 URL。</string>
+    <string name="saba_api_endpoint_insecure">远程服务器须使用 HTTPS。HTTP 仅允许此设备使用（localhost）。</string>
+    <string name="saba_api_endpoint_credentials">不要将用户名或密码写入服务器地址。</string>
+    <string name="saba_api_endpoint_components">请从服务器 URL 中删除查询参数和片段。</string>
+</resources>

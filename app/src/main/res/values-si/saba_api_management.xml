@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">AI API කළමනාකරණය</string>
+    <string name="saba_api_management_title">AI API කළමනාකරණය</string>
+    <string name="saba_api_management_summary">මාදිලි, සම්බන්ධතා, සැකසුම් සහ ඇස්තමේන්තුගත API පිරිවැය</string>
+    <string name="saba_api_management_connection_test">මාදිලි ලැයිස්තුවේ සම්බන්ධතාව පරීක්ෂා කරන්න</string>
+    <string name="saba_api_management_untested">පරීක්ෂා කර නැත</string>
+    <string name="saba_api_management_testing">සම්බන්ධතාව පරීක්ෂා කරමින්…</string>
+    <string name="saba_api_management_catalog_ok">මාදිලි ලැයිස්තුව ලබාගත හැක (චැට් පරීක්ෂාවක් නොවේ)</string>
+    <string name="saba_api_management_catalog_failed">මාදිලි ලැයිස්තුව ලබාගත නොහැක; යතුර, ජාලය හෝ ලිපිනය බලන්න</string>
+    <string name="saba_api_management_price">නාමාවලි මිල: ආදානය %1$s $ / ප්‍රතිදානය %2$s $ (ටෝකන මිලියනයකට)</string>
+    <string name="saba_api_management_price_unknown">මෙම සපයන්නාගේ හෝ මාදිලියේ මිල නොදනී</string>
+    <string name="saba_api_management_local_price">දේශීය සේවාදායකය: cloud API ගාස්තු නැත</string>
+    <string name="saba_api_management_cost_note">නාමාවලි මිල ඇස්තමේන්තු පමණි; බිල්පත් නොවේ. අතරමැදියන්ගේ මිල වෙනස් විය හැක. සපයන්නාගේ වෙබ් අඩවියෙන් තහවුරු කරන්න.</string>
+    <string name="saba_api_endpoint_invalid">හිස්තැන් නොමැති වලංගු http(s) සේවාදායක URL එකක් ඇතුළු කරන්න.</string>
+    <string name="saba_api_endpoint_insecure">දුරස්ථ සේවාදායක සඳහා HTTPS භාවිත කරන්න. HTTP මෙම උපාංගයේ (localhost) පමණක් පිළිගනී.</string>
+    <string name="saba_api_endpoint_credentials">සේවාදායක ලිපිනයට පරිශීලක නාම හෝ මුරපද එක් නොකරන්න.</string>
+    <string name="saba_api_endpoint_components">සේවාදායක ලිපිනයෙන් query සහ fragment කොටස් ඉවත් කරන්න.</string>
+</resources>

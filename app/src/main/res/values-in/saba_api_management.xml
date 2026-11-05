@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">Pengelolaan API AI</string>
+    <string name="saba_api_management_title">Pengelolaan API AI</string>
+    <string name="saba_api_management_summary">Model, koneksi, pengaturan, dan perkiraan biaya API</string>
+    <string name="saba_api_management_connection_test">Periksa koneksi daftar model</string>
+    <string name="saba_api_management_untested">Belum diuji</string>
+    <string name="saba_api_management_testing">Memeriksa koneksi…</string>
+    <string name="saba_api_management_catalog_ok">Daftar model dapat diakses (bukan uji obrolan)</string>
+    <string name="saba_api_management_catalog_failed">Daftar model tidak tersedia; periksa kunci, jaringan, atau titik akhir</string>
+    <string name="saba_api_management_price">Harga katalog: %1$s $ input / %2$s $ output per 1 juta token</string>
+    <string name="saba_api_management_price_unknown">Harga penyedia atau model ini tidak tersedia</string>
+    <string name="saba_api_management_local_price">Server lokal: tanpa tarif API cloud</string>
+    <string name="saba_api_management_cost_note">Harga katalog hanya perkiraan, bukan tagihan. Gateway dapat mengenakan tarif berbeda. Pastikan harga di situs penyedia.</string>
+    <string name="saba_api_endpoint_invalid">Masukkan URL server http(s) yang valid tanpa spasi.</string>
+    <string name="saba_api_endpoint_insecure">Gunakan HTTPS untuk server jarak jauh. HTTP hanya boleh untuk perangkat ini (localhost).</string>
+    <string name="saba_api_endpoint_credentials">Jangan masukkan nama pengguna atau kata sandi dalam alamat server.</string>
+    <string name="saba_api_endpoint_components">Hapus parameter kueri dan fragmen dari alamat server.</string>
+</resources>
