@@ -986,7 +986,11 @@ fun AppNav(container: AppContainer) {
                 )
             }
             composable("library-design") {
-                com.androidharness.app.ui.library.LibraryDesignScreen(onBack = { nav.popBackStack() })
+                com.androidharness.app.ui.library.LibraryDesignScreen(
+                    projectId = currentWorkspace?.id,
+                    projectName = currentWorkspace?.name,
+                    onBack = { nav.popBackStack() },
+                )
             }
             composable("document-studio") {
                 com.androidharness.app.ui.documents.DocumentStudioScreen(onBack = { nav.popBackStack() })
