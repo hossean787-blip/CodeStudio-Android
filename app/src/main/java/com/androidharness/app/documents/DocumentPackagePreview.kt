@@ -100,6 +100,7 @@ object DocumentPackagePreview {
             private var collecting = false
             private val text = StringBuilder()
             private var firstCell = true
+            private var firstSlideParagraph = true
             override fun startElement(uri: String, localName: String, qName: String, attributes: Attributes) {
                 when {
                     format == "docx" && uri == WORD && localName == "p" -> {
@@ -114,7 +115,8 @@ object DocumentPackagePreview {
                         firstCell = false
                     }
                     format == "pptx" && uri == DRAWING && localName == "p" -> {
-                        if (summary.hasContent()) summary.append("\n")
+                        if (!firstSlideParagraph) summary.append("\n")
+                        firstSlideParagraph = false
                     }
                     format == "docx" && uri == WORD && localName == "tab" -> summary.append("\t")
                     format == "docx" && uri == WORD && localName == "br" -> summary.append("\n")
