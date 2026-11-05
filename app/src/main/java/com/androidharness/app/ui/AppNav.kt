@@ -1185,8 +1185,8 @@ fun AppNav(container: AppContainer) {
         AlertDialog(onDismissRequest = { detailsSession = null }, title = { Text(uiContext.getString(R.string.ui_chat_details)) },
             text = { Column(Modifier.heightIn(max = 340.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(session.title, style = MaterialTheme.typography.titleSmall)
-                Text(uiContext.getString(R.string.ui_workspace_1707, (allWorkspaces.firstOrNull { it.id == session.projectId }?.name ?: "Other chats").toString()))
-                Text(uiContext.getString(R.string.ui_model_1708, (choice?.model ?: "Unavailable").toString()))
+                Text(uiContext.getString(R.string.ui_workspace_1707, (allWorkspaces.firstOrNull { it.id == session.projectId }?.name ?: uiContext.getString(R.string.ui_all_chats)).toString()))
+                Text(uiContext.getString(R.string.ui_model_1708, (choice?.model ?: uiContext.getString(R.string.ui_unavailable)).toString()))
                 Text(uiContext.getString(R.string.ui_tokens_used, (formatTokens(session.totalInputTokens + session.totalOutputTokens)).toString()))
                 Text(uiContext.getString(R.string.ui_updated_1710, (formatRelativeTime(session.updatedAt)).toString()))
             } }, confirmButton = { TextButton(onClick = { detailsSession = null }) { Text(uiContext.getString(R.string.settings_action_close)) } })
