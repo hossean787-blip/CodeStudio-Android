@@ -105,10 +105,14 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                             if (installed) {
                                 // Only an explicit user-initiated check probes --version.
                                 // Never expose arbitrary CLI stdout (it may contain secrets).
-                                val probe = runCatching {
+                                val probe = try {
                                     container.shellRouter.runWorkspace(
                                         AiRuntimeBridge.versionCommand(profile.id), captured, 4_000, 512)
-                                }.getOrNull()
+                                } catch (e: CancellationException) {
+                                    throw e
+                                } catch (_: Exception) {
+                                    null
+                                }
                                 if (probe != null && !probe.timedOut && probe.exitCode == 0) {
                                     AiRuntimeBridge.parseVersion(
                                         probe.rawOutput.ifBlank { probe.rawStderr }
