@@ -20,8 +20,13 @@ import java.util.UUID
  * merge conflict. Never register partial or divergent nested source trees.
  */
 internal fun pinnedSubmodulesMatchGitlinks(output: String): Boolean {
-    val clean = Regex("^ [0-9a-f]{40} .+$")
-    return output.lineSequence().filter { it.isNotBlank() }.all(clean::matches)
+    val clean = Regex("^ [0-9a-f]{40} ([^\\r\\n]+)$")
+    return output.lineSequence().filter { it.isNotBlank() }.all { line ->
+        val body = clean.matchEntire(line)?.groupValues?.get(1) ?: return@all false
+        val path = body.substringBefore(" (")
+        path.isNotBlank() && !path.startsWith("/") &&
+            !path.split('/').contains("..") && '\t' !in path
+    }
 }
 
 /** Phone-owned clones use private app storage and need no broad storage grant. */
