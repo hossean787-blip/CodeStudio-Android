@@ -39,6 +39,7 @@ import com.androidharness.app.ui.LocalDesktopLayout
 import com.androidharness.app.ui.automation.AutomationScreen
 import com.androidharness.app.ui.chat.ChatListTestActivity
 import com.androidharness.app.ui.chat.components.ModelPickerSheet
+import com.androidharness.app.ui.chat.components.EmptyState
 import com.androidharness.app.ui.common.localizedOptionLabel
 import com.androidharness.app.ui.files.FilesScreen
 import com.androidharness.app.ui.setup.SetupScreen
@@ -615,6 +616,30 @@ class LocalizationDeviceTest {
             screenshot("$screenshotPrefix-donation-qr-150-percent.png")
             click(localized.getString(R.string.settings_action_close))
             assertFalse(open.value)
+        }
+    }
+
+    @Test fun persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable() {
+        val fa = context("fa")
+        ActivityScenario.launch(ChatListTestActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                show(activity, scale = 1.5f, locale = "fa") {
+                    EmptyState(hasProvider = true, onSuggestion = {}, onAddProvider = {})
+                }
+            }
+            awaitText(fa.getString(R.string.saba_home_question))
+            awaitText(fa.getString(R.string.saba_home_code_new_android))
+            awaitText(fa.getString(R.string.saba_home_code_review_source))
+            screenshot("saba-persian-home-rtl-150-percent.png")
+
+            scenario.onActivity { activity ->
+                show(activity, scale = 1.5f, locale = "fa") {
+                    EmptyState(hasProvider = false, onSuggestion = {}, onAddProvider = {})
+                }
+            }
+            awaitText(fa.getString(R.string.saba_home_connect_model))
+            awaitText(fa.getString(R.string.saba_home_connect_action))
+            screenshot("saba-persian-connect-model-rtl.png")
         }
     }
 
