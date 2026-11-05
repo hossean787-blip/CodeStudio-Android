@@ -39,6 +39,13 @@ object AiRuntimeBridge {
     fun isValidSessionId(value: String): Boolean =
         value.matches(Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"))
 
+    /** Provider-specific, strict identifiers. No session discovery or cross-workspace lookup. */
+    fun isValidSessionForAgent(id: String, value: String): Boolean = when (id) {
+        "claude", "gemini" -> isValidSessionId(value)
+        "opencode" -> value.matches(Regex("ses_[a-zA-Z0-9]{6,64}"))
+        else -> false
+    }
+
     /**
      * The selected executable is a fixed allowlisted command. Only the prompt
      * is dynamic, passed as ONE POSIX-quoted argument prefixed with explanatory
@@ -46,8 +53,8 @@ object AiRuntimeBridge {
      */
     fun executionCommand(id: String, prompt: String, allowWorkspaceEdits: Boolean, sessionId: String? = null): String {
         val cli = profile(id)
-        require(sessionId == null || (cli.id == "claude" && isValidSessionId(sessionId))) {
-            "Only a valid existing Claude Code session UUID can be resumed."
+        require(sessionId == null || isValidSessionForAgent(cli.id, sessionId)) {
+            "Session ID is not valid for the selected CLI. Use an existing Claude/Gemini UUID or OpenCode ses_ ID."
         }
         val message = prompt.trim()
         require(message.isNotEmpty() && message.length <= 2400) { "Enter 1-2400 characters." }
@@ -61,8 +68,11 @@ object AiRuntimeBridge {
             "codex" -> if (allowWorkspaceEdits) "codex exec --sandbox workspace-write" else "codex exec --sandbox read-only"
             "claude" -> (if (allowWorkspaceEdits) "claude -p --permission-mode acceptEdits" else "claude -p --permission-mode plan") +
                 (if (sessionId == null) "" else " --resume " + quoteArgument(sessionId))
-            "opencode" -> "opencode run"
-            "gemini" -> if (allowWorkspaceEdits) "gemini -p" else "gemini --approval-mode plan -p"
+            "opencode" -> "opencode run" +
+                (if (sessionId == null) "" else " --session " + quoteArgument(sessionId))
+            "gemini" -> "gemini" +
+                (if (sessionId == null) "" else " --resume " + quoteArgument(sessionId)) +
+                (if (allowWorkspaceEdits) " -p" else " --approval-mode plan -p")
             "pi" -> "pi -p"
             "qwen" -> "qwen -p"
             "aider" -> if (allowWorkspaceEdits) "aider --message" else "aider --dry-run --message"

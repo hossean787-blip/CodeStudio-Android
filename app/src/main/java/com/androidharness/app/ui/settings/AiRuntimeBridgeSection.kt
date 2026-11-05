@@ -55,7 +55,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var result by remember { mutableStateOf<String?>(null) }
     var failure by remember { mutableStateOf<String?>(null) }
     // PATH checks belong to a specific workspace; never reuse availability from another one.
-    LaunchedEffect(workspace?.displayPath) {
+    LaunchedEffect(workspace?.displayPath, selectedId) {
         resumeSessionId = ""
         availability = emptyMap()
         result = null
@@ -68,7 +68,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     val canRun = (workspace?.shellRoot != null || workspace is SshFs) && !executing && !checking &&
         availability[selectedId] == true && prompt.isNotBlank() &&
         (selected.supportsReadOnly || allowEdits) &&
-        (selectedId != "claude" || resumeSessionId.isBlank() || AiRuntimeBridge.isValidSessionId(resumeSessionId))
+        (resumeSessionId.isBlank() || AiRuntimeBridge.isValidSessionForAgent(selectedId, resumeSessionId))
 
     Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow) {
         Column(
@@ -134,13 +134,13 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                 maxLines = 6,
                 enabled = !executing,
             )
-            if (selectedId == "claude") {
+            if (selectedId in setOf("claude", "opencode", "gemini")) {
                 OutlinedTextField(
                     value = resumeSessionId,
                     onValueChange = { resumeSessionId = it.take(64) },
                     label = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_session)) },
                     supportingText = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_warning)) },
-                    isError = resumeSessionId.isNotBlank() && !AiRuntimeBridge.isValidSessionId(resumeSessionId),
+                    isError = resumeSessionId.isNotBlank() && !AiRuntimeBridge.isValidSessionForAgent(selectedId, resumeSessionId),
                     singleLine = true,
                     enabled = !executing,
                     modifier = Modifier.fillMaxWidth(),
@@ -254,7 +254,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                     val captured = workspace ?: return@TextButton
                     val command = try {
                         AiRuntimeBridge.executionCommand(selectedId, prompt, allowEdits,
-                            resumeSessionId.takeIf { selectedId == "claude" && it.isNotBlank() })
+                            resumeSessionId.takeIf { it.isNotBlank() && selectedId in setOf("claude", "opencode", "gemini") })
                     } catch (e: IllegalArgumentException) {
                         failure = e.message
                         awaitingConfirmation = false

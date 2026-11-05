@@ -91,6 +91,33 @@ class AiRuntimeBridgeTest {
             AiRuntimeBridge.executionCommand("claude", "review only", false))
     }
 
+    @Test fun resumesStrictlyValidatedOpenCodeAndGeminiSessions() {
+        val uuid = "123e4567-e89b-12d3-a456-426614174000"
+        val opencode = "ses_4f2a1c7890"
+        assertTrue(AiRuntimeBridge.isValidSessionForAgent("opencode", opencode))
+        assertTrue(AiRuntimeBridge.isValidSessionForAgent("gemini", uuid))
+        assertFalse(AiRuntimeBridge.isValidSessionForAgent("opencode", uuid))
+        assertFalse(AiRuntimeBridge.isValidSessionForAgent("gemini", opencode))
+        assertEquals("opencode run --session '$opencode' 'User request: Follow up'",
+            AiRuntimeBridge.executionCommand("opencode", "Follow up", true, opencode))
+        assertEquals("gemini --resume '$uuid' --approval-mode plan -p 'User request: Audit'",
+            AiRuntimeBridge.executionCommand("gemini", "Audit", false, uuid))
+        assertEquals("gemini --resume '$uuid' -p 'User request: Fix'",
+            AiRuntimeBridge.executionCommand("gemini", "Fix", true, uuid))
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("opencode", "Read", true, "ses_abc; touch /tmp/evil")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("gemini", "Read", false, "latest")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("aider", "Read", true, uuid)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("opencode", "Read", false, opencode)
+        }
+    }
+
     @Test fun rejectEmptyOversizedAndControlCharacterPrompts() {
         assertThrows(IllegalArgumentException::class.java) { AiRuntimeBridge.executionCommand("codex", " ", false) }
         assertThrows(IllegalArgumentException::class.java) {
