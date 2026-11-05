@@ -44,4 +44,19 @@ class GitLfsSourceDetectionTest {
         File(gitDir, ".gitattributes").writeText("*.bin filter=lfs\n")
         assertFalse(sourceUsesGitLfs(root))
     }
+
+    @Test fun lfsListingRequiresMaterializedObjectsNotPointers() {
+        val oid = "a".repeat(64)
+        assertTrue(lfsCheckoutIsHydrated(""))
+        assertTrue(lfsCheckoutIsHydrated("$oid * models/ready.gguf\\n"))
+        assertFalse(lfsCheckoutIsHydrated("$oid - models/missing.gguf\\n"))
+        assertFalse(lfsCheckoutIsHydrated("$oid * models/ready.gguf\\n$oid - models/missing.gguf\\n"))
+    }
+
+    @Test fun lfsListingRejectsMalformedOrTruncatedOutput() {
+        val oid = "b".repeat(64)
+        assertFalse(lfsCheckoutIsHydrated("fatal: could not read LFS objects"))
+        assertFalse(lfsCheckoutIsHydrated("$oid *"))
+        assertFalse(lfsCheckoutIsHydrated("${oid.take(10)} * models/truncated.gguf"))
+    }
 }
