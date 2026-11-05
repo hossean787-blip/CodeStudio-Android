@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Free AI API bank</string>
+    <string name="free_api_bank_intro">Explore official free tiers, trials, and no-key local options. Limits and model availability change; no credentials or paid plans are added automatically.</string>
+    <string name="free_api_bank_expand">Explore free API options</string>
+    <string name="free_api_bank_collapse">Hide API bank</string>
+    <string name="free_api_bank_search">Search providers and directories</string>
+    <string name="free_api_bank_ready_filter">Connectable with existing provider setup</string>
+    <string name="free_api_bank_tier_free">Free tier with rate and model limits; an account and API key may be required</string>
+    <string name="free_api_bank_tier_trial">Limited trial key; credits or access may expire</string>
+    <string name="free_api_bank_tier_local">No cloud API key; requires a local server installed and running</string>
+    <string name="free_api_bank_tier_setup">Free allocation may exist; custom account-specific endpoint setup required</string>
+    <string name="free_api_bank_tier_directory">External directory for discovering third-party APIs; not a connection</string>
+    <string name="free_api_bank_no_card">Official documentation states no payment card is needed for free mode</string>
+    <string name="free_api_bank_official_docs">Official guide</string>
+    <string name="free_api_bank_connect">Configure provider</string>
+    <string name="free_api_bank_warning">Only use credentials obtained in your own account. No unlimited access, automatic account creation, rate-limit bypass, or automatic charges. Check pricing, model and data policies before use. Key rotation and cross-provider fallback use the existing opt-in controls.</string>
+</resources>
