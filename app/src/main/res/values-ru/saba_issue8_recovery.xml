@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">Центр ошибок и восстановления</string>
+    <string name="saba_error_auth">Ошибка аутентификации (401)</string>
+    <string name="saba_chat_failure_forbidden">Провайдер отказал в доступе (403)</string>
+    <string name="saba_chat_failure_region">Провайдер сообщил о неподдерживаемом регионе</string>
+    <string name="saba_chat_failure_credits">Кредиты или квота исчерпаны</string>
+    <string name="saba_error_rate">Слишком много запросов (429)</string>
+    <string name="saba_error_model">Модель или конечная точка не найдена (404)</string>
+    <string name="saba_error_timeout">Время ожидания соединения истекло</string>
+    <string name="saba_error_server">Сервис провайдера временно недоступен</string>
+    <string name="saba_error_tls">Не удалось проверить защищённое соединение</string>
+    <string name="saba_error_network">Ошибка сетевого подключения</string>
+    <string name="saba_error_other">Не удалось выполнить запрос</string>
+    <string name="saba_advice_auth">Проверьте сохранённый ключ или разрешения учётной записи. Не вставляйте учётные данные в отчёт.</string>
+    <string name="saba_advice_forbidden">Проверьте права учётной записи и доступ к модели. Сам по себе код 403 не доказывает региональную блокировку.</string>
+    <string name="saba_advice_region">Проверьте официальные сведения о доступности сервиса. Смена ключа не отменяет ограничение.</string>
+    <string name="saba_advice_credits">Проверьте расход средств и тарифы перед новым запросом.</string>
+    <string name="saba_advice_rate">Подождите, пока лимит провайдера обновится, и повторите запрос один раз. Не отправляйте запросы циклически.</string>
+    <string name="saba_advice_model">Выберите доступную модель и проверьте адрес провайдера.</string>
+    <string name="saba_advice_timeout">Проверьте интернет и повторите попытку. Провайдер мог уже получить запрос.</string>
+    <string name="saba_advice_server">Проверьте состояние сервиса и повторите попытку позже.</string>
+    <string name="saba_advice_tls">Проверьте дату на устройстве и безопасность соединения. Не отключайте проверку сертификатов.</string>
+    <string name="saba_advice_network">Проверьте мобильную сеть или Wi-Fi и повторите попытку.</string>
+    <string name="saba_advice_other">Откройте диагностику, чтобы проверить подключение и провайдера. Исходные сведения об ошибке скрыты для защиты конфиденциальности.</string>
+    <string name="saba_error_http">Статус HTTP: %1$d</string>
+    <string name="saba_network_validated">Интернет: проверен системой (провайдер не проверен)</string>
+    <string name="saba_network_offline">Интернет: активное соединение отсутствует</string>
+    <string name="saba_network_unverified">Интернет: сеть активна, проверка недоступна</string>
+    <string name="saba_network_unknown">Интернет: проверить не удалось</string>
+    <string name="saba_error_retry">Повторить ответ</string>
+    <string name="saba_error_resume">Продолжить сохранённую задачу</string>
+    <string name="saba_error_settings">Диагностика</string>
+    <string name="saba_error_copy">Копировать безопасный отчёт</string>
+    <string name="saba_error_copied">Отчёт скопирован</string>
+    <string name="saba_error_close">Закрыть</string>
+    <string name="saba_chat_share">Поделиться чатом в Markdown</string>
+    <string name="saba_chat_share_title">Поделиться этим чатом?</string>
+    <string name="saba_chat_share_note">Экспортируемая история содержит ваши сообщения и ответы помощника. Проверьте конфиденциальные данные перед выбором приложения.</string>
+    <string name="saba_chat_share_confirm">Выбрать приложение для отправки</string>
+    <string name="saba_chat_share_failed">Не удалось подготовить историю чата.</string>
+    <string name="saba_chat_share_empty">В этом чате нет сообщений для экспорта.</string>
+    <string name="saba_chat_share_limit">Часть старой истории пропущена для надёжной отправки через Android.</string>
+</resources>
