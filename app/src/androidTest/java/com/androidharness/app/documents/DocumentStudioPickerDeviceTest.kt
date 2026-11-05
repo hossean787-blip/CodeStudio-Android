@@ -121,4 +121,36 @@ class DocumentStudioPickerDeviceTest {
             }
         }
     }
+    @Test fun persianDocxShowsExtractedFilePreviewAndCapturesRealLightRtlScreen() {
+        val target = instrumentation.targetContext
+        val fa = target.createConfigurationContext(Configuration(target.resources.configuration).apply {
+            setLocale(Locale.forLanguageTag("fa")); setLayoutDirection(Locale.forLanguageTag("fa"))
+        })
+        ActivityScenario.launch(ChatListTestActivity::class.java).use { scenario ->
+            scenario.onActivity { activity -> activity.setContent {
+                HarnessTheme(themeMode = ThemeMode.LIGHT, dynamicColor = false) {
+                    CompositionLocalProvider(
+                        LocalContext provides fa,
+                        LocalLayoutDirection provides LayoutDirection.Rtl,
+                        LocalActivityResultRegistryOwner provides activity,
+                    ) {
+                        Surface { DocumentStudioScreen(onBack = {}) }
+                    }
+                }
+            } }
+            tap("DOCX")
+            fill(fa.getString(R.string.ds_name), "SabaDocxPreview")
+            fill(fa.getString(R.string.ds_content), "گزارش فارسی صبا استودیو")
+            tap(fa.getString(R.string.ds_generate))
+            awaitNode("گزارش فارسی صبا استودیو")
+            val evidence = File(target.getExternalFilesDir(null), "issue8/document-ui").apply { mkdirs() }
+            instrumentation.uiAutomation.takeScreenshot().also { bitmap ->
+                File(evidence, "document-fa-light-docx-content-preview.png").outputStream().use {
+                    bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+                }
+                bitmap.recycle()
+            }
+        }
+    }
+
 }
