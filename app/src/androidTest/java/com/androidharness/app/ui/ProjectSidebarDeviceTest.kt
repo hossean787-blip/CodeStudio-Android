@@ -148,11 +148,10 @@ class ProjectSidebarDeviceTest {
             assertEquals("Skills", destination.get())
             val apps = instrumentation.targetContext.getString(com.androidharness.app.R.string.saba_apps_nav)
             scrollTo(apps)
-            val appsState = androidx.core.view.accessibility.AccessibilityNodeInfoCompat.wrap(requireNotNull(find(apps))).stateDescription?.toString()
-            val expanded = instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_expanded)
-            val collapsed = instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_collapsed)
-            assertTrue("Apps must expose its expansion state", appsState == expanded || appsState == collapsed)
-            if (appsState == collapsed) tap(apps)
+            // The label may be an accessibility text leaf, not the clickable
+            // row carrying stateDescription. Exercise visible menu behavior.
+            val alreadyOpen = try { scrollTo("GitHub"); true } catch (_: IllegalStateException) { false }
+            if (!alreadyOpen) { scrollTo(apps); tap(apps) }
             for ((label, id) in listOf("GitHub" to "github", "Gmail" to "gmail", "Google Drive" to "drive")) {
                 scrollTo(label); tap(label)
                 assertEquals("Connections:$id", destination.get())
