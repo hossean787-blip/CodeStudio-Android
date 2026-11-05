@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">Sources reviewed: %1$s. Not a live price or availability check.</string>
     <string name="free_api_bank_title">Free AI API bank</string>
     <string name="free_api_bank_intro">Explore official free tiers, trials, and no-key local options. Limits and model availability change; no credentials or paid plans are added automatically.</string>
     <string name="free_api_bank_expand">Explore free API options</string>
