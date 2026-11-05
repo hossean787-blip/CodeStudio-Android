@@ -1,0 +1,29 @@
+name: AI source redistribution guard
+
+on:
+  pull_request:
+    paths:
+      - 'third_party/ai-sources/**'
+      - 'scripts/check_ai_restricted_sources.py'
+      - '.github/workflows/ai-source-guard.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'third_party/ai-sources/**'
+      - 'scripts/check_ai_restricted_sources.py'
+      - '.github/workflows/ai-source-guard.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  restricted-source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Check restricted source objects
+        run: python3 scripts/check_ai_restricted_sources.py
