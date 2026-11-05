@@ -128,6 +128,7 @@ internal fun ProjectNavigationSidebar(
     savedAnswers: List<SavedAnswerRow> = emptyList(),
     onOpenSavedAnswer: (SavedAnswerRow) -> Unit = {},
     onDocuments: (() -> Unit)? = null,
+    onLibraryDesign: (() -> Unit)? = null,
 ) {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
     val scheme = MaterialTheme.colorScheme
@@ -194,6 +195,9 @@ internal fun ProjectNavigationSidebar(
             SidebarNavRow(uiContext.getString(R.string.saba_claude_skills_nav), Icons.Outlined.AutoAwesome, currentRoute == "skills", onClick = onSkills)
             onDocuments?.let { open ->
                 SidebarNavRow(uiContext.getString(R.string.ds_title), Icons.Outlined.Description, currentRoute == "document-studio", onClick = open)
+            }
+            onLibraryDesign?.let { open ->
+                SidebarNavRow("کتابخانه و طراحی", Icons.Outlined.CollectionsBookmark, currentRoute == "library-design", onClick = open)
             }
             SidebarNavRow(uiContext.getString(R.string.saba_apps_nav), Icons.Outlined.Apps,
                 expanded = integrationsOpen, onClick = { integrationsOpen = !integrationsOpen })
