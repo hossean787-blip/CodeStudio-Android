@@ -19,7 +19,12 @@ object DocumentPackagePreview {
     private const val DRAWING = "http://schemas.openxmlformats.org/drawingml/2006/main"
     private val excelLiteralEscape = Regex("_x005F_(?=x[0-9A-Fa-f]{4}_)")
 
-    fun extract(file: File, format: String): String {
+    fun extract(file: File, format: String): String = extractInternal(file, format, editable = false)
+
+    /** Text-only draft; slide boundaries use the same explicit separator as DocumentStudioInput. */
+    fun extractEditable(file: File, format: String): String = extractInternal(file, format, editable = true)
+
+    private fun extractInternal(file: File, format: String, editable: Boolean): String {
         require(format in setOf("docx", "xlsx", "pptx", "zip")) { "Unsupported package preview" }
         require(file.isFile && file.length() in 1..INPUT_LIMIT.toLong()) { "Invalid package size" }
         ZipFile(file).use { zip ->
@@ -33,7 +38,9 @@ object DocumentPackagePreview {
             require(parts.isNotEmpty()) { "Missing document content" }
             val summary = BoundedSummary(PREVIEW_LIMIT)
             parts.forEachIndexed { index, name ->
-                if (format == "pptx") summary.append("\n\n# ${index + 1}\n")
+                if (format == "pptx") summary.append(if (editable) {
+                    if (index == 0) "" else "\n---\n"
+                } else "\n\n# ${index + 1}\n")
                 val entry = zip.getEntry(name) ?: error("Missing document part")
                 require(!entry.isDirectory && entry.size in 1..INPUT_LIMIT.toLong()) { "Invalid document part" }
                 zip.getInputStream(entry).use { input -> parseXml(LimitedInput(input, INPUT_LIMIT.toLong()), format, summary) }
