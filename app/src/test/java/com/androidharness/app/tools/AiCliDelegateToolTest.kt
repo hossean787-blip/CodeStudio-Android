@@ -74,7 +74,7 @@ class AiCliDelegateToolTest {
             commands += cmd
             when {
                 "status" in cmd && "--short" in cmd ->
-                    result(stdout = " M app/src/Main.kt\\n?? notes.txt\\n")
+                    result(stdout = " M app/src/Main.kt\n?? notes.txt\n")
                 "codex exec" in cmd -> result(stdout = "Finished edits")
                 else -> result()
             }
