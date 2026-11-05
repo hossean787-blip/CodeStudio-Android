@@ -25,4 +25,5 @@
     <string name="ai_runtime_confirm_title">تأكيد تنفيذ الوكيل</string>
     <string name="ai_runtime_confirm_body">هل تريد تشغيل %1$s في مساحة العمل المختارة؟ قد يشغل أدوات أو يصل إلى الملفات أو يستخدم خدمة ذكاء اصطناعي متصلة. راجع الأذونات أولا.</string>
     <string name="ai_source_license_ack">أؤكد أن لدي الحقوق المطلوبة للحصول على هذا المصدر واستخدامه. التنزيل لا يمنح حق إعادة التوزيع.</string>
+    <string name="ai_source_nested_warning">سيتم تنزيل مستودعات Git الفرعية أيضا، وقد تحتاج إلى مساحة كبيرة وتخضع لتراخيص منفصلة. لن يتم تسجيل تنزيل غير مكتمل.</string>
 </resources>

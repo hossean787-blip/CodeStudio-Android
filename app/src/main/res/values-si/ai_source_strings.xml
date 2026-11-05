@@ -25,4 +25,5 @@
     <string name="ai_runtime_confirm_title">ධාවනය තහවුරු කරන්න</string>
     <string name="ai_runtime_confirm_body">තෝරාගත් වැඩබිමේ %1$s ධාවනය කරන්නද? මෙය මෙවලම් ක්‍රියාත්මක කිරීමට, ගොනු විවෘත කිරීමට හෝ සම්බන්ධ AI සේවාවක් භාවිතා කිරීමට ඉඩ ඇත.</string>
     <string name="ai_source_license_ack">මෙම මූලාශ්‍රය ලබා ගැනීමට සහ භාවිතයට අවශ්‍ය අවසර මට ඇති බව තහවුරු කරමි. බාගත කිරීම නැවත බෙදාහැරීමට අයිතියක් නොදේ.</string>
+    <string name="ai_source_nested_warning">Git උපමොඩියුල ද බාගත කෙරේ. ඒවාට වැඩි ඉඩක් සහ වෙනම බලපත්‍ර අවශ්‍ය විය හැක. අසම්පූර්ණ බාගත කිරීම ලියාපදිංචි නොවේ.</string>
 </resources>
