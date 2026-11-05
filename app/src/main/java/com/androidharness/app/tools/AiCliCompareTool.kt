@@ -113,14 +113,14 @@ class AiCliCompareTool(
             val successes = results.count { (_, value) -> value.startsWith("SUCCESS\n") }
             ToolResult(
                 ok = successes > 0,
-                output = buildString {
+                output = SecretRedactor.redact(buildString {
                     append("Read-only AI comparison: $successes/${results.size} agents succeeded.")
                     for ((id, response) in results) {
                         append("\n\n=== ").append(id).append(" ===\n")
                         append(response)
                     }
                     append("\n\nCompare the independent answers and verify important claims.")
-                },
+                }),
             )
         }
     }
