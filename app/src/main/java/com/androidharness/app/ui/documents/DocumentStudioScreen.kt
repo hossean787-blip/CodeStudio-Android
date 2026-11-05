@@ -32,6 +32,11 @@ import kotlinx.coroutines.withContext
 /** Explicit user export. Does not publish to a project or execute document content. */
 @Composable
 fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> Unit = { _, _, _ -> }) {
+    var filmStudioOpen by rememberSaveable { mutableStateOf(false) }
+    if (filmStudioOpen) {
+        FilmStudioScreen(onBack = { filmStudioOpen = false })
+        return
+    }
     val context = LocalContext.current
     val store = remember(context.applicationContext) { DocumentStudioStore(context) }
     val scope = rememberCoroutineScope()
