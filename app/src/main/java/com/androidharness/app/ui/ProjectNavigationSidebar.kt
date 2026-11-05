@@ -139,7 +139,6 @@ internal fun ProjectNavigationSidebar(
     LaunchedEffect(projectsView, chatOnly) {
         showArchived = false
         showSaved = false
-        if (projectsView || chatOnly) showHistory = false
     }
     // The Saved button only exists while something is saved, so leave its list rather than strand an empty one.
     LaunchedEffect(savedAnswers.isEmpty()) { if (savedAnswers.isEmpty()) showSaved = false }
@@ -163,7 +162,7 @@ internal fun ProjectNavigationSidebar(
     val selectableIds = when {
         query.isNotBlank() -> (matching.map { it.id } + messageHits.map { it.sessionId }).toSet() intersect sessions.mapTo(mutableSetOf()) { it.id }
         showSaved -> emptySet()
-        projectsView -> sessions.filter { it.id !in archived && it.projectId in expandedProjects && projects.any { p -> p.id == it.projectId && (p.id in projectArchives) == showArchived } }.mapTo(mutableSetOf()) { it.id }
+        projectsView && !showHistory -> sessions.filter { it.id !in archived && it.projectId in expandedProjects && projects.any { p -> p.id == it.projectId && (p.id in projectArchives) == showArchived } }.mapTo(mutableSetOf()) { it.id }
         showArchived -> grouped.archived.mapTo(mutableSetOf()) { it.id }
         else -> sessions.filter { it.id !in archived }.mapTo(mutableSetOf()) { it.id }
     }
@@ -396,7 +395,7 @@ internal fun ProjectNavigationSidebar(
                             Text(uiContext.getString(R.string.ui_no_chats_found_try_another_title_or), Modifier.padding(20.dp),
                                 style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
                         }
-                    } else if (projectsView) {
+                    } else if (projectsView && !showHistory) {
                         item {
                             Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text(if (showArchived) uiContext.getString(R.string.ui_archived_projects) else uiContext.getString(R.string.ui_your_projects), Modifier.weight(1f),
