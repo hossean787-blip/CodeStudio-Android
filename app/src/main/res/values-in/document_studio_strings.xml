@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">Buka berkas sebagai teks yang dapat diedit</string>
+  <string name="ds_import_limits">TXT diimpor sebagai UTF-8. DOCX, XLSX, dan PPTX hanya sebagai teks (maksimal 8 MiB dan 12.000 karakter pratinjau Office). Tata letak, gambar, rumus, dan font tidak dipertahankan. Berkas asli tidak ditimpa.</string>
+  <string name="ds_import_notice">Draf teks dimuat. Periksa isinya sebelum membuat dan menyimpan dokumen baru; format tidak dipertahankan.</string>
 </resources>
