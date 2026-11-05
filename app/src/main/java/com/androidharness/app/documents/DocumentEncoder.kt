@@ -92,7 +92,7 @@ object DocumentEncoder {
         return result
     }
     private fun zip(parts: Map<String, String>): ByteArray {
-        val out = ByteArrayOutputStream()
+        val out = BoundedDocumentOutput()
         ZipOutputStream(out).use { z -> parts.forEach { (name, text) ->
             val bytes = text.toByteArray(Charsets.UTF_8)
             val crc = java.util.zip.CRC32().apply { update(bytes) }
@@ -167,5 +167,17 @@ object DocumentEncoder {
             val h = plotH * s.values[i] / max; val x = left + i * step
             "<g><title>${xml(s.labels[i])}: ${s.values[i]}</title><rect x=\"${number(x)}\" y=\"${number(top + plotH - h)}\" width=\"${number(step * 0.7)}\" height=\"${number(h)}\" fill=\"#2563eb\"/><text x=\"${number(x + step * 0.35)}\" y=\"${number(top + plotH + 20)}\" text-anchor=\"middle\" direction=\"rtl\" font-size=\"10\">${xml(s.labels[i])}</text></g>"
         } + "</svg>"
+    }
+}
+
+/** Enforce the output ceiling while encoders write, before buffer growth. */
+internal class BoundedDocumentOutput : ByteArrayOutputStream() {
+    override fun write(value: Int) {
+        require(count < DocumentEncoder.MAX_OUTPUT) { "Output too large" }
+        super.write(value)
+    }
+    override fun write(bytes: ByteArray, offset: Int, length: Int) {
+        require(length >= 0 && count <= DocumentEncoder.MAX_OUTPUT - length) { "Output too large" }
+        super.write(bytes, offset, length)
     }
 }

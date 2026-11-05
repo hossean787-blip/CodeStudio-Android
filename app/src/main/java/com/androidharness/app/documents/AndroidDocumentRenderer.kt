@@ -9,7 +9,6 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextDirectionHeuristics
 import android.text.TextPaint
-import java.io.ByteArrayOutputStream
 
 /** Native shaping and rasterization; never WebView, shell, desktop conversion or network. */
 object AndroidDocumentRenderer {
@@ -47,7 +46,7 @@ object AndroidDocumentRenderer {
             require(pages.size <= 100) { "PDF exceeds 100 pages; split the document" }
             start = end
         }
-        val out = ByteArrayOutputStream()
+        val out = BoundedDocumentOutput()
         PdfDocument().use { doc ->
             pages.forEachIndexed { index, (from, to) ->
                 check()
@@ -88,7 +87,7 @@ object AndroidDocumentRenderer {
                 canvas.drawRect(x, top + plotH - h, x + step * 0.7f, top + plotH, paint)
                 drawText(canvas, s.labels[i], x, top + plotH + 8, (step - 2).toInt(), 11f, 76)
             }
-            val out = ByteArrayOutputStream()
+            val out = BoundedDocumentOutput()
             require(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) { "PNG compression failed" }
             return out.toByteArray()
         } finally { bitmap.recycle() }

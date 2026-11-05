@@ -91,6 +91,13 @@ class DocumentEncoderTest {
         invalid { DocumentEncoder.encode(DocumentSpec("zip", entries = List(101) { ArchiveText("$it", "x") })) }
         assertArrayEquals(persian.toByteArray(Charsets.UTF_8), DocumentEncoder.encode(DocumentSpec("txt", text = persian)))
     }
+    @Test fun outputCeilingPreventsBufferGrowthBeyondLimit() {
+        val out = BoundedDocumentOutput()
+        out.write(ByteArray(DocumentEncoder.MAX_OUTPUT), 0, DocumentEncoder.MAX_OUTPUT)
+        invalid { out.write(1) }
+        invalid { out.write(byteArrayOf(1, 2), 0, 2) }
+        assertEquals(DocumentEncoder.MAX_OUTPUT, out.size())
+    }
     @Test fun chartRejectsInvalidDataAndProducesEditableEscapedSvg() {
         val s = DocumentSpec("svg", title = persian, labels = listOf("الف & <ب>", "ج"), values = listOf(0.0, 10.0))
         val d = xml(DocumentEncoder.encode(s))
