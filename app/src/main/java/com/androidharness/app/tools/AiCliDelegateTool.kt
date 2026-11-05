@@ -1,6 +1,7 @@
 package com.androidharness.app.tools
 
 import com.androidharness.app.plugins.AiRuntimeBridge
+import com.androidharness.app.github.gitCommand
 import com.androidharness.app.data.env.ShellRunResult
 import com.androidharness.app.data.env.ShellTierRouter
 import com.androidharness.app.workspace.SshFs
@@ -62,6 +63,20 @@ class AiCliDelegateTool(
         val result = run(cmd, ctx.workspace, 180_000, 24_000)
         val output = listOf(result.rawOutput, result.rawStderr).filter { it.isNotBlank() }
             .joinToString("\n").takeLast(24_000)
+        // The agent can modify many files. Show the post-execution Git state as a
+        // read-only review, without staging, committing, reverting or publishing.
+        // This reflects the whole workspace, including pre-existing changes.
+        val review = if (allowEdits) runCatching {
+            run(
+                gitCommand(listOf(
+                    "-C", root.absolutePath,
+                    "-c", "core.fsmonitor=false",
+                    "-c", "core.hooksPath=/dev/null",
+                    "status", "--short", "--untracked-files=normal"
+                )),
+                ctx.workspace, 15_000, 8_000
+            )
+        }.getOrNull() else null
         return ToolResult(
             ok = result.exitCode == 0 && !result.timedOut,
             output = SecretRedactor.redact(buildString {
@@ -69,6 +84,17 @@ class AiCliDelegateTool(
                 append("\nExit: ").append(if (result.timedOut) "timeout" else result.exitCode)
                 if (result.note != null) append("\n").append(result.note)
                 append("\n").append(if (output.isBlank()) "(No output)" else output)
+                if (allowEdits) {
+                    append("\n\nGit workspace review (includes pre-existing changes):")
+                    if (review == null || review.timedOut || review.exitCode != 0) {
+                        append("\nUnavailable (the workspace may not be a Git repository).")
+                    } else {
+                        append("\n").append(
+                            review.rawOutput.takeLast(8_000).ifBlank { "Clean working tree." }
+                        )
+                    }
+                    append("\nNo files were automatically staged, committed or pushed.")
+                }
             }),
         )
     }
