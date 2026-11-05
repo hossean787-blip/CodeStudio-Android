@@ -183,6 +183,7 @@ fun ProviderSheet(
     apiKeys: (String) -> ProviderKeyPool,
     onDismiss: () -> Unit,
     onSave: (name: String, type: ProviderType, baseUrl: String, model: String, apiKeys: ProviderKeyPool, headers: List<com.androidharness.app.llm.ProviderHeader>) -> Unit,
+    preset: ProviderBrand? = null,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState,
@@ -194,6 +195,7 @@ fun ProviderSheet(
             apiKeys = apiKeys,
             onDismiss = onDismiss,
             onSave = onSave,
+            preset = preset,
         )
     }
 }
@@ -206,6 +208,7 @@ internal fun ProviderSheetContent(
     apiKeys: (String) -> ProviderKeyPool,
     onDismiss: () -> Unit,
     onSave: (name: String, type: ProviderType, baseUrl: String, model: String, apiKeys: ProviderKeyPool, headers: List<com.androidharness.app.llm.ProviderHeader>) -> Unit,
+    preset: ProviderBrand? = null,
 ) {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
     SecureDialogEffect()
@@ -217,14 +220,14 @@ internal fun ProviderSheetContent(
             it.type == config.type && it.baseUrl.equals(config.baseUrl, ignoreCase = true)
         }
 
-    var brand by remember { mutableStateOf(existing?.let(::matchBrand)) }
+    var brand by remember(existing?.id, preset) { mutableStateOf(existing?.let(::matchBrand) ?: preset) }
     var devChoice by remember { mutableStateOf<ModelsDev.ProviderInfo?>(null) }
-    var isCustom by remember { mutableStateOf(existing != null && brand == null) }
-    var type by remember { mutableStateOf(existing?.type ?: ProviderType.OPENAI_COMPAT) }
-    var baseUrl by remember { mutableStateOf(existing?.baseUrl ?: ProviderType.OPENAI_COMPAT.defaultBaseUrl) }
+    var isCustom by remember(existing?.id, preset) { mutableStateOf(existing != null && brand == null) }
+    var type by remember(existing?.id, preset) { mutableStateOf(existing?.type ?: preset?.type ?: ProviderType.OPENAI_COMPAT) }
+    var baseUrl by remember(existing?.id, preset) { mutableStateOf(existing?.baseUrl ?: preset?.baseUrl ?: ProviderType.OPENAI_COMPAT.defaultBaseUrl) }
 
-    var name by remember { mutableStateOf(existing?.name ?: "") }
-    var model by remember { mutableStateOf(existing?.model ?: "") }
+    var name by remember(existing?.id, preset) { mutableStateOf(existing?.name ?: preset?.label.orEmpty()) }
+    var model by remember(existing?.id, preset) { mutableStateOf(existing?.model ?: preset?.suggestedModel.orEmpty()) }
     var keyPool by remember(existing?.id) {
         mutableStateOf(if (existing == null) ProviderKeyPool(listOf(ProviderApiKey(value = ""))) else ProviderKeyPool())
     }
@@ -248,7 +251,7 @@ internal fun ProviderSheetContent(
     var modelQuery by remember { mutableStateOf("") }
 
     // Editing skips the provider pick; adding starts there.
-    var step by remember { mutableStateOf(if (existing == null) AddStep.PROVIDER else AddStep.KEY) }
+    var step by remember(existing?.id, preset) { mutableStateOf(if (existing == null && preset == null) AddStep.PROVIDER else AddStep.KEY) }
 
     // ---- Catalog ------------------------------------------------------------
     var entries by remember { mutableStateOf<List<ModelEntry>?>(null) }
