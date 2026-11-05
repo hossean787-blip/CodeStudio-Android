@@ -39,3 +39,12 @@ the installed version's private signing key is unavailable/unknown. CI alpha
 signing is test signing; no retained-data real-device upgrade was tested.
 
 No Phase0 acceptance or main merge is claimed until amended checks pass.
+
+## Subsequent exact result
+Head a2c4e86 ordinary workflow41975534416 PASSED: complete JVM, all
+instrumentation compilation, five emulator persistence/sidebar cases and exact
+Release Persian startup. The earlier static text-leaf state assertion was
+replaced by actual visible-menu behavior; callback assertions remain.
+Main then independently advanced toe7d7a79 with opt-in CLI bridge; preserved
+by merge beb352d. Its configured CLI runtimes/auth are not activated by this
+verification. The refreshed merged head requires new CI before main merge.
