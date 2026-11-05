@@ -140,7 +140,7 @@ fun FilmStudioScreen(onBack: () -> Unit) {
                     val controller = MediaController(ctx)
                     controller.setAnchorView(this)
                     setMediaController(controller)
-                } }, update = { it.setVideoURI(Uri.parse(source)) },
+                } }, update = { view -> if (view.tag != source) { view.tag = source; view.setVideoURI(Uri.parse(source)) } },
                     modifier = Modifier.fillMaxWidth().height(220.dp))
                 if (durationMs > 0) Text(stringResource(R.string.film_duration, durationMs / 1000L))
             }
