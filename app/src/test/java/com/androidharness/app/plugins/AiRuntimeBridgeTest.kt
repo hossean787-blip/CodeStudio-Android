@@ -55,7 +55,7 @@ class AiRuntimeBridgeTest {
         assertEquals("0.25.1-beta.2", AiRuntimeBridge.parseVersion("claude 0.25.1-beta.2"))
         assertNull(AiRuntimeBridge.parseVersion("Authentication required"))
         assertNull(AiRuntimeBridge.parseVersion("API_KEY=secret-12345"))
-        assertNull(AiRuntimeBridge.parseVersion("No version\\n1.2.3 on later line"))
+        assertNull(AiRuntimeBridge.parseVersion("No version\n1.2.3 on later line"))
         assertEquals("2.4.1", AiRuntimeBridge.parseVersion("agent 2.4.1; TOKEN=secret-value"))
     }
 
