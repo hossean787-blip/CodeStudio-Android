@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <!-- chevron ">" -->
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M32,34 L48,34 L68,54 L48,74 L32,74 L52,54 Z" />
-    <!-- underscore "_" -->
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M58,66 L82,66 L82,74 L58,74 Z" />
+ android:width="108dp" android:height="108dp"
+ android:viewportWidth="108" android:viewportHeight="108">
+ <!-- Saba Studio interconnected double-chevron mark. -->
+ <path android:fillColor="#164569" android:pathData="M54,19 C73.3,19 89,34.7 89,54 C89,73.3 73.3,89 54,89 C34.7,89 19,73.3 19,54 C19,34.7 34.7,19 54,19 Z" />
+ <path android:fillColor="#40D5F2" android:pathData="M28,45 L44,29 L66,29 L80,43 L71,52 L61,41 L48,41 L38,52 Z" />
+ <path android:fillColor="#F6FCFF" android:pathData="M80,63 L64,79 L41,79 L28,66 L37,57 L46,67 L60,67 L70,56 Z" />
+ <path android:fillColor="#81F0CA" android:pathData="M70,25 L74,30 L79,25 L74,20 Z" />
 </vector>

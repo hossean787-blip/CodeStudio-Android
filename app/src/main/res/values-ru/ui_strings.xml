@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="notification_quick_reply">Ответить</string>
     <string name="ui_thinking">"Думает…"</string>
     <string name="ui_thinking_2">"Размышление"</string>
     <string name="ui_thinking_seconds">"%1$d с"</string>
