@@ -64,12 +64,12 @@ class AiCliDelegateTool(
             .joinToString("\n").takeLast(24_000)
         return ToolResult(
             ok = result.exitCode == 0 && !result.timedOut,
-            output = buildString {
+            output = SecretRedactor.redact(buildString {
                 append("Agent: ").append(id)
                 append("\nExit: ").append(if (result.timedOut) "timeout" else result.exitCode)
                 if (result.note != null) append("\n").append(result.note)
                 append("\n").append(if (output.isBlank()) "(No output)" else output)
-            },
+            }),
         )
     }
 }
