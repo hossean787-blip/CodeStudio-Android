@@ -140,6 +140,59 @@ class AiCliDelegateToolTest {
         assertFalse(calls.any { "login" in it || "install" in it || "push" in it })
     }
 
+    @Test fun continuesGeminiSessionInPlanModeWithoutEditingAndRejectsOtherProvider() = runBlocking {
+        val commands = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            commands += cmd
+            result(stdout = "safe output")
+        }
+        val id = "123e4567-e89b-12d3-a456-426614174000"
+        val resumed = tool.execute(buildJsonObject {
+            put("agent", "gemini")
+            put("prompt", "Continue review")
+            put("session_id", id)
+            put("allow_edits", false)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(resumed.output, resumed.ok)
+        assertEquals(2, commands.size)
+        assertTrue(commands[1].contains("gemini --resume '$id' --approval-mode plan -p"))
+        commands.clear()
+        val forbidden = tool.execute(buildJsonObject {
+            put("agent", "opencode")
+            put("prompt", "Review")
+            put("session_id", id)
+            put("allow_edits", true)
+        }, ToolContext(FileFs(temp.root)))
+        assertFalse(forbidden.ok)
+        assertTrue(commands.isEmpty())
+    }
+
+    @Test fun continuesOpenCodeSessionOnlyWithExplicitWriteAcknowledgement() = runBlocking {
+        val commands = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            commands += cmd
+            result(stdout = "reviewed")
+        }
+        val session = "ses_4f2a1c7890"
+        val ctx = ToolContext(FileFs(temp.root))
+        val blocked = tool.execute(buildJsonObject {
+            put("agent", "opencode")
+            put("prompt", "Continue coding")
+            put("session_id", session)
+        }, ctx)
+        assertFalse(blocked.ok)
+        assertTrue(commands.isEmpty())
+        val permitted = tool.execute(buildJsonObject {
+            put("agent", "opencode")
+            put("prompt", "Continue coding")
+            put("session_id", session)
+            put("allow_edits", true)
+        }, ctx)
+        assertTrue(permitted.output, permitted.ok)
+        assertTrue(commands.any { it.contains("opencode run --session '$session'") })
+        assertTrue(commands.none { it.contains(" --auto ") })
+    }
+
     @Test fun delegatedCliOutputMasksCredentialsButKeepsUsefulDiagnostics() = runBlocking {
         val vendorKey = "gsk_" + "Aa0".repeat(20)
         val assignedSecret = "Bb1".repeat(20)

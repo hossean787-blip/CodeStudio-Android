@@ -138,7 +138,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
             if (selectedId in setOf("claude", "opencode", "gemini")) {
                 OutlinedTextField(
                     value = resumeSessionId,
-                    onValueChange = { resumeSessionId = it.take(64) },
+                    onValueChange = { resumeSessionId = it.take(80) },
                     label = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_session)) },
                     supportingText = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_warning)) },
                     isError = resumeSessionId.isNotBlank() && !AiRuntimeBridge.isValidSessionForAgent(selectedId, resumeSessionId),
