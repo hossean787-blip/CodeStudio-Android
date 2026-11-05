@@ -204,6 +204,10 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    // Offline, user-selected single-video MP4 editing. Media3 modules must use the same version.
+    implementation("androidx.media3:media3-transformer:1.11.1")
+    implementation("androidx.media3:media3-effect:1.11.1")
+    implementation("androidx.media3:media3-common:1.11.1")
     implementation("com.materialkolor:material-kolor:5.0.1")
     implementation(libs.compose.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
