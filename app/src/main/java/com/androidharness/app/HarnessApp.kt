@@ -146,6 +146,9 @@ class AppContainer(val appContext: Context) {
     private suspend fun canRecallChat(from: String?, target: String): Boolean {
         val source = from?.let { sessions.session(it) } ?: return false
         val destination = sessions.session(target) ?: return false
+        // History is scoped to an explicitly assigned project, even for shared agents.
+        // A missing legacy project binding is not an implicit grant across projects.
+        if (!com.androidharness.app.data.ProjectHistoryAccess.sameProject(source.projectId, destination.projectId)) return false
         val config = com.androidharness.app.data.ConversationConfig.decode(source.conversationJson)
         return config.personalizationEnabled && com.androidharness.app.data.ChatAgentPolicy.canReadHistory(config,
             com.androidharness.app.data.ConversationConfig.decode(destination.conversationJson))

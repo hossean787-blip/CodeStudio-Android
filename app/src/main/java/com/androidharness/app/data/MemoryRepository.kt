@@ -34,6 +34,19 @@ internal object MemoryText {
     }
 }
 
+/** Private agent memories never implicitly span two projects, even for the same agent ID. */
+internal object PrivateAgentProjectPolicy {
+    fun visible(memory: MemoryEntity, owner: String?, projectId: String?): Boolean =
+        owner == null || !projectId.isNullOrBlank() &&
+            memory.scope == MemoryScope.PROJECT.name && memory.projectId == projectId
+
+    fun writeScope(owner: String?, projectId: String?, requested: MemoryScope): MemoryScope {
+        if (owner == null) return requested
+        check(!projectId.isNullOrBlank()) { "Assign this chat to a project before saving private agent memory." }
+        return MemoryScope.PROJECT
+    }
+}
+
 /**
  * Builds the small memory block injected into a request. Individual entries are
  * kept for accuracy; only the highest-value ones enter the prompt, so a long
@@ -107,7 +120,8 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         (sessionId == null || ConversationConfig.decode(dao.session(sessionId)?.conversationJson).personalizationEnabled) &&
             MemoryAccess.enabled(settings.settings.first(), sectionForSession(sessionId))
 
-    suspend fun projectIdForSession(sessionId: String?): String? = if (agentOwner(sessionId) != null) null else sessionId?.takeIf { it.isNotBlank() }?.let { dao.projectIdForSession(it) }
+    suspend fun projectIdForSession(sessionId: String?): String? =
+        sessionId?.takeIf { it.isNotBlank() }?.let { dao.projectIdForSession(it) }
 
     /** Always supplies own/shared memories. Other-section lookup requires an explicit recall request. */
     suspend fun promptBlock(sessionId: String?, query: String = "", onUsed: (List<MemoryEntity>) -> Unit = {}): String? {
@@ -115,7 +129,10 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         if (!isEnabled(sessionId)) return null
         val section = sectionForSession(sessionId)
         val owner = agentOwner(sessionId)
-        val available = dao.activeMemories(projectIdForSession(sessionId)).filter { MemoryAccess.belongsTo(it, section, owner) }
+        val projectId = projectIdForSession(sessionId)
+        val available = dao.activeMemories(projectId).filter {
+            MemoryAccess.belongsTo(it, section, owner) && PrivateAgentProjectPolicy.visible(it, owner, projectId)
+        }
         val block = MemoryPrompt.build(available, query = query)
         if (block.text.isBlank()) return null
         onUsed(block.supplied)
@@ -139,6 +156,7 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         val project = projectIdForSession(sessionId)
         return db.withTransaction {
             val available = dao.allMemories().filter { it.consolidatedInto == null && MemoryAccess.belongsTo(it, section, owner) &&
+                PrivateAgentProjectPolicy.visible(it, owner, project) &&
                 (it.scope == MemoryScope.GLOBAL.name || it.projectId == project && project != null) }
             if (memoryId != null) {
                 val current = available.firstOrNull { it.id == memoryId } ?: error("Memory is not available in this section/project. Recall it first.")
@@ -154,7 +172,8 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
                 WriteResult(updated, Action.UPDATED)
             } else {
                 val clean = checkedText(text)
-                val scope = if (requestedScope == MemoryScope.PROJECT && project != null) MemoryScope.PROJECT else MemoryScope.GLOBAL
+                val scope = if (owner != null) PrivateAgentProjectPolicy.writeScope(owner, project, requestedScope)
+                    else if (requestedScope == MemoryScope.PROJECT && project != null) MemoryScope.PROJECT else MemoryScope.GLOBAL
                 val projectId = project.takeIf { scope == MemoryScope.PROJECT }
                 val candidates = available.filter { !it.isSummary && (scope == MemoryScope.PROJECT || it.scope == MemoryScope.GLOBAL.name) }
                 val duplicate = candidates.firstOrNull { MemoryMatch.key(it.text) == MemoryMatch.key(clean) }
@@ -175,7 +194,8 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         if (text.isBlank()) null else db.withTransaction { save(checkedText(text), category, requestedScope, projectId, null, section).memory }
 
     private suspend fun save(text: String, category: MemoryCategory, requestedScope: MemoryScope, projectId: String?, sessionId: String?, section: MemorySection, owner: String? = null): WriteResult {
-        val scope = if (requestedScope == MemoryScope.PROJECT && projectId != null) MemoryScope.PROJECT else MemoryScope.GLOBAL
+        val scope = if (owner != null) PrivateAgentProjectPolicy.writeScope(owner, projectId, requestedScope)
+            else if (requestedScope == MemoryScope.PROJECT && projectId != null) MemoryScope.PROJECT else MemoryScope.GLOBAL
         val actualProject = projectId.takeIf { scope == MemoryScope.PROJECT }
         val existing = dao.allMemories().firstOrNull { it.consolidatedInto == null && !it.isSummary && it.scope == scope.name &&
             it.projectId == actualProject && MemoryAccess.belongsTo(it, section, owner) && MemoryMatch.key(it.text) == MemoryMatch.key(text) }
@@ -201,7 +221,10 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
     suspend fun update(memory: MemoryEntity, text: String, category: MemoryCategory, scope: MemoryScope, projectId: String?, section: MemorySection = MemorySection.fromStored(memory.section)) = db.withTransaction {
         val current = dao.memory(memory.id) ?: error("This memory was deleted.")
         check(current.updatedAt == memory.updatedAt && current.text == memory.text && current.consolidatedInto == null) { "This memory changed. Reopen it before saving." }
-        check(current.agentId == null || section == MemorySection.CHAT && scope == MemoryScope.GLOBAL) { "Private agent memories stay in this agent." }
+        check(current.agentId == null || section == MemorySection.CHAT && scope == MemoryScope.PROJECT &&
+            projectId != null && projectId == current.projectId) {
+            "Private agent memories must remain in their original project."
+        }
         val clean = checkedText(text, current.isSummary)
         val actualProject = projectId.takeIf { scope == MemoryScope.PROJECT }
         check(dao.allMemories().none { it.id != memory.id && it.consolidatedInto == null && it.section == section.name && it.agentId == current.agentId &&
@@ -279,7 +302,11 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         val target = requestedSection ?: from
         check(owner == null || target == MemorySection.CHAT) { "This agent only has access to its own memory." }
         check(MemoryAccess.canRecall(settings.settings.first(), from, target)) { "Memory lookup for that section is off in Settings > Memory." }
-        return dao.activeMemories(projectIdForSession(sessionId)).firstOrNull { it.id == id && MemoryAccess.belongsTo(it, target, owner) }
+        val project = projectIdForSession(sessionId)
+        return dao.activeMemories(project).firstOrNull {
+            it.id == id && MemoryAccess.belongsTo(it, target, owner) &&
+                PrivateAgentProjectPolicy.visible(it, owner, project)
+        }
             ?: error("This memory is not available in this section/project. Recall current memories first.")
     }
 
@@ -292,7 +319,10 @@ class MemoryRepository(private val db: AppDatabase, private val settings: Settin
         check(owner == null || target == MemorySection.CHAT) { "This agent only has access to its own memory." }
         val prefs = settings.settings.first()
         check(MemoryAccess.canRecall(prefs, from, target)) { "Memory lookup for that section is off in Settings > Memory." }
-        val active = dao.activeMemories(projectIdForSession(sessionId)).filter { MemoryAccess.belongsTo(it, target, owner) }
+        val project = projectIdForSession(sessionId)
+        val active = dao.activeMemories(project).filter {
+            MemoryAccess.belongsTo(it, target, owner) && PrivateAgentProjectPolicy.visible(it, owner, project)
+        }
         return active.filter { query.isBlank() || MemoryMatch.relevance(it.text + " " + it.category, query) > 0 }
             .sortedWith(compareByDescending<MemoryEntity> { MemoryMatch.relevance(it.text, query) }
                 .thenByDescending { it.pinned }.thenByDescending { it.updatedAt }).take(if (query.isBlank()) 20 else 40)

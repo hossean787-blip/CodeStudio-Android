@@ -80,4 +80,17 @@ class ConversationConfigTest {
         assertTrue(merged.restrictedTo(emptySet()).schemas().isEmpty())
         assertSame(merged, merged.restrictedTo(null))
     }
+
+    @Test fun personalizationOffDoesNotExposeHistoryMemoryOrSavedAgentKnowledgeTools() {
+        val profile = ChatAgentProfile(name = "Private agent",
+            knowledge = listOf(AgentKnowledge(name = "notes", text = "private")),
+            skills = listOf(AgentSkill("guide", "private instructions")))
+        val noPersonalization = ConversationConfig(ConversationKind.CHAT,
+            personalizationEnabled = false, agent = profile)
+        val blocked = setOf("search_chats", "recent_chats", "read_chat_snippet",
+            "remember", "recall", "search_agent_knowledge", "skill_view")
+        assertTrue(blocked.none { it in noPersonalization.allowedTools.orEmpty() })
+        assertTrue("read_chat_text" in noPersonalization.allowedTools.orEmpty())
+        assertTrue("search_chats" in noPersonalization.copy(personalizationEnabled = true).allowedTools.orEmpty())
+    }
 }

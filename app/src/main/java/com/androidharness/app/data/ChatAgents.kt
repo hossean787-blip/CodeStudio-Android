@@ -88,6 +88,7 @@ object ChatAgentPolicy {
     }
 
     fun canReadHistory(from: ConversationConfig, target: ConversationConfig): Boolean {
+        if (!from.personalizationEnabled || !target.personalizationEnabled) return false
         val source = from.agent?.takeIf { from.isChat }
         val destination = target.agent?.takeIf { target.isChat }
         return if (source == null) destination == null else
@@ -109,8 +110,8 @@ object ChatAgentPolicy {
             append("\nSelected skills: ").append(profile.skills.joinToString { it.name })
             append(". Load a relevant skill with skill_view before applying it. Only these saved skill instructions are available.\n")
         }
-        append(if (profile.sharedHistory) "History access includes this agent and ordinary Chat/Code conversations.\n"
-            else "History access is restricted to conversations with this same agent.\n")
+        append(if (profile.sharedHistory) "History access includes this agent and ordinary Chat/Code conversations within the same assigned project only.\n"
+            else "History access is restricted to this agent within the same assigned project.\n")
     }
 }
 

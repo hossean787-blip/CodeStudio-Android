@@ -2123,7 +2123,9 @@ class AgentEngine(
             .effectiveImageFrequency(conversation.imageFrequency, chatImageFrequency)
         sb.append("\n\n# Images in answers\n")
             .append(com.androidharness.app.core.ChatExperience.imageFrequencyPrompt(effectiveImageFrequency))
-        conversation.agent?.let { sb.append(com.androidharness.app.data.ChatAgentPolicy.prompt(it)) }
+        if (conversation.personalizationEnabled) {
+            conversation.agent?.let { sb.append(com.androidharness.app.data.ChatAgentPolicy.prompt(it)) }
+        }
         if (conversation.personalizationEnabled) {
             val instructions = conversation.effectiveInstructions(chatInstructions)
             if (instructions.isNotEmpty()) {
