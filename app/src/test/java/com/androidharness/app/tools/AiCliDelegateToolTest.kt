@@ -67,4 +67,29 @@ class AiCliDelegateToolTest {
         assertFalse(denied.ok)
         assertTrue(commands.isEmpty())
     }
+
+    @Test fun delegatedCliOutputMasksCredentialsButKeepsUsefulDiagnostics() = runBlocking {
+        val vendorKey = "gsk_" + "Aa0".repeat(20)
+        val assignedSecret = "Bb1".repeat(20)
+        val commitSha = "0123456789abcdef".repeat(4)
+        var calls = 0
+        val tool = AiCliDelegateTool { _, _, _, _ ->
+            calls++
+            result(stdout = if (calls == 2)
+                "GROQ_API_KEY=$vendorKey\\nAWS_SECRET_ACCESS_KEY=$assignedSecret\\ncommit $commitSha"
+                else "")
+        }
+        val outcome = tool.execute(buildJsonObject {
+            put("agent", "codex")
+            put("prompt", "Read only")
+            put("allow_edits", false)
+        }, ToolContext(FileFs(temp.root)))
+        assertTrue(outcome.ok)
+        assertEquals(2, calls)
+        assertFalse(outcome.output.contains(vendorKey))
+        assertFalse(outcome.output.contains(assignedSecret))
+        assertTrue(outcome.output.contains("GROQ_API_KEY=[redacted]"))
+        assertTrue(outcome.output.contains("AWS_SECRET_ACCESS_KEY=[redacted]"))
+        assertTrue(outcome.output.contains("commit $commitSha"))
+    }
 }
