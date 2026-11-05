@@ -36,4 +36,10 @@ class StudyPracticeTest {
         assertTrue(StudyPractice.render(notes, "plan", 2).contains("Day 14"))
         assertFalse(StudyPractice.render(notes, "plan", 2).contains("2026"))
     }
+    @Test fun explicitPersianOutputSupportsEnglishOnlySourceMaterial() {
+        val result = StudyPractice.render("Audit: Independent assessment", "flashcards", language = "fa")
+        assertTrue(result.contains("پرسش: Audit"))
+        assertTrue(result.contains("پاسخ: Independent assessment"))
+    }
+
 }
