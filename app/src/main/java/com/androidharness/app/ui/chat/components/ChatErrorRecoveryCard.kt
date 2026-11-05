@@ -43,11 +43,15 @@ import com.androidharness.app.ui.common.TextButton
 
 /** A real system connectivity check, not a provider availability or quota assertion. */
 private fun networkState(manager: ConnectivityManager): ChatNetworkState = try {
-    val active = manager.activeNetwork ?: return ChatNetworkState.OFFLINE
-    val caps = manager.getNetworkCapabilities(active) ?: return ChatNetworkState.NOT_VALIDATED
-    if (caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-        caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) ChatNetworkState.VALIDATED
-    else ChatNetworkState.NOT_VALIDATED
+    val active = manager.activeNetwork
+    val caps = active?.let(manager::getNetworkCapabilities)
+    when {
+        active == null -> ChatNetworkState.OFFLINE
+        caps == null -> ChatNetworkState.NOT_VALIDATED
+        caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) -> ChatNetworkState.VALIDATED
+        else -> ChatNetworkState.NOT_VALIDATED
+    }
 } catch (_: SecurityException) {
     ChatNetworkState.UNKNOWN
 }
