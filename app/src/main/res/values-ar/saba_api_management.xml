@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">إدارة واجهات API للذكاء الاصطناعي</string>
+    <string name="saba_api_management_title">إدارة واجهات API للذكاء الاصطناعي</string>
+    <string name="saba_api_management_summary">النماذج والاتصالات والإعدادات وتكاليف API التقديرية</string>
+    <string name="saba_api_management_connection_test">فحص اتصال قائمة النماذج</string>
+    <string name="saba_api_management_untested">لم يتم الفحص</string>
+    <string name="saba_api_management_testing">جارٍ فحص الاتصال…</string>
+    <string name="saba_api_management_catalog_ok">قائمة النماذج متاحة (ليس اختبار محادثة)</string>
+    <string name="saba_api_management_catalog_failed">قائمة النماذج غير متاحة؛ تحقق من المفتاح أو الشبكة أو العنوان</string>
+    <string name="saba_api_management_price">سعر الدليل: ‎%1$s$ للإدخال / ‎%2$s$ للإخراج لكل مليون رمز</string>
+    <string name="saba_api_management_price_unknown">سعر هذا المزوّد أو النموذج غير متاح</string>
+    <string name="saba_api_management_local_price">خادم محلي: لا توجد رسوم API سحابية</string>
+    <string name="saba_api_management_cost_note">الأسعار تقديرية وليست فواتير. قد تختلف رسوم الوسطاء؛ تحقق من الأسعار لدى المزوّد.</string>
+    <string name="saba_api_endpoint_invalid">أدخل عنوان خادم صالحًا يبدأ بـ http أو https وبدون مسافات.</string>
+    <string name="saba_api_endpoint_insecure">استخدم HTTPS للخوادم البعيدة. يُقبل HTTP على هذا الجهاز فقط (localhost).</string>
+    <string name="saba_api_endpoint_credentials">لا تضع أسماء المستخدمين أو كلمات المرور في عنوان الخادم.</string>
+    <string name="saba_api_endpoint_components">احذف معلمات الاستعلام وأجزاء الرابط من عنوان الخادم.</string>
+</resources>
