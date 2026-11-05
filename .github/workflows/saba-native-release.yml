@@ -5,6 +5,7 @@ on:
     branches: [main, "feature/**", "codex/**"]
     paths:
       - '.github/workflows/saba-native-release.yml'
+      - '.github/workflows/saba-studio-build.yml'
       - 'app/**'
       - 'gradle/**'
       - 'scripts/verify_release.sh'
