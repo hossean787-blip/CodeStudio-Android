@@ -29,6 +29,34 @@ class DocumentPackagePreviewTest {
         ))).let { it.contains(persian) && it.contains("folder/notes.txt") && it.contains("val x = 1") })
     }
 
+    @Test fun editableOfficeDraftUsesRealPackageTextAndSafeSlideBoundaries() {
+        val file = File.createTempFile("saba-office-draft-", ".zip")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec(
+                "pptx", title = "گزارش", slides = listOf("اسلاید اول", "اسلاید دوم"),
+            )))
+            assertEquals(
+                "اسلاید اول\n---\nاسلاید دوم",
+                DocumentPackagePreview.extractEditable(file, "pptx"),
+            )
+            assertTrue(DocumentPackagePreview.extract(file, "pptx").contains("# 2"))
+            val text = DocumentPackagePreview.extractEditable(file, "pptx")
+            assertEquals(
+                listOf("اسلاید اول", "اسلاید دوم"),
+                DocumentStudioInput.parse("pptx", "بازنویسی", text).slides,
+            )
+        } finally { file.delete() }
+    }
+
+    @Test fun importedLongOfficeFileCannotBeMistakenForWholeEditableDocument() {
+        val file = File.createTempFile("saba-long-draft-", ".zip")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec("docx", text = "متن".repeat(6000))))
+            val extracted = DocumentPackagePreview.extractEditable(file, "docx")
+            assertTrue(extracted.endsWith("\n…"))
+        } finally { file.delete() }
+    }
+
     @Test fun previewRejectsDoctypeAndUntrustedExternalXmlEntities() {
         val file = File.createTempFile("saba-unsafe-preview-", ".zip")
         try {
