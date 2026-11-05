@@ -31,6 +31,6 @@
     <string name="ai_compare_run">مقایسه عامل‌های انتخاب‌شده</string>
     <string name="ai_compare_confirm_title">تأیید مقایسه چندعامل</string>
     <string name="ai_compare_confirm_body">این درخواست برای %1$d عامل فرستاده شود؟ ممکن است به سرویس‌های هوش مصنوعی متصل شوند و اعتبار حساب مصرف کنند. هیچ تغییری در فایل‌ها درخواست نمی‌شود.</string>
-    <string name="ai_runtime_resume_session">ادامه نشست Claude Code (شناسه UUID، اختیاری)</string>
+    <string name="ai_runtime_resume_session">ادامه نشست (UUID برای Claude/Gemini یا شناسه ses_ برای OpenCode، اختیاری)</string>
     <string name="ai_runtime_resume_warning">فقط نشست قبلی همین محیط را ادامه می‌دهد؛ ممکن است به متن گفت‌وگوی پیشین دسترسی داشته باشد. ورود و تأیید همچنان لازم است.</string>
 </resources>
