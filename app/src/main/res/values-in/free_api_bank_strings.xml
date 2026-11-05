@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">Sumber terakhir ditinjau: %1$s. Ini bukan pemeriksaan harga atau ketersediaan secara langsung.</string>
     <string name="free_api_bank_title">Bank API AI gratis</string>
     <string name="free_api_bank_intro">Jelajahi kuota gratis resmi, uji coba, dan pilihan lokal tanpa kunci. Batas dan model dapat berubah; kunci dan paket berbayar tidak dibuat otomatis.</string>
     <string name="free_api_bank_expand">Jelajahi opsi API gratis</string>

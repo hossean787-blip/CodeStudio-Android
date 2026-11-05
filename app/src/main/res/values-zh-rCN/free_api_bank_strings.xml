@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">资料上次核查时间：%1$s。这不是价格或可用性的实时检查。</string>
     <string name="free_api_bank_title">免费 AI API 资源库</string>
     <string name="free_api_bank_intro">查看官方免费额度、试用服务及无需云端密钥的本地选项。额度和模型可能变化；不会自动创建密钥或订购付费套餐。</string>
     <string name="free_api_bank_expand">查看免费 API 选项</string>

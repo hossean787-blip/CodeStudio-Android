@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">آخر مراجعة للمصادر: %1$s. هذا ليس تحققًا مباشرًا من الأسعار أو التوفر.</string>
     <string name="free_api_bank_title">بنك واجهات API المجانية للذكاء الاصطناعي</string>
     <string name="free_api_bank_intro">استكشف الحصص المجانية والتجارب والخدمات المحلية دون مفتاح. تتغير الحدود والنماذج المتاحة ولا يتم إنشاء مفاتيح أو اشتراكات مدفوعة تلقائيا.</string>
     <string name="free_api_bank_expand">استعراض خيارات API المجانية</string>

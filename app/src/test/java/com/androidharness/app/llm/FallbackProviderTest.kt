@@ -69,6 +69,53 @@ class FallbackProviderTest {
         assertEquals(FallbackFailureKind.QUOTA, fallbackFailureKind(StreamEvent.Failure("payment required", 402)))
     }
 
+    @Test fun `terminal provider failure never discloses a credential echoed upstream`() = runBlocking(FallbackRun { policy }) {
+        val result = events(router({ _, key, _ ->
+            listOf(StreamEvent.Failure("upstream echoed $key and initial-key", 400, retryable = false))
+        }))
+        val failure = result.filterIsInstance<StreamEvent.Failure>().single()
+        assertTrue(failure.message.contains("[redacted]"))
+        assertFalse(failure.message.contains("key-a"))
+        assertFalse(failure.message.contains("initial-key"))
+        assertFalse(result.any { it is StreamEvent.ProviderChanged })
+    }
+
+    @Test fun `retry diagnostics redact credentials before UI logging`() = runBlocking(FallbackRun { policy.copy(retries = 1) }) {
+        val result = events(router({ cfg, key, _ ->
+            if (cfg.id == a.id) listOf(StreamEvent.Failure("temporary error on $key", 503))
+            else listOf(StreamEvent.Done())
+        }))
+        val diagnostics = result.filterIsInstance<StreamEvent.Retrying>()
+        assertTrue(diagnostics.isNotEmpty())
+        assertTrue(diagnostics.all { "[redacted]" in it.reason && "key-a" !in it.reason })
+    }
+
+    @Test fun `without fallback consent error batches still hide the selected api key`() = runBlocking {
+        val nested = StreamEvent.Batch(listOf(StreamEvent.Failure("failed with initial-key", 401),
+            StreamEvent.Retrying(1, 50L, "credential initial-key rejected")))
+        val result = events(router({ _, _, _ -> listOf(nested) }))
+        val batch = result.filterIsInstance<StreamEvent.Batch>().single()
+        val failure = batch.events.filterIsInstance<StreamEvent.Failure>().single()
+        val notice = batch.events.filterIsInstance<StreamEvent.Retrying>().single()
+        assertFalse(failure.message.contains("initial-key"))
+        assertFalse(notice.reason.contains("initial-key"))
+        assertTrue(failure.message.contains("[redacted]"))
+    }
+
+    @Test fun `fallback disabled still redacts echoed upstream credentials`() = runBlocking(FallbackRun { FallbackPolicy() }) {
+        val result = events(router({ _, _, _ -> listOf(StreamEvent.Failure("token: initial-key", 401)) }))
+        assertFalse(result.filterIsInstance<StreamEvent.Failure>().single().message.contains("initial-key"))
+    }
+
+    @Test fun `upstream retry notice redacts credentials before reaching the user`() = runBlocking(FallbackRun { policy }) {
+        val result = events(router({ _, key, _ ->
+            listOf(StreamEvent.Retrying(1, 50L, "upstream echoed $key and initial-key"), StreamEvent.Done())
+        }))
+        val notice = result.filterIsInstance<StreamEvent.Retrying>().single()
+        assertFalse(notice.reason.contains("initial-key"))
+        assertTrue(notice.reason.contains("[redacted]"))
+    }
+
     @Test fun `permanent auth invalid request and context errors never advance`() = runBlocking(FallbackRun { policy }) {
         for (failure in listOf(StreamEvent.Failure("Auth", 401), StreamEvent.Failure("Policy", 403),
             StreamEvent.Failure("Context too large", 400), StreamEvent.Failure("Model removed", 404))) {

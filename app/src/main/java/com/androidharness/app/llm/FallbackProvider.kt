@@ -16,6 +16,20 @@ import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.transform
 import kotlin.coroutines.coroutineContext
 
+/** Never expose a user credential echoed by an upstream error response or exception. */
+private fun redactFallbackCredentials(message: String, vararg credentials: String): String =
+    credentials.filter { it.isNotEmpty() }.distinct().fold(message) { safe, credential ->
+        safe.replace(credential, "[redacted]")
+    }
+
+/** The fallback wrapper must not leak credentials even when fallback is disabled. */
+private fun StreamEvent.redactFallbackEvent(vararg credentials: String): StreamEvent = when (this) {
+    is StreamEvent.Failure -> copy(message = redactFallbackCredentials(message, *credentials))
+    is StreamEvent.Retrying -> copy(reason = redactFallbackCredentials(reason, *credentials))
+    is StreamEvent.Batch -> copy(events = events.map { it.redactFallbackEvent(*credentials) })
+    else -> this
+}
+
 internal enum class FallbackFailureKind { QUOTA, TRANSIENT, TERMINAL }
 
 internal fun fallbackFailureKind(failure: StreamEvent.Failure, cause: Throwable? = null): FallbackFailureKind {
@@ -47,7 +61,7 @@ class FallbackProvider(
         messages: List<ChatMessage>, tools: List<ToolSchema>, options: RequestOptions): Flow<StreamEvent> = flow {
         val consent = coroutineContext[FallbackRun]
         if (consent == null) {
-            factory(config).streamChat(config, apiKey, systemPrompt, messages, tools, options).collect { emit(it) }
+            factory(config).streamChat(config, apiKey, systemPrompt, messages, tools, options).collect { emit(it.redactFallbackEvent(apiKey)) }
             return@flow
         }
         var current = config
@@ -73,7 +87,7 @@ class FallbackProvider(
             }
             val key = apiKey
             if (key.isBlank()) emit(StreamEvent.Failure("${current.name}: credentials are unavailable. Reconnect this provider.", retryable = false))
-            else factory(current).streamChat(current, key, systemPrompt, messages, tools, options).collect { emit(it) }
+            else factory(current).streamChat(current, key, systemPrompt, messages, tools, options).collect { emit(it.redactFallbackEvent(key)) }
             return@flow
         }
         while (true) {
@@ -120,15 +134,15 @@ class FallbackProvider(
                     is com.androidharness.app.agent.TaskPaused -> throw e
                     else -> {
                         cause = e
-                        emit(StreamEvent.Failure(e.message ?: "Provider request failed", code = (e as? ApiException)?.code,
+                        emit(StreamEvent.Failure(redactFallbackCredentials(e.message ?: "Provider request failed", key, apiKey), code = (e as? ApiException)?.code,
                             errorCode = (e as? ApiException)?.errorCode))
                     }
                 }
             }.takeWhile { event ->
-                if (event is StreamEvent.Failure) { failure = event; false }
+                if (event is StreamEvent.Failure) { failure = event.copy(message = redactFallbackCredentials(event.message, key, apiKey)); false }
                 else {
                     if (event.hasResponseOutput()) output = true
-                    emit(event)
+                    emit(event.redactFallbackEvent(key, apiKey))
                     true
                 }
             }.collect { }
