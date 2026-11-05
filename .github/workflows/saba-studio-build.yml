@@ -39,6 +39,7 @@ jobs:
               'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
               'app/src/test/java/com/androidharness/app/llm/RotatingKeyProviderTest.kt',
               'app/src/main/java/com/androidharness/app/AgentService.kt',
+              'app/src/main/java/com/androidharness/app/llm/OpenAiCompatProvider.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
               'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
               'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
