@@ -31,4 +31,6 @@
     <string name="ai_compare_run">对比所选智能体</string>
     <string name="ai_compare_confirm_title">确认多智能体对比</string>
     <string name="ai_compare_confirm_body">将任务发送给%1$d个AI智能体吗？它们可能连接外部服务并消耗账户额度。不会主动请求修改文件。</string>
+    <string name="ai_runtime_resume_session">继续 Claude Code 会话（UUID，可选）</string>
+    <string name="ai_runtime_resume_warning">继续此工作区的已有会话，可能读取此前的对话上下文。仍需登录和批准。</string>
 </resources>
