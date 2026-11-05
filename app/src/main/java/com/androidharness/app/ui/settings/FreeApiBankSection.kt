@@ -30,6 +30,9 @@ internal fun FreeApiBankSection(onConnect: (ProviderBrand) -> Unit) {
             Text(stringResource(R.string.free_api_bank_title), style = MaterialTheme.typography.titleLarge)
             Text(stringResource(R.string.free_api_bank_intro),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.free_api_bank_last_reviewed, FreeApiCatalog.lastReviewedIso),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
             TextButton(onClick = { expanded = !expanded }) {
                 Text(stringResource(if (expanded) R.string.free_api_bank_collapse else R.string.free_api_bank_expand))
             }
