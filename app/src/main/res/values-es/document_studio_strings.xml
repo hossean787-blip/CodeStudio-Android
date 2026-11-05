@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">Abrir archivo existente como texto editable</string>
+  <string name="ds_import_limits">TXT se importa como UTF-8. DOCX, XLSX y PPTX solo como texto (máximo 8 MiB y 12.000 caracteres de vista previa). No se conservan diseños, imágenes, fórmulas ni fuentes. El archivo original no se sobrescribe.</string>
+  <string name="ds_import_notice">Borrador de texto cargado. Comprueba el contenido antes de generar y guardar otro archivo; el formato no se conserva.</string>
 </resources>
