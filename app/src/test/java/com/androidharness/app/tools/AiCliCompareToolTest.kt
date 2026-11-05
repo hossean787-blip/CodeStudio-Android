@@ -79,4 +79,28 @@ class AiCliCompareToolTest {
         assertTrue(invocations.all { it.contains("John'\\''s") })
         assertTrue(invocations.any { it.contains("aider --dry-run --message") })
     }
+
+    @Test fun compareRedactsSecretsFromAllAgentOutputsAndPreservesCommitSha() = runBlocking {
+        val key = "gsk_" + "Aa0".repeat(20)
+        val assignedSecret = "Bb1".repeat(20)
+        val sha = "0123456789abcdef".repeat(4)
+        val tool = AiCliCompareTool { cmd, _, _, _ ->
+            when {
+                cmd.contains("codex exec") -> ShellRunResult(
+                    0, false, "GROQ_API_KEY=$key\\ncommit $sha",
+                    "AWS_SECRET_ACCESS_KEY=$assignedSecret", ExecutionTier.APP_LINUX, null
+                )
+                cmd.contains("claude -p") -> output(text = "Claude checked")
+                else -> output()
+            }
+        }
+        val result = tool.execute(args(listOf("codex", "claude")), ctx)
+        assertTrue(result.ok)
+        assertFalse(result.output.contains(key))
+        assertFalse(result.output.contains(assignedSecret))
+        assertTrue(result.output.contains("GROQ_API_KEY=[redacted]"))
+        assertTrue(result.output.contains("AWS_SECRET_ACCESS_KEY=[redacted]"))
+        assertTrue(result.output.contains("commit $sha"))
+        assertTrue(result.output.contains("Claude checked"))
+    }
 }
