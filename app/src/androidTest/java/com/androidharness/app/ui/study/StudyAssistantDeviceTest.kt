@@ -88,9 +88,11 @@ class StudyAssistantDeviceTest {
             waitForText("پاسخ: بررسی مستقل اطلاعات مالی")
             val directory = File(target.getExternalFilesDir(null), "issue8/study-ui").apply { mkdirs() }
             instrumentation.uiAutomation.takeScreenshot().also { bitmap ->
-                File(directory, "study-fa-light-flashcards.png").outputStream().use {
-                    bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+                val screenshot = File(directory, "study-fa-light-flashcards.png")
+                screenshot.outputStream().use {
+                    assertTrue("Screenshot PNG encoding failed", bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it))
                 }
+                assertTrue("Screenshot PNG was empty", screenshot.length() > 1024L)
                 bitmap.recycle()
             }
         }
