@@ -178,6 +178,9 @@ fun ProvidersScreen(
                     )
                     if (!selection.selecting) ProviderApiStatusSection(
                         provider = provider,
+                        modelId = if (provider.id == settings.activeProviderId) {
+                            settings.activeModel?.takeIf { it.isNotBlank() } ?: provider.model
+                        } else provider.model,
                         status = catalogChecks[provider.id] ?: ProviderCatalogCheck.NOT_TESTED,
                         onCheck = {
                             catalogChecks[provider.id] = ProviderCatalogCheck.CHECKING

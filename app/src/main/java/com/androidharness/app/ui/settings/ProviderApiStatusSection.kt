@@ -19,6 +19,7 @@ internal enum class ProviderCatalogCheck { NOT_TESTED, CHECKING, CATALOG_ACCESSI
 @Composable
 internal fun ProviderApiStatusSection(
     provider: ProviderConfig,
+    modelId: String,
     status: ProviderCatalogCheck,
     onCheck: () -> Unit,
 ) {
@@ -26,11 +27,12 @@ internal fun ProviderApiStatusSection(
         provider.baseUrl.startsWith("http://127.0.0.1:") ||
         provider.baseUrl.startsWith("http://localhost:") ||
         provider.baseUrl.startsWith("http://[::1]:")
-    val rate = ModelsDev.entry(ModelsDev.providerKeyFor(provider.baseUrl), provider.model)?.cost
+    val rate = ModelsDev.entry(ModelsDev.providerKeyFor(provider.baseUrl), modelId)?.cost
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
+        Text(modelId, style = MaterialTheme.typography.labelMedium, maxLines = 1)
         Text(
             when {
                 local -> stringResource(R.string.saba_api_management_local_price)
