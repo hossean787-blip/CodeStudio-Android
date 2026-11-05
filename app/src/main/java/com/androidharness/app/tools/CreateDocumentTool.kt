@@ -21,7 +21,7 @@ class CreateDocumentTool : Tool {
         "format" to buildJsonObject { put("type", "string"); putJsonArray("enum") { DocumentEncoder.mimeTypes.keys.forEach { add(it) } } },
         "title" to Schema.string("Optional title, at most 200 characters."),
         "text" to Schema.string("PDF/DOCX/text/code body; at most 100000 characters."),
-        "rows" to Schema.array(Schema.array(Schema.string("Literal cell text, including leading formula characters."), "Row cells; at most 50."), "XLSX rows; at most 1000."),
+        "rows" to Schema.array(Schema.array(Schema.string("Literal cell text, including leading formula characters; at most 32767 UTF-16 units."), "Row cells; at most 50."), "XLSX rows; at most 1000."),
         "slides" to Schema.array(Schema.string("Slide body text; at most 4000 characters."), "PPTX slide texts; 1 to 32."),
         "entries" to Schema.array(Schema.obj(mapOf("name" to Schema.string("Safe relative ZIP entry name."), "text" to Schema.string("UTF-8 entry content.")), listOf("name", "text")), "ZIP explicit text entries; 1 to 100; no implicit file reads."),
         "labels" to Schema.array(Schema.string("Chart category; at most 80 characters."), "Chart labels; at most 32."),

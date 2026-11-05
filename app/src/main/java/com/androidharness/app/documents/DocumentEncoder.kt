@@ -21,6 +21,7 @@ data class ArchiveText(val name: String, val text: String)
 
 object DocumentEncoder {
     const val MAX_OUTPUT = 8 * 1024 * 1024
+    const val MAX_CELL_TEXT = 32_767
     val mimeTypes = mapOf(
         "pdf" to "application/pdf", "docx" to "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "xlsx" to "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -65,7 +66,13 @@ object DocumentEncoder {
         val names = s.entries.map { it.name }.toSet()
         require(names.none { n -> n.split('/').dropLast(1).indices.any { i -> n.split('/').take(i + 1).joinToString("/") in names } }) { "Archive file/directory collision" }
         when (s.format) {
-            "xlsx" -> require(s.rows.isNotEmpty()) { "Sheet rows required" }
+            "xlsx" -> {
+                require(s.rows.isNotEmpty()) { "Sheet rows required" }
+                // Conservative UTF-16 limit also bounds supplementary code points safely.
+                require(s.rows.all { row -> row.all { it.length <= MAX_CELL_TEXT } }) {
+                    "Spreadsheet cell text exceeds 32767 UTF-16 units; split the cell"
+                }
+            }
             "pptx" -> require(s.slides.isNotEmpty()) { "Slides required" }
             "zip" -> require(s.entries.isNotEmpty()) { "Archive entries required" }
             "svg", "png" -> require(s.labels.isNotEmpty() && s.labels.size == s.values.size) { "Matching chart labels and values required" }
@@ -113,10 +120,16 @@ object DocumentEncoder {
             "word/document.xml" to "$HEAD<w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"><w:body>$body<w:sectPr><w:pgSz w:w=\"11906\" w:h=\"16838\"/><w:pgMar w:top=\"1440\" w:right=\"1440\" w:bottom=\"1440\" w:left=\"1440\"/></w:sectPr></w:body></w:document>",
         ))
     }
+    // Match only the leading underscore, so overlapping tokens also remain literal.
+    // Apply before generic XML escaping; never re-escape the replacement we insert.
+    private val spreadsheetEscapeStart = Regex("_(?=x[0-9A-Fa-f]{4}_)")
+    private fun spreadsheetText(text: String): String =
+        xml(spreadsheetEscapeStart.replace(text, "_x005F_"))
+
     private fun xlsx(s: DocumentSpec): ByteArray {
         val rows = s.rows.mapIndexed { r, cells -> "<row r=\"${r + 1}\">" + cells.mapIndexed { c, text ->
             var n = c + 1; var col = ""; while (n > 0) { n--; col = ('A' + n % 26) + col; n /= 26 }
-            "<c r=\"$col${r + 1}\" t=\"inlineStr\"><is><t xml:space=\"preserve\">${xml(text)}</t></is></c>"
+            "<c r=\"$col${r + 1}\" t=\"inlineStr\"><is><t xml:space=\"preserve\">${spreadsheetText(text)}</t></is></c>"
         }.joinToString("") + "</row>" }.joinToString("")
         return zip(linkedMapOf(
             "[Content_Types].xml" to types(mapOf("xl/workbook.xml" to "spreadsheetml.sheet.main", "xl/worksheets/sheet1.xml" to "spreadsheetml.worksheet")),

@@ -69,6 +69,37 @@ class DocumentEncoderTest {
             assertEquals(v, cells.item(i).textContent)
         }
     }
+    @Test fun spreadsheetCellLengthBoundaryIncludesSupplementaryUnicodeWithoutTruncation() {
+        val boundaries = listOf("ی".repeat(32767), "\uD83D\uDE00".repeat(16383) + "ی")
+        boundaries.forEach { boundary ->
+            assertEquals(32767, boundary.length)
+            val bytes = DocumentEncoder.encode(DocumentSpec("xlsx", rows = listOf(listOf(boundary))))
+            val sheet = xml(parts(bytes).getValue("xl/worksheets/sheet1.xml"))
+            assertEquals(boundary, sheet.getElementsByTagNameNS("http://schemas.openxmlformats.org/spreadsheetml/2006/main", "t").item(0).textContent)
+            invalid { DocumentEncoder.encode(DocumentSpec("xlsx", rows = listOf(listOf(boundary + "ی")))) }
+        }
+        invalid { DocumentEncoder.encode(DocumentSpec("xlsx", rows = listOf(listOf("\uD83D\uDE00".repeat(16384))))) }
+        val fixture = File("build/outputs/issue8/documents").apply { mkdirs() }
+        File(fixture, "spreadsheet-boundary.xlsx").writeBytes(DocumentEncoder.encode(DocumentSpec("xlsx", rows = boundaries.map { listOf(it) })))
+    }
+    @Test fun spreadsheetEscapesLiteralTokensIncludingOverlapsWithoutAffectingOtherFormats() {
+        val literals = listOf("_x0041_", "_x000D_", "_x005F_", "_x00af_", "_x0041__x0042_", "_x0041_x0042_", "_x005F_x0041_", "_X0041_", "=1+1", "+SUM(A1)", "-2", "@x", "00123", "$persian _x0041_ & <x>")
+        val expectedXmlText = listOf("_x005F_x0041_", "_x005F_x000D_", "_x005F_x005F_", "_x005F_x00af_", "_x005F_x0041__x005F_x0042_", "_x005F_x0041_x005F_x0042_", "_x005F_x005F_x005F_x0041_", "_X0041_", "=1+1", "+SUM(A1)", "-2", "@x", "00123", "$persian _x005F_x0041_ & <x>")
+        val bytes = DocumentEncoder.encode(DocumentSpec("xlsx", rows = listOf(literals)))
+        val sheet = xml(parts(bytes).getValue("xl/worksheets/sheet1.xml"))
+        val ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+        val texts = sheet.getElementsByTagNameNS(ns, "t")
+        assertEquals(expectedXmlText.size, texts.length)
+        expectedXmlText.forEachIndexed { i, expected -> assertEquals(expected, texts.item(i).textContent) }
+        assertEquals(0, sheet.getElementsByTagNameNS(ns, "f").length)
+        val literal = "_x0041_"
+        val doc = xml(parts(DocumentEncoder.encode(DocumentSpec("docx", text = literal))).getValue("word/document.xml"))
+        assertEquals(literal, doc.getElementsByTagNameNS("http://schemas.openxmlformats.org/wordprocessingml/2006/main", "t").item(1).textContent)
+        val slide = xml(parts(DocumentEncoder.encode(DocumentSpec("pptx", slides = listOf(literal)))).getValue("ppt/slides/slide1.xml"))
+        assertEquals(literal, slide.getElementsByTagNameNS("http://schemas.openxmlformats.org/drawingml/2006/main", "t").item(0).textContent)
+        val fixture = File("build/outputs/issue8/documents").apply { mkdirs() }
+        File(fixture, "spreadsheet-literals.xlsx").writeBytes(bytes)
+    }
     @Test fun archiveHasOnlyExplicitEntriesAndExactUtf8() {
         val input = listOf(ArchiveText("notes/فارسی.txt", persian), ArchiveText("src/main.kt", "fun main() = Unit\n"))
         val p = parts(DocumentEncoder.encode(DocumentSpec("zip", entries = input)))

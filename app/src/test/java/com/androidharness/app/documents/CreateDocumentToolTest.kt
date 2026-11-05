@@ -53,6 +53,12 @@ class CreateDocumentToolTest {
             listOf("../escape.txt", "/global.txt", "bad.pdf", "a//b.txt").forEach { path -> rejected { tool.execute(args(path), ToolContext(sink)) } }
             rejected { tool.execute(args(text = "x".repeat(100001)), ToolContext(sink)) }
             rejected { tool.execute(buildJsonObject { put("path", "x.txt"); put("format", "txt"); put("text", 12) }, ToolContext(sink)) }
+            rejected {
+                tool.execute(buildJsonObject {
+                    put("path", "oversized.xlsx"); put("format", "xlsx")
+                    put("rows", JsonArray(listOf(JsonArray(listOf(JsonPrimitive("ی".repeat(32768)))))))
+                }, ToolContext(sink))
+            }
             val job = launch(start = CoroutineStart.LAZY) { tool.execute(args(), ToolContext(sink)) }
             job.cancel(); job.join()
             assertTrue(sink.writes.isEmpty()); assertEquals(0, root.listFiles()!!.size)

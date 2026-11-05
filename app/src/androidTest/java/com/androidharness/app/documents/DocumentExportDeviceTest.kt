@@ -78,6 +78,8 @@ class DocumentExportDeviceTest {
                 "txt", "code" -> assertEquals(s.text, file.readText(Charsets.UTF_8))
             }
         }
+        File(dir, "spreadsheet-literals.xlsx").writeBytes(AndroidDocumentRenderer.encode(DocumentSpec("xlsx", rows = listOf(listOf("_x0041_", "_x000D_", "_x005F_", "_x0041_x0042_", "_x005F_x0041_", fa, "=1+1", "+SUM(A1)", "00123")))))
+        File(dir, "spreadsheet-boundary.xlsx").writeBytes(AndroidDocumentRenderer.encode(DocumentSpec("xlsx", rows = listOf(listOf("ی".repeat(32767)), listOf("\uD83D\uDE00".repeat(16383) + "ی")))))
         File(dir, "evidence.txt").writeText("Generated native PDF/PNG; reopened every PDF page with PdfRenderer and PNG with BitmapFactory. Office and ZIP reopened via ZipFile; independent Office readers still required.\n")
     }
 }
