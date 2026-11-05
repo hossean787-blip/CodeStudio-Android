@@ -29,6 +29,49 @@ class DocumentPackagePreviewTest {
         ))).let { it.contains(persian) && it.contains("folder/notes.txt") && it.contains("val x = 1") })
     }
 
+    @Test fun editableOfficeDraftUsesRealPackageTextAndSafeSlideBoundaries() {
+        val file = File.createTempFile("saba-office-draft-", ".zip")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec(
+                "pptx", title = "گزارش", slides = listOf("اسلاید اول", "اسلاید دوم"),
+            )))
+            assertEquals(
+                "اسلاید اول\n---\nاسلاید دوم",
+                DocumentPackagePreview.extractEditable(file, "pptx"),
+            )
+            assertTrue(DocumentPackagePreview.extract(file, "pptx").contains("# 2"))
+            val text = DocumentPackagePreview.extractEditable(file, "pptx")
+            assertEquals(
+                listOf("اسلاید اول", "اسلاید دوم"),
+                DocumentStudioInput.parse("pptx", "بازنویسی", text).slides,
+            )
+        } finally { file.delete() }
+    }
+
+    @Test fun importedLongOfficeFileCannotBeMistakenForWholeEditableDocument() {
+        val file = File.createTempFile("saba-long-draft-", ".zip")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec("docx", text = "متن".repeat(6000))))
+            val extracted = DocumentPackagePreview.extractEditable(file, "docx")
+            assertTrue(extracted.endsWith("\n…"))
+        } finally { file.delete() }
+    }
+
+    @Test fun editableWorkbookRoundTripTreatsFormulaLookingCellsAsLiteralText() {
+        val file = File.createTempFile("saba-xlsx-literal-draft-", ".xlsx")
+        try {
+            file.writeBytes(DocumentEncoder.encode(DocumentSpec(
+                "xlsx", rows = listOf(listOf("عنوان", "=1+1", "عدد ۱۲")),
+            )))
+            val draft = DocumentPackagePreview.extractEditable(file, "xlsx")
+            assertTrue(draft.contains("=1+1"))
+            val reconstructed = DocumentStudioInput.parse("xlsx", "بازنویسی", draft)
+            assertTrue(reconstructed.rows.flatten().contains("=1+1"))
+            file.writeBytes(DocumentEncoder.encode(reconstructed))
+            assertTrue(DocumentPackagePreview.extractEditable(file, "xlsx").contains("=1+1"))
+        } finally { file.delete() }
+    }
+
     @Test fun previewRejectsDoctypeAndUntrustedExternalXmlEntities() {
         val file = File.createTempFile("saba-unsafe-preview-", ".zip")
         try {
@@ -38,6 +81,7 @@ class DocumentPackagePreviewTest {
                 zip.closeEntry()
             }
             assertTrue(runCatching { DocumentPackagePreview.extract(file, "docx") }.isFailure)
+            assertTrue(runCatching { DocumentPackagePreview.extractEditable(file, "docx") }.isFailure)
         } finally { file.delete() }
     }
 

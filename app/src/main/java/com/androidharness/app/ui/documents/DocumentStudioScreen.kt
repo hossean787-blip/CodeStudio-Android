@@ -43,6 +43,7 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
     var mime by rememberSaveable { mutableStateOf("") }
     var filename by rememberSaveable { mutableStateOf("") }
     var pickerPending by rememberSaveable { mutableStateOf(false) }
+    var importPending by rememberSaveable { mutableStateOf(false) }
     var saveInProgress by rememberSaveable { mutableStateOf(false) }
     var savedUri by rememberSaveable { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
@@ -63,6 +64,7 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
     val failed = stringResource(R.string.ds_failed)
     val verified = stringResource(R.string.ds_verified)
     val cancelled = stringResource(R.string.ds_cancelled)
+    val importedWarning = stringResource(R.string.ds_import_notice)
     suspend fun loadPreview() {
         loadOwnedDocumentPreview(create = { store.preview(staged, hash, mime) }) { preview ->
             previewOwner.replace(preview)
@@ -99,6 +101,27 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
             }
         }
     }
+    val importPicker = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val uri = result.data?.data
+        if (result.resultCode != Activity.RESULT_OK || uri == null || !importPending) {
+            importPending = false
+        } else {
+            busy = true
+            scope.launch {
+                try {
+                    val selectedFormat = format
+                    val draft = withContext(Dispatchers.IO) { store.importEditableText(uri, selectedFormat) }
+                    // Never replace unsaved user text if the import is unsupported or truncated.
+                    DocumentStudioInput.parse(selectedFormat, title.ifBlank { "ImportedDocument" }, draft)
+                    invalidatePreview()
+                    input = draft
+                    message = importedWarning
+                } catch (e: CancellationException) { throw e }
+                catch (e: Exception) { message = "$failed ${e.message.orEmpty()}" }
+                finally { busy = false; importPending = false }
+            }
+        }
+    }
     Scaffold(topBar = { AppHeader(stringResource(R.string.ds_title), onBack = onBack) }) { padding ->
         Column(Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             ElevatedCard(modifier = Modifier.fillMaxWidth()) {
@@ -106,17 +129,35 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
             }
             Row(Modifier.fillMaxWidth().horizontalScrollCompat()) {
                 DocumentEncoder.mimeTypes.keys.forEach { type ->
-                    FilterChip(selected = format == type, enabled = !busy && !pickerPending, onClick = { if (format != type) { invalidatePreview(); format = type } }, label = { Text(type.uppercase()) })
+                    FilterChip(selected = format == type, enabled = !busy && !pickerPending && !importPending, onClick = { if (format != type) { invalidatePreview(); format = type } }, label = { Text(type.uppercase()) })
                     Spacer(Modifier.width(6.dp))
                 }
             }
-            OutlinedTextField(value = title, onValueChange = { if (it.length <= 120) { if (it != title) invalidatePreview(); title = it } else message = failed }, enabled = !busy && !pickerPending,
+            OutlinedTextField(value = title, onValueChange = { if (it.length <= 120) { if (it != title) invalidatePreview(); title = it } else message = failed }, enabled = !busy && !pickerPending && !importPending,
                 label = { Text(stringResource(R.string.ds_name)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
             Text(stringResource(R.string.ds_input_help), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            OutlinedTextField(value = input, onValueChange = { if (it.length <= 100_000) { if (it != input) invalidatePreview(); input = it } else message = failed }, enabled = !busy && !pickerPending,
+            OutlinedTextField(value = input, onValueChange = { if (it.length <= 100_000) { if (it != input) invalidatePreview(); input = it } else message = failed }, enabled = !busy && !pickerPending && !importPending,
                 label = { Text(stringResource(R.string.ds_content)) }, modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp), minLines = 5)
-            Button(enabled = !busy && !pickerPending, modifier = Modifier.fillMaxWidth(), onClick = {
-                if (!busy && !pickerPending) {
+            if (format in setOf("txt", "code", "docx", "xlsx", "pptx")) {
+                OutlinedButton(
+                    enabled = !busy && !pickerPending && !importPending,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        importPending = true
+                        try {
+                            importPicker.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = DocumentEncoder.mimeTypes.getValue(format)
+                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            })
+                        } catch (e: Exception) { importPending = false; message = "$failed ${e.message.orEmpty()}" }
+                    },
+                ) { Text(stringResource(R.string.ds_import_text)) }
+                Text(stringResource(R.string.ds_import_limits), style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Button(enabled = !busy && !pickerPending && !importPending, modifier = Modifier.fillMaxWidth(), onClick = {
+                if (!busy && !pickerPending && !importPending) {
                     busy = true; message = ""
                     val selectedFormat = format; val selectedTitle = title; val selectedInput = input
                     scope.launch {
@@ -150,8 +191,8 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
                             style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-                Button(enabled = !busy && !pickerPending, modifier = Modifier.fillMaxWidth(), onClick = {
-                    if (!busy && !pickerPending) {
+                Button(enabled = !busy && !pickerPending && !importPending, modifier = Modifier.fillMaxWidth(), onClick = {
+                    if (!busy && !pickerPending && !importPending) {
                         pickerPending = true
                         try { picker.launch(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                             addCategory(Intent.CATEGORY_OPENABLE); type = mime; putExtra(Intent.EXTRA_TITLE, filename)

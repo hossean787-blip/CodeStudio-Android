@@ -1,0 +1,46 @@
+{
+  "checked_at_utc": "2026-11-05T19:34:36.087145+00:00",
+  "checks": [
+    {
+      "provider": "kilo",
+      "url": "https://api.kilo.ai/api/gateway/models",
+      "status": "reachable",
+      "http_status": 200,
+      "model_count": 381,
+      "free_tool_models": 11,
+      "diagnostic": "Catalog reachable; generation/auth not tested"
+    }
+  ],
+  "inference": {
+    "provider": "kilo",
+    "model": "kilo-auto/free",
+    "status": "working",
+    "http_status": 200,
+    "returned_text": true,
+    "response_shape": [
+      "choices",
+      "created",
+      "id",
+      "model",
+      "object",
+      "provider",
+      "service_tier",
+      "system_fingerprint",
+      "usage"
+    ],
+    "choice_shape": [
+      "finish_reason",
+      "index",
+      "logprobs",
+      "message",
+      "native_finish_reason"
+    ],
+    "finish_reason": "stop",
+    "diagnostic": "Anonymous free-model response received"
+  },
+  "limitations": [
+    "Model-list access is not proof of model inference.",
+    "No private API credentials were used.",
+    "No paid inference requests were sent."
+  ]
+}
