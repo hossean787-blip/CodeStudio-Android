@@ -1,77 +1,84 @@
-# Saba Studio — Issue 8 execution status
+# Saba Studio — Issue 8 and thirteen-source execution status
 
-Repository identity: hossean787-blip/CodeStudio-Android. Owner-defined scope:
-all26 approved corrections in Issue8, phased real implementation and evidence;
-no placeholder completion, no untested main merges. Production publication,
-paid services, new sensitive account/device access and new production signing
-materials require explicit approval. No such approval has been given.
+Updated 2026-11-05 12:02 UTC. Repository: `hossean787-blip/CodeStudio-Android`.
+Only verified behavior is called complete. Issue #8 still has unfinished items.
 
-## Confirmed architecture and decisions (2026-11-05 UTC)
-Kotlin/Compose native Android, package ir.sabagostar.sabastudio, min26. Room25,
-existing project-scoped workspaces and encrypted provider credentials retained.
-Issue8 overrides earlier Neon default: fresh installs use LIGHT/SLATE; explicit
-saved themes remain. Internal resume uses persisted origin IDs, not text
-matching; backupv6 separates audit while importing v1–5. Private notification
-defaults protect lockscreen details. Key retries must not bypass provider limits.
-Thirteen gitlinked AI sources are provenance/workspace imports, not APK engines.
-No arbitrary vendored scripts or restricted modules are executed/copied.
+## Main and rollback
 
-## Verified evidence
-- Phase0 head13d1b90:1953 JVM tests/298suites,0failed/errors/skipped; all Android
-  instrumentation compile and Debug/non-debuggable Release build/signature pass.
-- Same head emulator:4persist/migration/isolation pass, new sidebar case FAIL
-  (expanded pinned footer starved chat viewport). Regression is retained.
-- Prior373ae77 runs41933961871 and41933961945 succeeded ordinary+native Release,
-  four persistence cases, CPU tiny-model JNI and Persian startup on emulator.
-  These are not tests of later source or physical hardware.
-- Live anonymous network probe: Kilo catalogHTTP200/381models/11free tool models,
-  one cappedkilo-auto/free inferenceHTTP200 returned text. OutsideAPK only.
-- Source-pin verifier13gitlinks pass. XML new11locale resource sets parse.
-- Independent scoped source reviews completed; findings corrected for backup
-  version assertion, debug evidence directory and footer/header feedback loop.
+`main` includes PR #24 at merge commit `20d5abac468c021ba05a1a1755a4fb12bdbeacd0`.
+PRs #10, #13, #14 and the thirteen-source audit PR #23 were merged after their
+respective checks. The 13 exact upstream gitlinks are documented in
+`docs/THIRTEEN_AI_RUNTIME_AUDIT_FA.md`; none of those independent projects is
+compiled into Saba Studio or device-tested as its own runtime. Gitlinks do not
+prove functional integration or grant redistribution rights. Keep the
+proprietary-derived OpenClaude code out of the APK, and resolve Syntac licensing
+before any code transfer. `third_party/free-claude-code` and
+`third_party/GPT_API_free` are separate archives. Kilo and other model APIs are
+provider integrations, not members of the thirteen-source Gitlink list.
 
-## Current source and pending checks
-Main independently advanced from5dd7802 to83d9f4f via updatedPR7; fetched and
-merged into phase0 without overwriting newer work. Our changes remain separate:
-PR10 phase0 head2ef06a5; PR13 phase1 light/resume/diagnostics headae4e39a;
-PR14 notification increment headbd745ee; provider-policy branch3241c56.
-All amended heads require current CI/device acceptance before main merge.
-Older successful checks are not reused as proof for changed app source.
-Document export implementer works separately; see controller ledger and brief
-under /workspace/scratch/issue8-briefs. Root owns tool approvals/checkpoints,
-shared registration/workflows and final integration. OtherPR11/12 are untouched.
+Rollback bundles: `/workspace/deliverables/issue8-baseline.bundle` and
+`/workspace/deliverables/issue8-main-refresh.bundle`. History is preserved.
 
-## Blockers and limitations
-Original installed APK signing key is unknown (user does not know). Existing
-CI alpha certificates are test signatures. No matching-signature or retained-
-data physical-device upgrade proof exists; do not promise upgrade compatibility.
-Authenticated providers/OAuth, paid/cloud media models, camera/microphone/phone
-control and proprietary runtime adapters are not activated/tested. Historical
-Code resume rows without origin metadata cannot safely be hidden from text alone.
-Local Gradle download was refused; JVM/Android work runs in existing public CI.
+## In-review implementation
 
-## Next actions and rollback
-1. Finish current amended phase0+phase1 CI, inspect emulator failures/screenshots
-   and artifacts; fix actual causes, preserve all meaningful regressions.
-2. Review/integrate native document exports with scoped permissions and real
-   independent PDF/Office/image reader validation; continue remaining phases.
-3. Merge only verified increments; produce exact signed Release manifest/hash,
-   explicit capability status and blockers. No public app release without approval.
-Rollback bundles: /workspace/deliverables/issue8-baseline.bundle and
-issue8-main-refresh.bundle. Detailed requirements/evidence: delivery/issue-8/.
-Controller recovery ledger: /workspace/scratch/issue8-ledger.md. No secrets here.
+PR #24, merged from app-code commit `ce81fab` into `main`:
+explicit native document studio with Android Files destination, verified
+readback, PDF/PNG preview, native PDF/DOCX/XLSX/PPTX/ZIP/text/SVG/PNG encoders;
+bounded Skills import and saved-key quota fallback policy. Automatic writing
+of generated files into project workspaces is blocked after a concrete
+cross-project directory-swap counterexample; its unsafe implementation was
+reverted. See `delivery/issue-8/phase-2/PUBLICATION-BLOCKER.md`.
 
-## Security ruling and native document increment (2026-11-05)
-Automatic FileFs publication was rejected after a concrete directory-swap
-counterexample. Its registration/capability/engine hooks were reverted before
-main. Four static host filesystem passes were insufficient and are superseded.
-Do not reactivate automatic create_document without a proven isolation design.
-Nine native encoder JVM tests pass; python-docx/openpyxl/python-pptx independently
-open the generated Office fixtures. PDF close/cancellation compile fixb01d526 is
-prepared; full Android compilation/renderer tests still required. A user-directed
-Android CreateDocument studio is being implemented separately; no claim allR09.
-Phase0 a2c4 ordinary run41975534416 passed allfive emulator cases+Release startup;
-newmaine7d7a79 runtimebridge was preserved and requires fresh mergedheadchecks.
-Phase1 all8 emulator tests passed on552176b, including nativefreeinference,
-but evidencepull failed after Gradle uninstalled the debug app. Confirmed AGP
-leaveApksInstalledAfterRun option added so artifacts can be copied; CIpending.
+Local Gradle on merged main + phase-two code: 2013 JVM tests in 308 suites,
+0 failures/errors/skips, and all Android instrumentation sources compiled.
+Source pin audit: 13/13 exact Gitlinks, none executed. A capped, anonymous
+Kilo `kilo-auto/free` request returned HTTP 200 and text on 2026-11-05 11:10 UTC;
+this was outside the APK and does not prove other providers.
+
+Run 42015801943 on the previous phase-two head `5b7ff04`: release build passed;
+20/21 emulator tests passed. The sole failure was the new picker fixture's
+missing ActivityResultRegistryOwner after substituting a Persian Context. The
+test was fixed in `ce81fab` and compiled locally. Focused Debug emulator run
+42019250039 then passed 18/18, including a real Android Files PDF save,
+verified readback and PDF reopening. Its native document fixtures were opened
+independently with python-docx, openpyxl, python-pptx, Pillow and pypdf.
+Full standard run 42019488737 passed on exact `ce81fab`: 21/21 Android
+emulator tests, Release install/startup, and independent readers. The CI reader
+job opened every native fixture and LibreOffice converted DOCX, XLSX and
+PPTX to readable PDF plus literal-preserving XLSX to CSV.
+
+Native Release/JNI run 42015801898 passed on `5b7ff04`: CPU tiny GGUF inference
+returned 21 events, emulator startup passed, GPU was unavailable. The only
+change from `5b7ff04` to `ce81fab` is the picker instrumentation fixture.
+Native run 42019488476 on exact `ce81fab` passed: test-signed native Release,
+CPU GGUF JNI inference and emulator startup. Independent source-security review
+found no actionable issue; `CreateDocumentTool` remains unregistered. PR #24
+was merged only after all checks passed. No physical Android device was tested.
+
+## APK identity and signing limit
+
+The current standard CI alpha Release at `ce81fab` is non-debuggable, signed v2,
+package `ir.sabagostar.sabastudio`, versionCode 2, versionName
+`0.1.0-alpha.2`, minSdk 26. SHA-256 of its APK:
+`26c7d2d553ea9621cfc1e6a2c24681655926a2508e24a779dc4d6a73d9266652`.
+The native alpha APK at `ce81fab` has SHA-256
+`c62f86fce05b7d03ecf7aefab4de9f5cda5d027c25cf7c725adabdab5cffaefe`.
+These CI jobs used different per-run Android Debug test certificates. The
+installed app's signing key/certificate is unknown; an upgrade retaining data
+cannot be promised. A stable compatible key must be identified and securely
+configured before testing a real-device upgrade. These APKs are not a public
+production release.
+
+## Boundaries and next gate
+
+No paid API, account-wide OAuth, all-files/phone-control permission, cloud
+hosting or production signing material is newly authorized. Such capabilities
+remain not configured until explicit permission and a successful independent
+runtime test. Open PRs #19, #21 and #22 are separate and unmerged as of this
+update; preserve them when synchronizing `main`.
+
+Next: continue individual source/runtime licensing and capability work,
+project-scoped knowledge and the remaining Issue #8 phases. Establish an
+original-key-compatible stable signing configuration and prove data-retaining
+upgrade on a real device before promising upgrade compatibility. Do not label
+all thirteen sources functional based on Gitlinks or this phase-two APK.
