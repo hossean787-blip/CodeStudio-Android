@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Lernassistent</string>
+    <string name="study_back">Zurück</string>
+    <string name="study_hero">Mit eigenen Notizen üben</string>
+    <string name="study_subtitle">Offline-Lernkarten, Tests und ein Wiederholungsplan nur aus den hier eingegebenen Notizen.</string>
+    <string name="study_notes">Deine Notizen</string>
+    <string name="study_example">Ein Paar pro Zeile: Begriff: Definition</string>
+    <string name="study_notice">Jede Zeile muss einen Begriff und eine Definition enthalten, getrennt durch einen Doppelpunkt. Unstrukturierter Text wird übersprungen. Es werden keine Daten an Anbieter oder andere Projekte gesendet. Maximal 20.000 Zeichen.</string>
+    <string name="study_flashcards">Lernkarten</string>
+    <string name="study_quiz">Quiz</string>
+    <string name="study_plan">Lernplan</string>
+    <string name="study_generate">Übung erstellen</string>
+    <string name="study_result">Dein Ergebnis</string>
+    <string name="study_limit">Maximal 20.000 Zeichen erlaubt.</string>
+    <string name="study_invalid_notes">Gib gültige Paare wie Begriff: Definition ein. Aus unvollständigen Notizen werden keine Antworten erfunden.</string>
+</resources>

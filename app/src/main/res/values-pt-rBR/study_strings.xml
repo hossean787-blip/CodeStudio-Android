@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Assistente de estudos</string>
+    <string name="study_back">Voltar</string>
+    <string name="study_hero">Pratique com suas anotações</string>
+    <string name="study_subtitle">Cartões de estudo, testes e plano de revisão offline, usando apenas as anotações inseridas aqui.</string>
+    <string name="study_notes">Suas anotações</string>
+    <string name="study_example">Um par por linha: Conceito: Definição</string>
+    <string name="study_notice">Cada linha deve ter um conceito e uma definição separados por dois-pontos. Texto sem estrutura é ignorado. Nada é enviado a provedores ou outros projetos. Máximo de 20.000 caracteres.</string>
+    <string name="study_flashcards">Cartões</string>
+    <string name="study_quiz">Teste</string>
+    <string name="study_plan">Revisão</string>
+    <string name="study_generate">Gerar exercícios</string>
+    <string name="study_result">Resultado</string>
+    <string name="study_limit">O limite é de 20.000 caracteres.</string>
+    <string name="study_invalid_notes">Insira pares válidos como Conceito: Definição. Nenhuma resposta será inventada a partir de anotações incompletas.</string>
+</resources>

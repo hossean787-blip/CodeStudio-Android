@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">المساعد الدراسي</string>
+    <string name="study_back">رجوع</string>
+    <string name="study_hero">تدرّب باستخدام ملاحظاتك</string>
+    <string name="study_subtitle">بطاقات تعليمية واختبارات وخطة مراجعة دون اتصال، اعتمادًا فقط على النص الذي تدخله هنا.</string>
+    <string name="study_notes">ملاحظاتك</string>
+    <string name="study_example">أدخل زوجًا في كل سطر: مفهوم: تعريف</string>
+    <string name="study_notice">يجب أن يحتوي كل سطر على مفهوم وتعريف تفصل بينهما نقطتان. يُتجاهل النص غير المنظم. لا تُرسل البيانات إلى مزود خدمة أو مشروع آخر. الحد الأقصى ٢٠٬٠٠٠ حرف.</string>
+    <string name="study_flashcards">بطاقات تعليمية</string>
+    <string name="study_quiz">اختبار</string>
+    <string name="study_plan">خطة مراجعة</string>
+    <string name="study_generate">إنشاء تمارين</string>
+    <string name="study_result">نتيجة التمرين</string>
+    <string name="study_limit">الحد الأقصى للإدخال ٢٠٬٠٠٠ حرف.</string>
+    <string name="study_invalid_notes">أدخل أزواجًا صحيحة مثل مفهوم: تعريف. لن تُختلق إجابات من ملاحظات ناقصة.</string>
+</resources>
