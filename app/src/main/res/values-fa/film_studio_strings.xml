@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="film_title">استودیوی فیلم · برش ویدئو</string>
+    <string name="film_entry">ورود به استودیوی فیلم</string>
+    <string name="film_scope">برش واقعی یک ویدئوی محلی، خروجی MP4 و ذخیره پروژه قابل‌ویرایش JSON. تدوین چندلایه، جلوه‌های ویژه، هماهنگی لب، تولید ویدئو با AI و خروجی MOV هنوز فعال نیستند. فقط از محتوای مجاز استفاده کنید.</string>
+    <string name="film_choose_video">انتخاب ویدئو از گوشی</string>
+    <string name="film_duration">مدت ویدئو: %1$d ثانیه</string>
+    <string name="film_duration_unavailable">مدت ویدئو خوانده نشد؛ ویدئوی محلی سازگار انتخاب کنید.</string>
+    <string name="film_name">نام پروژه</string>
+    <string name="film_start">شروع (ثانیه)</string>
+    <string name="film_end">پایان (ثانیه)</string>
+    <string name="film_invalid_cut">بازه معتبری در محدوده زمان ویدئو وارد کنید.</string>
+    <string name="film_save_project">ذخیره پروژه قابل‌ویرایش (JSON)</string>
+    <string name="film_project_saved">پروژه ذخیره شد؛ ویدئوی اصلی و مجوز دسترسی آن را حفظ کنید.</string>
+    <string name="film_save_failed">ذخیره فایل ناموفق بود.</string>
+    <string name="film_export">پردازش و تولید MP4</string>
+    <string name="film_export_ready">MP4 تولید شد؛ اکنون مقصد ذخیره را انتخاب کنید.</string>
+    <string name="film_export_failed">پردازش ویدئو ناموفق بود؛ ویدئوی محلی سازگار امتحان کنید.</string>
+    <string name="film_cancel">لغو پردازش</string>
+    <string name="film_cancelled">پردازش لغو شد.</string>
+    <string name="film_save_mp4">ذخیره MP4 تولیدشده</string>
+    <string name="film_mp4_saved">فایل MP4 با موفقیت ذخیره شد.</string>
+</resources>
