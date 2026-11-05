@@ -113,7 +113,7 @@ fun StudyAssistantScreen(onBack: () -> Unit) {
                 }
                 Button(
                     onClick = {
-                        val produced = runCatching { StudyPractice.render(notes, mode) }
+                        val produced = runCatching { StudyPractice.render(notes, mode, language = "fa") }
                         result = produced.getOrNull()
                         error = if (produced.isFailure) invalidNotesError else null
                     },
