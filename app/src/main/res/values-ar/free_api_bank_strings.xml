@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">بنك واجهات API المجانية للذكاء الاصطناعي</string>
+    <string name="free_api_bank_intro">استكشف الحصص المجانية والتجارب والخدمات المحلية دون مفتاح. تتغير الحدود والنماذج المتاحة ولا يتم إنشاء مفاتيح أو اشتراكات مدفوعة تلقائيا.</string>
+    <string name="free_api_bank_expand">استعراض خيارات API المجانية</string>
+    <string name="free_api_bank_collapse">إخفاء بنك API</string>
+    <string name="free_api_bank_search">البحث عن خدمة أو دليل</string>
+    <string name="free_api_bank_ready_filter">خيارات يمكن إعدادها حاليا</string>
+    <string name="free_api_bank_tier_free">حصة مجانية محدودة حسب النموذج والمعدل وقد يلزم حساب ومفتاح API</string>
+    <string name="free_api_bank_tier_trial">مفتاح تجريبي محدود وقد تنتهي صلاحية الرصيد</string>
+    <string name="free_api_bank_tier_local">دون مفتاح سحابي ويتطلب خادما محليا مثبتا ويعمل</string>
+    <string name="free_api_bank_tier_setup">قد تتوفر حصة مجانية لكن يلزم إعداد عنوان خاص بالحساب</string>
+    <string name="free_api_bank_tier_directory">دليل خارجي لاكتشاف واجهات API وليس اتصالا جاهزا</string>
+    <string name="free_api_bank_no_card">تؤكد الوثائق الرسمية عدم الحاجة لبطاقة دفع في الوضع المجاني</string>
+    <string name="free_api_bank_official_docs">الدليل الرسمي</string>
+    <string name="free_api_bank_connect">إعداد الاتصال</string>
+    <string name="free_api_bank_no_card_filter">دون بطاقة دفع</string>
+    <string name="free_api_bank_keyless_filter">دون مفتاح سحابي</string>
+    <string name="free_api_bank_no_matches">لا توجد نتائج مطابقة. عدل عوامل التصفية.</string>
+    <string name="free_api_bank_warning">استخدم مفاتيح حسابك فقط. لا توجد خدمة غير محدودة أو حسابات تلقائية أو تجاوز للحدود أو رسوم تلقائية. راجع الأسعار والنماذج والخصوصية أولا. يتم تدوير المفاتيح والتحويل بين المزودين عبر الإعدادات الحالية.</string>
+</resources>

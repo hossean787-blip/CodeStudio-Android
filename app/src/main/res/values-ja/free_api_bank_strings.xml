@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">無料AI APIバンク</string>
+    <string name="free_api_bank_intro">公式の無料枠、試用版、クラウドキー不要のローカル環境を探せます。上限と利用可能モデルは変わります。キーや有料プランは自動作成されません。</string>
+    <string name="free_api_bank_expand">無料APIの候補を見る</string>
+    <string name="free_api_bank_collapse">APIバンクを閉じる</string>
+    <string name="free_api_bank_search">提供元または一覧を検索</string>
+    <string name="free_api_bank_ready_filter">既存の設定で接続可能</string>
+    <string name="free_api_bank_tier_free">無料枠にはモデルと回数の制限があります。アカウントとAPIキーが必要な場合があります</string>
+    <string name="free_api_bank_tier_trial">試用キーには制限があり、残高や利用期限が切れる場合があります</string>
+    <string name="free_api_bank_tier_local">クラウドキー不要。ローカルサーバーの導入と起動が必要です</string>
+    <string name="free_api_bank_tier_setup">無料枠がある場合も、アカウント固有の接続先の設定が必要です</string>
+    <string name="free_api_bank_tier_directory">外部API一覧です。接続機能ではありません</string>
+    <string name="free_api_bank_no_card">公式文書によると無料モードには支払いカードが不要です</string>
+    <string name="free_api_bank_official_docs">公式ガイド</string>
+    <string name="free_api_bank_connect">提供元を設定</string>
+    <string name="free_api_bank_no_card_filter">カード不要</string>
+    <string name="free_api_bank_keyless_filter">クラウドキー不要</string>
+    <string name="free_api_bank_no_matches">該当する候補がありません。絞り込みを変更してください。</string>
+    <string name="free_api_bank_warning">自分のアカウントの認証情報だけを使用してください。無制限利用、自動アカウント作成、制限回避、自動課金はありません。使用前に料金、モデル、プライバシーを確認してください。キー切替と提供元の切替には既存の同意設定を使います。</string>
+</resources>

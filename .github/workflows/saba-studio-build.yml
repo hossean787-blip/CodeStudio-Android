@@ -53,6 +53,9 @@ jobs:
               'app/src/main/java/com/androidharness/app/llm/ModelCatalog.kt',
               'app/src/main/java/com/androidharness/app/ui/common/LocalizedOptionLabels.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/DiagnosticReport.kt',
+              # Issue #8 item 01: reviewed ChatGPT account errors and regression fixture.
+              'app/src/main/java/com/androidharness/app/chatgpt/ChatGptProtocol.kt',
+              'app/src/test/java/com/androidharness/app/chatgpt/ChatGptProviderTest.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/TroubleshootingSection.kt',
               'app/src/test/java/com/androidharness/app/llm/ModelCatalogTest.kt',
               'app/src/test/java/com/androidharness/app/ui/settings/DiagnosticReportTest.kt',
@@ -169,6 +172,8 @@ jobs:
               'app/src/main/res/xml/locales_config.xml',
               'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
+              # Free API bank's reviewed provider discovery entry point.
+              'app/src/main/java/com/androidharness/app/ui/settings/ProvidersScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',

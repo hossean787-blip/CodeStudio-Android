@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Bank API AI gratis</string>
+    <string name="free_api_bank_intro">Jelajahi kuota gratis resmi, uji coba, dan pilihan lokal tanpa kunci. Batas dan model dapat berubah; kunci dan paket berbayar tidak dibuat otomatis.</string>
+    <string name="free_api_bank_expand">Jelajahi opsi API gratis</string>
+    <string name="free_api_bank_collapse">Tutup bank API</string>
+    <string name="free_api_bank_search">Cari penyedia atau direktori</string>
+    <string name="free_api_bank_ready_filter">Dapat dihubungkan dengan pengaturan saat ini</string>
+    <string name="free_api_bank_tier_free">Kuota gratis terbatas menurut model dan jumlah permintaan; mungkin perlu akun dan kunci API</string>
+    <string name="free_api_bank_tier_trial">Kunci uji coba terbatas; kredit atau akses dapat berakhir</string>
+    <string name="free_api_bank_tier_local">Tanpa kunci cloud; perlu server lokal yang terpasang dan berjalan</string>
+    <string name="free_api_bank_tier_setup">Kuota gratis mungkin tersedia; perlu endpoint khusus akun</string>
+    <string name="free_api_bank_tier_directory">Direktori API eksternal, bukan koneksi langsung</string>
+    <string name="free_api_bank_no_card">Dokumentasi resmi menyatakan mode gratis tidak memerlukan kartu pembayaran</string>
+    <string name="free_api_bank_official_docs">Panduan resmi</string>
+    <string name="free_api_bank_connect">Atur penyedia</string>
+    <string name="free_api_bank_no_card_filter">Tanpa kartu pembayaran</string>
+    <string name="free_api_bank_keyless_filter">Tanpa kunci cloud</string>
+    <string name="free_api_bank_no_matches">Tidak ada hasil. Ubah filter untuk melihat lebih banyak.</string>
+    <string name="free_api_bank_warning">Gunakan hanya kredensial akun sendiri. Tidak ada akses tanpa batas, pembuatan akun otomatis, penghindaran batas, atau biaya otomatis. Periksa harga, model, dan privasi sebelum menggunakan. Rotasi kunci dan perpindahan penyedia memakai kontrol persetujuan yang ada.</string>
+</resources>

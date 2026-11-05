@@ -142,6 +142,46 @@ class ChatGptProviderTest {
         assertFalse(throttled.message.contains("usage limit", true))
     }
 
+    @Test fun `account region permission and model errors produce distinct safe guidance`() = runBlocking {
+        val cases = listOf(
+            Triple("unsupported_country_region_territory", 403, "region is unsupported"),
+            Triple("chatpass_v2_scope_not_authorized", 403, "Reconnect"),
+            Triple("subscription_sharing_user_not_eligible", 403, "not eligible"),
+            Triple("subscription_sharing_route_not_supported", 403, "supported model"),
+        )
+        for ((code, status, guidance) in cases) {
+            val events = provider(sse("""{"type":"response.failed","response":{"error":{"code":"$code","message":"token=DO_NOT_DISPLAY"}}}"""))
+                .streamChat(config, "managed", "", emptyList(), emptyList(), RequestOptions()).toList()
+            val failure = events.filterIsInstance<StreamEvent.Failure>().single()
+            assertEquals(code, failure.errorCode)
+            assertEquals(status, failure.code)
+            assertTrue("$code: ${failure.message}", failure.message.contains(guidance, ignoreCase = true))
+            assertFalse(failure.message.contains("DO_NOT_DISPLAY"))
+        }
+        val forbidden = provider("""{"error":{"message":"restricted"}}""", 403)
+            .streamChat(config, "managed", "", emptyList(), emptyList(), RequestOptions()).toList()
+            .filterIsInstance<StreamEvent.Failure>().single()
+        assertEquals(403, forbidden.code)
+        assertFalse(forbidden.message.contains("region", ignoreCase = true))
+        val explicitRegion = provider("""{"error":{"code":"unsupported_region","message":"token=DO_NOT_DISPLAY"}}""", 403)
+            .streamChat(config, "managed", "", emptyList(), emptyList(), RequestOptions()).toList()
+            .filterIsInstance<StreamEvent.Failure>().single()
+        assertEquals("unsupported_region", explicitRegion.errorCode)
+        assertEquals(403, explicitRegion.code)
+        assertTrue(explicitRegion.message.contains("region is unsupported", ignoreCase = true))
+        assertFalse(explicitRegion.message.contains("DO_NOT_DISPLAY"))
+        val missing = provider("""{"error":{"code":"model_not_found"}}""", 404)
+            .streamChat(config, "managed", "", emptyList(), emptyList(), RequestOptions()).toList()
+            .filterIsInstance<StreamEvent.Failure>().single()
+        assertEquals(404, missing.code)
+        assertTrue(missing.message.contains("model", ignoreCase = true))
+        val billing = provider("""{"error":{"code":"billing_restricted"}}""", 402)
+            .streamChat(config, "managed", "", emptyList(), emptyList(), RequestOptions()).toList()
+            .filterIsInstance<StreamEvent.Failure>().single()
+        assertEquals(402, billing.code)
+        assertTrue(billing.message.contains("billing", ignoreCase = true))
+    }
+
     @Test fun `empty completed output keeps finished streamed tools and reasoning`() = runBlocking {
         val reasoning = """{"type":"reasoning","id":"rs_stream","encrypted_content":"opaque-stream","summary":[]}"""
         val content = sse(
