@@ -218,7 +218,7 @@ internal fun ProjectNavigationSidebar(
                         onClick = { onIntegrations("all") })
                 }
             }
-            SidebarNavRow(uiContext.getString(R.string.settings_providers_title), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
+            SidebarNavRow(uiContext.getString(R.string.saba_api_management_nav), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
             SidebarNavRow(uiContext.getString(R.string.settings_page_title), Icons.Outlined.Settings, currentRoute == "settings", onClick = onSettings)
         }
     }
