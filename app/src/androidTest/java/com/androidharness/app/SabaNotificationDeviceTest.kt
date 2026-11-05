@@ -32,6 +32,7 @@ class SabaNotificationDeviceTest {
             assertEquals(fa.getString(resource), fa.localizedOptionLabel(status))
             assertTrue(fa.localizedOptionLabel(status).any { it in '\u0600'..'\u06ff' })
         }
+        val testSessionId = "saba-notification-question-smoke"
         val savedStatus = RuntimeNotifier.status.value
         val savedActive = RuntimeNotifier.active.value
         try {
@@ -50,7 +51,43 @@ class SabaNotificationDeviceTest {
             assertEquals(target.getString(R.string.app_name), actual.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
             assertEquals(target.localizedOptionLabel("Working…"), actual.extras.getCharSequence(Notification.EXTRA_TEXT).toString())
             assertEquals(Notification.VISIBILITY_PRIVATE, actual.visibility)
+            listOf(
+                AgentService.CHANNEL_ID,
+                AgentService.RESULTS_CHANNEL_ID,
+                AgentService.ALERT_CHANNEL_ID,
+            ).forEach { id ->
+                val channel = requireNotNull(manager.getNotificationChannel(id)) { "Missing notification channel: $id" }
+                assertEquals(Notification.VISIBILITY_PRIVATE, channel.lockscreenVisibility)
+            }
+
+            RuntimeNotifier.setSessionPrompts(
+                testSessionId,
+                listOf(
+                    PendingPrompt(
+                        sessionId = testSessionId,
+                        kind = PendingPrompt.Kind.QUESTION,
+                        sessionTitle = "Saba QA",
+                        headline = "Choose an answer",
+                    ),
+                ),
+            )
+            var question: Notification? = null
+            val promptDeadline = SystemClock.uptimeMillis() + 10_000
+            while (SystemClock.uptimeMillis() < promptDeadline) {
+                question = manager.activeNotifications.firstOrNull {
+                    it.tag == testSessionId && it.id == AgentService.ALERT_NOTIFICATION_ID
+                }?.notification
+                if (question != null) break
+                SystemClock.sleep(100)
+            }
+            val alert = requireNotNull(question) { "Question alert missing" }
+            assertEquals(Notification.VISIBILITY_PRIVATE, alert.visibility)
+            assertEquals(
+                target.getString(R.string.notification_quick_reply),
+                alert.actions.last().title.toString(),
+            )
         } finally {
+            RuntimeNotifier.setSessionPrompts(testSessionId, emptyList())
             RuntimeNotifier.setActive(savedActive)
             RuntimeNotifier.update(savedStatus)
         }
