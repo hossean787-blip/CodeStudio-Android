@@ -1280,12 +1280,12 @@ class RunManager(
      * the edited text as a fresh run.
      */
     suspend fun rewindAndTruncate(sessionId: String, messageId: String) {
-        stopAndJoin(sessionId)
-        engine.sideContexts.clear(sessionId)
         // Reject internal recovery controls before stopping a run or touching checkpoints.
         check(!com.androidharness.app.core.MessageVisibility.isInternalResume(messageId)) {
             "Internal recovery controls cannot be edited or resent."
         }
+        stopAndJoin(sessionId)
+        engine.sideContexts.clear(sessionId)
         val msgs = sessions.messages(sessionId)
         val index = msgs.indexOfFirst { it.id == messageId }
         check(index >= 0) { "This message no longer exists. Refresh the chat before retrying." }
