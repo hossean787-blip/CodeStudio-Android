@@ -12,6 +12,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 import java.io.File
+import java.nio.file.Files
 import java.util.UUID
 
 /**
@@ -27,6 +28,21 @@ internal fun pinnedSubmodulesMatchGitlinks(output: String): Boolean {
         path.isNotBlank() && !path.startsWith("/") &&
             !path.split('/').contains("..") && '\t' !in path
     }
+}
+
+/** Detect tracked Git LFS filter declarations, including nested source trees. */
+internal fun sourceUsesGitLfs(sourceRoot: File): Boolean {
+    val marker = Regex("""(?:^|\\s)filter=lfs(?:\\s|$)""")
+    return sourceRoot.walkTopDown()
+        .onEnter { it.name != ".git" && !Files.isSymbolicLink(it.toPath()) }
+        .filter { it.name == ".gitattributes" && it.isFile && !Files.isSymbolicLink(it.toPath()) }
+        .any { attributes ->
+            attributes.useLines { lines ->
+                lines.any { line ->
+                    !line.trimStart().startsWith("#") && marker.containsMatchIn(line)
+                }
+            }
+        }
 }
 
 /** Phone-owned clones use private app storage and need no broad storage grant. */
@@ -188,6 +204,52 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
                     submoduleStatus.rawOutput.length < 128_000 &&
                     pinnedSubmodulesMatchGitlinks(submoduleStatus.rawOutput)) {
                     "Nested repositories are missing or do not match their pinned commits. The incomplete project was not registered."
+                }
+                // Git checkout can leave tiny LFS pointer files instead of the
+                // actual assets. Resolve these in each pinned Git repository,
+                // or fail closed rather than claiming a complete import.
+                if (sourceUsesGitLfs(folder)) {
+                    val roots = listOf(folder) + submoduleStatus.rawOutput.lineSequence()
+                        .filter { it.isNotBlank() }
+                        .map { line ->
+                            val relative = line.drop(42).substringBefore(" (")
+                            File(folder, relative).canonicalFile.also { nestedRoot ->
+                                check(nestedRoot.toPath().startsWith(folder.canonicalFile.toPath())) {
+                                    "Nested source path escaped the import workspace."
+                                }
+                            }
+                        }.toList()
+                    val lfsVersion = c.shellRouter.runWorkspace(
+                        gitCommand(listOf("-C", folder.absolutePath, "lfs", "version")),
+                        folderFs, timeoutMs = 30_000, maxOutput = 1_024)
+                    check(lfsVersion.exitCode == 0 && !lfsVersion.timedOut) {
+                        "This source uses Git LFS. Install Git LFS in the Linux environment and retry; pointer files are not accepted as complete source."
+                    }
+                    for (repoRoot in roots.distinctBy { it.canonicalPath }) {
+                        if (!sourceUsesGitLfs(repoRoot)) continue
+                        check(!File(repoRoot, ".lfsconfig").exists()) {
+                            "This source includes a custom Git LFS endpoint; review its license and remote configuration before importing."
+                        }
+                        val remote = c.shellRouter.runWorkspace(
+                            gitCommand(listOf("-C", repoRoot.absolutePath, "remote", "get-url", "origin")),
+                            folderFs, timeoutMs = 30_000, maxOutput = 2_048)
+                        check(remote.exitCode == 0 && !remote.timedOut) {
+                            "Unable to validate the Git LFS source URL."
+                        }
+                        val remoteUrl = gitHubRepositoryUrl(remote.rawOutput.trim())
+                        check(remoteUrl.startsWith("https://github.com/")) {
+                            "Git LFS for this source must use a verified GitHub HTTPS remote."
+                        }
+                        val endpoint = remoteUrl.removeSuffix(".git") + ".git/info/lfs"
+                        val pull = c.shellRouter.runWorkspace(
+                            gitCommand(listOf("-C", repoRoot.absolutePath,
+                                "-c", "lfs.url=$endpoint", "lfs", "pull")),
+                            folderFs, timeoutMs = 600_000, maxOutput = 128_000)
+                        if (pull.exitCode != 0 || pull.timedOut ||
+                            pull.rawOutput.length >= 128_000 || pull.rawStderr.length >= 128_000)
+                            throw GitHubOperationFailure("Pinned Git LFS download",
+                                gitHubFailureHint(pull.exitCode, pull.rawStderr + pull.rawOutput))
+                    }
                 }
                 // Nested checkout must not move the already verified parent HEAD.
                 val finalRevision = c.shellRouter.runWorkspace(
