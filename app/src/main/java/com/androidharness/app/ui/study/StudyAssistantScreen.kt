@@ -49,6 +49,7 @@ fun StudyAssistantScreen(onBack: () -> Unit) {
     var result by rememberSaveable { mutableStateOf<String?>(null) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
     val limitError = stringResource(R.string.study_limit)
+    val invalidNotesError = stringResource(R.string.study_invalid_notes)
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
@@ -114,7 +115,7 @@ fun StudyAssistantScreen(onBack: () -> Unit) {
                     onClick = {
                         val produced = runCatching { StudyPractice.render(notes, mode) }
                         result = produced.getOrNull()
-                        error = if (produced.isFailure) produced.exceptionOrNull()?.message ?: limitError else null
+                        error = if (produced.isFailure) invalidNotesError else null
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = notes.isNotBlank(),
