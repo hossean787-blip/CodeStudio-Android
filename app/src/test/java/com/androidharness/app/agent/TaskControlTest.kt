@@ -17,6 +17,11 @@ class TaskControlTest {
         assertEquals(Role.USER, first.role) // Retains the provider's instruction context.
         assertEquals(RunRecovery.CONTINUE_PROMPT, first.text)
         assertEquals(listOf(user), MessageVisibility.visible(listOf(first, user, second)))
+        assertFalse(MessageVisibility.isUserAuthored(first))
+        assertFalse(MessageVisibility.isUserAuthored(second))
+        assertTrue(MessageVisibility.isUserAuthored(user))
+        assertTrue(MessageVisibility.isUserAuthored(ChatMessage(Role.USER, "hello")))
+        assertFalse(MessageVisibility.isUserAuthored(ChatMessage(Role.ASSISTANT, "hi")))
         assertFalse(MessageVisibility.isInternalResume(null))
         assertTrue(MessageVisibility.isInternalResume(RunRecovery.CHAT_CONTINUATION_ID_PREFIX + "legacy"))
     }
