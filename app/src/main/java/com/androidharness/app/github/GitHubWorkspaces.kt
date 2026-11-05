@@ -231,7 +231,7 @@ class GitHubWorkspaces(private val c: AppContainer) : PullRequestPublisher {
                             "This source includes a custom Git LFS endpoint; review its license and remote configuration before importing."
                         }
                         val remote = c.shellRouter.runWorkspace(
-                            gitCommand(listOf("-C", repoRoot.absolutePath, "remote", "get-url", "origin")),
+                            gitCommand(listOf("-C", repoRoot.absolutePath, "config", "--get", "remote.origin.url")),
                             folderFs, timeoutMs = 30_000, maxOutput = 2_048)
                         check(remote.exitCode == 0 && !remote.timedOut) {
                             "Unable to validate the Git LFS source URL."
