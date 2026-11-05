@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">KI-API-Verwaltung</string>
+    <string name="saba_api_management_title">KI-API-Verwaltung</string>
+    <string name="saba_api_management_summary">Modelle, Verbindungen, Einstellungen und geschätzte API-Kosten</string>
+    <string name="saba_api_management_connection_test">Verbindung zur Modellliste prüfen</string>
+    <string name="saba_api_management_untested">Nicht getestet</string>
+    <string name="saba_api_management_testing">Verbindung wird geprüft…</string>
+    <string name="saba_api_management_catalog_ok">Modellliste erreichbar (kein Chat-Test)</string>
+    <string name="saba_api_management_catalog_failed">Modellliste nicht erreichbar; Schlüssel, Netzwerk oder Endpunkt prüfen</string>
+    <string name="saba_api_management_price">Katalogpreis: %1$s $ Eingabe / %2$s $ Ausgabe pro 1 Mio. Token</string>
+    <string name="saba_api_management_price_unknown">Preis für diesen Anbieter oder dieses Modell unbekannt</string>
+    <string name="saba_api_management_local_price">Lokaler Endpunkt: keine Cloud-API-Gebühren</string>
+    <string name="saba_api_management_cost_note">Katalogpreise sind Schätzungen, keine Rechnungen. Gateways können anders abrechnen. Preise beim Anbieter prüfen.</string>
+    <string name="saba_api_endpoint_invalid">Gültige http(s)-Serveradresse ohne Leerzeichen eingeben.</string>
+    <string name="saba_api_endpoint_insecure">Für entfernte Server HTTPS verwenden. HTTP ist nur auf diesem Gerät erlaubt (localhost).</string>
+    <string name="saba_api_endpoint_credentials">Benutzernamen und Passwörter nicht in der Serveradresse angeben.</string>
+    <string name="saba_api_endpoint_components">Abfrageparameter und Fragmente aus der Serveradresse entfernen.</string>
+</resources>

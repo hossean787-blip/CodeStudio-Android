@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">AI API管理</string>
+    <string name="saba_api_management_title">AI API管理</string>
+    <string name="saba_api_management_summary">モデル、接続、設定、API料金の概算</string>
+    <string name="saba_api_management_connection_test">モデル一覧への接続を確認</string>
+    <string name="saba_api_management_untested">未テスト</string>
+    <string name="saba_api_management_testing">接続を確認中…</string>
+    <string name="saba_api_management_catalog_ok">モデル一覧にアクセス可能（チャットのテストではありません）</string>
+    <string name="saba_api_management_catalog_failed">モデル一覧にアクセスできません。キー、ネットワーク、接続先を確認してください</string>
+    <string name="saba_api_management_price">カタログ価格：入力 %1$s ドル / 出力 %2$s ドル（100万トークン当たり）</string>
+    <string name="saba_api_management_price_unknown">このプロバイダーまたはモデルの料金は不明です</string>
+    <string name="saba_api_management_local_price">ローカル接続先：クラウドAPI料金なし</string>
+    <string name="saba_api_management_cost_note">表示価格は概算であり請求額ではありません。中継サービスでは料金が異なる場合があります。公式サイトで確認してください。</string>
+    <string name="saba_api_endpoint_invalid">空白を含まない有効なhttp(s)サーバーURLを入力してください。</string>
+    <string name="saba_api_endpoint_insecure">リモートサーバーにはHTTPSを使用してください。HTTPはこの端末（localhost）でのみ許可されます。</string>
+    <string name="saba_api_endpoint_credentials">サーバーURLにユーザー名やパスワードを含めないでください。</string>
+    <string name="saba_api_endpoint_components">サーバーURLからクエリやフラグメントを削除してください。</string>
+</resources>

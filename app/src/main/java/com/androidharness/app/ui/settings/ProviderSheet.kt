@@ -319,6 +319,17 @@ internal fun ProviderSheetContent(
     }
 
     fun continueToModels() {
+        // Never transmit an API key or custom auth header to an unsafe endpoint.
+        val endpointIssue = com.androidharness.app.llm.ProviderEndpointPolicy.issue(effectiveBaseUrl)
+        if (endpointIssue != null) {
+            fetchError = uiContext.getString(when (endpointIssue) {
+                com.androidharness.app.llm.ProviderEndpointPolicy.Issue.INVALID -> R.string.saba_api_endpoint_invalid
+                com.androidharness.app.llm.ProviderEndpointPolicy.Issue.INSECURE -> R.string.saba_api_endpoint_insecure
+                com.androidharness.app.llm.ProviderEndpointPolicy.Issue.EMBEDDED_CREDENTIALS -> R.string.saba_api_endpoint_credentials
+                com.androidharness.app.llm.ProviderEndpointPolicy.Issue.UNSUPPORTED_COMPONENTS -> R.string.saba_api_endpoint_components
+            })
+            return
+        }
         // A disabled key must never be used just to load the model list.
         if (requiresKey && apiKey.isBlank()) { step = AddStep.MODEL; return }
         scope.launch {
@@ -623,7 +634,8 @@ internal fun ProviderSheetContent(
                                 onSave(finalName, effectiveType, effectiveBaseUrl.trim(), model.trim(), keyPool,
                                     com.androidharness.app.llm.ProviderHeaders.normalized(headers))
                             },
-                            enabled = model.isNotBlank() && headersValid && keysValid,
+                            enabled = model.isNotBlank() && headersValid && keysValid &&
+                                com.androidharness.app.llm.ProviderEndpointPolicy.issue(effectiveBaseUrl) == null,
                         ) { Text(stringResource(R.string.settings_action_save)) }
                     },
                     secondary = null,
