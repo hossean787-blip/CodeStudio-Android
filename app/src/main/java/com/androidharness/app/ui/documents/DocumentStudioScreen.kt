@@ -110,6 +110,9 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
             ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.ds_scope), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium)
             }
+            OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { filmStudioOpen = true }) {
+                Text(stringResource(R.string.film_entry))
+            }
             Row(Modifier.fillMaxWidth().horizontalScrollCompat()) {
                 DocumentEncoder.mimeTypes.keys.forEach { type ->
                     FilterChip(selected = format == type, enabled = !busy && !pickerPending, onClick = { if (format != type) { invalidatePreview(); format = type } }, label = { Text(type.uppercase()) })
