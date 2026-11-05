@@ -60,8 +60,17 @@ class SkillImportTest {
             }
             error("Expected read failure")
         } catch (e: java.io.IOException) {
-            assertTrue(e === failure)
-            assertTrue(e.suppressed.contains(closeFailure))
+            // With JVM assertions enabled, coroutine stacktrace recovery copies this
+            // IOException and retains the exact original as its cause. Verify that
+            // original object, not only a matching message on an unrelated error.
+            val primary = if (e === failure) e else {
+                assertEquals(failure.javaClass, e.javaClass)
+                assertTrue("Recovered exception must retain the original read failure", e.cause === failure)
+                requireNotNull(e.cause)
+            }
+            assertTrue(primary === failure)
+            assertTrue("Close failure must be suppressed on the original read failure",
+                primary.suppressed.any { it === closeFailure })
         }
     }
 
