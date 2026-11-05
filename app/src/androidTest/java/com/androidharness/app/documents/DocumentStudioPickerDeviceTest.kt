@@ -8,6 +8,7 @@ import android.os.SystemClock
 import android.provider.DocumentsContract
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.compose.setContent
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
@@ -78,7 +79,11 @@ class DocumentStudioPickerDeviceTest {
             try {
                 scenario.onActivity { activity -> activity.setContent {
                     HarnessTheme(themeMode = ThemeMode.LIGHT, dynamicColor = false) {
-                        CompositionLocalProvider(LocalContext provides fa, LocalLayoutDirection provides LayoutDirection.Rtl) {
+                        CompositionLocalProvider(
+                            LocalContext provides fa,
+                            LocalLayoutDirection provides LayoutDirection.Rtl,
+                            LocalActivityResultRegistryOwner provides activity,
+                        ) {
                             Surface { DocumentStudioScreen(onBack = {}, onSaved = { uri, mime, name ->
                                 assertEquals("application/pdf", mime)
                                 assertTrue(name.startsWith(fixtureName))
