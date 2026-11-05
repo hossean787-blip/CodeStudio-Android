@@ -69,6 +69,27 @@ class FallbackProviderTest {
         assertEquals(FallbackFailureKind.QUOTA, fallbackFailureKind(StreamEvent.Failure("payment required", 402)))
     }
 
+    @Test fun `terminal provider failure never discloses a credential echoed upstream`() = runBlocking(FallbackRun { policy }) {
+        val result = events(router({ _, key, _ ->
+            listOf(StreamEvent.Failure("upstream echoed $key and initial-key", 400, retryable = false))
+        }))
+        val failure = result.filterIsInstance<StreamEvent.Failure>().single()
+        assertTrue(failure.message.contains("[redacted]"))
+        assertFalse(failure.message.contains("key-a"))
+        assertFalse(failure.message.contains("initial-key"))
+        assertFalse(result.any { it is StreamEvent.ProviderChanged })
+    }
+
+    @Test fun `retry diagnostics redact credentials before UI logging`() = runBlocking(FallbackRun { policy.copy(retries = 1) }) {
+        val result = events(router({ cfg, key, _ ->
+            if (cfg.id == a.id) listOf(StreamEvent.Failure("temporary error on $key", 503))
+            else listOf(StreamEvent.Done())
+        }))
+        val diagnostics = result.filterIsInstance<StreamEvent.Retrying>()
+        assertTrue(diagnostics.isNotEmpty())
+        assertTrue(diagnostics.all { "[redacted]" in it.reason && "key-a" !in it.reason })
+    }
+
     @Test fun `permanent auth invalid request and context errors never advance`() = runBlocking(FallbackRun { policy }) {
         for (failure in listOf(StreamEvent.Failure("Auth", 401), StreamEvent.Failure("Policy", 403),
             StreamEvent.Failure("Context too large", 400), StreamEvent.Failure("Model removed", 404))) {
