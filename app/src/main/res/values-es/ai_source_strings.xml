@@ -11,4 +11,18 @@
     <string name="ai_source_import_confirm_title">Confirmar importación</string>
     <string name="ai_source_import_confirm_body">¿Importar %1$s como un espacio de trabajo local independiente en su versión exacta? Se descarga código externo, pero no se ejecuta. Se necesitan Git y espacio libre. Tus proyectos actuales no cambian.</string>
     <string name="ai_source_import_success">Se importó %1$s a un nuevo espacio de trabajo local.</string>
+    <string name="ai_runtime_title">Puente de ejecución de agentes de IA</string>
+    <string name="ai_runtime_description">Detecta agentes de programación instalados en el espacio de trabajo elegido. Cada agente requiere su propio inicio de sesión. Nada se instala ni ejecuta automáticamente.</string>
+    <string name="ai_runtime_no_workspace">Selecciona primero un espacio de trabajo con acceso a la terminal.</string>
+    <string name="ai_runtime_check">Comprobar agentes instalados</string>
+    <string name="ai_runtime_ready">Listo</string>
+    <string name="ai_runtime_missing">No instalado</string>
+    <string name="ai_runtime_unchecked">Sin comprobar</string>
+    <string name="ai_runtime_prompt">Tarea para el agente seleccionado</string>
+    <string name="ai_runtime_edit_ack">Entiendo que este agente puede acceder o modificar archivos. Autorizo la edición cuando sea necesario.</string>
+    <string name="ai_runtime_run">Ejecutar tarea del agente</string>
+    <string name="ai_runtime_output">Salida del agente</string>
+    <string name="ai_runtime_confirm_title">Confirmar ejecución del agente</string>
+    <string name="ai_runtime_confirm_body">¿Ejecutar %1$s en el espacio elegido? Puede usar herramientas, acceder a archivos o conectarse a un servicio de IA. Revisa los permisos primero.</string>
+    <string name="ai_source_license_ack">Confirmo que tengo los derechos necesarios para obtener y usar este código. La descarga no autoriza su redistribución.</string>
 </resources>

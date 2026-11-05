@@ -11,4 +11,18 @@
     <string name="ai_source_import_confirm_title">Подтвердить импорт исходников</string>
     <string name="ai_source_import_confirm_body">Импортировать %1$s в отдельный локальный проект на точном закреплённом коммите? Внешний код будет скачан, но не запущен. Нужны Git и свободное место. Существующие проекты не изменятся.</string>
     <string name="ai_source_import_success">%1$s импортирован в новый локальный проект.</string>
+    <string name="ai_runtime_title">Мост запуска ИИ-агентов</string>
+    <string name="ai_runtime_description">Проверка установленных CLI-агентов в выбранном проекте. Для каждого агента нужен отдельный вход. Ничего не устанавливается и не запускается автоматически.</string>
+    <string name="ai_runtime_no_workspace">Сначала выберите проект с доступом к терминалу.</string>
+    <string name="ai_runtime_check">Проверить установленные агенты</string>
+    <string name="ai_runtime_ready">Готов</string>
+    <string name="ai_runtime_missing">Не установлен</string>
+    <string name="ai_runtime_unchecked">Не проверен</string>
+    <string name="ai_runtime_prompt">Задание выбранному агенту</string>
+    <string name="ai_runtime_edit_ack">Этот агент может читать и изменять файлы проекта. Я разрешаю редактирование при необходимости.</string>
+    <string name="ai_runtime_run">Запустить задание</string>
+    <string name="ai_runtime_output">Вывод агента</string>
+    <string name="ai_runtime_confirm_title">Подтвердить запуск агента</string>
+    <string name="ai_runtime_confirm_body">Запустить %1$s в выбранном проекте? Он может запускать инструменты, читать файлы или обращаться к сервисам ИИ. Проверьте разрешения.</string>
+    <string name="ai_source_license_ack">Я подтверждаю право получить и использовать этот исходный код. Загрузка не дает права на распространение.</string>
 </resources>

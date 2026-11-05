@@ -110,6 +110,7 @@ class ToolRegistry(private val tools: List<Tool>) {
                 SearchFilesTool(),
                 GrepTool(),
                 ShellTool(linuxEnv, shellRouter),
+                AiCliDelegateTool(shellRouter),
                 ShellBackgroundTool(bgStore, linuxEnv, shellRouter),
                 EnvStatusTool(shizuku, linuxEnv, shellRouter),
                 DoctorTool(linuxEnv, shizuku, shellRouter, httpClient),
