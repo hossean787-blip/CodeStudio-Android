@@ -11,4 +11,18 @@
     <string name="ai_source_import_confirm_title">تأكيد استيراد المصدر</string>
     <string name="ai_source_import_confirm_body">هل تريد استيراد %1$s إلى مساحة عمل مستقلة عند الإصدار المثبت؟ سيتم تنزيل الكود الخارجي دون تشغيله. يلزم Git ومساحة تخزين كافية ولن تتغير مشاريعك الحالية.</string>
     <string name="ai_source_import_success">تم استيراد %1$s إلى مساحة عمل محلية جديدة.</string>
+    <string name="ai_runtime_title">جسر تشغيل وكلاء الذكاء الاصطناعي</string>
+    <string name="ai_runtime_description">تحقق من وجود أدوات البرمجة الذكية المثبتة في مساحة العمل المختارة. يلزم تسجيل الدخول إلى كل أداة على حدة. لا يتم تثبيت أي شيء أو تشغيله تلقائيا.</string>
+    <string name="ai_runtime_no_workspace">اختر مساحة عمل تسمح بتنفيذ الأوامر أولا.</string>
+    <string name="ai_runtime_check">فحص الأدوات المثبتة</string>
+    <string name="ai_runtime_ready">جاهز</string>
+    <string name="ai_runtime_missing">غير مثبت</string>
+    <string name="ai_runtime_unchecked">لم يفحص</string>
+    <string name="ai_runtime_prompt">المهمة للوكيل المختار</string>
+    <string name="ai_runtime_edit_ack">أدرك أن هذا الوكيل قد يصل إلى ملفات المشروع أو يعدلها. أسمح بالتعديل عند الحاجة.</string>
+    <string name="ai_runtime_run">تشغيل مهمة الوكيل</string>
+    <string name="ai_runtime_output">مخرجات الأداة</string>
+    <string name="ai_runtime_confirm_title">تأكيد تنفيذ الوكيل</string>
+    <string name="ai_runtime_confirm_body">هل تريد تشغيل %1$s في مساحة العمل المختارة؟ قد يشغل أدوات أو يصل إلى الملفات أو يستخدم خدمة ذكاء اصطناعي متصلة. راجع الأذونات أولا.</string>
+    <string name="ai_source_license_ack">أؤكد أن لدي الحقوق المطلوبة للحصول على هذا المصدر واستخدامه. التنزيل لا يمنح حق إعادة التوزيع.</string>
 </resources>

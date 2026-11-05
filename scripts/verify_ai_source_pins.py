@@ -45,8 +45,10 @@ for gradle in ("settings.gradle.kts", "app/build.gradle.kts"):
         f"Unreviewed upstream source added to Android compilation: {gradle}"
     )
 
-assert 'license != "UNVERIFIED" && !license.startsWith("RESTRICTED")' in catalogue, (
-    "Unlicensed or legally restricted sources must not have a workspace import action"
+assert 'requiresLicenseAcknowledgement' in catalogue, "Source catalogue must mark restricted entries"
+ui = (root / "app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt").read_text(encoding="utf-8")
+assert 'entry.requiresLicenseAcknowledgement && !licenseApproved' in ui, (
+    "Source downloads with unresolved licenses must require explicit local confirmation"
 )
 
 print(f"PASS: all {len(sources)} complete source gitlinks exactly pinned; no unreviewed code executed.")
