@@ -45,6 +45,7 @@ fun ProvidersScreen(
     val catalogs by container.providers.catalogs.collectAsStateWithLifecycle(initialValue = emptyMap())
     val scope = rememberCoroutineScope()
     var editing by remember { mutableStateOf<ProviderConfig?>(null) }
+    var freeApiPreset by remember { mutableStateOf<ProviderBrand?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var showModelsFor by remember { mutableStateOf<String?>(null) }
     val scheme = MaterialTheme.colorScheme
@@ -92,6 +93,7 @@ fun ProvidersScreen(
                     FilledTonalButton(
                         onClick = {
                             editing = null
+                            freeApiPreset = null
                             showDialog = true
                         },
                         shape = RoundedCornerShape(14.dp),
@@ -103,6 +105,13 @@ fun ProvidersScreen(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.settings_providers_add))
                     }
+                }
+                item {
+                    FreeApiBankSection(onConnect = { preset ->
+                        freeApiPreset = preset
+                        editing = null
+                        showDialog = true
+                    })
                 }
                 item {
                     OutlinedTextField(value = query, onValueChange = { query = it },
@@ -143,6 +152,7 @@ fun ProvidersScreen(
                         },
                         onEdit = {
                             editing = provider
+                            freeApiPreset = null
                             showDialog = true
                         },
                         onDelete = {
@@ -196,8 +206,9 @@ fun ProvidersScreen(
     if (showDialog) {
         ProviderSheet(
             existing = editing,
+            preset = freeApiPreset,
             apiKeys = container.providers::apiKeys,
-            onDismiss = { showDialog = false },
+            onDismiss = { showDialog = false; freeApiPreset = null },
             onSave = { name, type, baseUrl, model, apiKey, headers ->
                 scope.launch {
                     try {
@@ -220,6 +231,7 @@ fun ProvidersScreen(
                             )
                         }
                         showDialog = false
+                        freeApiPreset = null
                     } catch (e: kotlinx.coroutines.CancellationException) { throw e }
                     catch (_: Exception) { saveFailed = true }
                 }

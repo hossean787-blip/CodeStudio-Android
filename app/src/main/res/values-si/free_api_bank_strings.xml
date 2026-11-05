@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">නොමිලේ AI API නාමාවලිය</string>
+    <string name="free_api_bank_intro">නිල නොමිලේ සීමා, අත්හදා බැලීම් සහ වලාකුළු යතුරක් නැති දේශීය විකල්ප සොයන්න. සීමා සහ මාදිලි වෙනස් විය හැක. යතුරු හෝ ගෙවන සැලසුම් ස්වයංක්‍රීයව නිර්මාණය නොවේ.</string>
+    <string name="free_api_bank_expand">නොමිලේ API විකල්ප බලන්න</string>
+    <string name="free_api_bank_collapse">API නාමාවලිය සඟවන්න</string>
+    <string name="free_api_bank_search">සේවා හෝ නාමාවලි සොයන්න</string>
+    <string name="free_api_bank_ready_filter">දැනට ඇති සැකසුම් සමඟ සම්බන්ධ කළ හැක</string>
+    <string name="free_api_bank_tier_free">මාදිලි සහ ඉල්ලීම් සීමා සහිත නොමිලේ කෝටාවක්; ගිණුමක් සහ API යතුරක් අවශ්‍ය විය හැක</string>
+    <string name="free_api_bank_tier_trial">සීමිත අත්හදා බැලීමේ යතුරක්; ණය හෝ ප්‍රවේශය අවසන් විය හැක</string>
+    <string name="free_api_bank_tier_local">වලාකුළු යතුරක් නැත; දේශීය සේවාදායකයක් ස්ථාපනය කර ක්‍රියාත්මක කළ යුතුය</string>
+    <string name="free_api_bank_tier_setup">නොමිලේ කෝටාවක් තිබිය හැක; ගිණුමට අදාළ ලිපිනය සකස් කළ යුතුය</string>
+    <string name="free_api_bank_tier_directory">බාහිර API නාමාවලියක් පමණි; සෘජු සම්බන්ධතාවක් නොවේ</string>
+    <string name="free_api_bank_no_card">නිල ලේඛන අනුව නොමිලේ මාදිලියට ගෙවීම් කාඩ්පතක් අවශ්‍ය නොවේ</string>
+    <string name="free_api_bank_official_docs">නිල මාර්ගෝපදේශය</string>
+    <string name="free_api_bank_connect">සේවාව සකසන්න</string>
+    <string name="free_api_bank_no_card_filter">කාඩ්පතක් නැත</string>
+    <string name="free_api_bank_keyless_filter">වලාකුළු යතුරක් නැත</string>
+    <string name="free_api_bank_no_matches">ගැළපෙන ප්‍රතිඵල නැත. පෙරහන් වෙනස් කරන්න.</string>
+    <string name="free_api_bank_warning">ඔබේම ගිණුමේ යතුරු පමණක් භාවිත කරන්න. අසීමිත ප්‍රවේශය, ස්වයංක්‍රීය ගිණුම් සෑදීම, සීමා මඟහැරීම හෝ ස්වයංක්‍රීය ගාස්තු නොමැත. භාවිතයට පෙර මිල, මාදිලි සහ පෞද්ගලිකත්වය පරීක්ෂා කරන්න. යතුරු හා සේවා මාරුව පවතින අනුමැති සැකසුම් භාවිත කරයි.</string>
+</resources>

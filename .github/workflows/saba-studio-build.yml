@@ -160,6 +160,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
+              # Free API bank: authorize only the known provider-screen change.
+              'app/src/main/java/com/androidharness/app/ui/settings/ProvidersScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',
