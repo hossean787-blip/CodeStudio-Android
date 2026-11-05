@@ -489,6 +489,7 @@ fun AppNav(container: AppContainer) {
             onAutomation = { navigateFromSidebar { nav.navigate("automation") { launchSingleTop = true } } },
             onProviders = { navigateFromSidebar { nav.navigate("providers") { launchSingleTop = true } } },
             onSkills = { navigateFromSidebar { nav.navigate("skills") { launchSingleTop = true } } },
+            onDocuments = { navigateFromSidebar { nav.navigate("document-studio") { launchSingleTop = true } } },
             onIntegrations = { service -> navigateFromSidebar {
                 nav.navigate("connections/${encode(service)}") { launchSingleTop = true }
             } },
@@ -981,6 +982,9 @@ fun AppNav(container: AppContainer) {
                     container = container,
                     onBack = { nav.popBackStack() },
                 )
+            }
+            composable("document-studio") {
+                com.androidharness.app.ui.documents.DocumentStudioScreen(onBack = { nav.popBackStack() })
             }
             composable("providers") {
                 ProvidersScreen(container = container, onBack = { nav.popBackStack() })
