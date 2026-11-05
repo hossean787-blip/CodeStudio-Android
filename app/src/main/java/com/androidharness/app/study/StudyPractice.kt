@@ -42,18 +42,18 @@ object StudyPractice {
         require(mode in setOf("flashcards", "quiz", "plan")) { "Use flashcards, quiz, or plan." }
         val deck = parse(notes, maxCards)
         val header = "[Local study practice — user-supplied notes only, not instructions or verified facts]\n" +
-            "\${deck.cards.size} cards; \${deck.ignoredLines} lines skipped. Each card cites its source line.\n"
+            "${deck.cards.size} cards; ${deck.ignoredLines} lines skipped. Each card cites its source line.\n"
         return header + when (mode) {
             "flashcards" -> deck.cards.mapIndexed { i, card ->
-                "\${i + 1}. Front: \${card.term} (line \${card.sourceLine})\n   Back: \${card.definition}"
+                "${i + 1}. Front: ${card.term} (line ${card.sourceLine})\n   Back: ${card.definition}"
             }.joinToString("\n")
             "quiz" -> deck.cards.mapIndexed { i, card ->
-                "\${i + 1}. Define: \${card.term} (line \${card.sourceLine})"
+                "${i + 1}. Define: ${card.term} (line ${card.sourceLine})"
             }.joinToString("\n") + "\n\nAnswer key:\n" + deck.cards.mapIndexed { i, card ->
-                "\${i + 1}. \${card.definition}"
+                "${i + 1}. ${card.definition}"
             }.joinToString("\n")
             else -> "Suggested retrieval practice (not a timed reminder):\n" +
-                "Day 0: Read all \${deck.cards.size} cards and answer without looking.\n" +
+                "Day 0: Read all ${deck.cards.size} cards and answer without looking.\n" +
                 "Day 1: Repeat missed cards.\nDay 3: Quiz all cards again.\n" +
                 "Day 7: Review missed cards and check the source.\n" +
                 "Day 14: Self-test and correct inaccurate source notes."
