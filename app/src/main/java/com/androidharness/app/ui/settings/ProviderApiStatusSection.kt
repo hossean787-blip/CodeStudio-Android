@@ -3,6 +3,7 @@ package com.androidharness.app.ui.settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,7 +44,7 @@ internal fun ProviderApiStatusSection(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
                 stringResource(when (status) {
                     ProviderCatalogCheck.NOT_TESTED -> R.string.saba_api_management_untested
@@ -54,9 +55,10 @@ internal fun ProviderApiStatusSection(
                 style = MaterialTheme.typography.labelSmall,
                 color = if (status == ProviderCatalogCheck.FAILED) MaterialTheme.colorScheme.error
                     else MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxWidth(),
             )
             TextButton(
+                modifier = Modifier.align(Alignment.End),
                 enabled = status != ProviderCatalogCheck.CHECKING,
                 onClick = onCheck,
             ) { Text(stringResource(R.string.saba_api_management_connection_test)) }
