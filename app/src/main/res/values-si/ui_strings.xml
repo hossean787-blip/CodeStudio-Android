@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="notification_quick_reply">පිළිතුරු දෙන්න</string>
     <string name="ui_thinking">"සිතමින්…"</string>
     <string name="ui_thinking_2">"සිතමින්"</string>
     <string name="ui_thinking_seconds">"%1$d තත්."</string>
