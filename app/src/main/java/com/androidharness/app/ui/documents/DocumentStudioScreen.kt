@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.androidharness.app.R
 import com.androidharness.app.documents.*
+import com.androidharness.app.ui.film.FilmStudioScreen
 import com.androidharness.app.ui.common.AppHeader
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
