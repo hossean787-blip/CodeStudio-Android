@@ -232,7 +232,7 @@ fun ProjectScreen(
                     Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(git?.branch?.let { uiContext.getString(R.string.ui_branch_1649, (it).toString()) } ?: git?.note ?: uiContext.getString(R.string.ui_checking_repository),
                             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        git?.changedFiles?.let { count -> Text(if (count == 0) uiContext.getString(R.string.ui_working_tree_clean) else "$count changed ${if (count == 1) "file" else "files"}",
+                        git?.changedFiles?.let { count -> Text(if (count == 0) uiContext.getString(R.string.ui_working_tree_clean) else uiContext.getString(R.string.ui_files_changed_758, count.toString()),
                             style = MaterialTheme.typography.bodySmall) }
                         if (git?.branch != null && git?.note != null) Text(git!!.note!!, style = MaterialTheme.typography.bodySmall)
                     }
