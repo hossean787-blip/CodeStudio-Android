@@ -31,6 +31,6 @@
     <string name="ai_compare_run">Comparar agentes selecionados</string>
     <string name="ai_compare_confirm_title">Confirmar comparação de agentes</string>
     <string name="ai_compare_confirm_body">Enviar esta tarefa para %1$d agentes? Eles podem acessar serviços externos e consumir créditos da conta. Não são solicitadas alterações em arquivos.</string>
-    <string name="ai_runtime_resume_session">Retomar sessão Claude Code (UUID, opcional)</string>
+    <string name="ai_runtime_resume_session">Retomar sessão (UUID Claude/Gemini ou ID ses_ do OpenCode, opcional)</string>
     <string name="ai_runtime_resume_warning">Retoma uma sessão existente neste espaço de trabalho e pode acessar o histórico anterior. Login e aprovação continuam necessários.</string>
 </resources>
