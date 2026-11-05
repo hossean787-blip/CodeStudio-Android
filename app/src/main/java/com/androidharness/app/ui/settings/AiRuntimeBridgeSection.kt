@@ -41,6 +41,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var checking by remember { mutableStateOf(false) }
     var executing by remember { mutableStateOf(false) }
     var availability by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
+    var installedVersions by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     var selectedId by rememberSaveable { mutableStateOf("codex") }
     var comparisonAgents by remember { mutableStateOf(setOf("codex", "claude")) }
     var comparing by remember { mutableStateOf(false) }
@@ -59,6 +60,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     LaunchedEffect(workspace?.displayPath) {
         resumeSessionId = ""
         availability = emptyMap()
+        installedVersions = emptyMap()
         result = null
         failure = null
     }
@@ -88,15 +90,32 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
             OutlinedButton(onClick = {
                 val captured = workspace?.takeIf { it.shellRoot != null || it is SshFs } ?: return@OutlinedButton
                 checking = true
+                installedVersions = emptyMap()
                 failure = null
                 scope.launch {
                     try {
                         val checked = mutableMapOf<String, Boolean>()
+                        val versions = mutableMapOf<String, String>()
                         for (profile in AiRuntimeBridge.profiles) {
                             val response = container.shellRouter.runWorkspace(
                                 AiRuntimeBridge.checkCommand(profile.id), captured, 12_000, 500)
-                            checked[profile.id] = !response.timedOut && response.exitCode == 0
+                            val installed = !response.timedOut && response.exitCode == 0
+                            checked[profile.id] = installed
                             availability = checked.toMap()
+                            if (installed) {
+                                // Only an explicit user-initiated check probes --version.
+                                // Never expose arbitrary CLI stdout (it may contain secrets).
+                                val probe = runCatching {
+                                    container.shellRouter.runWorkspace(
+                                        AiRuntimeBridge.versionCommand(profile.id), captured, 4_000, 512)
+                                }.getOrNull()
+                                if (probe != null && !probe.timedOut && probe.exitCode == 0) {
+                                    AiRuntimeBridge.parseVersion(
+                                        probe.rawOutput.ifBlank { probe.rawStderr }
+                                    )?.let { versions[profile.id] = it }
+                                }
+                                installedVersions = versions.toMap()
+                            }
                         }
                     } catch (e: CancellationException) { throw e }
                     catch (e: Exception) { failure = SecretRedactor.redact(e.localizedMessage?.take(400) ?: "Check failed.") }
@@ -119,7 +138,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                             if (ready == true) R.string.ai_runtime_ready
                             else if (ready == false) R.string.ai_runtime_missing
                             else R.string.ai_runtime_unchecked
-                        ),
+                        ) + (installedVersions[backend.id]?.let { " · v$it" } ?: ""),
                         style = MaterialTheme.typography.labelSmall,
                         color = if (ready == true) MaterialTheme.colorScheme.primary
                             else MaterialTheme.colorScheme.onSurfaceVariant,
