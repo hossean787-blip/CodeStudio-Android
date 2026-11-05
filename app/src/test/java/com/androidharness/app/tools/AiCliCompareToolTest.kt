@@ -87,7 +87,7 @@ class AiCliCompareToolTest {
         val tool = AiCliCompareTool { cmd, _, _, _ ->
             when {
                 cmd.contains("codex exec") -> ShellRunResult(
-                    0, false, "GROQ_API_KEY=$key\\ncommit $sha",
+                    0, false, "GROQ_API_KEY=$key\ncommit $sha",
                     "AWS_SECRET_ACCESS_KEY=$assignedSecret", ExecutionTier.APP_LINUX, null
                 )
                 cmd.contains("claude -p") -> output(text = "Claude checked")
