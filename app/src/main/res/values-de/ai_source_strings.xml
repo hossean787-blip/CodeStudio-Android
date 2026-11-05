@@ -31,4 +31,6 @@
     <string name="ai_compare_run">Ausgewählte Agenten vergleichen</string>
     <string name="ai_compare_confirm_title">Agentenvergleich bestätigen</string>
     <string name="ai_compare_confirm_body">Die Aufgabe an %1$d KI-Agenten senden? Die Agenten können externe Anbieter kontaktieren und Kontingent verbrauchen. Dateibearbeitung wird nicht angefordert.</string>
+    <string name="ai_runtime_resume_session">Claude-Code-Sitzung fortsetzen (UUID, optional)</string>
+    <string name="ai_runtime_resume_warning">Setzt eine vorhandene Sitzung dieses Arbeitsbereichs fort; frühere Gesprächsinhalte können zugänglich sein. Anmeldung und Freigabe bleiben nötig.</string>
 </resources>

@@ -70,6 +70,27 @@ class AiRuntimeBridgeTest {
         }
     }
 
+    @Test fun resumesOnlyValidatedClaudeSessionWithSamePermissionMode() {
+        val session = "123e4567-e89b-12d3-a456-426614174000"
+        assertTrue(AiRuntimeBridge.isValidSessionId(session))
+        val read = AiRuntimeBridge.executionCommand("claude", "review only", false, session)
+        assertEquals("claude -p --permission-mode plan --resume '$session' 'User request: review only'", read)
+        assertTrue(AiRuntimeBridge.executionCommand("claude", "fix it", true, session)
+            .contains("--permission-mode acceptEdits --resume '$session'"))
+        assertFalse(AiRuntimeBridge.isValidSessionId("x; touch /tmp/evil"))
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("claude", "review", false, "$session; touch /tmp/evil")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("codex", "review", false, session)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AiRuntimeBridge.executionCommand("claude", "review", false, "")
+        }
+        assertEquals("claude -p --permission-mode plan 'User request: review only'",
+            AiRuntimeBridge.executionCommand("claude", "review only", false))
+    }
+
     @Test fun rejectEmptyOversizedAndControlCharacterPrompts() {
         assertThrows(IllegalArgumentException::class.java) { AiRuntimeBridge.executionCommand("codex", " ", false) }
         assertThrows(IllegalArgumentException::class.java) {

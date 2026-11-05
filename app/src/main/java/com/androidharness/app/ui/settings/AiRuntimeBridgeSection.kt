@@ -48,12 +48,15 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
     var compareResult by remember { mutableStateOf<String?>(null) }
 
     var prompt by rememberSaveable { mutableStateOf("") }
+    // A session UUID is ephemeral and must not leak between workspaces.
+    var resumeSessionId by remember { mutableStateOf("") }
     var allowEdits by rememberSaveable { mutableStateOf(false) }
     var awaitingConfirmation by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf<String?>(null) }
     var failure by remember { mutableStateOf<String?>(null) }
     // PATH checks belong to a specific workspace; never reuse availability from another one.
     LaunchedEffect(workspace?.displayPath) {
+        resumeSessionId = ""
         availability = emptyMap()
         result = null
         failure = null
@@ -64,7 +67,8 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
         comparisonAgents.size in 2..4 && comparisonAgents.all { availability[it] == true }
     val canRun = (workspace?.shellRoot != null || workspace is SshFs) && !executing && !checking &&
         availability[selectedId] == true && prompt.isNotBlank() &&
-        (selected.supportsReadOnly || allowEdits)
+        (selected.supportsReadOnly || allowEdits) &&
+        (selectedId != "claude" || resumeSessionId.isBlank() || AiRuntimeBridge.isValidSessionId(resumeSessionId))
 
     Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow) {
         Column(
@@ -130,6 +134,18 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                 maxLines = 6,
                 enabled = !executing,
             )
+            if (selectedId == "claude") {
+                OutlinedTextField(
+                    value = resumeSessionId,
+                    onValueChange = { resumeSessionId = it.take(64) },
+                    label = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_session)) },
+                    supportingText = { Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_resume_warning)) },
+                    isError = resumeSessionId.isNotBlank() && !AiRuntimeBridge.isValidSessionId(resumeSessionId),
+                    singleLine = true,
+                    enabled = !executing,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = allowEdits, onCheckedChange = { allowEdits = it }, enabled = !executing)
                 Text(androidx.compose.ui.res.stringResource(R.string.ai_runtime_edit_ack),
@@ -237,7 +253,8 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                 TextButton(onClick = {
                     val captured = workspace ?: return@TextButton
                     val command = try {
-                        AiRuntimeBridge.executionCommand(selectedId, prompt, allowEdits)
+                        AiRuntimeBridge.executionCommand(selectedId, prompt, allowEdits,
+                            resumeSessionId.takeIf { selectedId == "claude" && it.isNotBlank() })
                     } catch (e: IllegalArgumentException) {
                         failure = e.message
                         awaitingConfirmation = false

@@ -31,4 +31,6 @@
     <string name="ai_compare_run">තෝරාගත් නියෝජිතයන් සසඳන්න</string>
     <string name="ai_compare_confirm_title">නියෝජිත සැසඳීම තහවුරු කරන්න</string>
     <string name="ai_compare_confirm_body">මෙම කාර්යය AI නියෝජිතයන් %1$d කට යවන්නද? බාහිර සේවා අමතා ගිණුමේ බැර වැය විය හැක. ගොනු වෙනස් කිරීම් ඉල්ලා නැත.</string>
+    <string name="ai_runtime_resume_session">Claude Code සැසිය නැවත අරඹන්න (UUID, විකල්ප)</string>
+    <string name="ai_runtime_resume_warning">මෙම වැඩබිමේ පවතින සැසිය නැවත අරඹයි; පෙර සංවාදය කියවිය හැක. පිවිසීම සහ අනුමැතිය අවශ්‍යයි.</string>
 </resources>
