@@ -1,5 +1,6 @@
 package com.androidharness.app.documents
 
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FilterInputStream
 import java.io.InputStream
@@ -67,14 +68,29 @@ object DocumentPackagePreview {
     }
 
     private fun parseXml(input: InputStream, format: String, summary: BoundedSummary) {
+        // Android's Harmony SAX parser does not recognize Xerces security flags.
+        // We only preview XML produced by DocumentEncoder, which always emits this
+        // exact UTF-8 prolog and no declarations/comments/CDATA. Enforce those
+        // invariants before invoking any parser, even on devices lacking the flags.
+        // The limited input also caps decompressed ZIP content (ZIP-bomb defense).
+        val bytes = input.readBytes()
+        val prolog = "<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"yes\\\"?>"
+            .replace("\\\"", "\"").toByteArray(Charsets.UTF_8)
+        require(bytes.size >= prolog.size && prolog.indices.all { bytes[it] == prolog[it] }) {
+            "Only generated UTF-8 XML is supported"
+        }
+        for (i in 0 until bytes.size - 1) {
+            require(bytes[i] != '<'.code.toByte() || bytes[i + 1] != '!'.code.toByte()) {
+                "XML declarations, DTDs and entities are forbidden"
+            }
+        }
         val parser = SAXParserFactory.newInstance().apply {
             isNamespaceAware = true
-            setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
-            setFeature("http://xml.org/sax/features/external-general-entities", false)
-            setFeature("http://xml.org/sax/features/external-parameter-entities", false)
-            setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
         }.newSAXParser()
-        parser.parse(input, object : DefaultHandler() {
+        parser.parse(ByteArrayInputStream(bytes), object : DefaultHandler() {
+            override fun resolveEntity(publicId: String?, systemId: String?): org.xml.sax.InputSource {
+                throw org.xml.sax.SAXException("External XML references are forbidden")
+            }
             private var collecting = false
             private val text = StringBuilder()
             private var firstCell = true
