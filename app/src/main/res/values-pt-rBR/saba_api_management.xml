@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">Gerenciamento de APIs de IA</string>
+    <string name="saba_api_management_title">Gerenciamento de APIs de IA</string>
+    <string name="saba_api_management_summary">Modelos, conexões, configurações e custos estimados de API</string>
+    <string name="saba_api_management_connection_test">Verificar conexão com lista de modelos</string>
+    <string name="saba_api_management_untested">Não testado</string>
+    <string name="saba_api_management_testing">Verificando conexão…</string>
+    <string name="saba_api_management_catalog_ok">Lista de modelos acessível (não é um teste de chat)</string>
+    <string name="saba_api_management_catalog_failed">Lista de modelos indisponível; confira chave, rede ou endereço</string>
+    <string name="saba_api_management_price">Preço de catálogo: US$ %1$s entrada / US$ %2$s saída por 1 milhão de tokens</string>
+    <string name="saba_api_management_price_unknown">Preço indisponível para este provedor ou modelo</string>
+    <string name="saba_api_management_local_price">Servidor local: sem tarifa de API na nuvem</string>
+    <string name="saba_api_management_cost_note">Preços de catálogo são estimativas, não faturas. Intermediários podem cobrar valores diferentes. Confira os preços no site do provedor.</string>
+    <string name="saba_api_endpoint_invalid">Insira uma URL http(s) válida, sem espaços.</string>
+    <string name="saba_api_endpoint_insecure">Use HTTPS para servidores remotos. HTTP só é permitido neste dispositivo (localhost).</string>
+    <string name="saba_api_endpoint_credentials">Não inclua usuários nem senhas no endereço do servidor.</string>
+    <string name="saba_api_endpoint_components">Remova parâmetros de consulta e fragmentos do endereço do servidor.</string>
+</resources>
