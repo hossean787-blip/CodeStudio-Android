@@ -16,6 +16,7 @@ import com.androidharness.app.R
 import com.androidharness.app.plugins.AiRuntimeBridge
 import com.androidharness.app.tools.AiCliCompareTool
 import com.androidharness.app.tools.ToolContext
+import com.androidharness.app.tools.SecretRedactor
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.add
@@ -93,7 +94,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                             availability = checked.toMap()
                         }
                     } catch (e: CancellationException) { throw e }
-                    catch (e: Exception) { failure = e.localizedMessage?.take(400) ?: "Check failed." }
+                    catch (e: Exception) { failure = SecretRedactor.redact(e.localizedMessage?.take(400) ?: "Check failed.") }
                     finally { checking = false }
                 }
             }, enabled = (workspace?.shellRoot != null || workspace is SshFs) && !checking && !executing,
@@ -213,7 +214,7 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                                 .execute(args, ToolContext(captured))
                             compareResult = output.output
                         } catch (e: CancellationException) { throw e }
-                        catch (e: Exception) { compareResult = e.localizedMessage?.take(400) ?: "Comparison failed." }
+                        catch (e: Exception) { compareResult = SecretRedactor.redact(e.localizedMessage?.take(400) ?: "Comparison failed.") }
                         finally { comparing = false }
                     }
                 }, enabled = !comparing) {
@@ -259,11 +260,11 @@ internal fun AiRuntimeBridgeSection(container: AppContainer, workspace: Workspac
                             val response = container.shellRouter.runWorkspace(command, captured, 180_000, 24_000)
                             val text = listOf(response.rawOutput, response.rawStderr).filter(String::isNotBlank)
                                 .joinToString("\n").takeLast(24_000)
-                            result = if (text.isNotBlank()) text else "(No output)"
+                            result = SecretRedactor.redact(if (text.isNotBlank()) text else "(No output)")
                             if (response.timedOut) failure = "Command timed out. Verify the CLI process before retrying."
                             else if (response.exitCode != 0) failure = "CLI returned exit code ${response.exitCode}."
                         } catch (e: CancellationException) { throw e }
-                        catch (e: Exception) { failure = e.localizedMessage?.take(400) ?: "Execution failed." }
+                        catch (e: Exception) { failure = SecretRedactor.redact(e.localizedMessage?.take(400) ?: "Execution failed.") }
                         finally { executing = false }
                     }
                 }, enabled = !executing) {
