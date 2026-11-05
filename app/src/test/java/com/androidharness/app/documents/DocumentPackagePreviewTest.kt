@@ -46,6 +46,6 @@ class DocumentPackagePreviewTest {
         val result = preview(DocumentSpec("docx", text = original))
         assertTrue(result.length <= 12_002)
         assertTrue(result.endsWith("…"))
-        assertEquals(original, original) // source remains unchanged; only preview is bounded
+        assertTrue(result.startsWith(original.take(120))) // the preview is bounded, not silently rewritten
     }
 }
