@@ -1,9 +1,9 @@
 <resources>
     <string name="saba_error_center_title">Error and recovery center</string>
     <string name="saba_error_auth">Authentication rejected (401)</string>
-    <string name="saba_error_forbidden">Provider refused access (403)</string>
-    <string name="saba_error_region">Provider reported an unsupported region</string>
-    <string name="saba_error_credits">Credits or quota exhausted</string>
+    <string name="saba_chat_failure_forbidden">Provider refused access (403)</string>
+    <string name="saba_chat_failure_region">Provider reported an unsupported region</string>
+    <string name="saba_chat_failure_credits">Credits or quota exhausted</string>
     <string name="saba_error_rate">Too many requests (429)</string>
     <string name="saba_error_model">Model or endpoint not found (404)</string>
     <string name="saba_error_timeout">Connection timed out</string>
