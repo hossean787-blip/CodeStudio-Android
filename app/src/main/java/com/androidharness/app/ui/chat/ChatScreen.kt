@@ -884,8 +884,12 @@ private fun ChatScreenContent(
                                 viewModel.container.sessions.messages(requestedId)
                             }
                             val transcript = exportChatTranscript(requestedTitle, fullHistory)
-                            if (transcript.markdown == "# " + requestedTitle.replace('\n', ' ').replace('\r', ' ').trim().take(120) + "\n\n" ||
-                                fullHistory.isEmpty()) {
+                            val hasVisibleContent = fullHistory.any { message ->
+                                (com.androidharness.app.core.MessageVisibility.isUserAuthored(message) ||
+                                    message.role == Role.ASSISTANT && message.toolCallId == null) &&
+                                    message.text.isNotBlank()
+                            }
+                            if (!hasVisibleContent) {
                                 snackbar.showSnackbar(uiContext.getString(R.string.saba_chat_share_empty))
                             } else {
                                 val share = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
