@@ -41,6 +41,10 @@ jobs:
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/llm/OpenAiCompatProvider.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
+              # Issue #8 item 02: internal controls must not be editable user messages.
+              'app/src/main/java/com/androidharness/app/core/MessageVisibility.kt',
+              'app/src/main/java/com/androidharness/app/core/ChatExperience.kt',
+              'app/src/test/java/com/androidharness/app/core/ChatExperienceTest.kt',
               'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
               'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
               'app/src/main/java/com/androidharness/app/data/SessionRepository.kt',
