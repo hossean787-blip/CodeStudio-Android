@@ -41,6 +41,19 @@ class FreeApiCatalogTest {
         assertFalse(FreeApiCatalog.entries.any { it.title.contains("no limit", ignoreCase = true) })
     }
 
+    @Test fun localPresetStartsWithoutInvalidBlankKeyWhileCloudPresetRequiresOne() {
+        val local = requireNotNull(FreeApiCatalog.entries.single { it.id == "ollama" }.connectionPreset())
+        val cloud = requireNotNull(FreeApiCatalog.entries.single { it.id == "gemini" }.connectionPreset())
+        val localPool = initialProviderKeyPool(null, local)
+        assertEquals(emptyList<com.androidharness.app.llm.ProviderApiKey>(), localPool.keys)
+        assertNull(localPool.error())
+        val cloudPool = initialProviderKeyPool(null, cloud)
+        assertEquals(1, cloudPool.keys.size)
+        assertNotNull(cloudPool.error())
+        val editing = com.androidharness.app.llm.ProviderConfig("saved", "saved", cloud.type, cloud.baseUrl, "model")
+        assertTrue(initialProviderKeyPool(editing, local).keys.isEmpty())
+    }
+
     @Test fun searchAndConnectedFilterDoNotAlterTheBank() {
         assertEquals(listOf("openrouter"), FreeApiCatalog.search("ROUTER").map { it.id })
         assertEquals(emptyList<FreeApiEntry>(), FreeApiCatalog.search("cloudflare", onlyConnectable = true))
