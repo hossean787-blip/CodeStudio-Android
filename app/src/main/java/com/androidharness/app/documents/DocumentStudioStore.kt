@@ -10,6 +10,8 @@ import java.io.File
 import java.security.MessageDigest
 import java.util.UUID
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 /** Dedicated private directory: never a project/workspace grant. Only our nonce files are touched. */
@@ -39,10 +41,12 @@ class DocumentStudioStore(context: Context) {
     fun preview(name: String, hash: String, mime: String): Bitmap? {
         val file = recover(name, hash)
         return when (mime) {
-            "application/pdf" -> ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { fd ->
-                PdfRenderer(fd).use { renderer -> renderer.openPage(0).use { page ->
-                    Bitmap.createBitmap(595, 842, Bitmap.Config.ARGB_8888).also { page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY) }
-                } }
+            "application/pdf" -> renderOwnedPreview(595, 842) { bitmap ->
+                ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { fd ->
+                    PdfRenderer(fd).use { renderer -> renderer.openPage(0).use { page ->
+                        page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                    } }
+                }
             }
             "image/png" -> BitmapFactory.decodeFile(file.path) ?: error("PNG preview failed")
             else -> null
@@ -72,4 +76,49 @@ class DocumentStudioStore(context: Context) {
         hex(digest.digest())
     }
     private fun hex(bytes: ByteArray) = bytes.joinToString("") { "%02x".format(it) }
+}
+
+/** Owner exists before dispatch, so a cancelled withContext return cannot orphan native pixels. */
+internal suspend fun loadOwnedDocumentPreview(create: () -> Bitmap?, adopt: (Bitmap?) -> Unit) {
+    var pending: Bitmap? = null
+    var failure: Throwable? = null
+    try {
+        withContext(Dispatchers.IO) { pending = create() }
+        adopt(pending)
+        pending = null // synchronous adoption completed; UI owner now controls disposal
+    } catch (original: Throwable) {
+        failure = original
+        throw original
+    } finally {
+        recyclePreview(pending, failure)
+    }
+}
+
+/** Covers render failures and exceptions while closing the renderer/page/descriptors. */
+internal fun renderOwnedPreview(width: Int, height: Int, render: (Bitmap) -> Unit): Bitmap {
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    try {
+        render(bitmap)
+        return bitmap
+    } catch (original: Throwable) {
+        recyclePreview(bitmap, original)
+        throw original
+    }
+}
+
+/** UI ownership is registered immediately, rather than waiting for the next recomposition effect. */
+internal class DocumentPreviewOwner : AutoCloseable {
+    private var bitmap: Bitmap? = null
+    fun replace(value: Bitmap?) {
+        if (bitmap === value) return
+        val previous = bitmap
+        bitmap = value
+        recyclePreview(previous, null)
+    }
+    override fun close() = replace(null)
+}
+
+private fun recyclePreview(bitmap: Bitmap?, original: Throwable?) {
+    try { bitmap?.recycle() }
+    catch (cleanup: Throwable) { if (original != null) original.addSuppressed(cleanup) else throw cleanup }
 }

@@ -48,13 +48,16 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var source by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
-    DisposableEffect(bitmap) { val owned = bitmap; onDispose { owned?.recycle() } }
+    val previewOwner = remember { DocumentPreviewOwner() }
+    DisposableEffect(previewOwner) { onDispose { previewOwner.close() } }
     val failed = stringResource(R.string.ds_failed)
     val verified = stringResource(R.string.ds_verified)
     val cancelled = stringResource(R.string.ds_cancelled)
     suspend fun loadPreview() {
-        val preview = withContext(Dispatchers.IO) { store.preview(staged, hash, mime) }
-        bitmap = preview
+        loadOwnedDocumentPreview(create = { store.preview(staged, hash, mime) }) { preview ->
+            previewOwner.replace(preview)
+            bitmap = preview
+        }
         source = if (mime == "text/plain" || mime == "image/svg+xml") withContext(Dispatchers.IO) { store.source(staged, hash) } else ""
     }
     LaunchedEffect(Unit) {
@@ -111,7 +114,7 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
                                 store.generate(spec)
                             }
                             val previous = staged
-                            bitmap = null; source = ""; savedUri = ""
+                            previewOwner.replace(null); bitmap = null; source = ""; savedUri = ""
                             staged = result.first; hash = result.second
                             mime = DocumentEncoder.mimeTypes.getValue(selectedFormat)
                             filename = DocumentStudioInput.fileName(selectedTitle, selectedFormat)

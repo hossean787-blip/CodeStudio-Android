@@ -1,9 +1,13 @@
 package com.androidharness.app.documents
 
+import android.graphics.Bitmap
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,6 +31,62 @@ class DocumentStudioStoreDeviceTest {
         }
         assertTrue(runCatching { store.recover("../outside", "hash") }.isFailure)
         assertTrue(runCatching { store.recover("studio-00000000-0000-0000-0000-000000000000.bin", "hash") }.isFailure)
+    }
+    @Test fun cancelledPreviewHandoffRecyclesPixelsWithoutAdoption() = runBlocking {
+        val pending = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        val handoffJob = Job()
+        val cancellation = CancellationException("synthetic preview handoff cancellation")
+        var adopted = false
+        val caught = try {
+            withContext(handoffJob) {
+                loadOwnedDocumentPreview(create = {
+                    // Allocation completes on IO, but the return to its caller is cancelled.
+                    handoffJob.cancel(cancellation)
+                    pending
+                }, adopt = { adopted = true })
+            }
+            null
+        } catch (failure: CancellationException) { failure }
+        assertNotNull(caught)
+        assertEquals(cancellation.message, caught!!.message)
+        assertFalse(adopted)
+        assertTrue(pending.isRecycled)
+    }
+    @Test fun renderFailureAndCancellationRecycleAndPreserveOriginalError() {
+        for (original in listOf(IllegalStateException("synthetic render failure"), CancellationException("synthetic render cancellation"))) {
+            var allocated: Bitmap? = null
+            val caught = try {
+                renderOwnedPreview(8, 8) { bitmap -> allocated = bitmap; throw original }
+                null
+            } catch (failure: Throwable) { failure }
+            assertSame(original, caught)
+            assertTrue(allocated!!.isRecycled)
+        }
+    }
+    @Test fun adoptedPixelsRemainOwnedUntilReplacementOrImmediateDisposal() = runBlocking {
+        val owner = DocumentPreviewOwner()
+        val first = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        val second = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        try {
+            loadOwnedDocumentPreview(create = { first }, adopt = owner::replace)
+            assertFalse(first.isRecycled)
+            loadOwnedDocumentPreview(create = { second }, adopt = owner::replace)
+            assertTrue(first.isRecycled)
+            assertFalse(second.isRecycled)
+            // No recomposition is required for the UI disposal owner to know about second.
+            owner.close()
+            assertTrue(second.isRecycled)
+        } finally { owner.close(); if (!first.isRecycled) first.recycle(); if (!second.isRecycled) second.recycle() }
+    }
+    @Test fun failedAdoptionRecyclesAndPreservesOriginalError() = runBlocking {
+        val pending = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        val original = IllegalArgumentException("synthetic adoption failure")
+        val caught = try {
+            loadOwnedDocumentPreview(create = { pending }, adopt = { throw original })
+            null
+        } catch (failure: Throwable) { failure }
+        assertSame(original, caught)
+        assertTrue(pending.isRecycled)
     }
     @Test fun cleanupLeavesUnownedNamesUntouched() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
