@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">エラーと復旧センター</string>
+    <string name="saba_error_auth">認証が拒否されました（401）</string>
+    <string name="saba_chat_failure_forbidden">プロバイダーがアクセスを拒否しました（403）</string>
+    <string name="saba_chat_failure_region">プロバイダーが非対応地域を報告しました</string>
+    <string name="saba_chat_failure_credits">クレジットまたは利用枠がなくなりました</string>
+    <string name="saba_error_rate">リクエストが多すぎます（429）</string>
+    <string name="saba_error_model">モデルまたは接続先が見つかりません（404）</string>
+    <string name="saba_error_timeout">接続がタイムアウトしました</string>
+    <string name="saba_error_server">プロバイダーのサービスは一時的に利用できません</string>
+    <string name="saba_error_tls">安全な接続の検証に失敗しました</string>
+    <string name="saba_error_network">ネットワーク接続に失敗しました</string>
+    <string name="saba_error_other">リクエストを完了できませんでした</string>
+    <string name="saba_advice_auth">保存済みのキーやアカウント権限を確認してください。認証情報をレポートに貼り付けないでください。</string>
+    <string name="saba_advice_forbidden">アカウント権限とモデルへのアクセスを確認してください。403 だけでは地域制限と断定できません。</string>
+    <string name="saba_advice_region">プロバイダーの公式な提供地域を確認してください。キーを変更しても制限は解除されません。</string>
+    <string name="saba_advice_credits">新しいリクエストを送る前に、アカウントの利用状況と料金を確認してください。</string>
+    <string name="saba_advice_rate">プロバイダーの制限解除を待ち、一度だけ再試行してください。連続再試行は避けてください。</string>
+    <string name="saba_advice_model">利用可能なモデルを選択し、プロバイダーの URL を確認してください。</string>
+    <string name="saba_advice_timeout">インターネット接続を確認して再試行してください。前のリクエストが届いている可能性があります。</string>
+    <string name="saba_advice_server">プロバイダーの稼働状況を確認し、後でもう一度お試しください。</string>
+    <string name="saba_advice_tls">端末の日付と接続の安全性を確認してください。証明書の検証を無効にしないでください。</string>
+    <string name="saba_advice_network">モバイルデータまたは Wi-Fi を確認して再試行してください。</string>
+    <string name="saba_advice_other">トラブルシューティングで接続と選択中のプロバイダーを確認してください。プライバシー保護のため生のエラーは非表示です。</string>
+    <string name="saba_error_http">HTTP ステータス: %1$d</string>
+    <string name="saba_network_validated">インターネット: システムが検証済み（プロバイダーは未検証）</string>
+    <string name="saba_network_offline">インターネット: 有効な接続がありません</string>
+    <string name="saba_network_unverified">インターネット: ネットワークは有効ですが検証できません</string>
+    <string name="saba_network_unknown">インターネット: 状態を確認できません</string>
+    <string name="saba_error_retry">回答を再試行</string>
+    <string name="saba_error_resume">保存済みタスクを再開</string>
+    <string name="saba_error_settings">トラブルシューティング</string>
+    <string name="saba_error_copy">安全なレポートをコピー</string>
+    <string name="saba_error_copied">レポートをコピーしました</string>
+    <string name="saba_error_close">閉じる</string>
+    <string name="saba_chat_share">チャットを Markdown で共有</string>
+    <string name="saba_chat_share_title">このチャットを共有しますか？</string>
+    <string name="saba_chat_share_note">エクスポートした履歴にはあなたのメッセージとアシスタントの回答が含まれます。共有先アプリを選ぶ前に機密情報を確認してください。</string>
+    <string name="saba_chat_share_confirm">共有アプリを選択</string>
+    <string name="saba_chat_share_failed">チャット履歴を準備できませんでした。</string>
+    <string name="saba_chat_share_empty">エクスポートできるメッセージがありません。</string>
+    <string name="saba_chat_share_limit">Android で確実に共有するため、古い内容の一部を省略しました。</string>
+</resources>

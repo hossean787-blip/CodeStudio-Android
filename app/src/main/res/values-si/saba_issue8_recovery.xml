@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">දෝෂ සහ ප්‍රතිසාධන මධ්‍යස්ථානය</string>
+    <string name="saba_error_auth">සත්‍යාපනය ප්‍රතික්ෂේප විය (401)</string>
+    <string name="saba_chat_failure_forbidden">සපයන්නා ප්‍රවේශය ප්‍රතික්ෂේප කළේය (403)</string>
+    <string name="saba_chat_failure_region">මෙම කලාපයට සහාය නොදක්වන බව සපයන්නා දන්වා ඇත</string>
+    <string name="saba_chat_failure_credits">ණය හෝ භාවිත සීමාව අවසන් වී ඇත</string>
+    <string name="saba_error_rate">ඉල්ලීම් ගණන අධිකයි (429)</string>
+    <string name="saba_error_model">ආකෘතිය හෝ සේවා ලිපිනය හමු නොවීය (404)</string>
+    <string name="saba_error_timeout">සම්බන්ධතාවයේ කාල සීමාව ඉක්මවා ගියේය</string>
+    <string name="saba_error_server">සපයන්නාගේ සේවාව තාවකාලිකව ලබා ගත නොහැක</string>
+    <string name="saba_error_tls">ආරක්ෂිත සම්බන්ධතාව තහවුරු කිරීම අසාර්ථක විය</string>
+    <string name="saba_error_network">ජාල සම්බන්ධතාව අසාර්ථක විය</string>
+    <string name="saba_error_other">ඉල්ලීම සම්පූර්ණ කිරීමට නොහැකි විය</string>
+    <string name="saba_advice_auth">සුරැකි යතුර හෝ ගිණුම් අවසර පරීක්ෂා කරන්න. රහස් තොරතුරු වාර්තාවට ඇතුළත් නොකරන්න.</string>
+    <string name="saba_advice_forbidden">ගිණුම් අවසර සහ ආකෘති ප්‍රවේශය පරීක්ෂා කරන්න. 403 දෝෂය පමණක් කලාප සීමාවක් බවට සාක්ෂියක් නොවේ.</string>
+    <string name="saba_advice_region">සපයන්නාගේ නිල සේවා ලබාගත හැකි ප්‍රදේශ පරීක්ෂා කරන්න. යතුර වෙනස් කිරීමෙන් සීමාව ඉවත් නොවේ.</string>
+    <string name="saba_advice_credits">නව ඉල්ලීමක් යැවීමට පෙර ගිණුමේ භාවිතය සහ මිල පරීක්ෂා කරන්න.</string>
+    <string name="saba_advice_rate">සපයන්නාගේ සීමාව නැවත සකස් වන තුරු රැඳී සිට එක් වරක් නැවත උත්සාහ කරන්න. නොකඩවා ඉල්ලීම් නොකරන්න.</string>
+    <string name="saba_advice_model">ලබාගත හැකි ආකෘතියක් තෝරා සපයන්නාගේ ලිපිනය තහවුරු කරන්න.</string>
+    <string name="saba_advice_timeout">අන්තර්ජාල සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න. පෙර ඉල්ලීම සපයන්නාට ලැබී තිබිය හැක.</string>
+    <string name="saba_advice_server">සපයන්නාගේ සේවා තත්ත්වය පරීක්ෂා කර පසුව නැවත උත්සාහ කරන්න.</string>
+    <string name="saba_advice_tls">උපාංගයේ දිනය සහ සම්බන්ධතා ආරක්ෂාව පරීක්ෂා කරන්න. සහතික පරීක්ෂාව අක්‍රිය නොකරන්න.</string>
+    <string name="saba_advice_network">ජංගම දත්ත හෝ Wi-Fi පරීක්ෂා කර නැවත උත්සාහ කරන්න.</string>
+    <string name="saba_advice_other">සම්බන්ධතාව සහ තෝරාගත් සපයන්නා පරීක්ෂා කිරීමට දෝෂ නිරාකරණය විවෘත කරන්න. පෞද්ගලිකත්වය සඳහා මුල් දෝෂ විස්තර සඟවා ඇත.</string>
+    <string name="saba_error_http">HTTP තත්ත්වය: %1$d</string>
+    <string name="saba_network_validated">අන්තර්ජාලය: පද්ධතිය තහවුරු කර ඇත (සපයන්නා පරීක්ෂා කර නැත)</string>
+    <string name="saba_network_offline">අන්තර්ජාලය: සක්‍රීය සම්බන්ධතාවක් නැත</string>
+    <string name="saba_network_unverified">අන්තර්ජාලය: ජාලය සක්‍රීයයි, තහවුරු කිරීම නොමැත</string>
+    <string name="saba_network_unknown">අන්තර්ජාලය: පරීක්ෂා කළ නොහැක</string>
+    <string name="saba_error_retry">පිළිතුර නැවත උත්සාහ කරන්න</string>
+    <string name="saba_error_resume">සුරැකි කාර්යය නැවත ආරම්භ කරන්න</string>
+    <string name="saba_error_settings">දෝෂ නිරාකරණය</string>
+    <string name="saba_error_copy">ආරක්ෂිත වාර්තාව පිටපත් කරන්න</string>
+    <string name="saba_error_copied">වාර්තාව පිටපත් කරන ලදී</string>
+    <string name="saba_error_close">වසන්න</string>
+    <string name="saba_chat_share">කතාබහ Markdown ලෙස බෙදාගන්න</string>
+    <string name="saba_chat_share_title">මෙම කතාබහ බෙදාගන්නද?</string>
+    <string name="saba_chat_share_note">අපනයනය කරන ඉතිහාසයේ ඔබේ පණිවිඩ සහ සහායක පිළිතුරු අඩංගු වේ. බෙදාගැනීමේ යෙදුම තේරීමට පෙර රහස් තොරතුරු පරීක්ෂා කරන්න.</string>
+    <string name="saba_chat_share_confirm">බෙදාගැනීමේ යෙදුම තෝරන්න</string>
+    <string name="saba_chat_share_failed">කතාබහ ඉතිහාසය සකස් කළ නොහැකි විය.</string>
+    <string name="saba_chat_share_empty">අපනයනය කිරීමට මෙම කතාබහේ පණිවිඩ නොමැත.</string>
+    <string name="saba_chat_share_limit">Android බෙදාගැනීම විශ්වාසදායක වීමට පැරණි අන්තර්ගතයෙන් කොටසක් ඉවත් කරන ලදී.</string>
+</resources>

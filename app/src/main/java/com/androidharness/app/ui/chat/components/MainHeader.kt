@@ -129,6 +129,7 @@ internal fun MainHeader(
     onSetSearchDepth: (com.androidharness.app.data.SearchDepth) -> Unit = {},
     onOpenChatSettings: (() -> Unit)? = null,
     onOpenSources: (() -> Unit)? = null,
+    onShareChat: (() -> Unit)? = null,
     chatPinned: Boolean = false,
     chatArchived: Boolean = false,
     onToggleChatPin: (() -> Unit)? = null,
@@ -151,7 +152,7 @@ internal fun MainHeader(
             showPreviewShortcut = showWebPreviewShortcut, conversation = conversation,
             workspaceName = workspaceName, onOpenDrawer = onOpenDrawer,
             searchDepth = searchDepth, onSetSearchDepth = onSetSearchDepth, onFind = onFind,
-            onOpenChatSettings = onOpenChatSettings, onOpenSources = onOpenSources,
+            onOpenChatSettings = onOpenChatSettings, onOpenSources = onOpenSources, onShareChat = onShareChat,
             chatPinned = chatPinned, chatArchived = chatArchived, onToggleChatPin = onToggleChatPin, onToggleChatArchive = onToggleChatArchive)
         }
         return
@@ -323,6 +324,12 @@ internal fun MainHeader(
                                     enabled = onOpenSources != null,
                                     onClick = { menu = false; onOpenSources?.invoke() },
                                 )
+                                DropdownMenuItem(
+                                    text = { Text(uiContext.getString(R.string.saba_chat_share)) },
+                                    leadingIcon = { Icon(Icons.Outlined.History, contentDescription = null) },
+                                    enabled = onShareChat != null,
+                                    onClick = { menu = false; onShareChat?.invoke() },
+                                )
                             }
                             DropdownMenuItem(
                                 text = { Text(uiContext.getString(R.string.ui_find_in_chat)) },
@@ -419,6 +426,7 @@ private fun DesktopConversationHeader(
     onFind: (() -> Unit)? = null,
     onOpenChatSettings: (() -> Unit)? = null,
     onOpenSources: (() -> Unit)? = null,
+    onShareChat: (() -> Unit)? = null,
     chatPinned: Boolean = false,
     chatArchived: Boolean = false,
     onToggleChatPin: (() -> Unit)? = null,
@@ -477,6 +485,11 @@ private fun DesktopConversationHeader(
                     if (chatOnly) DropdownMenuItem(
                         text = { Text(uiContext.getString(R.string.chat_sources_library)) },
                         onClick = { menu = false; onOpenSources?.invoke() },
+                    )
+                    if (chatOnly) DropdownMenuItem(
+                        text = { Text(uiContext.getString(R.string.saba_chat_share)) },
+                        enabled = onShareChat != null,
+                        onClick = { menu = false; onShareChat?.invoke() },
                     )
                     if (!chatOnly) DropdownMenuItem(text = { Text(uiContext.getString(R.string.ui_web_preview)) }, onClick = { menu = false; onPreview() })
                     if (!chatOnly) DropdownMenuItem(text = { Text("GitHub") }, enabled = canGitHub, onClick = { menu = false; onGitHub() })
