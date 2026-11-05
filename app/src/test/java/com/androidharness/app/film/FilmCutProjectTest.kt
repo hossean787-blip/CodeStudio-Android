@@ -25,7 +25,7 @@ class FilmCutProjectTest {
     @Test fun importedProjectsCannotBypassValidationOrExceedBounds() {
         assertThrows(IllegalArgumentException::class.java) { FilmCutProject.fromPortableJson("x".repeat(16_385)) }
         assertThrows(IllegalArgumentException::class.java) {
-            FilmCutProject.fromPortableJson(project().toPortableJson().replace("\\\"version\\\":1", "\\\"version\\\":2"))
+            FilmCutProject.fromPortableJson("""{"version":2,"title":"x","sourceUri":"content://test/video","startMs":0,"endMs":1000}""")
         }
     }
 
