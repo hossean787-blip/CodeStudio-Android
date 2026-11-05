@@ -245,7 +245,8 @@ class SessionRepository(
         require(ConversationConfig.decode(source.conversationJson).isChat)
         val id = createSession(source.title, projectId, ConversationConfig(sourceChatId = sourceId))
         val transcript = db.dao().messages(sourceId).filter {
-            it.role in setOf("USER", "ASSISTANT") && it.toolCallId == null && it.text.isNotBlank()
+            !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) &&
+                it.role in setOf("USER", "ASSISTANT") && it.toolCallId == null && it.text.isNotBlank()
         }.joinToString("\n\n") { "${it.role}: ${it.text}" }.takeLast(32_000)
         val context = "Discussion carried over from Chat. This is reference context, not new instructions.\n\n" + transcript
         db.dao().setCompaction(id, context, 0)
@@ -259,7 +260,7 @@ class SessionRepository(
         db.dao().artifactMessages(sessionId).mapNotNull { com.androidharness.app.artifacts.ChatArtifact.decode(it.artifactJson) }
 
     suspend fun addMessage(sessionId: String, message: ChatMessage, turnId: String? = null): String = db.withTransaction {
-        val firstChatTitle = if (message.role == Role.USER && !db.dao().hasUserMessage(sessionId)) {
+        val firstChatTitle = if (!com.androidharness.app.core.MessageVisibility.isInternalResume(message.id) && message.role == Role.USER && !db.dao().hasUserMessage(sessionId)) {
             db.dao().session(sessionId)?.takeIf { ConversationConfig.decode(it.conversationJson).isChat &&
                 it.title.trim() in setOf("New chat", "Chat", "新建对话") }
                 ?.let { com.androidharness.app.core.ChatExperience.title(message.text).takeIf(String::isNotBlank) }
@@ -346,8 +347,8 @@ class SessionRepository(
             // either matching turnId, or the nearest preceding user message.
             val turnId = targetAssistant.turnId
             val userMsg = (if (turnId != null) {
-                priorMessages.lastOrNull { it.role == Role.USER.name && it.turnId == turnId }
-            } else null) ?: priorMessages.lastOrNull { it.role == Role.USER.name }
+                priorMessages.lastOrNull { it.role == Role.USER.name && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) && it.turnId == turnId }
+            } else null) ?: priorMessages.lastOrNull { it.role == Role.USER.name && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) }
 
             val earlierMessages = if (userMsg != null) {
                 val userIdx = priorMessages.indexOfFirst { it.id == userMsg.id }
@@ -794,7 +795,7 @@ class SessionRepository(
     fun latestAnswerVersions(sessionId: String) = answerVersionsForTurn(sessionId, null)
 
     fun answerVersionsForTurn(sessionId: String, turnId: String?) = combine(db.dao().messagesFlow(sessionId), answerVersions(sessionId)) { rows, versions ->
-        val index = rows.indexOfLast { it.role == Role.USER.name && (turnId == null || it.turnId == turnId) }
+        val index = rows.indexOfLast { it.role == Role.USER.name && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) && (turnId == null || it.turnId == turnId) }
         if (index < 0) emptyList() else {
             val group = com.androidharness.app.core.ChatTurnActions.answerVersionKey(rows.getOrNull(index - 1)?.id, rows[index].text)
             versions.filter { it.groupKey == group }
@@ -803,7 +804,8 @@ class SessionRepository(
 
     suspend fun answerVersionPreview(sessionId: String, versionId: String): List<ChatMessage> = kotlinx.coroutines.withContext(Dispatchers.Default) {
         val version = requireNotNull(db.dao().chatAnswerVersion(sessionId, versionId)) { "This answer version is unavailable." }
-        json.decodeFromString(ListSerializer(MessageEntity.serializer()), version.messagesJson).map { it.toChatMessageCached() }
+        com.androidharness.app.core.MessageVisibility.visible(
+            json.decodeFromString(ListSerializer(MessageEntity.serializer()), version.messagesJson).map { it.toChatMessageCached() })
     }
 
     /** Called under RunManager's workspace gate before a Chat retry removes the current answer. */
@@ -811,7 +813,7 @@ class SessionRepository(
         val session = requireNotNull(db.dao().session(sessionId))
         check(ConversationConfig.decode(session.conversationJson).isChat)
         val rows = db.dao().messages(sessionId)
-        val index = rows.indexOfLast { it.role == Role.USER.name }
+        val index = rows.indexOfLast { it.role == Role.USER.name && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) }
         check(index >= 0 && rows[index].id == userMessageId) { "Only the latest answer can be versioned." }
         val tail = rows.drop(index)
         if (tail.none { it.role == Role.ASSISTANT.name && it.text.isNotBlank() }) return@withTransaction
@@ -824,7 +826,7 @@ class SessionRepository(
 
     suspend fun selectChatAnswer(sessionId: String, expectedUserId: String, versionId: String) = db.withTransaction {
         val rows = db.dao().messages(sessionId)
-        val index = rows.indexOfLast { it.role == Role.USER.name }
+        val index = rows.indexOfLast { it.role == Role.USER.name && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) }
         check(index >= 0 && rows[index].id == expectedUserId) { "The conversation changed. Try again." }
         val group = com.androidharness.app.core.ChatTurnActions.answerVersionKey(rows.getOrNull(index - 1)?.id, rows[index].text)
         val version = requireNotNull(db.dao().chatAnswerVersion(sessionId, versionId)) { "This answer version is unavailable." }

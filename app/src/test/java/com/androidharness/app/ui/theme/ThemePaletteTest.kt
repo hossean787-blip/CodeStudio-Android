@@ -3,6 +3,7 @@ package com.androidharness.app.ui.theme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import com.androidharness.app.data.AppSettings
+import com.androidharness.app.data.ThemeMode
 import com.androidharness.app.data.ThemePalette
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -43,11 +44,15 @@ class ThemePaletteTest {
         }
     }
 
-    @Test fun `new installs use Saba Neon while explicit older palettes survive backup`() {
-        assertEquals("NEON", AppSettings().colorPalette.name)
+    @Test fun `new installs use minimal light Saba while explicit themes survive backup`() {
+        assertEquals("SLATE", AppSettings().colorPalette.name)
+        assertEquals(ThemeMode.LIGHT, AppSettings().themeMode)
+        assertEquals(ThemeMode.LIGHT, Json.decodeFromString<AppSettings>("{}").themeMode)
+        assertEquals(ThemeMode.DARK, Json.decodeFromString<AppSettings>("{\"themeMode\":\"DARK\"}").themeMode)
+        assertEquals(ThemePalette.NEON, Json.decodeFromString<AppSettings>("{\"colorPalette\":\"NEON\"}").colorPalette)
         assertFalse(AppSettings().dynamicColor)
-        assertEquals("NEON", ThemePalette.fromStored(null).name)
-        assertEquals("NEON", Json.decodeFromString<AppSettings>("{}").colorPalette.name)
+        assertEquals("SLATE", ThemePalette.fromStored(null).name)
+        assertEquals("SLATE", Json.decodeFromString<AppSettings>("{}").colorPalette.name)
         assertEquals(ThemePalette.BLUE, Json.decodeFromString<AppSettings>("{\"colorPalette\":\"BLUE\",\"dynamicColor\":true}").colorPalette)
         assertEquals(ThemePalette.BLUE, ThemePalette.fromStored("future-palette"))
         val settings = AppSettings(colorPalette = ThemePalette.ROSE, dynamicColor = false)

@@ -157,7 +157,7 @@ internal fun TroubleshootingSection(container: AppContainer, onOpen: (SettingsPa
                         provider.effectiveApiKey(container.providers.apiKey(provider.id)), client) }
                     catalog = when (result) {
                         is ModelCatalog.Result.Models -> if (result.models.isEmpty()) CatalogCheck.EMPTY else CatalogCheck.REACHABLE
-                        is ModelCatalog.Result.Failed -> catalogFailure(result.message)
+                        is ModelCatalog.Result.Failed -> catalogFailure(result.message, result.status, result.providerErrorCode)
                     }
                 } catch (_: TimeoutCancellationException) { catalog = CatalogCheck.TIMEOUT }
                 catch (e: kotlinx.coroutines.CancellationException) { catalog = CatalogCheck.NOT_CHECKED; throw e }

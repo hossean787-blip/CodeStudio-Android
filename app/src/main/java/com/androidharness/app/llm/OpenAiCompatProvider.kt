@@ -169,22 +169,26 @@ class OpenAiCompatProvider(
                 putJsonObject("stream_options") { put("include_usage", true) }
             }
             putJsonArray("messages") {
-                if ("openrouter.ai" in host && (config.model.contains("claude", true) || config.model.contains("anthropic", true))) {
-                    add(buildJsonObject {
-                        put("role", "system")
-                        putJsonArray("content") {
-                            add(buildJsonObject {
-                                put("type", "text")
-                                put("text", systemPrompt)
-                                putJsonObject("cache_control") { put("type", "ephemeral") }
-                            })
-                        }
-                    })
-                } else {
-                    add(buildJsonObject {
-                        put("role", "system")
-                        put("content", systemPrompt)
-                    })
+                // Gateways reject empty system messages. Keep real instructions
+                // and their provider-specific cache metadata exactly as supplied.
+                if (systemPrompt.isNotBlank()) {
+                    if ("openrouter.ai" in host && (config.model.contains("claude", true) || config.model.contains("anthropic", true))) {
+                        add(buildJsonObject {
+                            put("role", "system")
+                            putJsonArray("content") {
+                                add(buildJsonObject {
+                                    put("type", "text")
+                                    put("text", systemPrompt)
+                                    putJsonObject("cache_control") { put("type", "ephemeral") }
+                                })
+                            }
+                        })
+                    } else {
+                        add(buildJsonObject {
+                            put("role", "system")
+                            put("content", systemPrompt)
+                        })
+                    }
                 }
                 val normalized = CompatHistory.normalize(messages).map {
                     com.androidharness.app.tools.ImageInspectionDelivery.update(it, it.imageData)

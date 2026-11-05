@@ -83,7 +83,7 @@ object ModelCatalog {
 
     sealed interface Result {
         data class Models(val models: List<ModelEntry>, val latencyMs: Long) : Result
-        data class Failed(val message: String, val status: Int? = null) : Result
+        data class Failed(val message: String, val status: Int? = null, val providerErrorCode: String? = null) : Result
     }
 
     suspend fun listModels(config: ProviderConfig, apiKey: String, httpClient: OkHttpClient = client): Result =
@@ -102,7 +102,10 @@ object ModelCatalog {
                 val request = buildRequest(config, apiKey)
                 ProviderHeaders.client(config, httpClient).newCall(request).execute().use { resp ->
                     if (!resp.isSuccessful) {
-                        return@use Result.Failed("HTTP ${resp.code}: ${resp.message}", resp.code)
+                        // Error bodies are untrusted and may echo credentials. Keep only a
+                        // bounded, recognized machine code; never store the raw body/reason.
+                        val errorCode = runCatching { errorCode(resp.peekBody(16_384).string()) }.getOrNull()
+                        return@use Result.Failed("HTTP ${resp.code}", resp.code, errorCode)
                     }
                     val body = resp.body?.string() ?: return@use Result.Failed("Empty response")
                     val entries = if (config.id == HarnessProvider.ID) HarnessProvider.parseKiloCatalog(body)
@@ -115,6 +118,16 @@ object ModelCatalog {
                 Result.Failed(e.message ?: "Connection failed")
             }
         }
+
+    internal fun errorCode(body: String): String? {
+        val root = runCatching { json.parseToJsonElement(body) as? JsonObject }.getOrNull() ?: return null
+        val error = root["error"] as? JsonObject ?: root
+        val known = setOf("unsupported_country_region_territory", "unsupported_region", "region_not_supported",
+            "insufficient_quota", "quota_exceeded", "credit_balance_too_low", "billing_hard_limit_reached")
+        return listOf("code", "type", "status").firstNotNullOfOrNull { key ->
+            (error[key] as? JsonPrimitive)?.contentOrNull?.lowercase(java.util.Locale.ROOT)?.takeIf { it in known }
+        }
+    }
 
     internal fun buildRequest(config: ProviderConfig, apiKey: String): Request {
         if (config.id == HarnessProvider.ID) return Request.Builder()

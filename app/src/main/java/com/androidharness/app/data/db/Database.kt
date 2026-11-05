@@ -366,10 +366,10 @@ interface HarnessDao {
     @Query("UPDATE sessions SET title = :title, updatedAt = :updatedAt WHERE id = :id")
     suspend fun updateSession(id: String, title: String, updatedAt: Long)
 
-    @Query("SELECT EXISTS(SELECT 1 FROM messages WHERE sessionId = :id AND role = 'USER')")
+    @Query("SELECT EXISTS(SELECT 1 FROM messages WHERE sessionId = :id AND role = 'USER' AND id NOT LIKE 'internal-chat-continuation-%')")
     suspend fun hasUserMessage(id: String): Boolean
 
-    @Query("SELECT * FROM messages WHERE sessionId = :id AND role = 'USER' ORDER BY createdAt, rowid LIMIT 1")
+    @Query("SELECT * FROM messages WHERE sessionId = :id AND role = 'USER' AND id NOT LIKE 'internal-chat-continuation-%' ORDER BY createdAt, rowid LIMIT 1")
     suspend fun firstUserMessage(id: String): MessageEntity?
 
     @Query("UPDATE sessions SET updatedAt = :updatedAt WHERE id = :id")

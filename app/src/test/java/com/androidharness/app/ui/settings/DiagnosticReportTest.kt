@@ -15,12 +15,23 @@ class DiagnosticReportTest {
     @Test fun rawFailureSecretsAreReplacedWithUsefulFixedAdvice() {
         val secret = "private-secret-value"
         assertEquals(CatalogCheck.AUTH, catalogFailure("HTTP 401 api_key=$secret"))
-        assertEquals(CatalogCheck.AUTH, catalogFailure("HTTP 403 token=$secret"))
+        assertEquals(CatalogCheck.FORBIDDEN, catalogFailure("HTTP 403 token=$secret"))
         assertEquals(CatalogCheck.RATE_LIMIT, catalogFailure("HTTP 429 url=https://user:$secret@host"))
         val unknown = catalogFailure("server returned password=$secret")
         assertEquals(CatalogCheck.FAILED, unknown)
         assertFalse(unknown.detail.contains(secret))
         assertTrue(CatalogCheck.REACHABLE.detail.contains("quota have not been tested"))
+    }
+
+    @Test fun statusAndMachineCodeDistinguishPermissionRegionCreditsAndRateLimits() {
+        assertEquals(CatalogCheck.REGION, catalogFailure("ignored", 403, "unsupported_country_region_territory"))
+        assertEquals(CatalogCheck.FORBIDDEN, catalogFailure("unsupported region", 403))
+        assertEquals(CatalogCheck.AUTH, catalogFailure("HTTP 403", 401, "unsupported_region"))
+        assertEquals(CatalogCheck.CREDITS, catalogFailure("ignored", 402))
+        assertEquals(CatalogCheck.CREDITS, catalogFailure("ignored", 429, "insufficient_quota"))
+        assertEquals(CatalogCheck.RATE_LIMIT, catalogFailure("ignored", 429))
+        assertEquals(CatalogCheck.FAILED, catalogFailure("request id 403, remaining 429"))
+        assertEquals(CatalogCheck.FAILED, catalogFailure("DNS connection failure"))
     }
 
     @Test fun reportsIncludeScopeAndOptionalStatusWithoutRawConfiguration() {
