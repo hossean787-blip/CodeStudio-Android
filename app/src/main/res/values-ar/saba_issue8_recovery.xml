@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">مركز الأخطاء والاسترداد</string>
+    <string name="saba_error_auth">رُفضت المصادقة (401)</string>
+    <string name="saba_chat_failure_forbidden">رفض المزوّد الوصول (403)</string>
+    <string name="saba_chat_failure_region">أبلغ المزوّد بأن المنطقة غير مدعومة</string>
+    <string name="saba_chat_failure_credits">نفد الرصيد أو الحصة</string>
+    <string name="saba_error_rate">طلبات كثيرة جدًا (429)</string>
+    <string name="saba_error_model">لم يُعثر على النموذج أو نقطة الاتصال (404)</string>
+    <string name="saba_error_timeout">انتهت مهلة الاتصال</string>
+    <string name="saba_error_server">خدمة المزوّد غير متاحة مؤقتًا</string>
+    <string name="saba_error_tls">فشل التحقق من الاتصال الآمن</string>
+    <string name="saba_error_network">فشل الاتصال بالشبكة</string>
+    <string name="saba_error_other">تعذر إكمال الطلب</string>
+    <string name="saba_advice_auth">تحقق من المفتاح المحفوظ أو صلاحية الحساب. لا تلصق بيانات الدخول في التقرير.</string>
+    <string name="saba_advice_forbidden">تحقق من صلاحيات الحساب والوصول إلى النموذج. الخطأ 403 وحده لا يثبت وجود حظر إقليمي.</string>
+    <string name="saba_advice_region">راجع سياسة توفر الخدمة الرسمية للمزوّد. تغيير المفاتيح لا يلغي هذا القيد.</string>
+    <string name="saba_advice_credits">راجع استخدام الحساب والأسعار قبل إرسال طلب جديد.</string>
+    <string name="saba_advice_rate">انتظر حتى تُرفع حدود المزوّد ثم أعد المحاولة مرة واحدة. لا تكرر الطلبات في حلقة.</string>
+    <string name="saba_advice_model">اختر نموذجًا متاحًا وتحقق من عنوان المزوّد.</string>
+    <string name="saba_advice_timeout">تحقق من اتصال الإنترنت وحاول مجددًا. ربما تلقى المزوّد الطلب بالفعل.</string>
+    <string name="saba_advice_server">تحقق من حالة المزوّد وأعد المحاولة لاحقًا.</string>
+    <string name="saba_advice_tls">تحقق من تاريخ الجهاز وأمان الاتصال. لا تعطّل التحقق من الشهادات.</string>
+    <string name="saba_advice_network">تحقق من بيانات الهاتف أو شبكة Wi-Fi ثم أعد المحاولة.</string>
+    <string name="saba_advice_other">افتح استكشاف الأخطاء لفحص الاتصال والمزوّد المحدد. أُخفيت التفاصيل الأولية لحماية الخصوصية.</string>
+    <string name="saba_error_http">حالة HTTP: %1$d</string>
+    <string name="saba_network_validated">الإنترنت: تحقق النظام من الاتصال (لم يُختبر المزوّد)</string>
+    <string name="saba_network_offline">الإنترنت: لا يوجد اتصال نشط</string>
+    <string name="saba_network_unverified">الإنترنت: الشبكة نشطة لكن التحقق غير متاح</string>
+    <string name="saba_network_unknown">الإنترنت: تعذر التحقق</string>
+    <string name="saba_error_retry">إعادة محاولة الرد</string>
+    <string name="saba_error_resume">استئناف المهمة المحفوظة</string>
+    <string name="saba_error_settings">استكشاف الأخطاء وإصلاحها</string>
+    <string name="saba_error_copy">نسخ التقرير الآمن</string>
+    <string name="saba_error_copied">تم نسخ التقرير</string>
+    <string name="saba_error_close">إغلاق</string>
+    <string name="saba_chat_share">مشاركة المحادثة بصيغة Markdown</string>
+    <string name="saba_chat_share_title">هل تريد مشاركة هذه المحادثة؟</string>
+    <string name="saba_chat_share_note">يحتوي السجل المُصدّر على رسائلك وردود المساعد. راجع المعلومات الحساسة قبل اختيار تطبيق للمشاركة.</string>
+    <string name="saba_chat_share_confirm">اختيار تطبيق للمشاركة</string>
+    <string name="saba_chat_share_failed">تعذر إعداد سجل المحادثة.</string>
+    <string name="saba_chat_share_empty">لا توجد رسائل لتصديرها في هذه المحادثة.</string>
+    <string name="saba_chat_share_limit">حُذف بعض المحتوى الأقدم لضمان موثوقية المشاركة في Android.</string>
+</resources>

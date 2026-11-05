@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">Fehler- und Wiederherstellungscenter</string>
+    <string name="saba_error_auth">Authentifizierung abgelehnt (401)</string>
+    <string name="saba_chat_failure_forbidden">Anbieter verweigert den Zugriff (403)</string>
+    <string name="saba_chat_failure_region">Anbieter meldet eine nicht unterstützte Region</string>
+    <string name="saba_chat_failure_credits">Guthaben oder Kontingent aufgebraucht</string>
+    <string name="saba_error_rate">Zu viele Anfragen (429)</string>
+    <string name="saba_error_model">Modell oder Endpunkt nicht gefunden (404)</string>
+    <string name="saba_error_timeout">Zeitüberschreitung bei der Verbindung</string>
+    <string name="saba_error_server">Anbieterdienst vorübergehend nicht verfügbar</string>
+    <string name="saba_error_tls">Prüfung der sicheren Verbindung fehlgeschlagen</string>
+    <string name="saba_error_network">Netzwerkverbindung fehlgeschlagen</string>
+    <string name="saba_error_other">Anfrage konnte nicht abgeschlossen werden</string>
+    <string name="saba_advice_auth">Prüfe den gespeicherten Schlüssel oder die Kontoberechtigung. Füge keine Zugangsdaten in den Bericht ein.</string>
+    <string name="saba_advice_forbidden">Prüfe die Kontoberechtigungen und den Modellzugriff. Ein 403 allein belegt keine regionale Sperre.</string>
+    <string name="saba_advice_region">Prüfe die offiziellen Verfügbarkeitsregeln des Anbieters. Ein Schlüsselwechsel hebt die Einschränkung nicht auf.</string>
+    <string name="saba_advice_credits">Prüfe Kontonutzung und Preise, bevor du eine neue Anfrage sendest.</string>
+    <string name="saba_advice_rate">Warte, bis die Begrenzung des Anbieters aufgehoben ist, und versuche es einmal erneut. Vermeide Anfrageschleifen.</string>
+    <string name="saba_advice_model">Wähle ein verfügbares Modell und prüfe die Anbieteradresse.</string>
+    <string name="saba_advice_timeout">Prüfe deine Internetverbindung und versuche es erneut. Die Anfrage könnte bereits angekommen sein.</string>
+    <string name="saba_advice_server">Prüfe den Status des Anbieters und versuche es später erneut.</string>
+    <string name="saba_advice_tls">Prüfe das Gerätedatum und die Verbindungssicherheit. Deaktiviere nicht die Zertifikatsprüfung.</string>
+    <string name="saba_advice_network">Prüfe mobile Daten oder WLAN und versuche es erneut.</string>
+    <string name="saba_advice_other">Öffne die Fehlerbehebung, um Verbindung und Anbieter zu prüfen. Rohe Fehlerdetails sind zum Schutz privater Daten ausgeblendet.</string>
+    <string name="saba_error_http">HTTP-Status: %1$d</string>
+    <string name="saba_network_validated">Internet: vom System bestätigt (Anbieter nicht geprüft)</string>
+    <string name="saba_network_offline">Internet: keine aktive Verbindung</string>
+    <string name="saba_network_unverified">Internet: Netzwerk aktiv, Bestätigung nicht verfügbar</string>
+    <string name="saba_network_unknown">Internet: Prüfung nicht möglich</string>
+    <string name="saba_error_retry">Antwort erneut versuchen</string>
+    <string name="saba_error_resume">Gespeicherte Aufgabe fortsetzen</string>
+    <string name="saba_error_settings">Fehlerbehebung</string>
+    <string name="saba_error_copy">Sicheren Bericht kopieren</string>
+    <string name="saba_error_copied">Bericht kopiert</string>
+    <string name="saba_error_close">Schließen</string>
+    <string name="saba_chat_share">Chat als Markdown teilen</string>
+    <string name="saba_chat_share_title">Diesen Chat teilen?</string>
+    <string name="saba_chat_share_note">Der exportierte Verlauf enthält deine Nachrichten und die Antworten des Assistenten. Prüfe sensible Informationen vor der Auswahl einer App.</string>
+    <string name="saba_chat_share_confirm">App zum Teilen auswählen</string>
+    <string name="saba_chat_share_failed">Der Chatverlauf konnte nicht vorbereitet werden.</string>
+    <string name="saba_chat_share_empty">Dieser Chat enthält keine exportierbaren Nachrichten.</string>
+    <string name="saba_chat_share_limit">Einige ältere Inhalte wurden ausgelassen, damit das Teilen unter Android zuverlässig funktioniert.</string>
+</resources>

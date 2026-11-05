@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">错误与恢复中心</string>
+    <string name="saba_error_auth">身份验证被拒绝 (401)</string>
+    <string name="saba_chat_failure_forbidden">服务提供方拒绝访问 (403)</string>
+    <string name="saba_chat_failure_region">服务提供方报告当前地区不受支持</string>
+    <string name="saba_chat_failure_credits">余额或配额已耗尽</string>
+    <string name="saba_error_rate">请求次数过多 (429)</string>
+    <string name="saba_error_model">找不到模型或服务端点 (404)</string>
+    <string name="saba_error_timeout">连接超时</string>
+    <string name="saba_error_server">服务提供方暂时不可用</string>
+    <string name="saba_error_tls">安全连接验证失败</string>
+    <string name="saba_error_network">网络连接失败</string>
+    <string name="saba_error_other">无法完成请求</string>
+    <string name="saba_advice_auth">检查已保存的密钥或账户授权。不要把凭据粘贴到报告中。</string>
+    <string name="saba_advice_forbidden">检查账户权限和模型访问资格。仅凭 403 错误不能断定存在地区限制。</string>
+    <string name="saba_advice_region">查看服务提供方官方支持地区说明。更换密钥无法解除此限制。</string>
+    <string name="saba_advice_credits">发送新请求前请查看账户用量和费用。</string>
+    <string name="saba_advice_rate">等待服务提供方的限制重置后再重试一次。不要循环发送请求。</string>
+    <string name="saba_advice_model">选择可用模型并核对服务地址。</string>
+    <string name="saba_advice_timeout">检查网络连接后重试。之前的请求可能已送达服务提供方。</string>
+    <string name="saba_advice_server">查看服务提供方的状态，稍后重试。</string>
+    <string name="saba_advice_tls">检查设备日期和连接安全性。不要关闭证书验证。</string>
+    <string name="saba_advice_network">检查移动数据或 Wi-Fi 后重试。</string>
+    <string name="saba_advice_other">打开故障排除以检查网络和所选服务提供方。为保护隐私，原始错误详情已隐藏。</string>
+    <string name="saba_error_http">HTTP 状态：%1$d</string>
+    <string name="saba_network_validated">网络：系统已验证（未检测服务提供方）</string>
+    <string name="saba_network_offline">网络：无活动连接</string>
+    <string name="saba_network_unverified">网络：网络已连接，但无法验证</string>
+    <string name="saba_network_unknown">网络：无法检测</string>
+    <string name="saba_error_retry">重试回答</string>
+    <string name="saba_error_resume">恢复已保存的任务</string>
+    <string name="saba_error_settings">故障排除</string>
+    <string name="saba_error_copy">复制安全报告</string>
+    <string name="saba_error_copied">报告已复制</string>
+    <string name="saba_error_close">关闭</string>
+    <string name="saba_chat_share">将聊天分享为 Markdown</string>
+    <string name="saba_chat_share_title">分享这段聊天吗？</string>
+    <string name="saba_chat_share_note">导出的历史记录包含您的消息和助手回复。选择分享应用前，请检查敏感信息。</string>
+    <string name="saba_chat_share_confirm">选择分享应用</string>
+    <string name="saba_chat_share_failed">无法准备聊天历史记录。</string>
+    <string name="saba_chat_share_empty">此聊天没有可导出的消息。</string>
+    <string name="saba_chat_share_limit">为确保 Android 分享可靠，已省略部分较早的内容。</string>
+</resources>
