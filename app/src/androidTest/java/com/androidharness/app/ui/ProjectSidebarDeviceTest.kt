@@ -100,6 +100,10 @@ class ProjectSidebarDeviceTest {
             await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
             assertWithin(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon))
             screenshot("chats-view")
+            tap("History")
+            scrollTo("Open Give the sidebar more room")
+            screenshot("history-view")
+            tap("Chats")
             assertNull(find("Collapse AndroidHarness"))
             scrollTo("Working"); assertNotNull(find("Working"))
             scrollTo("Needs you"); assertNotNull(find("Needs you"))
