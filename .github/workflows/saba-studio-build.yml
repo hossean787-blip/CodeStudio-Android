@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, feature/chat-first-ui, "codex/**", "integration/**", "feature/saba-hide-cache-telemetry-20261105"]
+    branches: [main, develop/codestudio-alpha, "feature/**", "codex/**", "integration/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -36,7 +36,27 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              'app/src/main/java/com/androidharness/app/llm/OpenAiCompatProvider.kt',
+              'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
+              'app/src/main/java/com/androidharness/app/agent/TaskControl.kt',
+              'app/src/main/java/com/androidharness/app/data/ChatBackup.kt',
+              'app/src/main/java/com/androidharness/app/data/SessionRepository.kt',
+              'app/src/main/java/com/androidharness/app/data/db/Database.kt',
+              'app/src/main/java/com/androidharness/app/tools/ChatRecallTools.kt',
+              'app/src/main/java/com/androidharness/app/ui/chat/ChatViewModel.kt',
+              'app/src/test/java/com/androidharness/app/agent/TaskControlTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ChatBackupTest.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/chat/ChatExperienceDeviceTest.kt',
+              'app/src/main/java/com/androidharness/app/llm/ModelCatalog.kt',
+              'app/src/main/java/com/androidharness/app/ui/common/LocalizedOptionLabels.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/DiagnosticReport.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/TroubleshootingSection.kt',
+              'app/src/test/java/com/androidharness/app/llm/ModelCatalogTest.kt',
+              'app/src/test/java/com/androidharness/app/ui/settings/DiagnosticReportTest.kt',
               'app/build.gradle.kts',
+              'app/src/androidTest/java/com/androidharness/app/ui/ChatSelectionDeviceTest.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/ProjectSidebarDeviceTest.kt',
+              'app/src/test/java/com/androidharness/app/data/audio/GroqWhisperClientTest.kt',
               'app/src/main/java/com/androidharness/app/local/LocalModelManager.kt',
               'app/src/main/res/values/tips_strings.xml',
               'app/src/main/res/values/nine_router_strings.xml',
@@ -136,11 +156,14 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
+              'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
+              'app/src/main/java/com/androidharness/app/ui/settings/SkillsScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/ProviderSheet.kt',
               'app/src/main/java/com/androidharness/app/ui/settings/PluginManagerSection.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubRepository.kt',
+              'app/src/main/java/com/androidharness/app/tools/Tool.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
-              'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt'
+              'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt',
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
@@ -224,6 +247,8 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew :app:testDebugUnitTest -Pdistribution=github --no-daemon
+      - name: Compile every Android instrumentation test before building APKs
+        run: ./gradlew :app:compileDebugAndroidTestKotlin -Pdistribution=github --no-daemon
       - name: Build Saba Studio debug APK
         shell: bash
         run: |
@@ -297,7 +322,7 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Run database migration and workspace persistence on emulator
+      - name: Run workspace persistence and integrated sidebar navigation on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -305,7 +330,9 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion' --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
+            mkdir -p delivery-emulator
+            adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
       - name: Upload emulator evidence
         if: always()

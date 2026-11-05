@@ -9,6 +9,18 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
 class TaskControlTest {
+    @Test fun `resume origin is independent of user text and has a durable unique id`() {
+        val first = RunRecovery.continuationMessage()
+        val second = RunRecovery.continuationMessage()
+        val user = ChatMessage(Role.USER, RunRecovery.CONTINUE_PROMPT, id = "ordinary-user")
+        assertNotEquals(first.id, second.id)
+        assertEquals(Role.USER, first.role) // Retains the provider's instruction context.
+        assertEquals(RunRecovery.CONTINUE_PROMPT, first.text)
+        assertEquals(listOf(user), MessageVisibility.visible(listOf(first, user, second)))
+        assertFalse(MessageVisibility.isInternalResume(null))
+        assertTrue(MessageVisibility.isInternalResume(RunRecovery.CHAT_CONTINUATION_ID_PREFIX + "legacy"))
+    }
+
     @get:Rule val folder = TemporaryFolder()
     @Test fun `queue edits and reordering survive process recreation`() {
         val store = TaskControlStore(folder.root)

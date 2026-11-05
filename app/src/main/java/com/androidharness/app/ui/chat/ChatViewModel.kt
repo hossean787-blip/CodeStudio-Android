@@ -517,7 +517,7 @@ class ChatViewModel(
                     }
                 }
             }.collect { window ->
-                val msgs = window.messages.filterNot { com.androidharness.app.agent.RunRecovery.isInternalChatContinuation(it.id) }
+                val msgs = com.androidharness.app.core.MessageVisibility.visible(window.messages)
                 // Rewinding may remove the entire loaded suffix. Return to the saved history.
                 if (window.messages.isEmpty() && window.hasOlder) {
                     sessionId?.let { messageWindowStart.value = c.sessions.messageWindowStart(it) }
@@ -978,7 +978,7 @@ class ChatViewModel(
                 check(!c.runManager.isRunning(sid) && compactionJob?.isActive != true) { c.appContext.getString(R.string.ui_stop_the_task_or_compaction_before_changing) }
                 val cutoff = if (clearOlder) {
                     // Keep the latest user turn and all of its assistant/tool messages together.
-                    c.sessions.messages(sid).lastOrNull { it.role == Role.USER }?.createdAt ?: 0
+                    c.sessions.messages(sid).lastOrNull { it.role == Role.USER && !com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) }?.createdAt ?: 0
                 } else c.runManager.controls.flow(sid).value.contextAfter
                 c.runManager.controls.update(sid) { it.copy(pins = pins.trim(), summaryOverride = summary,
                     limits = limits, contextAfter = cutoff) }

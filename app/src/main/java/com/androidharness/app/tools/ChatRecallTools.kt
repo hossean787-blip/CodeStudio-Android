@@ -138,7 +138,7 @@ class ReadChatSnippetTool(
         if (sid.isBlank()) throw ToolFailure("Missing required argument: session_id")
         if (!canAccess(ctx.sessionId, sid)) throw ToolFailure("That conversation is outside this agent's history access.")
         val meta = session(sid) ?: throw ToolFailure("That chat no longer exists.")
-        val visible = load(sid).mapNotNull { message ->
+        val visible = com.androidharness.app.core.MessageVisibility.visible(load(sid)).mapNotNull { message ->
             if (message.role != Role.USER && message.role != Role.ASSISTANT) return@mapNotNull null
             if (message.role == Role.ASSISTANT && message.toolCallId != null) return@mapNotNull null
             val text = if (message.role == Role.USER) UserMessageContent.visibleText(message.text)

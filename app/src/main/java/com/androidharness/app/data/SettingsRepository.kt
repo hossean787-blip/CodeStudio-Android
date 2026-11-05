@@ -30,9 +30,9 @@ data class AppSettings(
     val subagentCompletionNotifications: Boolean = true,
     val subagentProviderId: String? = null,
     val subagentModel: String? = null,
-    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val themeMode: ThemeMode = ThemeMode.LIGHT,
     val dynamicColor: Boolean = false,
-    val colorPalette: ThemePalette = ThemePalette.NEON,
+    val colorPalette: ThemePalette = ThemePalette.SLATE,
     val customPalettes: List<CustomThemePalette> = emptyList(),
     val activeCustomPaletteId: String? = null,
     val harnessCanvas: HarnessCanvasSettings = HarnessCanvasSettings(),
@@ -349,7 +349,7 @@ class SettingsRepository(private val context: Context) {
             subagentCompletionNotifications = prefs[Keys.SUBAGENT_COMPLETION_NOTIFICATIONS] ?: true,
             themeMode = prefs[Keys.THEME_MODE]
                 ?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() }
-                ?: ThemeMode.SYSTEM,
+                ?: ThemeMode.LIGHT,
             dynamicColor = prefs[Keys.DYNAMIC_COLOR] ?: false,
             colorPalette = ThemePalette.fromStored(prefs[Keys.COLOR_PALETTE]),
             customPalettes = runCatching { kotlinx.serialization.json.Json.decodeFromString<List<CustomThemePalette>>(prefs[Keys.CUSTOM_PALETTES] ?: "[]") }.getOrDefault(emptyList()),

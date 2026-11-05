@@ -84,7 +84,30 @@ data class BackupSession(
     val modelSelectionJson: String? = null,
     val workspaceSelectionJson: String? = null,
     val conversationJson: String? = null,
-)
+    /** Recovery controls are audit data, separate from the visible conversation export. */
+    val recoveryAudit: List<BackupRecoveryControl> = emptyList(),
+) {
+    fun allMessages(): List<BackupMessage> {
+        val result = messages.toMutableList()
+        recoveryAudit.sortedBy { it.position }.forEach { control ->
+            require(com.androidharness.app.core.MessageVisibility.isInternalResume(control.message.id))
+            require(control.position in 0..result.size)
+            result.add(control.position, control.message)
+        }
+        return result
+    }
+
+    fun withSeparatedRecoveryAudit(): BackupSession {
+        val all = allMessages()
+        return copy(messages = all.filterNot { com.androidharness.app.core.MessageVisibility.isInternalResume(it.id) },
+            recoveryAudit = all.mapIndexedNotNull { index, message ->
+                if (com.androidharness.app.core.MessageVisibility.isInternalResume(message.id)) BackupRecoveryControl(index, message) else null
+            })
+    }
+}
+
+@Serializable
+data class BackupRecoveryControl(val position: Int, val message: BackupMessage)
 
 @Serializable
 data class BackupMessage(
@@ -111,12 +134,12 @@ data class BackupMessage(
 /** Pure encode/decode plus file validation; no Android types, so JVM-testable. */
 object ChatBackupCodec {
     const val FORMAT = "androidharness-chats"
-    const val VERSION = 5
+    const val VERSION = 6
 
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     fun encode(file: ChatBackupFile): String =
-        json.encodeToString(ChatBackupFile.serializer(), file)
+        json.encodeToString(ChatBackupFile.serializer(), file.copy(version = VERSION, sessions = file.sessions.map { it.withSeparatedRecoveryAudit() }))
 
     /** Decodes and validates; throws [ChatBackupException] with a user-facing message. */
     fun decode(text: String): ChatBackupFile {
@@ -129,7 +152,11 @@ object ChatBackupCodec {
         if (file.version > VERSION) {
             throw ChatBackupException("This backup was written by a newer version of the app")
         }
-        return file
+        return try {
+            file.copy(sessions = file.sessions.map { it.withSeparatedRecoveryAudit() })
+        } catch (_: IllegalArgumentException) {
+            throw ChatBackupException("Invalid recovery audit in chat backup")
+        }
     }
 }
 
@@ -148,7 +175,7 @@ object ChatBackupMerge {
 
 /**
  * Exports and imports chats through SAF uris. Export writes every session
- * with its full message list; import merges, skipping sessions whose id
+ * with its visible message list and separate indexed recovery audit; import restores both, skipping sessions whose id
  * already exists. All work runs on Dispatchers.IO; callers surface errors.
  */
 class ChatBackupManager(
@@ -277,7 +304,7 @@ class ChatBackupManager(
                             conversationJson = s.conversationJson,
                         )
                     )
-                    val messages = s.messages.map { m ->
+                    val messages = s.allMessages().map { m ->
                         MessageEntity(
                             id = m.id,
                             sessionId = s.id,
@@ -313,7 +340,7 @@ class ChatBackupManager(
             snippetPlan.forEach { db.dao().insertSnippet(SnippetBackupMerge.entity(it)) }
             importedSnippets = snippetPlan.size
         }
-        ImportResult(imported.size, imported.sumOf { it.messages.size }, preview.skipped + preview.sessions.size - imported.size,
+        ImportResult(imported.size, imported.sumOf { it.allMessages().size }, preview.skipped + preview.sessions.size - imported.size,
             importedMemories, importedSnippets)
     }
 }

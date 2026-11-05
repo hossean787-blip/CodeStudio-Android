@@ -11,6 +11,27 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ModelCatalogTest {
+    @Test fun catalogFailureKeepsOnlyRecognizedCodesAndNoRawCredentials() = kotlinx.coroutines.runBlocking {
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        val body = """{"error":{"code":"unsupported_country_region_territory","message":"echo-secret-key"}}"""
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            calls.incrementAndGet()
+            Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(403).message("Forbidden")
+                .body(body.toResponseBody("application/json".toMediaType())).build()
+        }.build()
+        val config = ProviderConfig("fixture", "Fixture", ProviderType.OPENAI_COMPAT, "https://fixture.invalid/v1", "fixture-model")
+        val result = ModelCatalog.listModels(config, "fixture-only-key", client) as ModelCatalog.Result.Failed
+        assertEquals(403, result.status)
+        assertEquals("unsupported_country_region_territory", result.providerErrorCode)
+        assertEquals("HTTP 403", result.message)
+        assertFalse(result.toString().contains("echo-secret-key"))
+        assertEquals(1, calls.get())
+        assertNull(ModelCatalog.errorCode("""{"error":{"code":"private-secret","message":"unsupported_region"}}"""))
+        assertNull(ModelCatalog.errorCode("<html>403 unsupported_region</html>"))
+        assertNull(ModelCatalog.errorCode("""{"error":{"code":{},"type":[]}}"""))
+        assertEquals("insufficient_quota", ModelCatalog.errorCode("""{"error":{"type":"insufficient_quota"}}"""))
+    }
+
     @Test fun providerReportedEffortsReachNativeRequestsAndCustomDefaults() = runBlocking {
         val config = ProviderConfig("detected", "DeepSeek", ProviderType.OPENAI_COMPAT, "https://api.deepseek.com/v1", "new-model")
         val response = """{"data":[{"id":"new-model","effort":{"supported_levels":["low","high","max"],"default_level":"high"}}]}"""
