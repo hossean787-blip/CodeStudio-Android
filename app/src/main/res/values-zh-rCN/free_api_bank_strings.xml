@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">免费 AI API 资源库</string>
+    <string name="free_api_bank_intro">查看官方免费额度、试用服务及无需云端密钥的本地选项。额度和模型可能变化；不会自动创建密钥或订购付费套餐。</string>
+    <string name="free_api_bank_expand">查看免费 API 选项</string>
+    <string name="free_api_bank_collapse">收起 API 资源库</string>
+    <string name="free_api_bank_search">搜索服务商或目录</string>
+    <string name="free_api_bank_ready_filter">可通过现有设置连接</string>
+    <string name="free_api_bank_tier_free">免费额度受模型和速率限制，可能需要账号和 API 密钥</string>
+    <string name="free_api_bank_tier_trial">试用密钥有额度限制，信用额或访问权限可能到期</string>
+    <string name="free_api_bank_tier_local">无需云端密钥，但必须安装并启动本地服务器</string>
+    <string name="free_api_bank_tier_setup">可能提供免费额度，需要配置账号专属接口地址</string>
+    <string name="free_api_bank_tier_directory">外部 API 目录，并非直接连接</string>
+    <string name="free_api_bank_no_card">官方文档说明免费模式不需要支付卡</string>
+    <string name="free_api_bank_official_docs">官方指南</string>
+    <string name="free_api_bank_connect">配置服务商</string>
+    <string name="free_api_bank_no_card_filter">无需支付卡</string>
+    <string name="free_api_bank_keyless_filter">无需云端密钥</string>
+    <string name="free_api_bank_no_matches">没有匹配结果，请调整筛选条件。</string>
+    <string name="free_api_bank_warning">仅使用自己账号的凭据。不提供无限使用、自动创建账号、绕过限额或自动收费。使用前请确认价格、模型和隐私政策。密钥轮换和切换服务商使用现有的授权设置。</string>
+</resources>

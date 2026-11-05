@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Banco de APIs gratuitas de IA</string>
+    <string name="free_api_bank_intro">Explore cotas gratuitas oficiais, testes e opções locais sem chave. Limites e modelos mudam; chaves e planos pagos não são criados automaticamente.</string>
+    <string name="free_api_bank_expand">Explorar opções gratuitas</string>
+    <string name="free_api_bank_collapse">Ocultar banco de APIs</string>
+    <string name="free_api_bank_search">Buscar provedores ou diretórios</string>
+    <string name="free_api_bank_ready_filter">Conectável pela configuração atual</string>
+    <string name="free_api_bank_tier_free">Cota gratuita limitada por modelo e taxa; pode exigir conta e chave de API</string>
+    <string name="free_api_bank_tier_trial">Chave de teste limitada; créditos ou acesso podem expirar</string>
+    <string name="free_api_bank_tier_local">Sem chave na nuvem; requer servidor local instalado e em execução</string>
+    <string name="free_api_bank_tier_setup">Pode haver cota gratuita; exige endpoint específico da conta</string>
+    <string name="free_api_bank_tier_directory">Diretório externo de APIs, não é uma conexão</string>
+    <string name="free_api_bank_no_card">A documentação oficial afirma que o modo gratuito dispensa cartão</string>
+    <string name="free_api_bank_official_docs">Guia oficial</string>
+    <string name="free_api_bank_connect">Configurar provedor</string>
+    <string name="free_api_bank_no_card_filter">Sem cartão</string>
+    <string name="free_api_bank_keyless_filter">Sem chave na nuvem</string>
+    <string name="free_api_bank_no_matches">Nenhuma opção encontrada. Altere os filtros para ver mais.</string>
+    <string name="free_api_bank_warning">Use apenas credenciais da sua própria conta. Não há acesso ilimitado, criação automática de contas, desvio de limites nem cobrança automática. Verifique preços, modelos e privacidade antes do uso. A rotação de chaves e a troca de provedor usam os controles de consentimento existentes.</string>
+</resources>
