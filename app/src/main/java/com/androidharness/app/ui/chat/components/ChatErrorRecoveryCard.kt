@@ -80,9 +80,9 @@ private fun rememberChatNetworkState(): ChatNetworkState {
 
 private fun ChatFailureKind.title(): Int = when (this) {
     ChatFailureKind.AUTH -> R.string.saba_error_auth
-    ChatFailureKind.FORBIDDEN -> R.string.saba_error_forbidden
-    ChatFailureKind.REGION -> R.string.saba_error_region
-    ChatFailureKind.CREDITS -> R.string.saba_error_credits
+    ChatFailureKind.FORBIDDEN -> R.string.saba_chat_failure_forbidden
+    ChatFailureKind.REGION -> R.string.saba_chat_failure_region
+    ChatFailureKind.CREDITS -> R.string.saba_chat_failure_credits
     ChatFailureKind.RATE_LIMIT -> R.string.saba_error_rate
     ChatFailureKind.MODEL -> R.string.saba_error_model
     ChatFailureKind.TIMEOUT -> R.string.saba_error_timeout
