@@ -53,6 +53,21 @@ class DocumentStudioStore(context: Context) {
         }
     }
     fun source(name: String, hash: String): String = recover(name, hash).readText(Charsets.UTF_8)
+    /** A file-backed text preview, never a claim of full Office layout rendering. */
+    fun previewText(name: String, hash: String, mime: String): String {
+        val file = recover(name, hash)
+        return when (mime) {
+            "text/plain", "image/svg+xml" -> {
+                val text = file.readText(Charsets.UTF_8)
+                text.take(12_000) + if (text.length > 12_000) "\n…" else ""
+            }
+            DocumentEncoder.mimeTypes.getValue("docx") -> DocumentPackagePreview.extract(file, "docx")
+            DocumentEncoder.mimeTypes.getValue("xlsx") -> DocumentPackagePreview.extract(file, "xlsx")
+            DocumentEncoder.mimeTypes.getValue("pptx") -> DocumentPackagePreview.extract(file, "pptx")
+            DocumentEncoder.mimeTypes.getValue("zip") -> DocumentPackagePreview.extract(file, "zip")
+            else -> ""
+        }
+    }
     suspend fun save(uri: Uri, name: String, hash: String) {
         val file = recover(name, hash)
         val job = coroutineContext

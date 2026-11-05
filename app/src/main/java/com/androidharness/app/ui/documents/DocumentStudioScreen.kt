@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -50,6 +51,15 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
     var message by remember { mutableStateOf("") }
     val previewOwner = remember { DocumentPreviewOwner() }
     DisposableEffect(previewOwner) { onDispose { previewOwner.close() } }
+    fun invalidatePreview() {
+        val previous = staged
+        if (previous.isNotEmpty()) {
+            staged = ""; hash = ""; mime = ""; filename = ""; savedUri = ""
+            bitmap = null; source = ""
+            previewOwner.replace(null)
+            scope.launch(Dispatchers.IO) { store.delete(previous) }
+        }
+    }
     val failed = stringResource(R.string.ds_failed)
     val verified = stringResource(R.string.ds_verified)
     val cancelled = stringResource(R.string.ds_cancelled)
@@ -58,7 +68,7 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
             previewOwner.replace(preview)
             bitmap = preview
         }
-        source = if (mime == "text/plain" || mime == "image/svg+xml") withContext(Dispatchers.IO) { store.source(staged, hash) } else ""
+        source = withContext(Dispatchers.IO) { store.previewText(staged, hash, mime) }
     }
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) { store.cleanup() }
@@ -90,20 +100,22 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
         }
     }
     Scaffold(topBar = { AppHeader(stringResource(R.string.ds_title), onBack = onBack) }) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(stringResource(R.string.ds_scope))
+        Column(Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.ds_scope), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium)
+            }
             Row(Modifier.fillMaxWidth().horizontalScrollCompat()) {
                 DocumentEncoder.mimeTypes.keys.forEach { type ->
-                    FilterChip(selected = format == type, enabled = !busy && !pickerPending, onClick = { format = type }, label = { Text(type.uppercase()) })
+                    FilterChip(selected = format == type, enabled = !busy && !pickerPending, onClick = { if (format != type) { invalidatePreview(); format = type } }, label = { Text(type.uppercase()) })
                     Spacer(Modifier.width(6.dp))
                 }
             }
-            OutlinedTextField(value = title, onValueChange = { if (it.length <= 120) title = it else message = failed }, enabled = !busy && !pickerPending,
+            OutlinedTextField(value = title, onValueChange = { if (it.length <= 120) { if (it != title) invalidatePreview(); title = it } else message = failed }, enabled = !busy && !pickerPending,
                 label = { Text(stringResource(R.string.ds_name)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-            Text(stringResource(R.string.ds_input_help))
-            OutlinedTextField(value = input, onValueChange = { if (it.length <= 100_000) input = it else message = failed }, enabled = !busy && !pickerPending,
+            Text(stringResource(R.string.ds_input_help), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            OutlinedTextField(value = input, onValueChange = { if (it.length <= 100_000) { if (it != input) invalidatePreview(); input = it } else message = failed }, enabled = !busy && !pickerPending,
                 label = { Text(stringResource(R.string.ds_content)) }, modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp), minLines = 5)
-            Button(enabled = !busy && !pickerPending, onClick = {
+            Button(enabled = !busy && !pickerPending, modifier = Modifier.fillMaxWidth(), onClick = {
                 if (!busy && !pickerPending) {
                     busy = true; message = ""
                     val selectedFormat = format; val selectedTitle = title; val selectedInput = input
@@ -128,11 +140,17 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
             }) { Text(stringResource(R.string.ds_generate)) }
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
             if (staged.isNotEmpty()) {
-                Text(filename)
-                Text(stringResource(R.string.ds_preview_help))
+                Text(filename, style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.ds_preview_help), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 bitmap?.let { Image(it.asImageBitmap(), contentDescription = stringResource(R.string.ds_preview), modifier = Modifier.fillMaxWidth().heightIn(max = 500.dp)) }
-                if (source.isNotEmpty()) Text(source)
-                Button(enabled = !busy && !pickerPending, onClick = {
+                if (source.isNotEmpty()) SelectionContainer {
+                    Surface(color = MaterialTheme.colorScheme.surfaceContainer, shape = MaterialTheme.shapes.medium) {
+                        Text(source, modifier = Modifier.fillMaxWidth().heightIn(max = 360.dp)
+                            .verticalScroll(rememberScrollState()).padding(16.dp),
+                            style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+                Button(enabled = !busy && !pickerPending, modifier = Modifier.fillMaxWidth(), onClick = {
                     if (!busy && !pickerPending) {
                         pickerPending = true
                         try { picker.launch(Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
