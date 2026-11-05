@@ -12,6 +12,7 @@ on:
       - 'gradle.properties'
       - 'settings.gradle.kts'
       - '.github/workflows/saba-studio-build.yml'
+      - '.github/workflows/saba-native-release.yml'
   workflow_dispatch:
 
 permissions:
