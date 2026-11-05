@@ -14,8 +14,8 @@ class StudyPracticeTest {
 
     @Test fun quizContainsAnswersVerbatimWithoutInventingKnowledge() {
         val quiz = StudyPractice.render("نرخ تورم: رشد سطح عمومی قیمت‌ها", "quiz")
-        assertTrue(quiz.contains("Define: نرخ تورم (line 1)"))
-        assertTrue(quiz.contains("Answer key:"))
+        assertTrue(quiz.contains("«نرخ تورم» را تعریف کنید. (خط 1)"))
+        assertTrue(quiz.contains("پاسخ‌نامه:"))
         assertTrue(quiz.contains("رشد سطح عمومی قیمت‌ها"))
         assertFalse(quiz.contains("ChatGPT"))
     }
