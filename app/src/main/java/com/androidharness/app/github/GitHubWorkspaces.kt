@@ -32,7 +32,7 @@ internal fun pinnedSubmodulesMatchGitlinks(output: String): Boolean {
 
 /** Detect tracked Git LFS filter declarations, including nested source trees. */
 internal fun sourceUsesGitLfs(sourceRoot: File): Boolean {
-    val marker = Regex("""(?:^|\\s)filter=lfs(?:\\s|$)""")
+    val marker = Regex("""(?:^|\s)filter=lfs(?:\s|$)""")
     return sourceRoot.walkTopDown()
         .onEnter { it.name != ".git" && !Files.isSymbolicLink(it.toPath()) }
         .filter { it.name == ".gitattributes" && it.isFile && !Files.isSymbolicLink(it.toPath()) }
