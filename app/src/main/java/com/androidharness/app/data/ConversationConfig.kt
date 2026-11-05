@@ -41,8 +41,13 @@ data class ConversationConfig(
             (if (useGlobalInstructions) global else instructions).trim().take(MAX_INSTRUCTIONS_CHARS)
 
     /** Legacy toggle fields remain readable in backups; Chat now has a fixed conversation-only tool set. */
-    val allowedTools: Set<String>? get() = if (!isChat) null else agent?.let(ChatAgentPolicy::tools)
-        ?: com.androidharness.app.core.ChatExperience.tools
+    val allowedTools: Set<String>? get() {
+        if (!isChat) return null
+        val tools = agent?.let(ChatAgentPolicy::tools) ?: com.androidharness.app.core.ChatExperience.tools
+        return if (personalizationEnabled) tools else tools -
+            MemoryRepository.toolNames -
+            setOf("search_chats", "recent_chats", "read_chat_snippet", "search_agent_knowledge", "skill_view")
+    }
 
     companion object {
         const val MAX_INSTRUCTIONS_CHARS = 4_000

@@ -12,6 +12,7 @@ on:
       - 'gradle.properties'
       - 'settings.gradle.kts'
       - '.github/workflows/saba-studio-build.yml'
+      - '.github/workflows/saba-native-release.yml'
   workflow_dispatch:
 
 permissions:
@@ -193,6 +194,19 @@ jobs:
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
               'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt',
+              # Issue #8 13/15/16: skill import/delete hardening and project-scoped agent recall.
+              'app/src/main/java/com/androidharness/app/skills/SkillStore.kt',
+              'app/src/main/java/com/androidharness/app/HarnessApp.kt',
+              'app/src/main/java/com/androidharness/app/data/ConversationConfig.kt',
+              'app/src/main/java/com/androidharness/app/data/ChatAgents.kt',
+              'app/src/main/java/com/androidharness/app/data/ProjectHistoryAccess.kt',
+              'app/src/main/java/com/androidharness/app/data/MemoryRepository.kt',
+              'app/src/main/java/com/androidharness/app/agent/AgentEngine.kt',
+              'app/src/test/java/com/androidharness/app/skills/SkillStoreTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ConversationConfigTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ChatAgentsTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ProjectHistoryAccessTest.kt',
+              'app/src/test/java/com/androidharness/app/data/PrivateAgentProjectPolicyTest.kt',
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
@@ -378,8 +392,9 @@ jobs:
   document-readers:
     needs: emulator-persistence
     name: Independently open native document exports
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The independent LibreOffice check must run, not time out during apt mirror downloads.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -393,7 +408,7 @@ jobs:
         run: |
           python -m pip install python-docx==1.2.0 openpyxl==3.1.5 python-pptx==1.0.2 Pillow==11.3.0 pypdf==6.1.1
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=60 install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
           libreoffice --version
       - name: Open all formats and verify real Office conversions
         run: python scripts/validate_document_exports.py native-evidence --output document-reader-evidence --libreoffice
