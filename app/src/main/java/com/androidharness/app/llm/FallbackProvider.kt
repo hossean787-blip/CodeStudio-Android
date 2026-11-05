@@ -142,7 +142,7 @@ class FallbackProvider(
                 if (event is StreamEvent.Failure) { failure = event.copy(message = redactFallbackCredentials(event.message, key, apiKey)); false }
                 else {
                     if (event.hasResponseOutput()) output = true
-                    emit(event)
+                    emit(event.redactFallbackEvent(key, apiKey))
                     true
                 }
             }.collect { }

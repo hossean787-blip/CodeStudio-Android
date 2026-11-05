@@ -107,6 +107,15 @@ class FallbackProviderTest {
         assertFalse(result.filterIsInstance<StreamEvent.Failure>().single().message.contains("initial-key"))
     }
 
+    @Test fun `upstream retry notice redacts credentials before reaching the user`() = runBlocking(FallbackRun { policy }) {
+        val result = events(router({ _, key, _ ->
+            listOf(StreamEvent.Retrying(1, 50L, "upstream echoed $key and initial-key"), StreamEvent.Done())
+        }))
+        val notice = result.filterIsInstance<StreamEvent.Retrying>().single()
+        assertFalse(notice.reason.contains("initial-key"))
+        assertTrue(notice.reason.contains("[redacted]"))
+    }
+
     @Test fun `permanent auth invalid request and context errors never advance`() = runBlocking(FallbackRun { policy }) {
         for (failure in listOf(StreamEvent.Failure("Auth", 401), StreamEvent.Failure("Policy", 403),
             StreamEvent.Failure("Context too large", 400), StreamEvent.Failure("Model removed", 404))) {
