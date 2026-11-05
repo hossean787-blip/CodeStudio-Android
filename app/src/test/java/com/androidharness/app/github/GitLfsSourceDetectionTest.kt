@@ -48,9 +48,9 @@ class GitLfsSourceDetectionTest {
     @Test fun lfsListingRequiresMaterializedObjectsNotPointers() {
         val oid = "a".repeat(64)
         assertTrue(lfsCheckoutIsHydrated(""))
-        assertTrue(lfsCheckoutIsHydrated("$oid * models/ready.gguf\\n"))
-        assertFalse(lfsCheckoutIsHydrated("$oid - models/missing.gguf\\n"))
-        assertFalse(lfsCheckoutIsHydrated("$oid * models/ready.gguf\\n$oid - models/missing.gguf\\n"))
+        assertTrue(lfsCheckoutIsHydrated("$oid * models/ready.gguf\n"))
+        assertFalse(lfsCheckoutIsHydrated("$oid - models/missing.gguf\n"))
+        assertFalse(lfsCheckoutIsHydrated("$oid * models/ready.gguf\n$oid - models/missing.gguf\n"))
     }
 
     @Test fun lfsListingRejectsMalformedOrTruncatedOutput() {
