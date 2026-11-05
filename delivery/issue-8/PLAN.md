@@ -58,8 +58,11 @@ publication is not authorized; review branches/artifacts are task outputs.
 
 ## Source rights boundary
 
-PR 7 registers provenance, not 13 runnable engines. Syntac and proprietary-
-derived OpenClaude remain disabled for download/import; no implementation
-code is copied from them. AGPL/GPL modules require compatibility review before
-linking/distribution. Only metadata/pinned source-workspace import is currently
-under test. Git submodules are NOT initialized by CI.
+The preserved main baseline permits all 13 pinned source-only workspace imports.
+Syntac (UNVERIFIED) and proprietary-derived OpenClaude require an explicit license
+acknowledgment before cloning; they are not categorically disabled. Cloning or
+acknowledging a warning grants no redistribution/relicensing rights. No source
+implementation is linked into this APK. AGPL/GPL modules still require a rights
+and compatibility review before linking/distribution. The optional runtime bridge
+uses separately installed, explicitly enabled CLIs; no CLI/account is activated
+by this verification. Git submodules are NOT initialized by CI.

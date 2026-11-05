@@ -33,8 +33,9 @@ emulator selection and all previous checks must pass on the amended tree.
 Skills/Connections routes are preserved; the navigation test does not prove
 Gmail/Drive OAuth or external service operation. Drive uses explicit SAF file
 selection; Gmail uses an Android composer. Thirteen AI repositories remain
-pinned source references, not engines linked into the APK. Restricted sources
-remain disabled. Production signature compatibility remains unknown because
+pinned source references, not engines linked into the APK. The preserved baseline
+allows source-only imports; UNVERIFIED/RESTRICTED entries require explicit license
+acknowledgment. This is not permission to redistribute, relicense or execute code. Production signature compatibility remains unknown because
 the installed version's private signing key is unavailable/unknown. CI alpha
 signing is test signing; no retained-data real-device upgrade was tested.
 
