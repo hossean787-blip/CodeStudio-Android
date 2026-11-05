@@ -49,3 +49,9 @@ PRهای #42، #43، #44 و #45 در شروع ممیزی باز و Draft بود�
 ## پیشرفت مستقل اصلاحیهٔ ۰۹
 
 [PR #44](https://github.com/hossean787-blip/CodeStudio-Android/pull/44) روی HEAD `8202ce872147458d1a41c625e63cac86bf5e1c85` شش کنترل موفق داشت: audit/build، Native release، شبیه‌ساز، JNI، بازکردن خروجی‌های اسناد و راستی‌آزمایی سورس‌های پین‌شده. در `main` با `541cc72e5c165b60d3a9668f659ff68fb4b0df90` ادغام شد. قابلیت محدود به استخراج و ویرایش متن از TXT/DOCX/XLSX/PPTX از مسیر SAF با سقف ۸ MiB و ساخت خروجی جدید است. وفاداری کامل قالب و آزمون گوشی واقعی اثبات نشده‌اند؛ اصلاحیهٔ ۰۹ همچنان «در حال اجرا» است. Workflowهای پس از ادغام: [ساخت و شبیه‌ساز](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/42098183479) و [Native](https://github.com/hossean787-blip/CodeStudio-Android/actions/runs/42098183673)، در زمان ثبت هنوز در جریان.
+
+## بررسی اصلاحیه‌های ۲۱ و ۲۷
+
+اصلاحیهٔ ۲۱: PR #41 در `main` با `aafa7f83` موجود است. مسیرهای `LibraryDesignScreen.kt` و `ChatSourceLibrarySheet.kt` دیده شدند، اما آزمون مستقل Library در `app/src/test` و `androidTest` یا انتخاب‌گر شبیه‌ساز پیدا نشد. persistence، جداسازی فایل/پروژه و بازکردن منبع باید آزموده شوند.
+
+اصلاحیهٔ ۲۷: PR #11 با `6c23fde1` ادغام شده است. `CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain` در انتخاب‌گر شبیه‌ساز حضور دارد و run `42092240211` روی main قبلی موفق شد. `turnPerformanceLabel` در `ChatScreen.kt` داخل محتوای منوی `ResponseActions` قرار دارد که تنها پس از زدن دکمهٔ بیشتر باز می‌شود؛ پس وجود آن به‌تنهایی افشای جزئیات در نمای اصلی نیست. بررسی بصری جامع روی نسخهٔ فعلی هنوز انجام نشده است.
