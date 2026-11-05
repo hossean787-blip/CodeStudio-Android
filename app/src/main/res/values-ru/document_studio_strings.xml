@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">Открыть файл как редактируемый текст</string>
+  <string name="ds_import_limits">TXT импортируется как UTF-8. DOCX, XLSX и PPTX импортируются только как текст (до 8 МиБ, не более 12 000 символов предварительного просмотра). Оформление, изображения, формулы и шрифты не сохраняются. Исходный файл не перезаписывается.</string>
+  <string name="ds_import_notice">Текстовый черновик загружен. Проверьте содержимое перед созданием и сохранением нового документа; форматирование не сохраняется.</string>
 </resources>

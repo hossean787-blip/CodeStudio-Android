@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">既存のファイルを編集可能なテキストとして開く</string>
+  <string name="ds_import_limits">TXTはUTF-8で読み込みます。DOCX、XLSX、PPTXはテキストのみを抽出します（最大8 MiB、Officeの抽出は12,000文字まで）。書式、画像、数式、フォントは保持されません。元のファイルは上書きされません。</string>
+  <string name="ds_import_notice">テキストの下書きを読み込みました。新しい文書を作成して保存する前に内容を確認してください。書式は保持されません。</string>
 </resources>
