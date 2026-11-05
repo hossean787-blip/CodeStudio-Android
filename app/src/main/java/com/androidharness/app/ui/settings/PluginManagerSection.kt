@@ -225,6 +225,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                     items(listings, key = { "npm-${it.name}" }) { listing -> PluginListingCard(listing, !busy) { update = null; prepare(listing.origin, null) } }
                 }
                 3 -> {
+                    item { AiRuntimeBridgeSection(container, fs) }
                     item {
                         PluginPanel {
                             Text(stringResource(R.string.ai_source_catalog_title), style = MaterialTheme.typography.titleLarge)
@@ -300,17 +301,26 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
         }
     }
     sourceToImport?.let { entry ->
+        var licenseApproved by remember(entry.id) { mutableStateOf(false) }
         AlertDialog(
             onDismissRequest = { if (!sourceImportRunning) sourceToImport = null },
             title = { Text(stringResource(R.string.ai_source_import_confirm_title)) },
             text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.ai_source_import_confirm_body, entry.repository))
                 Text(entry.pinnedCommit, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                if (entry.requiresLicenseAcknowledgement) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked = licenseApproved, onCheckedChange = { licenseApproved = it },
+                            enabled = !sourceImportRunning)
+                        Text(stringResource(R.string.ai_source_license_ack), modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.bodySmall)
+                    }
+                }
                 if (sourceImportRunning) LinearProgressIndicator(Modifier.fillMaxWidth())
             } },
             confirmButton = {
                 TextButton(onClick = {
-                    if (sourceImportRunning || !entry.canImportAsWorkspace) return@TextButton
+                    if (sourceImportRunning || (entry.requiresLicenseAcknowledgement && !licenseApproved)) return@TextButton
                     sourceImportRunning = true
                     sourceImportMessage = null
                     scope.launch {
@@ -327,7 +337,7 @@ internal fun PluginManagerSection(container: AppContainer, managerOverride: Plug
                             sourceImportRunning = false
                         }
                     }
-                }, enabled = !sourceImportRunning && entry.canImportAsWorkspace) {
+                }, enabled = !sourceImportRunning && (!entry.requiresLicenseAcknowledgement || licenseApproved)) {
                     Text(stringResource(R.string.ai_source_import_button))
                 }
             },

@@ -15,7 +15,8 @@ data class AiSourceProject(
     val descriptionFa: String,
     val descriptionEn: String,
 ) {
-    val canImportAsWorkspace: Boolean get() = license != "UNVERIFIED" && !license.startsWith("RESTRICTED")
+    val canImportAsWorkspace: Boolean get() = true // Git clone only, never bundle or execute external code.
+    val requiresLicenseAcknowledgement: Boolean get() = license == "UNVERIFIED" || license.startsWith("RESTRICTED")
     val pinnedSourceUrl: String get() = "https://github.com/$repository/tree/$pinnedCommit"
 }
 
