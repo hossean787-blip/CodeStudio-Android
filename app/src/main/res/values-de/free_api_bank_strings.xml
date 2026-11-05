@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Kostenlose KI-API-Übersicht</string>
+    <string name="free_api_bank_intro">Offizielle Gratis-Kontingente, Testzugänge und lokale Optionen ohne Schlüssel entdecken. Grenzen und Modelle ändern sich; Schlüssel und kostenpflichtige Tarife werden nie automatisch eingerichtet.</string>
+    <string name="free_api_bank_expand">Kostenlose API-Angebote anzeigen</string>
+    <string name="free_api_bank_collapse">API-Übersicht schließen</string>
+    <string name="free_api_bank_search">Anbieter oder Verzeichnisse suchen</string>
+    <string name="free_api_bank_ready_filter">Mit vorhandener Einrichtung verbindbar</string>
+    <string name="free_api_bank_tier_free">Begrenztes Gratis-Kontingent mit Modell- und Ratenlimits; Konto und API-Schlüssel können nötig sein</string>
+    <string name="free_api_bank_tier_trial">Begrenzter Testzugang; Guthaben oder Zugriff kann ablaufen</string>
+    <string name="free_api_bank_tier_local">Kein Cloud-Schlüssel; ein lokaler Server muss installiert und gestartet sein</string>
+    <string name="free_api_bank_tier_setup">Gratis-Kontingent möglich; kontospezifischer Endpunkt muss eingerichtet werden</string>
+    <string name="free_api_bank_tier_directory">Externes API-Verzeichnis, keine direkte Verbindung</string>
+    <string name="free_api_bank_no_card">Laut offizieller Dokumentation ist für den Gratis-Modus keine Zahlungskarte nötig</string>
+    <string name="free_api_bank_official_docs">Offizielle Anleitung</string>
+    <string name="free_api_bank_connect">Anbieter einrichten</string>
+    <string name="free_api_bank_no_card_filter">Ohne Zahlungskarte</string>
+    <string name="free_api_bank_keyless_filter">Ohne Cloud-Schlüssel</string>
+    <string name="free_api_bank_no_matches">Keine Treffer. Filter ändern, um mehr zu sehen.</string>
+    <string name="free_api_bank_warning">Nur eigene Zugangsdaten verwenden. Kein unbegrenzter Zugriff, keine automatische Kontoerstellung, keine Umgehung von Limits und keine automatischen Kosten. Preise, Modelle und Datenschutz vorab prüfen. Schlüsselrotation und Anbieterwechsel nutzen die vorhandenen Einwilligungseinstellungen.</string>
+</resources>

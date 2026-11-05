@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Banco de API de IA gratuitas</string>
+    <string name="free_api_bank_intro">Explora cuotas gratuitas oficiales, pruebas y opciones locales sin clave. Los límites y modelos cambian; no se crean claves ni planes de pago automáticamente.</string>
+    <string name="free_api_bank_expand">Explorar API gratuitas</string>
+    <string name="free_api_bank_collapse">Ocultar banco de API</string>
+    <string name="free_api_bank_search">Buscar proveedores o directorios</string>
+    <string name="free_api_bank_ready_filter">Configurables con el sistema actual</string>
+    <string name="free_api_bank_tier_free">Plan gratuito limitado por modelo y solicitudes; puede requerir cuenta y clave API</string>
+    <string name="free_api_bank_tier_trial">Prueba limitada; el saldo o acceso puede caducar</string>
+    <string name="free_api_bank_tier_local">Sin clave en la nube; requiere un servidor local instalado y activo</string>
+    <string name="free_api_bank_tier_setup">Puede existir una cuota gratis; requiere configurar un endpoint propio de la cuenta</string>
+    <string name="free_api_bank_tier_directory">Directorio externo de API, no es una conexión</string>
+    <string name="free_api_bank_no_card">La documentación oficial indica que el modo gratuito no requiere tarjeta</string>
+    <string name="free_api_bank_official_docs">Guía oficial</string>
+    <string name="free_api_bank_connect">Configurar proveedor</string>
+    <string name="free_api_bank_no_card_filter">Sin tarjeta</string>
+    <string name="free_api_bank_keyless_filter">Sin clave en la nube</string>
+    <string name="free_api_bank_no_matches">No hay resultados. Cambia los filtros para ver más.</string>
+    <string name="free_api_bank_warning">Utiliza solo las credenciales de tu cuenta. No hay acceso ilimitado, creación automática de cuentas, evasión de límites ni cargos automáticos. Revisa precios, modelos y privacidad antes de usar. La rotación de claves y el cambio de proveedor usan los controles de consentimiento existentes.</string>
+</resources>
