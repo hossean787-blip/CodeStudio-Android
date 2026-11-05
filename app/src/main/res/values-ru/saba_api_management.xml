@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">Управление API ИИ</string>
+    <string name="saba_api_management_title">Управление API ИИ</string>
+    <string name="saba_api_management_summary">Модели, подключения, настройки и ориентировочная стоимость API</string>
+    <string name="saba_api_management_connection_test">Проверить подключение к списку моделей</string>
+    <string name="saba_api_management_untested">Не проверено</string>
+    <string name="saba_api_management_testing">Проверка подключения…</string>
+    <string name="saba_api_management_catalog_ok">Список моделей доступен (это не тест чата)</string>
+    <string name="saba_api_management_catalog_failed">Список моделей недоступен: проверьте ключ, сеть или адрес</string>
+    <string name="saba_api_management_price">Цена каталога: %1$s $ за ввод / %2$s $ за вывод на 1 млн токенов</string>
+    <string name="saba_api_management_price_unknown">Цена для этого поставщика или модели неизвестна</string>
+    <string name="saba_api_management_local_price">Локальный сервер: нет платы за облачный API</string>
+    <string name="saba_api_management_cost_note">Цены каталога приблизительны и не являются счетами. Посредники могут взимать другую плату. Проверьте тарифы у поставщика.</string>
+    <string name="saba_api_endpoint_invalid">Введите корректный URL http(s) сервера без пробелов.</string>
+    <string name="saba_api_endpoint_insecure">Для удалённых серверов используйте HTTPS. HTTP разрешён только на этом устройстве (localhost).</string>
+    <string name="saba_api_endpoint_credentials">Не добавляйте логин или пароль в адрес сервера.</string>
+    <string name="saba_api_endpoint_components">Удалите параметры запроса и фрагменты из адреса сервера.</string>
+</resources>
