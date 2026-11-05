@@ -35,13 +35,20 @@ object AiRuntimeBridge {
     fun checkCommand(id: String): String =
         "command -v " + profile(id).executable + " >/dev/null 2>&1"
 
+    /** Only a UUID is accepted; never interpret paths, options or shell fragments as a session. */
+    fun isValidSessionId(value: String): Boolean =
+        value.matches(Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"))
+
     /**
      * The selected executable is a fixed allowlisted command. Only the prompt
      * is dynamic, passed as ONE POSIX-quoted argument prefixed with explanatory
      * text so leading dashes cannot be parsed as CLI options.
      */
-    fun executionCommand(id: String, prompt: String, allowWorkspaceEdits: Boolean): String {
+    fun executionCommand(id: String, prompt: String, allowWorkspaceEdits: Boolean, sessionId: String? = null): String {
         val cli = profile(id)
+        require(sessionId == null || (cli.id == "claude" && isValidSessionId(sessionId))) {
+            "Only a valid existing Claude Code session UUID can be resumed."
+        }
         val message = prompt.trim()
         require(message.isNotEmpty() && message.length <= 2400) { "Enter 1-2400 characters." }
         require(message.none { it == '\u0000' || it == '\r' || (it.isISOControl() && it != '\n' && it != '\t') }) {
@@ -52,7 +59,8 @@ object AiRuntimeBridge {
         }
         val prefix = when (cli.id) {
             "codex" -> if (allowWorkspaceEdits) "codex exec --sandbox workspace-write" else "codex exec --sandbox read-only"
-            "claude" -> if (allowWorkspaceEdits) "claude -p --permission-mode acceptEdits" else "claude -p --permission-mode plan"
+            "claude" -> (if (allowWorkspaceEdits) "claude -p --permission-mode acceptEdits" else "claude -p --permission-mode plan") +
+                (if (sessionId == null) "" else " --resume " + quoteArgument(sessionId))
             "opencode" -> "opencode run"
             "gemini" -> if (allowWorkspaceEdits) "gemini -p" else "gemini --approval-mode plan -p"
             "pi" -> "pi -p"

@@ -112,6 +112,34 @@ class AiCliDelegateToolTest {
         assertTrue(response.output.contains("Unavailable"))
     }
 
+    @Test fun resumesExistingClaudeSessionOnlyAfterAllowlistAndUuidValidation() = runBlocking {
+        val calls = mutableListOf<String>()
+        val tool = AiCliDelegateTool { cmd, _, _, _ ->
+            calls += cmd
+            result(stdout = if (calls.size == 2) "Session continued" else "")
+        }
+        val ctx = ToolContext(FileFs(temp.root))
+        val session = "123e4567-e89b-12d3-a456-426614174000"
+        val invalid = tool.execute(buildJsonObject {
+            put("agent", "claude"); put("prompt", "Review"); put("session_id", "bad; id")
+        }, ctx)
+        assertFalse(invalid.ok)
+        assertTrue(calls.isEmpty())
+        val wrongAgent = tool.execute(buildJsonObject {
+            put("agent", "codex"); put("prompt", "Review"); put("session_id", session)
+        }, ctx)
+        assertFalse(wrongAgent.ok)
+        assertTrue(calls.isEmpty())
+        val resumed = tool.execute(buildJsonObject {
+            put("agent", "claude"); put("prompt", "Review"); put("session_id", session)
+        }, ctx)
+        assertTrue(resumed.output, resumed.ok)
+        assertEquals(2, calls.size)
+        assertEquals("command -v claude >/dev/null 2>&1", calls[0])
+        assertTrue(calls[1].contains("--permission-mode plan --resume '$session'"))
+        assertFalse(calls.any { "login" in it || "install" in it || "push" in it })
+    }
+
     @Test fun delegatedCliOutputMasksCredentialsButKeepsUsefulDiagnostics() = runBlocking {
         val vendorKey = "gsk_" + "Aa0".repeat(20)
         val assignedSecret = "Bb1".repeat(20)

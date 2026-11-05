@@ -30,13 +30,16 @@ class AiCliDelegateTool(
         "Delegate one coding task to a user-installed and authenticated AI CLI in the current workspace. " +
         "Supported agents: codex, claude, opencode, gemini, pi, qwen, aider. " +
         "The CLI may call external AI services and use project files. Never installs a CLI or obtains API keys. " +
-        "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. This is a modifying tool requiring user approval."
+        "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. " +
+        "Optional session_id resumes a pre-existing Claude Code session UUID; no sessions or credentials are created. " +
+        "This is a modifying tool requiring user approval."
 
     override val parametersSchema: JsonObject = Schema.obj(
         mapOf(
             "agent" to Schema.string("One of codex, claude, opencode, gemini, pi, qwen, aider."),
             "prompt" to Schema.string("Explicit coding task (1-2400 characters). Do not include secrets."),
             "allow_edits" to Schema.boolean("False requests read-only mode for codex/claude; true explicitly permits edits."),
+            "session_id" to Schema.string("Optional UUID of an existing Claude Code session in this workspace. Other agents cannot resume."),
         ),
         required = listOf("agent", "prompt"),
     )
@@ -50,7 +53,8 @@ class AiCliDelegateTool(
         val id = args["agent"]?.jsonPrimitive?.content ?: return ToolResult(false, "Missing agent.")
         val prompt = args["prompt"]?.jsonPrimitive?.content ?: return ToolResult(false, "Missing task.")
         val allowEdits = args["allow_edits"]?.jsonPrimitive?.booleanOrNull ?: false
-        val cmd = try { AiRuntimeBridge.executionCommand(id, prompt, allowEdits) }
+        val sessionId = args["session_id"]?.jsonPrimitive?.content
+        val cmd = try { AiRuntimeBridge.executionCommand(id, prompt, allowEdits, sessionId) }
             catch (e: IllegalArgumentException) { return ToolResult(false, e.message.orEmpty()) }
         val root = (ctx.workspace as? SshFs)?.root?.let(::File) ?: ctx.workspace.shellRoot
             ?: return ToolResult(false, "Selected workspace does not support shell execution.")
