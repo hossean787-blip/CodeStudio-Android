@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="notification_quick_reply">返信</string>
     <string name="ui_thinking">"考え中…"</string>
     <string name="ui_thinking_2">"考え中"</string>
     <string name="ui_thinking_seconds">"%1$ds"</string>
