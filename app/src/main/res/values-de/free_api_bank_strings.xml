@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">Quellen zuletzt geprüft: %1$s. Dies ist keine Live-Prüfung von Preisen oder Verfügbarkeit.</string>
     <string name="free_api_bank_title">Kostenlose KI-API-Übersicht</string>
     <string name="free_api_bank_intro">Offizielle Gratis-Kontingente, Testzugänge und lokale Optionen ohne Schlüssel entdecken. Grenzen und Modelle ändern sich; Schlüssel und kostenpflichtige Tarife werden nie automatisch eingerichtet.</string>
     <string name="free_api_bank_expand">Kostenlose API-Angebote anzeigen</string>

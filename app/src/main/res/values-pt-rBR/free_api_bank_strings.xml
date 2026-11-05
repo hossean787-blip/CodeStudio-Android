@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">Fontes revisadas pela última vez em %1$s. Isto não verifica preços nem disponibilidade em tempo real.</string>
     <string name="free_api_bank_title">Banco de APIs gratuitas de IA</string>
     <string name="free_api_bank_intro">Explore cotas gratuitas oficiais, testes e opções locais sem chave. Limites e modelos mudam; chaves e planos pagos não são criados automaticamente.</string>
     <string name="free_api_bank_expand">Explorar opções gratuitas</string>

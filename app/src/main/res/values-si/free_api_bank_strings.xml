@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">මූලාශ්‍ර අවසන් වරට පරීක්ෂා කළේ: %1$s. මෙය මිල හෝ ලබාගත හැකි බව පිළිබඳ සජීවී පරීක්ෂාවක් නොවේ.</string>
     <string name="free_api_bank_title">නොමිලේ AI API නාමාවලිය</string>
     <string name="free_api_bank_intro">නිල නොමිලේ සීමා, අත්හදා බැලීම් සහ වලාකුළු යතුරක් නැති දේශීය විකල්ප සොයන්න. සීමා සහ මාදිලි වෙනස් විය හැක. යතුරු හෝ ගෙවන සැලසුම් ස්වයංක්‍රීයව නිර්මාණය නොවේ.</string>
     <string name="free_api_bank_expand">නොමිලේ API විකල්ප බලන්න</string>
