@@ -21,7 +21,7 @@ class StudyPracticeToolTest {
             assertTrue(tool.isReadOnly)
             assertTrue(result.ok)
             assertTrue(result.output.contains("مالیات"))
-            assertTrue(result.output.contains("Answer key:"))
+            assertTrue(result.output.contains("پاسخ‌نامه:"))
             assertTrue(root.listFiles().orEmpty().isEmpty())
             assertTrue(runCatching { tool.execute(buildJsonObject { put("notes", "no structured answers"); put("mode", "quiz") }, context) }.isFailure)
             assertTrue(runCatching { tool.execute(buildJsonObject { put("notes", "Term: Definition"); put("mode", "execute") }, context) }.isFailure)
