@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_error_center_title">Central de erros e recuperação</string>
+    <string name="saba_error_auth">Autenticação recusada (401)</string>
+    <string name="saba_chat_failure_forbidden">O provedor negou o acesso (403)</string>
+    <string name="saba_chat_failure_region">O provedor informou que a região não é atendida</string>
+    <string name="saba_chat_failure_credits">Créditos ou cota esgotados</string>
+    <string name="saba_error_rate">Solicitações demais (429)</string>
+    <string name="saba_error_model">Modelo ou endpoint não encontrado (404)</string>
+    <string name="saba_error_timeout">Tempo limite de conexão esgotado</string>
+    <string name="saba_error_server">O serviço do provedor está temporariamente indisponível</string>
+    <string name="saba_error_tls">Falha na verificação da conexão segura</string>
+    <string name="saba_error_network">Falha na conexão de rede</string>
+    <string name="saba_error_other">Não foi possível concluir a solicitação</string>
+    <string name="saba_advice_auth">Confira a chave salva ou a autorização da conta. Não cole credenciais no relatório.</string>
+    <string name="saba_advice_forbidden">Verifique as permissões da conta e o acesso ao modelo. Um 403 isolado não confirma bloqueio regional.</string>
+    <string name="saba_advice_region">Consulte a disponibilidade oficial do provedor. Trocar a chave não elimina essa restrição.</string>
+    <string name="saba_advice_credits">Confira o uso da conta e os preços antes de enviar uma nova solicitação.</string>
+    <string name="saba_advice_rate">Aguarde o restabelecimento do limite do provedor e tente novamente uma vez. Evite solicitações repetidas em sequência.</string>
+    <string name="saba_advice_model">Escolha um modelo disponível e confira o endereço do provedor.</string>
+    <string name="saba_advice_timeout">Confira sua conexão com a internet e tente novamente. O provedor pode ter recebido a solicitação.</string>
+    <string name="saba_advice_server">Verifique o status do provedor e tente mais tarde.</string>
+    <string name="saba_advice_tls">Confira a data do aparelho e a segurança da conexão. Não desative a validação de certificados.</string>
+    <string name="saba_advice_network">Confira os dados móveis ou o Wi-Fi e tente novamente.</string>
+    <string name="saba_advice_other">Abra a solução de problemas para verificar a conexão e o provedor escolhido. Detalhes brutos do erro são ocultos para preservar a privacidade.</string>
+    <string name="saba_error_http">Status HTTP: %1$d</string>
+    <string name="saba_network_validated">Internet: validada pelo sistema (provedor não verificado)</string>
+    <string name="saba_network_offline">Internet: sem conexão ativa</string>
+    <string name="saba_network_unverified">Internet: rede ativa, validação indisponível</string>
+    <string name="saba_network_unknown">Internet: não foi possível verificar</string>
+    <string name="saba_error_retry">Tentar resposta novamente</string>
+    <string name="saba_error_resume">Retomar tarefa salva</string>
+    <string name="saba_error_settings">Solução de problemas</string>
+    <string name="saba_error_copy">Copiar relatório seguro</string>
+    <string name="saba_error_copied">Relatório copiado</string>
+    <string name="saba_error_close">Fechar</string>
+    <string name="saba_chat_share">Compartilhar chat como Markdown</string>
+    <string name="saba_chat_share_title">Compartilhar este chat?</string>
+    <string name="saba_chat_share_note">O histórico exportado contém suas mensagens e as respostas do assistente. Confira informações confidenciais antes de escolher um aplicativo para compartilhar.</string>
+    <string name="saba_chat_share_confirm">Escolher aplicativo para compartilhar</string>
+    <string name="saba_chat_share_failed">Não foi possível preparar o histórico do chat.</string>
+    <string name="saba_chat_share_empty">Este chat não tem mensagens para exportar.</string>
+    <string name="saba_chat_share_limit">Parte do conteúdo antigo foi omitida para manter o compartilhamento confiável no Android.</string>
+</resources>

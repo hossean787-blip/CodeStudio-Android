@@ -144,7 +144,10 @@ object RunResultNotifications {
                 AgentService.RESULTS_CHANNEL_ID,
                 context.getString(R.string.ui_run_results),
                 NotificationManager.IMPORTANCE_DEFAULT,
-            ).apply { description = context.getString(R.string.ui_notified_when_a_background_agent_run_finishes) },
+            ).apply {
+                description = context.getString(R.string.ui_notified_when_a_background_agent_run_finishes)
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            },
         )
         AppNotifications.post(context, notificationId(result.subagentCallId?.let { "${result.sessionId}:$it" } ?: result.sessionId), build(context, result))
     }
@@ -294,14 +297,20 @@ class AgentService : Service() {
                 CHANNEL_ID,
                 getString(R.string.ui_agent_runs),
                 NotificationManager.IMPORTANCE_LOW,
-            ).apply { description = getString(R.string.ui_live_progress_while_the_coding_agent_is) },
+            ).apply {
+                description = getString(R.string.ui_live_progress_while_the_coding_agent_is)
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            },
         )
         nm.createNotificationChannel(
             NotificationChannel(
                 RESULTS_CHANNEL_ID,
                 getString(R.string.ui_run_results),
                 NotificationManager.IMPORTANCE_DEFAULT,
-            ).apply { description = getString(R.string.ui_notified_when_a_background_agent_run_finishes) },
+            ).apply {
+                description = getString(R.string.ui_notified_when_a_background_agent_run_finishes)
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            },
         )
         nm.createNotificationChannel(
             NotificationChannel(
@@ -466,7 +475,7 @@ class AgentService : Service() {
                     .setLabel(getString(R.string.ui_your_answer))
                     .build()
                 val replyAction = Notification.Action.Builder(
-                    null as Icon?, "Reply…",
+                    null as Icon?, getString(R.string.notification_quick_reply),
                     answerPendingIntent(p.sessionId, MAX_OPTION_BUTTONS, null),
                 ).addRemoteInput(remoteInput).build()
                 builder.addAction(replyAction)
