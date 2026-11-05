@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="ds_title">Document studio</string>
+  <string name="ds_scope">Create simple native documents. No photo editing or full Office editor. Nothing is written to a project automatically.</string>
+  <string name="ds_name">Title / simple filename (1–120 characters)</string>
+  <string name="ds_content">Content (1–100000 characters)</string>
+  <string name="ds_input_help">XLSX: tab-separated cells, up to 1000 rows × 50 columns; cell limit 32767 characters. PPTX: separate slides with a line containing --- (32 slides, 4000 characters each). Charts: one label:number per line, up to 32 nonnegative values ≤ 1e12; labels ≤ 80 characters; Persian/Arabic digits accepted. ZIP contains exactly one file: content.txt. Code exports literal UTF-8 .txt. Output limit: 8 MiB; PDF: 100 pages. Inputs that exceed limits are rejected.</string>
+  <string name="ds_generate">Generate and preview</string>
+  <string name="ds_preview">First-page native preview</string>
+  <string name="ds_preview_help">PDF shows the first page; PNG shows the native chart. Text/SVG show literal source. Office and ZIP have no in-app visual preview; open the verified saved file in a compatible viewer.</string>
+  <string name="ds_save">Choose destination and save</string>
+  <string name="ds_open">Open saved document</string>
+  <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
+  <string name="ds_cancelled">Save cancelled; no success reported.</string>
+  <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+</resources>
