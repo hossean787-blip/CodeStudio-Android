@@ -1,0 +1,65 @@
+name: Saba Studio focused Android integration (Debug, not Release)
+on:
+  push:
+    branches: ["validation/issue-8-fast"]
+permissions:
+  contents: read
+concurrency:
+  group: saba-fast-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  android-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - name: Install compile SDK
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0" "build-tools;37.0.0" "platform-tools"
+          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s "$ANDROID_HOME/platforms/android-37.0" "$ANDROID_HOME/platforms/android-37"
+          fi
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify source pins and compile all tests
+        run: |
+          python scripts/verify_ai_source_pins.py
+          ./gradlew :app:testDebugUnitTest :app:compileDebugAndroidTestKotlin -Pdistribution=github --no-daemon
+      - name: Record exact tested source trees
+        run: |
+          mkdir -p delivery-fast
+          git rev-parse HEAD > delivery-fast/commit.txt
+          git rev-parse HEAD:app/src/main > delivery-fast/application-source-tree.txt
+          git rev-parse HEAD:app/src/androidTest > delivery-fast/instrumentation-source-tree.txt
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run retained and new regressions on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest' -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
+            adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-fast/native-documents
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: saba-focused-debug-integration-evidence
+          path: |
+            delivery-fast/
+            app/build/reports/tests/
+            app/build/test-results/
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+          if-no-files-found: warn
