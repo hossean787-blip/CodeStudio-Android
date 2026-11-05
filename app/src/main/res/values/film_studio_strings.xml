@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="film_title">Film Studio · video cut</string>
+    <string name="film_entry">Open Film Studio</string>
+    <string name="film_scope">A working local single-video cut, MP4 output and editable project JSON. Multi-track editing, VFX, lip-sync, AI generation and MOV export are not available yet. Use footage you have rights to.</string>
+    <string name="film_choose_video">Choose video from device</string>
+    <string name="film_duration">Video length: %1$d seconds</string>
+    <string name="film_duration_unavailable">Could not read video length. Select a supported local video.</string>
+    <string name="film_name">Project title</string>
+    <string name="film_start">Start (seconds)</string>
+    <string name="film_end">End (seconds)</string>
+    <string name="film_invalid_cut">Choose a valid cut inside the video duration.</string>
+    <string name="film_save_project">Save editable project (JSON)</string>
+    <string name="film_project_saved">Editable project saved. Keep the source video and its permission.</string>
+    <string name="film_save_failed">Could not save the file.</string>
+    <string name="film_export">Render selected cut to MP4</string>
+    <string name="film_export_ready">MP4 created. Save it to a location of your choice.</string>
+    <string name="film_export_failed">Rendering failed. Try a supported local MP4 file.</string>
+    <string name="film_cancel">Cancel export</string>
+    <string name="film_cancelled">Rendering cancelled.</string>
+    <string name="film_save_mp4">Save rendered MP4</string>
+    <string name="film_mp4_saved">MP4 file saved successfully.</string>
+</resources>

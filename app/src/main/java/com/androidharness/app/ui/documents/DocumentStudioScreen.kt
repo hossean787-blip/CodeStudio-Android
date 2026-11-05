@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.androidharness.app.R
 import com.androidharness.app.documents.*
+import com.androidharness.app.ui.film.FilmStudioScreen
 import com.androidharness.app.ui.common.AppHeader
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,11 @@ import kotlinx.coroutines.withContext
 /** Explicit user export. Does not publish to a project or execute document content. */
 @Composable
 fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> Unit = { _, _, _ -> }) {
+    var filmStudioOpen by rememberSaveable { mutableStateOf(false) }
+    if (filmStudioOpen) {
+        FilmStudioScreen(onBack = { filmStudioOpen = false })
+        return
+    }
     val context = LocalContext.current
     val store = remember(context.applicationContext) { DocumentStudioStore(context) }
     val scope = rememberCoroutineScope()
@@ -103,6 +109,9 @@ fun DocumentStudioScreen(onBack: () -> Unit, onSaved: (Uri, String, String) -> U
         Column(Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.ds_scope), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium)
+            }
+            OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { filmStudioOpen = true }) {
+                Text(stringResource(R.string.film_entry))
             }
             Row(Modifier.fillMaxWidth().horizontalScrollCompat()) {
                 DocumentEncoder.mimeTypes.keys.forEach { type ->
