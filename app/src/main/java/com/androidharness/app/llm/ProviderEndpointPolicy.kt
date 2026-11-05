@@ -14,7 +14,7 @@ object ProviderEndpointPolicy {
     fun issue(rawUrl: String): Issue? {
         val value = rawUrl.trim()
         if (value.isBlank() || value.any(Char::isWhitespace)) return Issue.INVALID
-        val uri = try { URI(value) } catch (_: IllegalArgumentException) { return Issue.INVALID }
+        val uri = try { URI(value) } catch (_: Exception) { return Issue.INVALID }
         if (!uri.isAbsolute || uri.isOpaque || uri.host.isNullOrBlank() ||
             uri.port == 0 || uri.port > 65535 || uri.port < -1) return Issue.INVALID
         if (uri.rawUserInfo != null) return Issue.EMBEDDED_CREDENTIALS
