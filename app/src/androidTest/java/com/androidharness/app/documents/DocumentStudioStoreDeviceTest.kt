@@ -95,4 +95,24 @@ class DocumentStudioStoreDeviceTest {
         try { unrelated.writeText("synthetic"); unrelated.setLastModified(1); store.cleanup(); assertTrue(unrelated.exists()) }
         finally { unrelated.delete() }
     }
+    @Test fun realOfficeAndZipExportsArePreviewedFromVerifiedPrivateBytes() = runBlocking {
+        val store = DocumentStudioStore(InstrumentationRegistry.getInstrumentation().targetContext)
+        val content = "گزارش فارسی صبا"
+        val cases = listOf(
+            DocumentSpec("docx", text = content),
+            DocumentSpec("xlsx", rows = listOf(listOf(content, "=42"))),
+            DocumentSpec("pptx", slides = listOf(content)),
+            DocumentSpec("zip", entries = listOf(ArchiveText("note.txt", content))),
+        )
+        cases.forEach { spec ->
+            val (name, hash) = store.generate(spec)
+            try {
+                val preview = store.previewText(name, hash, DocumentEncoder.mimeTypes.getValue(spec.format))
+                assertTrue("Missing genuine text in ${spec.format}", preview.contains(content))
+                assertTrue("Missing actual stored bytes", store.recover(name, hash).length() > 0)
+                assertTrue(runCatching { store.previewText(name, "bad-hash", DocumentEncoder.mimeTypes.getValue(spec.format)) }.isFailure)
+            } finally { store.delete(name) }
+        }
+    }
+
 }
