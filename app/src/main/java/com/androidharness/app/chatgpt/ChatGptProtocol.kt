@@ -128,24 +128,42 @@ object ChatGptProtocol {
                 reasoningEfforts = efforts, defaultReasoningEffort = (obj["default_reasoning_level"] ?: obj["default_reasoning_effort"])?.jsonPrimitive?.contentOrNull)
         }?.distinctBy { it.id } ?: error("ChatGPT returned an unsupported model list.")
 
+    /** Only an explicit provider machine code may establish a regional denial. */
+    private val unsupportedRegions = setOf(
+        "unsupported_country_region_territory", "unsupported_region", "region_not_supported",
+    )
+
+    /** Static user guidance; never echo remote error bodies, credentials, or OAuth tokens. */
     fun requestError(code: String?, status: Int? = null): String = when {
-        code == "subscription_sharing_usage_limit_exceeded" -> "ChatGPT usage limit reached. Manage usage in ChatGPT settings: $USAGE_URL"
-        status == 429 -> "ChatGPT is receiving too many requests. Please try again shortly."
+        code == USAGE_LIMIT -> "ChatGPT usage limit reached. Manage usage in ChatGPT settings: $USAGE_URL"
+        code in unsupportedRegions ->
+            "ChatGPT explicitly reported that this region is unsupported. Check official service availability; changing keys will not resolve it."
+        code == "subscription_sharing_user_not_eligible" ->
+            "This ChatGPT account is not eligible for this connection. Review plan and account access in ChatGPT settings: $USAGE_URL"
+        code in setOf("chatpass_v2_scope_not_authorized", "chatpass_v2_invalid_authorization_context") ->
+            "ChatGPT did not authorize this connection. Reconnect in Settings > Connected accounts and check account permissions."
+        code == "subscription_sharing_route_not_supported" ->
+            "ChatGPT does not permit this route or model for this account. Choose a supported model in settings."
         code in setOf("subscription_sharing_usage_unavailable", "subscription_sharing_user_unavailable") ->
             "ChatGPT is temporarily unavailable. Please try again shortly."
-        code == "subscription_sharing_unsupported_capability" -> "ChatGPT does not support this model or request feature. Choose another model."
+        code == "subscription_sharing_unsupported_capability" ->
+            "ChatGPT does not support this model or request feature. Choose another model."
         status == 401 -> "ChatGPT sign-in expired. Reconnect in Settings > Connected accounts."
+        status == 402 -> "ChatGPT rejected this request for billing or credit reasons. Review official account usage: $USAGE_URL"
         status == 403 -> "ChatGPT has not allowed this request. Check plan access and the selected model in ChatGPT settings: $USAGE_URL"
+        status == 404 -> "ChatGPT could not find the selected model or route. Refresh the model list and choose a supported model."
+        status == 429 -> "ChatGPT is receiving too many requests. Please try again shortly."
         else -> "ChatGPT could not complete this request${status?.let { " (HTTP $it)" }.orEmpty()}. Please try again."
     }
 
-    /** Error events can arrive inside HTTP-200 streams; their documented codes still govern recovery. */
+    /** Error events can arrive inside HTTP-200 streams; their machine codes still govern recovery. */
     fun errorStatus(code: String?): Int? = when (code) {
-        "subscription_sharing_usage_limit_exceeded" -> 429
+        USAGE_LIMIT -> 429
         "subscription_sharing_unsupported_capability" -> 400
         "subscription_sharing_invalid_user" -> 401
         "subscription_sharing_user_not_eligible", "subscription_sharing_route_not_supported",
-        "chatpass_v2_scope_not_authorized", "chatpass_v2_invalid_authorization_context" -> 403
+        "chatpass_v2_scope_not_authorized", "chatpass_v2_invalid_authorization_context",
+        "unsupported_country_region_territory", "unsupported_region", "region_not_supported" -> 403
         "subscription_sharing_usage_unavailable", "subscription_sharing_user_unavailable" -> 503
         else -> null
     }
