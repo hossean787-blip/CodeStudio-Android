@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">دستیار درسی</string>
+    <string name="study_back">بازگشت</string>
+    <string name="study_hero">تمرین از روی جزوهٔ خودت</string>
+    <string name="study_subtitle">فلش‌کارت، آزمون و برنامه مرور، بدون اینترنت و فقط با متن همین صفحه.</string>
+    <string name="study_notes">متن جزوه</string>
+    <string name="study_example">هر خط یک مفهوم و تعریف: حسابرسی: بررسی مستقل اطلاعات مالی</string>
+    <string name="study_notice">هر خط باید یک مفهوم و تعریف داشته باشد و با دونقطه جدا شود. متن نامنظم کنار گذاشته می‌شود. هیچ داده‌ای به سرویس یا پروژه دیگری ارسال نمی‌شود. حداکثر ۲۰ هزار نویسه.</string>
+    <string name="study_flashcards">فلش‌کارت</string>
+    <string name="study_quiz">آزمون</string>
+    <string name="study_plan">مرور</string>
+    <string name="study_generate">ساخت تمرین</string>
+    <string name="study_result">نتیجه تمرین</string>
+    <string name="study_limit">طول متن نباید از ۲۰ هزار نویسه بیشتر باشد.</string>
+    <string name="study_invalid_notes">متن را به‌شکل «مفهوم: تعریف» وارد کن. پاسخ ساختگی ساخته نشد.</string>
+</resources>

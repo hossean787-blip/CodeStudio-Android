@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">අධ්‍යයන සහායක</string>
+    <string name="study_back">ආපසු</string>
+    <string name="study_hero">ඔබේ සටහන් වලින් පුහුණු වන්න</string>
+    <string name="study_subtitle">මෙහි ඇතුළත් කළ සටහන් පමණක් භාවිත කර අන්තර්ජාලය නොමැතිව කාඩ්පත්, ප්‍රශ්න සහ නැවත අධ්‍යයන සැලැස්මක් සාදන්න.</string>
+    <string name="study_notes">ඔබේ සටහන්</string>
+    <string name="study_example">පේළියකට යුගලයක්: සංකල්පය: අර්ථ දැක්වීම</string>
+    <string name="study_notice">සෑම පේළියකම දෙතිතකින් වෙන් කළ සංකල්පයක් සහ අර්ථ දැක්වීමක් තිබිය යුතුය. ආකෘතියට නොගැළපෙන පෙළ නොසලකා හැරේ. දත්ත වෙනත් සේවාවකට හෝ ව්‍යාපෘතියකට යවන්නේ නැත. උපරිම අක්ෂර 20,000 කි.</string>
+    <string name="study_flashcards">මතක කාඩ්පත්</string>
+    <string name="study_quiz">ප්‍රශ්නාවලිය</string>
+    <string name="study_plan">නැවත අධ්‍යයනය</string>
+    <string name="study_generate">පුහුණුව සාදන්න</string>
+    <string name="study_result">පුහුණු ප්‍රතිඵලය</string>
+    <string name="study_limit">උපරිම අක්ෂර 20,000 කි.</string>
+    <string name="study_invalid_notes">සංකල්පය: අර්ථ දැක්වීම ලෙස නිවැරදි යුගල ඇතුළත් කරන්න. අසම්පූර්ණ සටහන් වලින් පිළිතුරු නිර්මාණය නොකරයි.</string>
+</resources>

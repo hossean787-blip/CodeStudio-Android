@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Study assistant</string>
+    <string name="study_back">Back</string>
+    <string name="study_hero">Practice from your notes</string>
+    <string name="study_subtitle">Offline flashcards, quizzes and a review plan based only on the notes you enter here.</string>
+    <string name="study_notes">Your notes</string>
+    <string name="study_example">Enter one pair per line: Concept: Definition</string>
+    <string name="study_notice">Each line must contain a concept and a definition separated by a colon. Unstructured text is skipped. Nothing is sent to a provider or another project. Maximum 20,000 characters.</string>
+    <string name="study_flashcards">Flashcards</string>
+    <string name="study_quiz">Quiz</string>
+    <string name="study_plan">Review plan</string>
+    <string name="study_generate">Generate practice</string>
+    <string name="study_result">Your practice</string>
+    <string name="study_limit">The maximum input is 20,000 characters.</string>
+    <string name="study_invalid_notes">Add valid pairs like Concept: Definition. Nothing was invented from incomplete notes.</string>
+</resources>

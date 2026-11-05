@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Asisten belajar</string>
+    <string name="study_back">Kembali</string>
+    <string name="study_hero">Latihan dari catatan Anda</string>
+    <string name="study_subtitle">Kartu belajar, kuis, dan rencana tinjauan offline hanya dari catatan yang Anda masukkan di sini.</string>
+    <string name="study_notes">Catatan Anda</string>
+    <string name="study_example">Satu pasangan per baris: Konsep: Definisi</string>
+    <string name="study_notice">Setiap baris harus berisi konsep dan definisi yang dipisahkan titik dua. Teks tanpa struktur dilewati. Data tidak dikirim ke penyedia atau proyek lain. Maksimal 20.000 karakter.</string>
+    <string name="study_flashcards">Kartu belajar</string>
+    <string name="study_quiz">Kuis</string>
+    <string name="study_plan">Rencana tinjauan</string>
+    <string name="study_generate">Buat latihan</string>
+    <string name="study_result">Hasil latihan</string>
+    <string name="study_limit">Masukan maksimal 20.000 karakter.</string>
+    <string name="study_invalid_notes">Masukkan pasangan valid seperti Konsep: Definisi. Jawaban tidak dibuat-buat dari catatan yang tidak lengkap.</string>
+</resources>
