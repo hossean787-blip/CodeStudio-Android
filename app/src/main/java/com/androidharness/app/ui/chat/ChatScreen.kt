@@ -521,6 +521,7 @@ private fun ChatScreenContent(
     var editingMessage by remember { mutableStateOf<ChatMessage?>(null) }
     // Set while the retry choice (same model or another) is open; runs the chosen retry.
     var retryRequest by remember { mutableStateOf<((com.androidharness.app.data.ModelShortcut?) -> Unit)?>(null) }
+    var shareChatConfirm by remember(state.sessionId) { mutableStateOf(false) }
     var confirmingEdit by remember { mutableStateOf<Pair<ChatMessage, String>?>(null) }
     var showUndoDialog by remember { mutableStateOf(false) }
     // Chosen checkpoint awaiting confirmation with a per-file preview.
@@ -867,6 +868,49 @@ private fun ChatScreenContent(
             onDismiss = { retryRequest = null },
         )
     }
+    if (shareChatConfirm) {
+        AlertDialog(
+            onDismissRequest = { shareChatConfirm = false },
+            title = { Text(uiContext.getString(R.string.saba_chat_share_title)) },
+            text = { Text(uiContext.getString(R.string.saba_chat_share_note)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    shareChatConfirm = false
+                    val requestedId = state.sessionId
+                    val requestedTitle = state.sessionTitle
+                    if (requestedId != null) scope.launch {
+                        try {
+                            val fullHistory = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                                viewModel.container.sessions.messages(requestedId)
+                            }
+                            val transcript = exportChatTranscript(requestedTitle, fullHistory)
+                            if (transcript.markdown == "# " + requestedTitle.replace('\n', ' ').replace('\r', ' ').trim().take(120) + "\n\n" ||
+                                fullHistory.isEmpty()) {
+                                snackbar.showSnackbar(uiContext.getString(R.string.saba_chat_share_empty))
+                            } else {
+                                val share = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(android.content.Intent.EXTRA_TEXT, transcript.markdown)
+                                }
+                                uiContext.startActivity(android.content.Intent.createChooser(
+                                    share, uiContext.getString(R.string.saba_chat_share)))
+                                if (transcript.olderContentOmitted) {
+                                    snackbar.showSnackbar(uiContext.getString(R.string.saba_chat_share_limit))
+                                }
+                            }
+                        } catch (cancel: kotlinx.coroutines.CancellationException) {
+                            throw cancel
+                        } catch (_: Exception) {
+                            snackbar.showSnackbar(uiContext.getString(R.string.saba_chat_share_failed))
+                        }
+                    }
+                }) { Text(uiContext.getString(R.string.saba_chat_share_confirm)) }
+            },
+            dismissButton = { TextButton(onClick = { shareChatConfirm = false }) {
+                Text(uiContext.getString(R.string.settings_action_cancel))
+            } },
+        )
+    }
 
     // Long-press menu for YOUR messages (agent text is directly selectable,
     // hold and drag; the system toolbar handles copy).
@@ -1146,12 +1190,8 @@ private fun ChatScreenContent(
         )
     }
 
-    LaunchedEffect(state.error) {
-        state.error?.let {
-            snackbar.showSnackbar(it)
-            viewModel.dismissError()
-        }
-    }
+    // Provider errors are no longer shown raw in a transient snackbar:
+    // they remain actionable until dismissal and the exported report is strictly whitelisted.
 
     val selectSection by androidx.compose.runtime.rememberUpdatedState(onSelectSection)
     LaunchedEffect(viewModel) {
@@ -1421,6 +1461,7 @@ private fun ChatScreenContent(
                 onOpenContext = { showContext = true },
                 onOpenChatSettings = { showChatSettings = true },
                 onOpenSources = { chatSources = null; showChatSources = true },
+                onShareChat = if (state.conversation.isChat && state.sessionId != null) ({ shareChatConfirm = true }) else null,
                 chatPinned = state.sessionId in globalSettings.pinnedSessions,
                 chatArchived = state.sessionId in globalSettings.archivedSessions,
                 onToggleChatPin = state.sessionId?.takeIf { state.conversation.isChat }?.let { sid -> {
@@ -2390,6 +2431,23 @@ private fun ChatScreenContent(
                 )
                 }
 
+                state.error?.let { failure ->
+                    com.androidharness.app.ui.chat.components.ChatErrorRecoveryCard(
+                        failureMessage = failure,
+                        canRetry = state.conversation.isChat && !state.busy && state.messages.any {
+                            com.androidharness.app.core.MessageVisibility.isUserAuthored(it)
+                        },
+                        canResume = !state.busy && state.taskControl.resumable,
+                        onRetry = { viewModel.dismissError(); viewModel.retryLatestResponse() },
+                        onResume = { viewModel.dismissError(); viewModel.resumeInterruptedTask() },
+                        onTroubleshoot = {
+                            viewModel.container.pendingSettingsScroll.value =
+                                settingsTarget(com.androidharness.app.ui.settings.SettingsPage.TROUBLESHOOTING)
+                            onOpenSettings()
+                        },
+                        onDismiss = viewModel::dismissError,
+                    )
+                }
                 if (!state.conversation.isChat && state.todos.isNotEmpty()) {
                     TodoCard(state.todos)
                 }
