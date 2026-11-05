@@ -362,17 +362,7 @@ jobs:
             ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.study.StudyAssistantDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
             mkdir -p delivery-emulator
             adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
-            python3 - <<'PY'
-            from pathlib import Path
-            import struct
-            screenshot = Path("delivery-emulator/issue8-live/study-ui/study-fa-light-flashcards.png")
-            data = screenshot.read_bytes()
-            assert len(data) > 1024, "Study UI screenshot is missing or too small"
-            assert data[:8] == bytes.fromhex("89504e470d0a1a0a") and data[12:16] == b"IHDR", "Invalid PNG screenshot"
-            width, height = struct.unpack(">II", data[16:24])
-            assert width >= 200 and height >= 200, "Screenshot has invalid dimensions"
-            print(f"Verified real emulator study screenshot: {width}x{height}, {len(data)} bytes")
-            PY
+            python3 scripts/verify-study-screenshot.py delivery-emulator/issue8-live/study-ui/study-fa-light-flashcards.png
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
       - name: Upload emulator evidence
         if: always()
