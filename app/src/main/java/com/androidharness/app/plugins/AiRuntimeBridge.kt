@@ -43,7 +43,7 @@ object AiRuntimeBridge {
     fun versionCommand(id: String): String = profile(id).executable + " --version"
 
     private val versionPattern = Regex(
-        """(?<![A-Za-z0-9])v?([0-9]{1,3}\\.[0-9]{1,3}(?:\\.[0-9]{1,3})?(?:[-+][A-Za-z0-9.]{1,24})?)(?![A-Za-z0-9])"""
+        """(?<![A-Za-z0-9])v?([0-9]{1,3}\.[0-9]{1,3}(?:\.[0-9]{1,3})?(?:[-+][A-Za-z0-9.]{1,24})?)(?![A-Za-z0-9])"""
     )
 
     /**
