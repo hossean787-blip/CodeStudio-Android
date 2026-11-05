@@ -31,6 +31,8 @@ internal data class FreeApiEntry(
  * Verified against the linked provider documentation on 2026-11-05.
  */
 internal object FreeApiCatalog {
+    const val lastReviewedIso = "2026-11-05"
+
     val entries: List<FreeApiEntry> = listOf(
         FreeApiEntry("gemini", "Google Gemini API", FreeApiTier.LIMITED_FREE,
             "https://ai.google.dev/gemini-api/docs/pricing", "Gemini", "gemini-2.5-flash", true),
@@ -47,6 +49,10 @@ internal object FreeApiCatalog {
             "https://developers.cloudflare.com/workers-ai/platform/pricing/"),
         FreeApiEntry("ollama", "Ollama (on-device server)", FreeApiTier.LOCAL_NO_KEY,
             "https://docs.ollama.com/", "Ollama"),
+        // Free inference credits are small, account-dependent and may change.
+        // No preset: provider routing and billing require an explicit user setup.
+        FreeApiEntry("huggingface", "Hugging Face Inference Providers", FreeApiTier.SETUP_REQUIRED,
+            "https://huggingface.co/docs/inference-providers/pricing"),
         FreeApiEntry("public-apis", "Public APIs Directory", FreeApiTier.DIRECTORY,
             "https://github.com/public-apis/public-apis"),
         FreeApiEntry("free-for-dev", "free-for.dev", FreeApiTier.DIRECTORY,
