@@ -183,6 +183,17 @@ jobs:
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
               'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt',
+              # Issue #8 13/15/16: skill import/delete hardening and project-scoped agent recall.
+              'app/src/main/java/com/androidharness/app/skills/SkillStore.kt',
+              'app/src/main/java/com/androidharness/app/HarnessApp.kt',
+              'app/src/main/java/com/androidharness/app/data/ConversationConfig.kt',
+              'app/src/main/java/com/androidharness/app/data/ChatAgents.kt',
+              'app/src/main/java/com/androidharness/app/data/ProjectHistoryAccess.kt',
+              'app/src/main/java/com/androidharness/app/agent/AgentEngine.kt',
+              'app/src/test/java/com/androidharness/app/skills/SkillStoreTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ConversationConfigTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ChatAgentsTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ProjectHistoryAccessTest.kt',
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
