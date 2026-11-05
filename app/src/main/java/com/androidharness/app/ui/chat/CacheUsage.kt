@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -87,13 +88,13 @@ private fun cacheMoney(cost: Double): String = when {
     else -> String.format(Locale.US, "$%.4f", cost)
 }
 
-/** One quiet footer line; request-level amounts stay behind a tap, inside chat. */
+/** Keep cache and performance telemetry accessible, but out of the chat until requested. */
 @Composable
 internal fun CacheUsageFooter(rows: List<UsageEventEntity>, running: Boolean = false, speed: TurnSpeed? = null) {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
     val speedLabel = turnPerformanceLabel(null, speed?.copy(firstTokenMs = null))
     if (rows.isEmpty() && speedLabel.isBlank()) return
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val summary = remember(rows) { cacheUsageSummary(rows) }
     val indicator = remember(rows, running) { cacheIndicatorSummary(rows, running) }
     val prices = remember(rows) {
@@ -106,8 +107,29 @@ internal fun CacheUsageFooter(rows: List<UsageEventEntity>, running: Boolean = f
     val successColor = LocalStatusColors.current.success
     val errorColor = MaterialTheme.colorScheme.error
     Column(Modifier.fillMaxWidth()) {
+        // A quiet disclosure replaces the prominent Cache hit/missed footer.
+        // Task progress and important errors live elsewhere and stay visible.
         Row(
-            Modifier.fillMaxWidth().clickable(enabled = rows.isNotEmpty()) { expanded = !expanded }.heightIn(min = 36.dp),
+            Modifier.fillMaxWidth().clickable { expanded = !expanded }.heightIn(min = 32.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                uiContext.getString(if (expanded) R.string.ui_hide_cache_details else R.string.ui_show_cache_details),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.width(4.dp))
+            Icon(
+                if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        if (expanded) {
+        Row(
+            Modifier.fillMaxWidth().heightIn(min = 24.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -135,13 +157,8 @@ internal fun CacheUsageFooter(rows: List<UsageEventEntity>, running: Boolean = f
                 modifier = Modifier.weight(1f, fill = false),
                 textAlign = TextAlign.End,
             )
-            if (rows.isNotEmpty()) Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                if (expanded) uiContext.getString(R.string.ui_hide_cache_details) else uiContext.getString(R.string.ui_show_cache_details),
-                Modifier.padding(start = 2.dp).size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        if (expanded) {
             Column(Modifier.fillMaxWidth().heightIn(max = 200.dp).verticalScroll(rememberScrollState()).padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 if (running) Text(uiContext.getString(R.string.ui_last_completed_request, (indicator.label).toString()),

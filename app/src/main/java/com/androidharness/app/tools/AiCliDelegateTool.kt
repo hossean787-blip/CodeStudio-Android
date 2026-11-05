@@ -1,6 +1,7 @@
 package com.androidharness.app.tools
 
 import com.androidharness.app.plugins.AiRuntimeBridge
+import com.androidharness.app.github.gitCommand
 import com.androidharness.app.data.env.ShellRunResult
 import com.androidharness.app.data.env.ShellTierRouter
 import com.androidharness.app.workspace.SshFs
@@ -29,13 +30,16 @@ class AiCliDelegateTool(
         "Delegate one coding task to a user-installed and authenticated AI CLI in the current workspace. " +
         "Supported agents: codex, claude, opencode, gemini, pi, qwen, aider. " +
         "The CLI may call external AI services and use project files. Never installs a CLI or obtains API keys. " +
-        "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. This is a modifying tool requiring user approval."
+        "allow_edits=false uses read-only/plan/dry-run modes for codex, claude, gemini and aider. " +
+        "Optional session_id resumes a pre-existing Claude Code session UUID; no sessions or credentials are created. " +
+        "This is a modifying tool requiring user approval."
 
     override val parametersSchema: JsonObject = Schema.obj(
         mapOf(
             "agent" to Schema.string("One of codex, claude, opencode, gemini, pi, qwen, aider."),
             "prompt" to Schema.string("Explicit coding task (1-2400 characters). Do not include secrets."),
             "allow_edits" to Schema.boolean("False requests read-only mode for codex/claude; true explicitly permits edits."),
+            "session_id" to Schema.string("Optional UUID of an existing Claude Code session in this workspace. Other agents cannot resume."),
         ),
         required = listOf("agent", "prompt"),
     )
@@ -49,7 +53,8 @@ class AiCliDelegateTool(
         val id = args["agent"]?.jsonPrimitive?.content ?: return ToolResult(false, "Missing agent.")
         val prompt = args["prompt"]?.jsonPrimitive?.content ?: return ToolResult(false, "Missing task.")
         val allowEdits = args["allow_edits"]?.jsonPrimitive?.booleanOrNull ?: false
-        val cmd = try { AiRuntimeBridge.executionCommand(id, prompt, allowEdits) }
+        val sessionId = args["session_id"]?.jsonPrimitive?.content
+        val cmd = try { AiRuntimeBridge.executionCommand(id, prompt, allowEdits, sessionId) }
             catch (e: IllegalArgumentException) { return ToolResult(false, e.message.orEmpty()) }
         val root = (ctx.workspace as? SshFs)?.root?.let(::File) ?: ctx.workspace.shellRoot
             ?: return ToolResult(false, "Selected workspace does not support shell execution.")
@@ -62,14 +67,39 @@ class AiCliDelegateTool(
         val result = run(cmd, ctx.workspace, 180_000, 24_000)
         val output = listOf(result.rawOutput, result.rawStderr).filter { it.isNotBlank() }
             .joinToString("\n").takeLast(24_000)
+        // The agent can modify many files. Show the post-execution Git state as a
+        // read-only review, without staging, committing, reverting or publishing.
+        // This reflects the whole workspace, including pre-existing changes.
+        val review = if (allowEdits) runCatching {
+            run(
+                gitCommand(listOf(
+                    "-C", root.absolutePath,
+                    "-c", "core.fsmonitor=false",
+                    "-c", "core.hooksPath=/dev/null",
+                    "status", "--short", "--untracked-files=normal"
+                )),
+                ctx.workspace, 15_000, 8_000
+            )
+        }.getOrNull() else null
         return ToolResult(
             ok = result.exitCode == 0 && !result.timedOut,
-            output = buildString {
+            output = SecretRedactor.redact(buildString {
                 append("Agent: ").append(id)
                 append("\nExit: ").append(if (result.timedOut) "timeout" else result.exitCode)
                 if (result.note != null) append("\n").append(result.note)
                 append("\n").append(if (output.isBlank()) "(No output)" else output)
-            },
+                if (allowEdits) {
+                    append("\n\nGit workspace review (includes pre-existing changes):")
+                    if (review == null || review.timedOut || review.exitCode != 0) {
+                        append("\nUnavailable (the workspace may not be a Git repository).")
+                    } else {
+                        append("\n").append(
+                            review.rawOutput.takeLast(8_000).ifBlank { "Clean working tree." }
+                        )
+                    }
+                    append("\nNo files were automatically staged, committed or pushed.")
+                }
+            }),
         )
     }
 }

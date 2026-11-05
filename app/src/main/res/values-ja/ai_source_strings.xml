@@ -25,4 +25,12 @@
     <string name="ai_runtime_confirm_title">実行の確認</string>
     <string name="ai_runtime_confirm_body">選択したワークスペースで %1$s を実行しますか？ツールの実行、ファイルへのアクセス、接続されたAIサービスの使用が行われる可能性があります。権限を確認してください。</string>
     <string name="ai_source_license_ack">このソースを取得・利用するための権利を持っていることを確認します。ダウンロードは再配布を許可しません。</string>
+    <string name="ai_source_nested_warning">Gitのサブモジュールもダウンロードされます。追加の保存容量と別のライセンスが必要な場合があります。不完全なダウンロードは登録されません。</string>
+    <string name="ai_compare_title">複数のAIエージェントを比較</string>
+    <string name="ai_compare_hint">インストール済みの2～4エージェントを選び、読み取り専用・計画・ドライランで同じ依頼を確認します。API利用料が発生する場合があります。</string>
+    <string name="ai_compare_run">選択したエージェントを比較</string>
+    <string name="ai_compare_confirm_title">複数エージェントの実行を確認</string>
+    <string name="ai_compare_confirm_body">この依頼を%1$d個のAIエージェントに送信しますか？外部AIサービスと通信し、利用枠を消費する場合があります。ファイルの変更は要求しません。</string>
+    <string name="ai_runtime_resume_session">Claude Code セッションを再開（UUID・任意）</string>
+    <string name="ai_runtime_resume_warning">この作業領域の既存セッションを再開します。過去の会話を参照する場合があります。ログインと承認が必要です。</string>
 </resources>
