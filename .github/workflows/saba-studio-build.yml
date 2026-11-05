@@ -41,6 +41,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/llm/OpenAiCompatProvider.kt',
               'app/src/main/java/com/androidharness/app/agent/RunManager.kt',
+              # Issue #8 item 04: provenance-reviewed upstream README attribution, launcher and splash.
+              'README.md',
               # Issue #8 item 04: reviewed Saba launcher and splash resources.
               'app/src/main/res/drawable/ic_launcher_foreground.xml',
               'app/src/main/res/values/colors.xml',
