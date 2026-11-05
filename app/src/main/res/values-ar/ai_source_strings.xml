@@ -26,4 +26,9 @@
     <string name="ai_runtime_confirm_body">هل تريد تشغيل %1$s في مساحة العمل المختارة؟ قد يشغل أدوات أو يصل إلى الملفات أو يستخدم خدمة ذكاء اصطناعي متصلة. راجع الأذونات أولا.</string>
     <string name="ai_source_license_ack">أؤكد أن لدي الحقوق المطلوبة للحصول على هذا المصدر واستخدامه. التنزيل لا يمنح حق إعادة التوزيع.</string>
     <string name="ai_source_nested_warning">سيتم تنزيل مستودعات Git الفرعية أيضا، وقد تحتاج إلى مساحة كبيرة وتخضع لتراخيص منفصلة. لن يتم تسجيل تنزيل غير مكتمل.</string>
+    <string name="ai_compare_title">مقارنة عدة وكلاء ذكاء اصطناعي</string>
+    <string name="ai_compare_hint">اختر ٢ إلى ٤ وكلاء مثبتين لمراجعة المهمة في وضع القراءة فقط أو التخطيط. قد يستخدم كل وكيل رصيد API مدفوع.</string>
+    <string name="ai_compare_run">مقارنة الوكلاء المحددين</string>
+    <string name="ai_compare_confirm_title">تأكيد مقارنة الوكلاء</string>
+    <string name="ai_compare_confirm_body">إرسال هذه المهمة إلى %1$d وكلاء؟ قد يتصلون بخدمات ذكاء اصطناعي خارجية ويستهلكون رصيد الحساب. لن يطلب تعديل الملفات.</string>
 </resources>
