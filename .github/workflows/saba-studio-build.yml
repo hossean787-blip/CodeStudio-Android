@@ -153,6 +153,7 @@ jobs:
               'settings.gradle.kts',
               'app/src/main/java/com/androidharness/app/ui/chat/components/EmptyState.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
+              'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
