@@ -320,7 +320,7 @@ internal fun ProjectNavigationSidebar(
                         }
                         ExpressiveIconButton(onClick = { onQueryChange(""); showArchived = !showArchived }) {
                             Icon(if (showArchived) Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Archive,
-                                if (showArchived) uiContext.getString(R.string.ui_back_to_active, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats)) else uiContext.getString(R.string.ui_show_archived, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats)),
+                                if (showArchived) uiContext.getString(R.string.ui_back_to_active, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])) else uiContext.getString(R.string.ui_show_archived, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])),
                                 Modifier.size(19.dp), tint = if (showArchived) scheme.primary else scheme.onSurfaceVariant)
                         }
                     }
