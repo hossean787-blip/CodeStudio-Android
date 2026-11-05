@@ -200,6 +200,14 @@ fun ProviderSheet(
     }
 }
 
+/** A local keyless preset must not start with an invalid blank credential row. */
+internal fun initialProviderKeyPool(existing: ProviderConfig?, preset: ProviderBrand?): ProviderKeyPool =
+    when {
+        existing != null -> ProviderKeyPool() // Existing credentials load from encrypted storage.
+        preset?.needsKey == false -> ProviderKeyPool()
+        else -> ProviderKeyPool(listOf(ProviderApiKey(value = "")))
+    }
+
 private enum class AddStep { PROVIDER, KEY, MODEL }
 
 @Composable
@@ -228,8 +236,8 @@ internal fun ProviderSheetContent(
 
     var name by remember(existing?.id, preset) { mutableStateOf(existing?.name ?: preset?.label.orEmpty()) }
     var model by remember(existing?.id, preset) { mutableStateOf(existing?.model ?: preset?.suggestedModel.orEmpty()) }
-    var keyPool by remember(existing?.id) {
-        mutableStateOf(if (existing == null) ProviderKeyPool(listOf(ProviderApiKey(value = ""))) else ProviderKeyPool())
+    var keyPool by remember(existing?.id, preset) {
+        mutableStateOf(initialProviderKeyPool(existing, preset))
     }
     var keysLoaded by remember(existing?.id) { mutableStateOf(existing == null) }
     var keysLoadFailed by remember(existing?.id) { mutableStateOf(false) }
