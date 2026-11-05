@@ -26,4 +26,9 @@
     <string name="ai_runtime_confirm_body">%1$s im ausgewählten Workspace ausführen? Das kann Werkzeuge starten, Dateien lesen oder einen verbundenen KI-Dienst nutzen. Bitte Berechtigungen prüfen.</string>
     <string name="ai_source_license_ack">Ich bestätige, dass ich die erforderlichen Nutzungsrechte an diesem Quellcode besitze. Der Download erlaubt keine Weiterverbreitung.</string>
     <string name="ai_source_nested_warning">Verschachtelte Git-Repositorys werden ebenfalls geladen. Sie benötigen möglicherweise viel Speicher und haben eigene Lizenzen. Unvollständige Downloads werden nicht registriert.</string>
+    <string name="ai_compare_title">Mehrere KI-Agenten vergleichen</string>
+    <string name="ai_compare_hint">Wählen Sie 2–4 installierte Agenten für dieselbe Aufgabe im Lese-, Plan- oder Testmodus. Jeder Agent kann kostenpflichtige API-Kontingente verbrauchen.</string>
+    <string name="ai_compare_run">Ausgewählte Agenten vergleichen</string>
+    <string name="ai_compare_confirm_title">Agentenvergleich bestätigen</string>
+    <string name="ai_compare_confirm_body">Die Aufgabe an %1$d KI-Agenten senden? Die Agenten können externe Anbieter kontaktieren und Kontingent verbrauchen. Dateibearbeitung wird nicht angefordert.</string>
 </resources>

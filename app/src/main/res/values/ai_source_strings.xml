@@ -26,4 +26,9 @@
     <string name="ai_runtime_confirm_body">Run %1$s in the selected workspace? This may execute tools, access files or use a connected AI service. Review your prompt, shell access and permissions first.</string>
     <string name="ai_source_license_ack">I confirm I have the required rights to obtain and use this source. Download does not grant redistribution rights.</string>
     <string name="ai_source_nested_warning">Nested Git repositories may also be downloaded, require significant storage, and have separate licenses. An incomplete download is not registered.</string>
+    <string name="ai_compare_title">Multi-agent comparison</string>
+    <string name="ai_compare_hint">Select 2-4 installed agents to review the same task in read-only/plan/dry-run mode. Each agent may use paid API credits.</string>
+    <string name="ai_compare_run">Compare selected agents</string>
+    <string name="ai_compare_confirm_title">Confirm multi-agent comparison</string>
+    <string name="ai_compare_confirm_body">Send this task to %1$d AI agents? They may contact remote AI providers and consume your account credits. No source files are intentionally modified.</string>
 </resources>

@@ -26,4 +26,9 @@
     <string name="ai_runtime_confirm_body">Executar %1$s neste espaço de trabalho? Ele pode executar ferramentas, acessar arquivos ou usar serviços de IA conectados. Confira as permissões.</string>
     <string name="ai_source_license_ack">Confirmo que tenho os direitos necessários para obter e usar este código. O download não autoriza sua redistribuição.</string>
     <string name="ai_source_nested_warning">Os submódulos Git também serão baixados. Eles podem exigir muito espaço e ter licenças próprias. Downloads incompletos não serão registrados.</string>
+    <string name="ai_compare_title">Comparação de agentes de IA</string>
+    <string name="ai_compare_hint">Escolha de 2 a 4 agentes instalados para revisar a mesma tarefa em modo leitura, planejamento ou simulação. Cada agente pode consumir créditos de API.</string>
+    <string name="ai_compare_run">Comparar agentes selecionados</string>
+    <string name="ai_compare_confirm_title">Confirmar comparação de agentes</string>
+    <string name="ai_compare_confirm_body">Enviar esta tarefa para %1$d agentes? Eles podem acessar serviços externos e consumir créditos da conta. Não são solicitadas alterações em arquivos.</string>
 </resources>

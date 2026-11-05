@@ -26,4 +26,9 @@
     <string name="ai_runtime_confirm_body">在当前工作区运行 %1$s 吗？这可能运行工具、访问文件或使用已连接的 AI 服务。请先检查权限。</string>
     <string name="ai_source_license_ack">我确认拥有获取和使用此源码所需的授权。下载不代表获得重新分发的许可。</string>
     <string name="ai_source_nested_warning">还将下载嵌套 Git 子模块。它们可能占用较大存储空间并具有独立许可证。下载不完整时不会注册项目。</string>
+    <string name="ai_compare_title">多智能体对比</string>
+    <string name="ai_compare_hint">选择2至4个已安装智能体，以只读、规划或演练模式审核相同任务。每个智能体可能消耗付费API额度。</string>
+    <string name="ai_compare_run">对比所选智能体</string>
+    <string name="ai_compare_confirm_title">确认多智能体对比</string>
+    <string name="ai_compare_confirm_body">将任务发送给%1$d个AI智能体吗？它们可能连接外部服务并消耗账户额度。不会主动请求修改文件。</string>
 </resources>
