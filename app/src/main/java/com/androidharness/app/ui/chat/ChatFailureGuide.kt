@@ -14,7 +14,7 @@ internal data class ChatFailureGuide(val kind: ChatFailureKind, val httpStatus: 
      */
     fun safeReport(version: String, network: ChatNetworkState): String = buildString {
         appendLine("Saba Studio - Chat recovery")
-        appendLine("App: " + version.filter { it.isLetterOrDigit() || it in ".-+" }.take(40))
+        appendLine("App: " + version.takeWhile { it.isLetterOrDigit() || it in ".-+" }.take(40))
         appendLine("Failure: " + kind.name)
         appendLine("HTTP: " + (httpStatus?.toString() ?: "not available"))
         appendLine("Network: " + network.name)
@@ -44,7 +44,7 @@ internal fun classifyChatFailure(raw: String): ChatFailureGuide {
         status == 404 -> ChatFailureKind.MODEL
         status == 408 || status == 504 || low.contains("sockettimeoutexception") ||
             low.contains("timed out") || low.contains("timeout") -> ChatFailureKind.TIMEOUT
-        status in 500..599 -> ChatFailureKind.SERVER
+        status != null && status in 500..599 -> ChatFailureKind.SERVER
         low.contains("sslhandshakeexception") || low.contains("certpathvalidatorexception") ->
             ChatFailureKind.TLS
         low.contains("unknownhostexception") || low.contains("connectexception") ||
