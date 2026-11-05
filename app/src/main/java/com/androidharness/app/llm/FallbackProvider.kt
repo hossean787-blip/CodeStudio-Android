@@ -16,6 +16,12 @@ import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.transform
 import kotlin.coroutines.coroutineContext
 
+/** Never expose a user credential echoed by an upstream error response or exception. */
+private fun redactFallbackCredentials(message: String, vararg credentials: String): String =
+    credentials.filter { it.isNotEmpty() }.distinct().fold(message) { safe, credential ->
+        safe.replace(credential, "[redacted]")
+    }
+
 internal enum class FallbackFailureKind { QUOTA, TRANSIENT, TERMINAL }
 
 internal fun fallbackFailureKind(failure: StreamEvent.Failure, cause: Throwable? = null): FallbackFailureKind {
@@ -120,12 +126,12 @@ class FallbackProvider(
                     is com.androidharness.app.agent.TaskPaused -> throw e
                     else -> {
                         cause = e
-                        emit(StreamEvent.Failure(e.message ?: "Provider request failed", code = (e as? ApiException)?.code,
+                        emit(StreamEvent.Failure(redactFallbackCredentials(e.message ?: "Provider request failed", key, apiKey), code = (e as? ApiException)?.code,
                             errorCode = (e as? ApiException)?.errorCode))
                     }
                 }
             }.takeWhile { event ->
-                if (event is StreamEvent.Failure) { failure = event; false }
+                if (event is StreamEvent.Failure) { failure = event.copy(message = redactFallbackCredentials(event.message, key, apiKey)); false }
                 else {
                     if (event.hasResponseOutput()) output = true
                     emit(event)
