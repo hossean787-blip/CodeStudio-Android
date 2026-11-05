@@ -16,6 +16,7 @@
 | Cohere Trial | کلید آزمایشی با محدودیت/شرایط تغییرپذیر | https://docs.cohere.com/ |
 | Cloudflare Workers AI | سهمیه رایگان؛ نشانی API به حساب Cloudflare وابسته است؛ راهنمای تنظیم دستی | https://developers.cloudflare.com/workers-ai/platform/pricing/ |
 | Ollama | اجرای محلی بدون کلید ابری؛ نیازمند نصب سرور و مدل | https://docs.ollama.com/ |
+| Hugging Face Inference Providers | اعتبار آزمایشی/ماهانهٔ محدود و قابل تغییر؛ اتصال خودکار غیرفعال | https://huggingface.co/docs/inference-providers/pricing |
 | Public APIs | فهرست تحقیقاتی، نه ارائه‌دهندهٔ آماده | https://github.com/public-apis/public-apis |
 | free-for.dev | فهرست تحقیقاتی، نه ارائه‌دهندهٔ آماده | https://free-for.dev/ |
 
