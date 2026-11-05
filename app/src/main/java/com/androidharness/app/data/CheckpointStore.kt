@@ -48,6 +48,14 @@ class CheckpointStore(private val dao: HarnessDao, val history: WorkspaceFileHis
         )
     }
 
+    /** Only after exclusive publication succeeds: the new file had no previous bytes. */
+    suspend fun recordExclusiveCreation(sessionId: String, turnId: String, relPath: String) {
+        if (dao.checkpointsForTurn(sessionId, turnId).any { it.relPath == relPath }) return
+        dao.insertCheckpoint(CheckpointEntity(id = UUID.randomUUID().toString(), sessionId = sessionId,
+            turnId = turnId, relPath = relPath, contentB64 = "", existedBefore = false,
+            wasDirectory = false, createdAt = System.currentTimeMillis()))
+    }
+
     suspend fun turnsWithCheckpoints(sessionId: String): Set<String> =
         dao.turnsWithCheckpoints(sessionId).toSet()
 

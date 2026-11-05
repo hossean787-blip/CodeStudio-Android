@@ -83,7 +83,11 @@ fun FsNode.readUtf8ForEdit(): String {
 // Real-filesystem implementation (app-private storage)
 // ---------------------------------------------------------------------------
 
-class FileFs(private val root: File) : WorkspaceFs {
+class FileFs(private val root: File) : WorkspaceFs, com.androidharness.app.documents.DocumentExportSink {
+    private val publicationRoot = root.canonicalFile.toPath()
+
+    override fun publishDocumentExclusive(relativePath: String, bytes: ByteArray): String =
+        ExclusiveDocumentPublication.publish(root, publicationRoot, relativePath, bytes)
     override val displayPath: String = root.absolutePath
     override val shellRoot: File = root
     override val isSaf = false
