@@ -80,11 +80,27 @@ class StudyAssistantDeviceTest {
             }
             assertTrue("The study note field must be editable", inserted)
             instrumentation.waitForIdleSync()
-            var generate = visibleNodes().firstOrNull {
-                it.isVisibleToUser && it.text?.toString() == fa.getString(R.string.study_generate)
+            // The IME can cover the action on smaller emulator screens. Scroll until
+            // its semantics node is visible and clickable rather than assuming it is in view.
+            val clickDeadline = SystemClock.uptimeMillis() + 15_000
+            var clicked = false
+            while (!clicked && SystemClock.uptimeMillis() < clickDeadline) {
+                val nodes = visibleNodes()
+                var generate = nodes.firstOrNull {
+                    it.text?.toString() == fa.getString(R.string.study_generate)
+                }
+                while (generate != null && !generate.isClickable) generate = generate.parent
+                if (generate?.isVisibleToUser == true && generate.isEnabled) {
+                    clicked = generate.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                }
+                if (!clicked) {
+                    nodes.filter { it.isScrollable }.forEach {
+                        it.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
+                    }
+                    SystemClock.sleep(150)
+                }
             }
-            while (generate != null && !generate.isClickable) generate = generate.parent
-            assertTrue("The Generate button must be clickable", requireNotNull(generate).performAction(AccessibilityNodeInfo.ACTION_CLICK))
+            assertTrue("The Generate button must be clickable after scrolling", clicked)
             waitForText("پاسخ: بررسی مستقل اطلاعات مالی")
             val directory = File(target.getExternalFilesDir(null), "issue8/study-ui").apply { mkdirs() }
             instrumentation.uiAutomation.takeScreenshot().also { bitmap ->

@@ -37,10 +37,10 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
-              'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
               # Issue #8 item 26: redact upstream credential echoes in fallback status messages.
               'app/src/main/java/com/androidharness/app/llm/FallbackProvider.kt',
               'app/src/test/java/com/androidharness/app/llm/FallbackProviderTest.kt',
+              'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
               # Issue #8 item 11: reviewed secure provider endpoint validation.
               'app/src/main/java/com/androidharness/app/data/ProviderRepository.kt',
               'app/src/test/java/com/androidharness/app/llm/RotatingKeyProviderTest.kt',
@@ -182,6 +182,10 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
               'app/src/main/java/com/androidharness/app/ui/library/LibraryDesignScreen.kt',
+              # Issue #8 item 21: per-project library storage, project isolation tests.
+              'app/src/main/java/com/androidharness/app/ui/library/LibraryScope.kt',
+              'app/src/test/java/com/androidharness/app/ui/library/LibraryScopeTest.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/library/SourceIndexDeviceTest.kt',
               'app/src/main/java/com/androidharness/app/MainActivity.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/ChatScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/projects/ProjectsScreen.kt',
@@ -376,7 +380,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.study.StudyAssistantDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.study.StudyAssistantDeviceTest,com.androidharness.app.ui.library.SourceIndexDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
             mkdir -p delivery-emulator
             adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
             # Validate the capture in a file: emulator-runner executes script lines individually.
