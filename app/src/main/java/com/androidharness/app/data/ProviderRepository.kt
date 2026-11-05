@@ -246,11 +246,15 @@ class ProviderRepository(
     suspend fun add(name: String, type: ProviderType, baseUrl: String, model: String, apiKeys: ProviderKeyPool,
         headers: List<com.androidharness.app.llm.ProviderHeader> = emptyList()): ProviderConfig {
         require(apiKeys.error() == null) { apiKeys.error().orEmpty() }
+        val safeEndpoint = baseUrl.ifBlank { type.defaultBaseUrl }.trim()
+        require(com.androidharness.app.llm.ProviderEndpointPolicy.issue(safeEndpoint) == null) {
+            "Invalid or insecure provider endpoint"
+        }
         val config = ProviderConfig(
             id = UUID.randomUUID().toString(),
             name = name,
             type = type,
-            baseUrl = baseUrl.ifBlank { type.defaultBaseUrl },
+            baseUrl = safeEndpoint,
             model = model,
             headers = com.androidharness.app.llm.ProviderHeaders.normalized(headers),
         )
@@ -277,6 +281,9 @@ class ProviderRepository(
             val custom = customModels(HarnessProvider.ID).map { it.id }.toSet()
             save(current().map { if (it.id == config.id) HarnessProvider.config.copy(model = HarnessProvider.sanitize(config.model, custom)) else it })
             return
+        }
+        require(com.androidharness.app.llm.ProviderEndpointPolicy.issue(config.baseUrl) == null) {
+            "Invalid or insecure provider endpoint"
         }
         val headers = com.androidharness.app.llm.ProviderHeaders.normalized(config.headers)
         saveKeys()

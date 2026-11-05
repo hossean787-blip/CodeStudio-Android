@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saba_api_management_nav">AI API management</string>
+    <string name="saba_api_management_title">AI API management</string>
+    <string name="saba_api_management_summary">Models, connections, settings and estimated API costs</string>
+    <string name="saba_api_management_connection_test">Check model-list connection</string>
+    <string name="saba_api_management_untested">Not tested</string>
+    <string name="saba_api_management_testing">Checking connection…</string>
+    <string name="saba_api_management_catalog_ok">Model list accessible (not a chat test)</string>
+    <string name="saba_api_management_catalog_failed">Model list unavailable; check key, network or endpoint</string>
+    <string name="saba_api_management_price">Catalog price: $%1$s input / $%2$s output per 1M tokens</string>
+    <string name="saba_api_management_price_unknown">Price unavailable for this provider/model</string>
+    <string name="saba_api_management_local_price">Local endpoint: no cloud API rate</string>
+    <string name="saba_api_management_cost_note">Catalog estimates are not invoices. Gateways and resellers may charge differently. Verify prices on the provider website.</string>
+    <string name="saba_api_endpoint_invalid">Enter a valid http(s) server URL without spaces.</string>
+    <string name="saba_api_endpoint_insecure">Use HTTPS for remote servers. HTTP is accepted only for this device (localhost).</string>
+    <string name="saba_api_endpoint_credentials">Do not put usernames or passwords in the server address.</string>
+    <string name="saba_api_endpoint_components">Remove query strings and fragments from the server address.</string>
+</resources>

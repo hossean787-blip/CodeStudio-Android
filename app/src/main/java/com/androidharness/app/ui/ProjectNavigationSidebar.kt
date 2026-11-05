@@ -90,6 +90,12 @@ internal data class SidebarChats(
             return SidebarChats(active.filter { it.id in pinned }, rest.filter { it.projectId in known }.groupBy { it.projectId!! },
                 rest.filter { it.projectId !in known }, sessions.filter { it.id in archived })
         }
+
+        /** Active conversations in a stable, newest-first timeline, independent of pinning. */
+        fun history(sessions: List<SessionEntity>, archived: Set<String>): List<SessionEntity> =
+            sessions.filterNot { it.id in archived }
+                .sortedWith(compareByDescending<SessionEntity> { it.updatedAt }
+                    .thenByDescending { it.createdAt }.thenBy { it.id })
     }
 }
 
@@ -129,11 +135,15 @@ internal fun ProjectNavigationSidebar(
     var expandedProjects by rememberSaveable { mutableStateOf(emptyList<String>()) }
     var showArchived by rememberSaveable { mutableStateOf(false) }
     var showSaved by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(projectsView, chatOnly) { showArchived = false; showSaved = false }
+    var showHistory by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(projectsView, chatOnly) {
+        showArchived = false
+        showSaved = false
+    }
     // The Saved button only exists while something is saved, so leave its list rather than strand an empty one.
     LaunchedEffect(savedAnswers.isEmpty()) { if (savedAnswers.isEmpty()) showSaved = false }
     var toolsOpen by rememberSaveable { mutableStateOf(false) }
-    var integrationsOpen by rememberSaveable { mutableStateOf(true) }
+    var integrationsOpen by rememberSaveable { mutableStateOf(false) }
     var catalogOpen by rememberSaveable { mutableStateOf(false) }
     val density = LocalDensity.current
     var footerHeight by remember { mutableStateOf(0.dp) }
@@ -141,6 +151,7 @@ internal fun ProjectNavigationSidebar(
     val currentProject = sessions.firstOrNull { it.id == selectedSession }?.projectId ?: selectedProject
     val expanded = expandedProjects
     val grouped = remember(projects, sessions, pinned, archived) { SidebarChats.of(projects, sessions, pinned, archived) }
+    val history = remember(sessions, archived) { SidebarChats.history(sessions, archived) }
     val matching = remember(sessions, projects, query) {
         val names = projects.associate { it.id to it.name }
         sessions.filter { it.title.contains(query.trim(), true) || names[it.projectId]?.contains(query.trim(), true) == true }
@@ -151,7 +162,7 @@ internal fun ProjectNavigationSidebar(
     val selectableIds = when {
         query.isNotBlank() -> (matching.map { it.id } + messageHits.map { it.sessionId }).toSet() intersect sessions.mapTo(mutableSetOf()) { it.id }
         showSaved -> emptySet()
-        projectsView -> sessions.filter { it.id !in archived && it.projectId in expandedProjects && projects.any { p -> p.id == it.projectId && (p.id in projectArchives) == showArchived } }.mapTo(mutableSetOf()) { it.id }
+        projectsView && !showHistory -> sessions.filter { it.id !in archived && it.projectId in expandedProjects && projects.any { p -> p.id == it.projectId && (p.id in projectArchives) == showArchived } }.mapTo(mutableSetOf()) { it.id }
         showArchived -> grouped.archived.mapTo(mutableSetOf()) { it.id }
         else -> sessions.filter { it.id !in archived }.mapTo(mutableSetOf()) { it.id }
     }
@@ -218,7 +229,7 @@ internal fun ProjectNavigationSidebar(
                         onClick = { onIntegrations("all") })
                 }
             }
-            SidebarNavRow(uiContext.getString(R.string.settings_providers_title), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
+            SidebarNavRow(uiContext.getString(R.string.saba_api_management_nav), Icons.Outlined.Hub, currentRoute == "providers", onClick = onProviders)
             SidebarNavRow(uiContext.getString(R.string.settings_page_title), Icons.Outlined.Settings, currentRoute == "settings", onClick = onSettings)
         }
     }
@@ -293,36 +304,63 @@ internal fun ProjectNavigationSidebar(
                         })
                     if (chatOnly) SidebarCollectionButtons(
                         savedCount = savedAnswers.size, showSaved = showSaved, showArchived = showArchived,
-                        onToggleSaved = { onQueryChange(""); showArchived = false; showSaved = !showSaved },
-                        onToggleArchived = { onQueryChange(""); showSaved = false; showArchived = !showArchived },
+                        onToggleSaved = { onQueryChange(""); showHistory = false; showArchived = false; showSaved = !showSaved },
+                        onToggleArchived = { onQueryChange(""); showHistory = false; showSaved = false; showArchived = !showArchived },
                     )
-                    if (!chatOnly) Row(Modifier.fillMaxWidth().padding(start = 14.dp, end = 8.dp, top = 2.dp, bottom = 4.dp),
+                    Row(Modifier.fillMaxWidth().padding(start = 14.dp, end = 8.dp, top = 2.dp, bottom = 4.dp),
                         verticalAlignment = Alignment.CenterVertically) {
+                        val tabs = if (chatOnly) listOf(
+                            Triple(false, false, uiContext.getString(R.string.ui_chats)),
+                            Triple(false, true, uiContext.getString(R.string.ui_history)),
+                        ) else listOf(
+                            Triple(false, false, uiContext.getString(R.string.ui_chats)),
+                            Triple(true, false, uiContext.getString(R.string.ui_projects)),
+                            Triple(false, true, uiContext.getString(R.string.ui_history)),
+                        )
                         FlowRow(Modifier.weight(1f).harnessGlass(scheme.surfaceContainer, RoundedCornerShape(if (glass) 24.dp else 12.dp)).padding(3.dp),
                             verticalArrangement = Arrangement.spacedBy(2.dp),
-                            maxItemsInEachRow = if (stackTabs) 1 else 2) {
-                            listOf(false to uiContext.getString(R.string.ui_chats), true to uiContext.getString(R.string.ui_projects)).forEach { (projectTab, label) ->
-                                val selectedTab = projectsView == projectTab
+                            maxItemsInEachRow = if (stackTabs) 1 else if (chatOnly) 2 else 3) {
+                            tabs.forEach { (projectTab, historyTab, label) ->
+                                val selectedTab = if (historyTab) showHistory else !showHistory && projectsView == projectTab
                                 val tabColor by animateColorAsState(
                                     if (selectedTab) scheme.secondaryContainer else scheme.surfaceContainer,
                                     animationSpec = expressiveEffectsSpec(), label = "sidebar tab color",
                                 )
                                 val tabCorner by animateDpAsState(
-                                    if (LocalHarnessGlass.current.mode != HarnessGlassMode.OFF) 24.dp else if (selectedTab) 18.dp else 9.dp,
+                                    if (glass) 24.dp else if (selectedTab) 18.dp else 9.dp,
                                     animationSpec = expressiveSpatialSpec(), label = "sidebar tab shape",
                                 )
-                                Surface(onClick = { onProjectsViewChange(projectTab) }, shape = RoundedCornerShape(tabCorner),
-                                    color = tabColor,
+                                Surface(onClick = {
+                                    showHistory = historyTab
+                                    showArchived = false
+                                    showSaved = false
+                                    if (!chatOnly && projectsView != projectTab) onProjectsViewChange(projectTab)
+                                }, shape = RoundedCornerShape(tabCorner), color = tabColor,
                                     modifier = Modifier.weight(1f).semantics { role = Role.Tab; selected = selectedTab }) {
-                                    Box(Modifier.heightIn(min = 42.dp).padding(horizontal = 2.dp), contentAlignment = Alignment.Center) {
-                                        Text(label, style = MaterialTheme.typography.labelLarge,
+                                    Row(Modifier.heightIn(min = 42.dp).padding(horizontal = 3.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center) {
+                                        val tabIcon = when {
+                                            historyTab -> Icons.Outlined.History
+                                            projectTab -> Icons.Outlined.FolderOpen
+                                            else -> Icons.Outlined.ChatBubbleOutline
+                                        }
+                                        Icon(tabIcon, null, Modifier.size(16.dp),
+                                            tint = if (selectedTab) scheme.onSecondaryContainer else scheme.onSurfaceVariant)
+                                        Spacer(Modifier.width(4.dp))
+                                        Text(label, style = MaterialTheme.typography.labelMedium,
                                             maxLines = 1, overflow = TextOverflow.Ellipsis,
                                             color = if (selectedTab) scheme.onSecondaryContainer else scheme.onSurfaceVariant)
                                     }
                                 }
                             }
                         }
-                        ExpressiveIconButton(onClick = { onQueryChange(""); showArchived = !showArchived }) {
+                        if (!chatOnly) ExpressiveIconButton(onClick = {
+                            onQueryChange("")
+                            showHistory = false
+                            showSaved = false
+                            showArchived = !showArchived
+                        }) {
                             Icon(if (showArchived) Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Archive,
                                 if (showArchived) uiContext.getString(R.string.ui_back_to_active, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])) else uiContext.getString(R.string.ui_show_archived, uiContext.getString(if (projectsView) R.string.ui_projects else R.string.ui_chats).lowercase(uiContext.resources.configuration.locales[0])),
                                 Modifier.size(19.dp), tint = if (showArchived) scheme.primary else scheme.onSurfaceVariant)
@@ -357,7 +395,7 @@ internal fun ProjectNavigationSidebar(
                             Text(uiContext.getString(R.string.ui_no_chats_found_try_another_title_or), Modifier.padding(20.dp),
                                 style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
                         }
-                    } else if (projectsView) {
+                    } else if (projectsView && !showHistory) {
                         item {
                             Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text(if (showArchived) uiContext.getString(R.string.ui_archived_projects) else uiContext.getString(R.string.ui_your_projects), Modifier.weight(1f),
@@ -391,6 +429,13 @@ internal fun ProjectNavigationSidebar(
                         if (visibleProjects.isEmpty()) item {
                             Text(if (showArchived) uiContext.getString(R.string.ui_no_archived_projects) else uiContext.getString(R.string.ui_add_a_project_to_organize_its_chats),
                                 Modifier.padding(20.dp), style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
+                        }
+                    } else if (showHistory && !showArchived && !showSaved) {
+                        item { SidebarSectionHeader(uiContext.getString(R.string.ui_history), true, null) }
+                        items(history, key = { "history:${it.id}" }) { Chat(it, showProject = true) }
+                        if (history.isEmpty()) item {
+                            Text(uiContext.getString(R.string.ui_your_conversations_will_appear_here), Modifier.padding(20.dp),
+                                style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
                         }
                     } else if (showSaved) {
                         item { SidebarSectionHeader(uiContext.getString(R.string.sidebar_saved_answers), true, null) }
