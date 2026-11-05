@@ -128,6 +128,7 @@ internal fun ProjectNavigationSidebar(
     savedAnswers: List<SavedAnswerRow> = emptyList(),
     onOpenSavedAnswer: (SavedAnswerRow) -> Unit = {},
     onDocuments: (() -> Unit)? = null,
+    onLearningStudio: (() -> Unit)? = null,
     onLibraryDesign: (() -> Unit)? = null,
 ) {
     val uiContext = androidx.compose.ui.platform.LocalContext.current
@@ -195,6 +196,9 @@ internal fun ProjectNavigationSidebar(
             SidebarNavRow(uiContext.getString(R.string.saba_claude_skills_nav), Icons.Outlined.AutoAwesome, currentRoute == "skills", onClick = onSkills)
             onDocuments?.let { open ->
                 SidebarNavRow(uiContext.getString(R.string.ds_title), Icons.Outlined.Description, currentRoute == "document-studio", onClick = open)
+            }
+            onLearningStudio?.let { open ->
+                SidebarNavRow("ابزارهای آموزشی و تخصصی", Icons.Outlined.School, currentRoute == "learning-studio", onClick = open)
             }
             onLibraryDesign?.let { open ->
                 SidebarNavRow("کتابخانه و طراحی", Icons.Outlined.CollectionsBookmark, currentRoute == "library-design", onClick = open)
