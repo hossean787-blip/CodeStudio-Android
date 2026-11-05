@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_api_bank_title">Каталог бесплатных ИИ API</string>
+    <string name="free_api_bank_intro">Изучите официальные бесплатные квоты, пробные доступы и локальные варианты без ключа. Лимиты и модели меняются; ключи и платные тарифы автоматически не создаются.</string>
+    <string name="free_api_bank_expand">Показать бесплатные API</string>
+    <string name="free_api_bank_collapse">Скрыть каталог API</string>
+    <string name="free_api_bank_search">Поиск провайдеров и каталогов</string>
+    <string name="free_api_bank_ready_filter">Подключается через текущие настройки</string>
+    <string name="free_api_bank_tier_free">Бесплатная квота с ограничениями по моделям и частоте; могут потребоваться аккаунт и API-ключ</string>
+    <string name="free_api_bank_tier_trial">Пробный ключ с лимитами; доступ или кредиты могут закончиться</string>
+    <string name="free_api_bank_tier_local">Без облачного ключа; нужен установленный и запущенный локальный сервер</string>
+    <string name="free_api_bank_tier_setup">Возможна бесплатная квота; нужна настройка адреса для конкретного аккаунта</string>
+    <string name="free_api_bank_tier_directory">Внешний справочник API, не готовое подключение</string>
+    <string name="free_api_bank_no_card">Согласно официальной документации для бесплатного режима не нужна платежная карта</string>
+    <string name="free_api_bank_official_docs">Официальная инструкция</string>
+    <string name="free_api_bank_connect">Настроить провайдера</string>
+    <string name="free_api_bank_no_card_filter">Без карты</string>
+    <string name="free_api_bank_keyless_filter">Без облачного ключа</string>
+    <string name="free_api_bank_no_matches">Ничего не найдено. Измените фильтры.</string>
+    <string name="free_api_bank_warning">Используйте только свои учетные данные. Нет безлимитного доступа, автоматической регистрации аккаунтов, обхода лимитов или автоматических списаний. Проверьте цены, модели и конфиденциальность. Ротация ключей и смена провайдера используют существующие настройки согласия.</string>
+</resources>
