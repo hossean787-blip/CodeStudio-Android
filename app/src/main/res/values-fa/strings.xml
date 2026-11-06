@@ -139,7 +139,7 @@
     <string name="settings_search_license_title">"مجوز"</string>
     <string name="settings_search_license_desc">"درباره · مجوز MIT و معنای آن برای فورک ها"</string>
     <string name="settings_search_credits_title">"اعتبارات"</string>
-    <string name="settings_search_credits_desc">درباره · منابع متن‌باز و سازندگان اصلی صبا استودیو</string>
+    <string name="settings_search_credits_desc">درباره · صبا استودیو و سورس متن‌باز اصلی AndroidHarness</string>
     <string name="settings_search_author_title">"نویسنده"</string>
     <string name="settings_search_author_desc">درباره · سازنده و سورس اصلی AndroidHarness</string>
     <string name="settings_anchor_progress_bar_style">"سبک نوار پیشرفت"</string>

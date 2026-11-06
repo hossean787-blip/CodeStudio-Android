@@ -152,7 +152,7 @@
     <string name="settings_search_license_title">License</string>
     <string name="settings_search_license_desc">About · The MIT license and what it means for forks</string>
     <string name="settings_search_credits_title">Credits</string>
-    <string name="settings_search_credits_desc">About · Open-source foundations of Saba Studio</string>
+    <string name="settings_search_credits_desc">About · Saba Studio and its AndroidHarness open-source foundation</string>
     <string name="settings_search_author_title">Author</string>
     <string name="settings_search_author_desc">About · Original AndroidHarness author and source links</string>
 
