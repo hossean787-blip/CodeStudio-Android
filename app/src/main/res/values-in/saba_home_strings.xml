@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">Hubungkan model AI untuk memulai</string>
     <string name="saba_home_connect_action">Hubungkan model AI</string>
     <string name="saba_home_question">Apa yang akan kita buat hari ini?</string>
+    <string name="saba_home_kicker">SABA · RUANG KERJA AI</string>
+    <string name="saba_home_quick_start">Mulai cepat</string>
 </resources>

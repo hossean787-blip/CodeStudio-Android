@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">Conecte um modelo de IA para começar</string>
     <string name="saba_home_connect_action">Conectar modelo de IA</string>
     <string name="saba_home_question">O que vamos criar hoje?</string>
+    <string name="saba_home_kicker">SABA · ESPAÇO DE IA</string>
+    <string name="saba_home_quick_start">Início rápido</string>
 </resources>

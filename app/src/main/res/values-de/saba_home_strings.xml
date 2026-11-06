@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">Verbinde zum Start ein KI-Modell</string>
     <string name="saba_home_connect_action">KI-Modell verbinden</string>
     <string name="saba_home_question">Was bauen wir heute?</string>
+    <string name="saba_home_kicker">SABA · KI-ARBEITSBEREICH</string>
+    <string name="saba_home_quick_start">Schnellstart</string>
 </resources>

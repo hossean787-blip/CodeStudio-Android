@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">Для начала подключите модель ИИ</string>
     <string name="saba_home_connect_action">Подключить модель ИИ</string>
     <string name="saba_home_question">Что мы создадим сегодня?</string>
+    <string name="saba_home_kicker">SABA · РАБОЧЕЕ ПРОСТРАНСТВО ИИ</string>
+    <string name="saba_home_quick_start">Быстрый старт</string>
 </resources>
