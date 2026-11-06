@@ -217,19 +217,19 @@ class ChatExperienceDeviceTest {
                 }
                 await("Start with one small idea you can test this week.")
                 assertFalse(chatVm.state.value.messages.any { it.text == RunRecovery.CONTINUE_PROMPT })
-                await("Thoughts")
+                await("Thought for 3s")
                 assertNull(find("Searched the web"))
                 assertNull(find("Work summary")); assertNull(find("RAW_PRIVATE_TOOL_OUTPUT"))
                 assertNull(find(RunRecovery.CONTINUE_PROMPT))
                 assertNull(find("Chat tools off")); assertNull(find("Continue in Code"))
                 screenshot("chat-reply")
-                tap("Thoughts"); await("Consider the audience and keep the first experiment small.")
+                tap("Thought for 3s"); assertNull(find("Consider the audience and keep the first experiment small."))
                 screenshot("chat-thoughts-expanded")
                 scenario.onActivity { scale.value = 1.5f; theme.value = ThemeMode.DARK }
-                await("Consider the audience and keep the first experiment small.")
+                assertNull(find("Consider the audience and keep the first experiment small."))
                 screenshot("chat-thoughts-large-dark")
                 scenario.onActivity { scale.value = 1f; theme.value = ThemeMode.LIGHT }
-                tap("Thoughts")
+                tap("Thought for 3s")
                 val count = c.sessions.sessions.first().size
                 val offerTurn = "chat-offer-fixture"
                 c.sessions.addMessage(chat, ChatMessage(Role.USER, "Apply the chosen idea to my project"), offerTurn)
@@ -286,7 +286,7 @@ class ChatExperienceDeviceTest {
                 }
             } } }
             await("Thinking"); assertNull(find("Initial thought"))
-            tap("Thinking"); await("Initial thought")
+            tap("Thinking"); assertNull(find("Initial thought"))
             for (index in 1..12) {
                 scenario.onActivity {
                     val call = ToolCallData("search-$index", if (index % 2 == 0) "web_fetch" else "web_search", "RAW_ARGUMENTS")
@@ -294,19 +294,18 @@ class ChatExperienceDeviceTest {
                         ChatMessage(Role.TOOL, "RAW_RESULTS", toolCallId = call.id)
                     thought.value = "Latest thought $index"
                 }
-                await("Latest thought $index")
+                assertNull(find("Latest thought $index"))
             }
             await("Progress update 12")
             assertNull(find("Initial thought")); assertNull(find("RAW_ARGUMENTS")); assertNull(find("RAW_RESULTS"))
-            val latest = android.graphics.Rect().also { await("Latest thought 12").getBoundsInScreen(it) }
-            assertTrue("The latest thought is within the visible inner viewport", latest.top > 0 && latest.bottom < instrumentation.targetContext.resources.displayMetrics.heightPixels)
+            assertNull(find("Latest thought 12"))
             screenshot("chat-nested-activity-auto-follow")
             // A finished tool is only a brief phase; ongoing model work returns to Thinking.
             SystemClock.sleep(2_250)
-            tap("Thinking"); awaitGone("Latest thought 12")
-            tap("Thinking"); await("Latest thought 12")
+            tap("Thinking"); assertNull(find("Latest thought 12"))
+            tap("Thinking"); assertNull(find("Latest thought 12"))
             scenario.onActivity { live.value = false }
-            await("Thoughts"); await("Latest thought 12")
+            await("Thoughts"); assertNull(find("Latest thought 12"))
             screenshot("chat-nested-completed-latest")
         }
     }
@@ -330,19 +329,19 @@ class ChatExperienceDeviceTest {
                 }
                 await("What is the news today?")
                 c.sessions.addMessage(chat, ChatMessage(Role.ASSISTANT, intro, thinking = "Check the date and use reliable sources.", thinkingMs = 1000, toolCalls = listOf(search)), turn)
-                await("Thoughts")
+                await("Thought for 1s")
                 assertNull(find(intro))
-                tap("Thoughts"); await(intro)
+                tap("Thought for 1s"); await(intro)
                 c.sessions.addMessage(chat, ChatMessage(Role.TOOL, "1. Example report\n   https://example.com/report\n   RAW_SEARCH_SNIPPET", toolCallId = search.id, toolName = search.name), turn)
                 await("Searched the web"); await(intro)
                 c.sessions.addMessage(chat, ChatMessage(Role.ASSISTANT, followup, thinking = "Use the original report for detail.", thinkingMs = 2000, toolCalls = listOf(fetch)), turn)
-                await("Thoughts"); await(followup)
+                await("Thought for 3s"); await(followup)
                 c.sessions.addMessage(chat, ChatMessage(Role.TOOL, "RAW_PAGE_CONTENT", toolCallId = fetch.id, toolName = fetch.name), turn)
                 c.sessions.addMessage(chat, ChatMessage(Role.ASSISTANT, "The report describes a new discovery.\n{\"type\":\"callout\",\"tone\":\"info\",\"title\":\"Today’s lead story\",\"text\":\"A new discovery was announced.\"}\n[Example report](https://example.com/report)"), turn)
                 await("Read web pages"); await(followup); await("Today’s lead story")
                 assertNull(find("{\"type\":\"callout\""))
                 screenshot("chat-nested-chronological-rich-reply")
-                tap("Thoughts")
+                tap("Thought for 3s")
                 awaitGone(intro); awaitGone(followup); awaitGone("Read web pages")
                 await("Today’s lead story")
                 var sourceNode = await("Sources · 1")
@@ -362,9 +361,9 @@ class ChatExperienceDeviceTest {
                     val vm = ChatViewModel(c, chat); store.put("chat-recreated", vm)
                     activity.setContent { HarnessTheme(dynamicColor = false) { ChatScreen(vm, {}, { _, _ -> }, {}, {}, onOpenSubagent = {}) } }
                 }
-                await("Thoughts"); await("Sources · 1")
+                await("Thought for 3s"); await("Sources · 1")
                 assertNull(find(followup))
-                tap("Thoughts"); await(followup); await("Read web pages")
+                tap("Thought for 3s"); await(followup); await("Read web pages")
             }
         } finally {
             instrumentation.runOnMainSync { store.clear() }
@@ -419,14 +418,14 @@ class ChatExperienceDeviceTest {
                 } } }
                 await("Keep thinking collapsed"); await("Thinking")
                 assertNull(find("A private reasoning detail"))
-                tap("Thinking"); await("A private reasoning detail")
+                tap("Thinking"); assertNull(find("A private reasoning detail"))
                 scenario.onActivity { live.value = false; font.value = 1.5f }
-                await("A private reasoning detail")
+                assertNull(find("A private reasoning detail"))
                 screenshot("chat-thinking-setting-large-text")
                 scenario.onActivity { live.value = true }
                 tap("Keep thinking collapsed")
                 assertFalse(c.settings.settings.first().chatKeepThinkingCollapsed)
-                await("A private reasoning detail")
+                assertNull(find("A private reasoning detail"))
             }
         } finally { c.settings.setChatKeepThinkingCollapsed(original) }
     }
@@ -622,7 +621,7 @@ class ChatExperienceDeviceTest {
         }
     }
 
-    @Test fun codingThinkingShowsLiveAndSavedMetricsWithoutDoubleCounting(): Unit = runBlocking {
+    @Test fun codingThinkingKeepsPrivateReasoningAndMetricsOutOfChat(): Unit = runBlocking {
         val timing = mutableStateOf(ThinkingTiming(startedAt = ThinkingTiming.now() - 2000))
         val live = mutableStateOf(true)
         ActivityScenario.launch(ChatListTestActivity::class.java).use { scenario ->
@@ -634,22 +633,16 @@ class ChatExperienceDeviceTest {
                     }
                 }
             } } }
-            await("Thinking"); await("abcd".repeat(50))
-            assertTrue("Expanded reasoning keeps the live token count visible", nodes().any { it.isVisibleToUser && it.text?.toString()?.contains("~50 tokens") == true })
+            await("Thinking")
+            assertNull(find("abcd".repeat(50)))
+            assertFalse(nodes().any { it.isVisibleToUser && it.text?.toString()?.contains("tokens") == true })
             tap("Thinking")
-            fun metric() = nodes().firstOrNull { it.isVisibleToUser && it.text?.toString()?.contains("tokens") == true }
-            val deadline = SystemClock.uptimeMillis() + 8000
-            while (metric() == null && SystemClock.uptimeMillis() < deadline) SystemClock.sleep(100)
-            val first = requireNotNull(metric()).text.toString()
-            assertTrue(first.contains("~50 tokens"))
-            SystemClock.sleep(1200)
-            assertNotEquals(first, metric()?.text?.toString())
+            assertNull(find("abcd".repeat(50)))
             scenario.onActivity { timing.value = ThinkingTiming(elapsedMs = 5000); live.value = false }
-            await("5s · 1.5k tokens")
-            SystemClock.sleep(1200)
-            await("5s · 1.5k tokens")
-            tap("Thoughts"); await("abcd".repeat(50)); await("5s · 1.5k tokens")
-            screenshot("code-expanded-thinking-metrics")
+            await("Thoughts")
+            assertNull(find("abcd".repeat(50)))
+            assertFalse(nodes().any { it.isVisibleToUser && it.text?.toString()?.contains("tokens") == true })
+            screenshot("code-private-reasoning-hidden")
         }
     }
 
