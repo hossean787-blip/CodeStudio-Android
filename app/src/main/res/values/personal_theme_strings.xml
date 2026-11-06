@@ -19,12 +19,12 @@
     <string name="theme_custom_delete">Delete palette</string>
     <string name="theme_custom_delete_message">Remove this saved palette? The app will return to its selected preset if this palette is active.</string>
     <string name="theme_custom_preview">Palette preview</string>
-    <string name="theme_canvas_title">Harness Canvas</string>
+    <string name="theme_canvas_title">Saba Canvas</string>
     <string name="theme_canvas_description">Your own backdrop for Chat and Code.</string>
     <string name="theme_canvas_add">Add image</string>
     <string name="theme_canvas_change">Change image</string>
     <string name="theme_canvas_remove">Remove image</string>
-    <string name="theme_canvas_enabled">Show Harness Canvas</string>
+    <string name="theme_canvas_enabled">Show Saba Canvas</string>
     <string name="theme_canvas_chat">Chat</string>
     <string name="theme_canvas_code">Code</string>
     <string name="theme_canvas_dim">Image dimming</string>

@@ -18,6 +18,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.androidharness.app.R
 import com.androidharness.app.core.ChatMessage
 import com.androidharness.app.core.Role
+import com.androidharness.app.core.ToolCallData
 import com.androidharness.app.data.ThemeMode
 import com.androidharness.app.ui.chat.ChatListTestActivity
 import com.androidharness.app.ui.theme.HarnessTheme
@@ -113,6 +114,65 @@ class StudioUiDeviceTest {
                 it.isVisibleToUser &&
                     it.text?.toString() == instrumentation.targetContext.getString(R.string.chat_thought)
             })
+        }
+    }
+
+    @Test fun persianResearchProgressUsesLocalizedLabelsAndRtl() {
+        val context = instrumentation.targetContext
+        val fa = context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+            setLocale(Locale.forLanguageTag("fa"))
+            setLayoutDirection(Locale.forLanguageTag("fa"))
+        })
+        val toolId = "research-progress-fixture"
+        val messages = listOf(
+            ChatMessage(role = Role.ASSISTANT,
+                toolCalls = listOf(ToolCallData(toolId, "web_search", "{}"))),
+            ChatMessage(role = Role.TOOL,
+                text = "[sources this turn: 2/5, 3 remaining; pages read: 1/2 required]",
+                toolCallId = toolId, toolName = "web_search"),
+        )
+        ActivityScenario.launch(ChatListTestActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                activity.setContent {
+                    HarnessTheme(themeMode = ThemeMode.LIGHT, dynamicColor = false) {
+                        CompositionLocalProvider(
+                            LocalContext provides fa,
+                            LocalLayoutDirection provides LayoutDirection.Rtl,
+                        ) {
+                            Surface {
+                                Box(Modifier.fillMaxSize()) {
+                                    ChatActivity(messages = messages, autoExpand = false,
+                                        showThinkingMetrics = false)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            instrumentation.waitForIdleSync()
+            val sourceLabel = fa.getString(R.string.chat_activity_sources_progress, 2, 5)
+            val readLabel = fa.getString(R.string.chat_activity_pages_read, 1)
+            assertTrue("Persian source count not visible", visibleNodes().any {
+                it.isVisibleToUser && it.text?.toString()?.contains(sourceLabel) == true
+            })
+            assertTrue("Persian page count not visible", visibleNodes().any {
+                it.isVisibleToUser && it.text?.toString()?.contains(readLabel) == true
+            })
+            assertFalse("English research status leaked into Persian UI", visibleNodes().any {
+                it.isVisibleToUser && (it.text?.toString()?.contains("/5 sources") == true ||
+                    it.text?.toString()?.endsWith(" read") == true)
+            })
+            val dir = File(context.getExternalFilesDir(null), "issue8/ui-redesign").apply { mkdirs() }
+            val screenshot = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+            try {
+                val evidence = File(dir, "chat-research-fa-rtl.png")
+                evidence.outputStream().use {
+                    assertTrue(screenshot.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it))
+                }
+                assertTrue("RTL research screenshot missing", evidence.length() > 2048L)
+            } finally {
+                screenshot.recycle()
+            }
         }
     }
 }

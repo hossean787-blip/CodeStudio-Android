@@ -19,22 +19,22 @@
     <string name="theme_custom_delete">حذف پالت</string>
     <string name="theme_custom_delete_message">این پالت ذخیره‌شده حذف شود؟ اگر این پالت فعال باشد، برنامه به پیش‌فرض انتخاب‌شده برمی‌گردد.</string>
     <string name="theme_custom_preview">پیش‌نمایش پالت</string>
-    <string name="theme_canvas_title">Harness Canvas</string>
+    <string name="theme_canvas_title">بوم صبا</string>
     <string name="theme_canvas_description">پس‌زمینه اختصاصی شما برای گفتگو و کد.</string>
     <string name="theme_canvas_add">افزودن تصویر</string>
     <string name="theme_canvas_change">تغییر تصویر</string>
     <string name="theme_canvas_remove">حذف تصویر</string>
-    <string name="theme_canvas_enabled">نمایش Harness Canvas</string>
+    <string name="theme_canvas_enabled">نمایش بوم صبا</string>
     <string name="theme_canvas_chat">گفتگو</string>
     <string name="theme_canvas_code">کد</string>
     <string name="theme_canvas_dim">تیره‌کردن تصویر</string>
     <string name="theme_canvas_dim_hint">تصویر را در تم شما محو می‌کند تا متن واضح‌تر باشد.</string>
-    <string name="theme_canvas_colors">هماهنگی رنگ‌های Canvas</string>
+    <string name="theme_canvas_colors">هماهنگی رنگ‌های بوم</string>
     <string name="theme_canvas_colors_hint">پالت رنگ برنامه را از این تصویر می‌سازد.</string>
-    <string name="theme_canvas_working">در حال آماده‌سازی Canvas شما…</string>
+    <string name="theme_canvas_working">در حال آماده‌سازی بوم شما…</string>
     <string name="theme_canvas_error">استفاده از آن تصویر ممکن نشد. عکس دیگری کمتر از ۳۲ مگابایت امتحان کنید.</string>
     <string name="theme_canvas_empty">یک عکس یا اثر هنری اضافه کنید تا این فضا متعلق به شما باشد.</string>
-    <string name="theme_canvas_preview_message">گفتگوهای شما، Canvas شما.</string>
+    <string name="theme_canvas_preview_message">گفتگوهای شما، بوم شما.</string>
     <string name="theme_canvas_preview_reply">خودتان را راحت کنید.</string>
     <string name="theme_canvas_color_area">ناحیه رنگ</string>
 </resources>

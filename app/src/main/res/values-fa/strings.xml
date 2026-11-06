@@ -705,7 +705,7 @@
     <string name="chat_switch_attachments">"قبل از تغییر بخش، پیوست‌ها را ارسال یا حذف. پیش نویس شما حفظ خواهد شد."</string>
     <string name="chat_file_requires_code">"برای این فایل از کد استفاده کنید. گفتگوی می تواند تصاویر، فایل های متنی و PDF با متن قابل استخراج را بخواند."</string>
     <string name="chat_thinking">"فکر کردن"</string>
-    <string name="chat_thought">"افکار"</string>
+    <string name="chat_thought">فعالیت پاسخ</string>
     <string name="chat_settings_title">"تنظیمات گفتگو"</string>
     <string name="chat_global_instructions">"دستورالعمل های گفتگوی جهانی"</string>
     <string name="chat_global_instructions_summary">"راهنمای پیش‌فرض برای همه گفتگو‌ها."</string>
@@ -751,9 +751,9 @@
     <string name="chat_image_shared">"تصویر آماده اشتراک گذاری است"</string>
     <string name="chat_image_share_failed">"تصویر به اشتراک گذاشته نشد"</string>
     <string name="chat_sources_library">"منابع در این گفتگو"</string>
-    <string name="chat_sources_library_count">"منابع %1$d"</string>
-    <string name="chat_sources_library_empty">"هنوز هیچ منبع وب در این گفتگوی وجود ندارد."</string>
-    <string name="chat_thought_seconds">"فکر برای %1$ds"</string>
+    <string name="chat_sources_library_count">%1$d منبع</string>
+    <string name="chat_sources_library_empty">هنوز منبع وبی در این گفتگو وجود ندارد.</string>
+    <string name="chat_thought_seconds">زمان پردازش: %1$d ثانیه</string>
     <string name="chat_writing_reply">"نوشتن پاسخ"</string>
     <string name="chat_searching">"جستجو در وب"</string>
     <string name="chat_searched">"در وب جستجو کرد"</string>
@@ -972,4 +972,7 @@
     <string name="glass_transparency">شفافیت</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">برای شیشه شفاف‌تر به راست بکشید. پیش‌نمایش هنگام کشیدن به‌روز می‌شود و انتخاب شما با رها کردن اعمال می‌شود. دکمه‌های عملیات و پنجره‌های بازشو رنگ خوانا را حفظ می‌کنند.</string>
+    <!-- Progress labels: preserve number order in both LTR and RTL layouts. -->
+    <string name="chat_activity_sources_progress">%1$d از %2$d منبع</string>
+    <string name="chat_activity_pages_read">%1$d صفحه خوانده‌شده</string>
 </resources>

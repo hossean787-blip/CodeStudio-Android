@@ -370,15 +370,15 @@ private fun ChatActivityRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AnimatedCount(counters.sourcesUsed, motion) { count ->
-                    Text("$count", style = style, color = color)
+                    Text(stringResource(R.string.chat_activity_sources_progress, count, counters.sourcesMax),
+                        style = style, color = color)
                 }
-                Text("/${counters.sourcesMax} sources", style = style, color = color)
                 if (counters.readsRequired > 0 || counters.pagesRead > 0) {
                     Text(" · ", style = style, color = color)
                     AnimatedCount(counters.pagesRead, motion) { count ->
-                        Text("$count", style = style, color = color)
+                        Text(stringResource(R.string.chat_activity_pages_read, count),
+                            style = style, color = color)
                     }
-                    Text(" read", style = style, color = color)
                 }
             }
         }

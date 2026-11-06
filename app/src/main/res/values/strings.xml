@@ -1004,4 +1004,7 @@
     <string name="glass_transparency">Transparency</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">Slide right for clearer glass. Preview updates as you drag; your choice applies when you release. Action buttons and pop-ups keep a readable tint.</string>
+    <!-- Localized, numerically formatted research status in the chat activity panel. -->
+    <string name="chat_activity_sources_progress">%1$d / %2$d sources</string>
+    <string name="chat_activity_pages_read">%1$d pages read</string>
 </resources>

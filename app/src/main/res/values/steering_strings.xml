@@ -2,7 +2,7 @@
 <resources>
     <string name="steering_group">While the agent works</string>
     <string name="settings_anchor_steering">Messages sent mid-task</string>
-    <string name="steering_mode_auto">AH Auto</string>
+    <string name="steering_mode_auto">Saba Auto</string>
     <string name="steering_mode_auto_desc">The agent reads your message after its current step and keeps going. Running tools are never interrupted. If the task already ended, the message starts the next turn.</string>
     <string name="steering_mode_after_task">After task</string>
     <string name="steering_mode_after_task_desc">Your message waits until the whole task finishes, then starts a new turn.</string>
