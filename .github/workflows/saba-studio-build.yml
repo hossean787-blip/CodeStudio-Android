@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, "feature/**", "feat/**", "codex/**", "integration/**"]
+    branches: [main, develop/codestudio-alpha, "feature/**", "feat/**", "fix/**", "codex/**", "integration/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
