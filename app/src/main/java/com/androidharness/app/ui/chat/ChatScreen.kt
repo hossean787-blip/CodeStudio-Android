@@ -1750,11 +1750,11 @@ private fun ChatScreenContent(
                             fun chatActivityItem(activityKey: String?, messages: List<ChatMessage>, running: Boolean, committed: Boolean) {
                                 indexedItem(key = "chat-turn-$activityKey-activity", contentType = ChatListContentType.Thinking) {
                                     com.androidharness.app.ui.chat.components.ChatActivity(messages, live = running,
-                                        showThinkingMetrics = true,
+                                        showThinkingMetrics = false,
                                         thinkingTiming = state.thinkingTiming.takeIf { running && !committed },
                                         reasoningTokens = state.reasoningTokens.takeIf { running && !committed },
                                         turnStartedAt = state.turnStartedAt.takeIf { running },
-                                        autoExpand = !appSettings.chatKeepThinkingCollapsed,
+                                        autoExpand = false,
                                         onStep = rumble,
                                         runningCalls = if (running) state.runningCalls else emptyList(),
                                         streamingThinking = if (running && !committed) state.streamingThinking.orEmpty() else "",
@@ -2117,7 +2117,9 @@ private fun ChatScreenContent(
                                                         }
                                                     }
                                                 }
-                                                if (isTurnFinal && !isTurnRunning) {
+                                                // Chat stays focused on the answer: performance/cache diagnostics
+                                                // remain available in developer/code views, not under each reply.
+                                                if (!state.conversation.isChat && isTurnFinal && !isTurnRunning) {
                                                     CacheUsageFooter(state.turnCacheUsage[message.turnId].orEmpty(),
                                                         speed = turnSpeeds[message.turnId])
                                                 }

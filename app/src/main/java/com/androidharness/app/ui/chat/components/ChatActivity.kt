@@ -73,7 +73,6 @@ internal fun ChatActivity(
         ChatActivityPresentation.timeline(messages, runningCalls, streamingThinking, streamId, streamingCommentary)
     }
     if (!live && entries.isEmpty()) return
-    val thoughtChunks = remember { mutableMapOf<String, com.androidharness.app.core.ReasoningTextChunks.Stream>() }
     val active = remember(messages, runningCalls) { ChatActivityPresentation.activeCall(messages, runningCalls) }
     val research = remember(messages) { ChatActivityPresentation.researchProgress(messages) }
     val lastTool = remember(entries) {
@@ -118,18 +117,13 @@ internal fun ChatActivity(
             turnStartedAt = turnStartedAt, streamId = streamId) }) else null) {
         entries.forEach { entry ->
             when (entry) {
-                is ChatActivityPresentation.Entry.Thought -> {
-                    item(key = entry.key + "-heading") {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                        Icon(painterResource(R.drawable.ic_brain), null, Modifier.size(13.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(if (entry.milliseconds >= 1000) stringResource(R.string.chat_thought_seconds, entry.milliseconds / 1000)
-                            else stringResource(R.string.chat_thought), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    }
-                    thoughtChunks.getOrPut(entry.key) { com.androidharness.app.core.ReasoningTextChunks.Stream() }.update(entry.text).forEachIndexed { index, chunk ->
-                        item(key = entry.key + "-text-" + index) {
-                            Text(chunk, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
+                is ChatActivityPresentation.Entry.Thought -> item(key = entry.key + "-heading") {
+                    // Provider-internal reasoning is never rendered, even after expansion.
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Icon(painterResource(R.drawable.ic_brain), null, Modifier.size(13.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(stringResource(R.string.chat_thought), style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
                 is ChatActivityPresentation.Entry.Commentary -> item(key = entry.key) { Text(

@@ -19,6 +19,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -118,15 +120,17 @@ internal fun EmptyState(
     )
 
     Box(
-        modifier = modifier.fillMaxWidth().fillMaxHeight(),
-        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxWidth().fillMaxHeight()
+            .background(Brush.verticalGradient(listOf(scheme.surface,
+                scheme.primaryContainer.copy(alpha = 0.19f), scheme.surface))),
+        contentAlignment = Alignment.TopCenter,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .widthIn(max = 540.dp)
+                .widthIn(max = 500.dp)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 22.dp, vertical = 28.dp),
+                .padding(horizontal = 20.dp, vertical = 44.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (chatOnly && agent != null) {
@@ -134,7 +138,11 @@ internal fun EmptyState(
             } else {
                 SabaBrandMark(size = 72.dp)
             }
-            Spacer(Modifier.height(22.dp))
+            Spacer(Modifier.height(16.dp))
+            Text(context.getString(R.string.saba_home_kicker),
+                style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold,
+                color = scheme.primary, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = if (chatOnly && agent != null) agent.name else "صبا استودیو",
                 style = MaterialTheme.typography.headlineMedium,
@@ -163,10 +171,14 @@ internal fun EmptyState(
                     agentSetup()
                     Spacer(Modifier.height(12.dp))
                 }
+                Text(context.getString(R.string.saba_home_quick_start),
+                    style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold,
+                    color = scheme.onSurface,
+                    modifier = Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 8.dp))
                 ideas.forEachIndexed { index, (icon, label) ->
                     Surface(
-                        color = scheme.surfaceContainerLow,
-                        shape = RoundedCornerShape(17.dp),
+                        color = scheme.surface.copy(alpha = 0.97f),
+                        shape = RoundedCornerShape(18.dp),
                         border = BorderStroke(
                             1.dp,
                             (if (index == 0) cyan else scheme.outlineVariant)
@@ -175,23 +187,25 @@ internal fun EmptyState(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 5.dp)
-                            .clickable { onSuggestion(label) },
+                            .heightIn(min = 60.dp)
+                            .clickable(role = Role.Button, onClick = { onSuggestion(label) }),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 15.dp),
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 11.dp),
                         ) {
-                            Icon(
-                                icon,
-                                contentDescription = null,
-                                tint = if (index == 0) cyan else violet,
-                                modifier = Modifier.size(21.dp),
-                            )
+                            Box(Modifier.size(38.dp).clip(RoundedCornerShape(12.dp))
+                                .background((if (index == 0) scheme.primaryContainer else scheme.secondaryContainer).copy(alpha = 0.84f)),
+                                contentAlignment = Alignment.Center) {
+                                Icon(icon, null, tint = if (index == 0) scheme.primary else scheme.onSecondaryContainer,
+                                    modifier = Modifier.size(20.dp))
+                            }
                             Spacer(Modifier.width(12.dp))
                             Text(
                                 text = label,
                                 color = scheme.onSurface,
                                 style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium,
                                 modifier = Modifier.weight(1f),
                             )
                             Icon(

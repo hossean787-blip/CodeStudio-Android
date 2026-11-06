@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">برای شروع، یک مدل هوش مصنوعی متصل کنید</string>
     <string name="saba_home_connect_action">اتصال مدل هوش مصنوعی</string>
     <string name="saba_home_question">امروز چه چیزی بسازیم؟</string>
+    <string name="saba_home_kicker">صبا • فضای کار هوشمند</string>
+    <string name="saba_home_quick_start">شروع سریع</string>
 </resources>
