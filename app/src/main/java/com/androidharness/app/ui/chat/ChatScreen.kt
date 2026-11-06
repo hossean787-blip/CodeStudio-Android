@@ -2117,7 +2117,9 @@ private fun ChatScreenContent(
                                                         }
                                                     }
                                                 }
-                                                if (isTurnFinal && !isTurnRunning) {
+                                                // Chat stays focused on the answer: performance/cache diagnostics
+                                                // remain available in developer/code views, not under each reply.
+                                                if (!state.conversation.isChat && isTurnFinal && !isTurnRunning) {
                                                     CacheUsageFooter(state.turnCacheUsage[message.turnId].orEmpty(),
                                                         speed = turnSpeeds[message.turnId])
                                                 }
