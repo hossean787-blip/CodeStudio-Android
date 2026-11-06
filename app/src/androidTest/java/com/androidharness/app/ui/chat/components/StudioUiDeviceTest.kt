@@ -98,7 +98,7 @@ class StudioUiDeviceTest {
             instrumentation.waitForIdleSync()
             assertTrue("Activity summary missing", visibleNodes().any {
                 it.isVisibleToUser && it.text?.toString()
-                    ?.contains(instrumentation.targetContext.getString(R.string.chat_thought)) == true
+                    ?.contains(instrumentation.targetContext.getString(R.string.chat_thought_seconds, 2)) == true
             })
             assertFalse("Private thoughts visible before opening", visibleNodes().any {
                 it.text?.toString()?.contains(marker) == true
