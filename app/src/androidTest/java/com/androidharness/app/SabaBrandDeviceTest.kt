@@ -7,6 +7,7 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.unit.dp
 import android.os.Build
+import androidx.activity.compose.setContent
 import androidx.core.content.ContextCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -54,7 +55,7 @@ class SabaBrandDeviceTest {
             com.androidharness.app.ui.chat.ChatListTestActivity::class.java
         ).use { scenario ->
             scenario.onActivity { activity ->
-                androidx.activity.compose.setContent(activity) {
+                activity.setContent {
                     com.androidharness.app.ui.theme.HarnessTheme(
                         themeMode = com.androidharness.app.data.ThemeMode.LIGHT,
                         dynamicColor = false,
