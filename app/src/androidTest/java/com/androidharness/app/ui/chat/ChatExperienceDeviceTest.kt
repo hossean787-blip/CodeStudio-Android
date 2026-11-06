@@ -639,7 +639,7 @@ class ChatExperienceDeviceTest {
             tap("Thinking")
             assertNull(find("abcd".repeat(50)))
             scenario.onActivity { timing.value = ThinkingTiming(elapsedMs = 5000); live.value = false }
-            await("Thoughts")
+            await("Thought for 5s")
             assertNull(find("abcd".repeat(50)))
             assertFalse(nodes().any { it.isVisibleToUser && it.text?.toString()?.contains("tokens") == true })
             screenshot("code-private-reasoning-hidden")
