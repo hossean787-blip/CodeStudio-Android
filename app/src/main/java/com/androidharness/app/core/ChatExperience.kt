@@ -11,7 +11,7 @@ object ChatExperience {
         "search_chats", "recent_chats", "read_chat_snippet",
         "github_api", "github_search", "github_file",
         "remember", "recall",
-        "visual_guide",
+        "visual_guide", "study_practice",
         "app_settings_find", "app_settings_change",
     )
 

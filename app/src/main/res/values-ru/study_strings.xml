@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Учебный помощник</string>
+    <string name="study_back">Назад</string>
+    <string name="study_hero">Практика по вашим конспектам</string>
+    <string name="study_subtitle">Карточки, тесты и план повторения офлайн — только по введённым здесь заметкам.</string>
+    <string name="study_notes">Ваши заметки</string>
+    <string name="study_example">Одна пара на строку: Понятие: Определение</string>
+    <string name="study_notice">Каждая строка должна содержать понятие и определение через двоеточие. Неструктурированный текст пропускается. Данные не отправляются провайдеру или в другой проект. Максимум 20 000 символов.</string>
+    <string name="study_flashcards">Карточки</string>
+    <string name="study_quiz">Тест</string>
+    <string name="study_plan">Повторение</string>
+    <string name="study_generate">Создать упражнения</string>
+    <string name="study_result">Результат</string>
+    <string name="study_limit">Максимальная длина — 20 000 символов.</string>
+    <string name="study_invalid_notes">Введите пары вида «Понятие: Определение». Ответы не придумываются по неполным заметкам.</string>
+</resources>

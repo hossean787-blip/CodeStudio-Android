@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">将现有文件打开为可编辑文本</string>
+  <string name="ds_import_limits">TXT以UTF-8导入。DOCX、XLSX和PPTX仅提取文本（文件最大8 MiB，Office预览上限12,000字）。不保留布局、图片、公式及字体。不会覆盖原文件。</string>
+  <string name="ds_import_notice">已加载文本草稿。生成并保存新文档前请检查内容；格式不会保留。</string>
 </resources>

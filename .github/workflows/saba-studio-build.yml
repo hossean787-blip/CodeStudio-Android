@@ -2,7 +2,7 @@ name: Saba Studio Android APK build and verification
 
 on:
   push:
-    branches: [main, develop/codestudio-alpha, "feature/**", "codex/**", "integration/**"]
+    branches: [main, develop/codestudio-alpha, "feature/**", "feat/**", "codex/**", "integration/**"]
     paths:
       - 'app/**'
       - 'gradle/**'
@@ -12,6 +12,7 @@ on:
       - 'gradle.properties'
       - 'settings.gradle.kts'
       - '.github/workflows/saba-studio-build.yml'
+      - '.github/workflows/saba-native-release.yml'
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,9 @@ jobs:
           upstream=Path('/tmp/androidharness-audit')
           current=Path('.')
           allowed_changes={
+              # Issue #8 item 26: redact upstream credential echoes in fallback status messages.
+              'app/src/main/java/com/androidharness/app/llm/FallbackProvider.kt',
+              'app/src/test/java/com/androidharness/app/llm/FallbackProviderTest.kt',
               'app/src/main/java/com/androidharness/app/llm/RotatingKeyProvider.kt',
               # Issue #8 item 11: reviewed secure provider endpoint validation.
               'app/src/main/java/com/androidharness/app/data/ProviderRepository.kt',
@@ -177,6 +181,11 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/CacheUsage.kt',
               'app/src/main/java/com/androidharness/app/ui/ProjectNavigationSidebar.kt',
               'app/src/main/java/com/androidharness/app/ui/AppNav.kt',
+              'app/src/main/java/com/androidharness/app/ui/library/LibraryDesignScreen.kt',
+              # Issue #8 item 21: per-project library storage, project isolation tests.
+              'app/src/main/java/com/androidharness/app/ui/library/LibraryScope.kt',
+              'app/src/test/java/com/androidharness/app/ui/library/LibraryScopeTest.kt',
+              'app/src/androidTest/java/com/androidharness/app/ui/library/SourceIndexDeviceTest.kt',
               'app/src/main/java/com/androidharness/app/MainActivity.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/ChatScreen.kt',
               'app/src/main/java/com/androidharness/app/ui/projects/ProjectsScreen.kt',
@@ -192,6 +201,19 @@ jobs:
               'app/src/main/java/com/androidharness/app/tools/Tool.kt',
               'app/src/main/java/com/androidharness/app/github/GitHubWorkspaces.kt',
               'app/src/test/java/com/androidharness/app/github/GitHubRepositoryTest.kt',
+              # Issue #8 13/15/16: skill import/delete hardening and project-scoped agent recall.
+              'app/src/main/java/com/androidharness/app/skills/SkillStore.kt',
+              'app/src/main/java/com/androidharness/app/HarnessApp.kt',
+              'app/src/main/java/com/androidharness/app/data/ConversationConfig.kt',
+              'app/src/main/java/com/androidharness/app/data/ChatAgents.kt',
+              'app/src/main/java/com/androidharness/app/data/ProjectHistoryAccess.kt',
+              'app/src/main/java/com/androidharness/app/data/MemoryRepository.kt',
+              'app/src/main/java/com/androidharness/app/agent/AgentEngine.kt',
+              'app/src/test/java/com/androidharness/app/skills/SkillStoreTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ConversationConfigTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ChatAgentsTest.kt',
+              'app/src/test/java/com/androidharness/app/data/ProjectHistoryAccessTest.kt',
+              'app/src/test/java/com/androidharness/app/data/PrivateAgentProjectPolicyTest.kt',
           }
           originals=[p for p in upstream.rglob('*') if p.is_file() and '.git' not in p.relative_to(upstream).parts]
           missing=[]; different=[]
@@ -358,9 +380,11 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest -Pdistribution=github '-Pandroid.testInstrumentationRunnerArguments.class=com.androidharness.app.workspace.ChatWorkspaceDeviceTest#assignmentsPersistAndLegacyChatsBindOnce,com.androidharness.app.workspace.ChatWorkspaceDeviceTest#concurrentRunsAndUndoStayInTheirAssignedFolders,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#version15MigrationPreservesExistingChatAndModelSelection,com.androidharness.app.workspace.MultiWorkspaceDeviceTest#grantsSurviveReopeningAndProtectSecondaryProjectsFromDeletion,com.androidharness.app.ui.ProjectSidebarDeviceTest#projectTreeSearchActionsAndToolsMatchTheApprovedLayout,com.androidharness.app.data.InternalResumeDeviceTest,com.androidharness.app.SabaBrandDeviceTest,com.androidharness.app.ui.study.StudyAssistantDeviceTest,com.androidharness.app.ui.library.SourceIndexDeviceTest,com.androidharness.app.ui.chat.ChatExperienceDeviceTest#chatHasQuietThoughtsNoRawResultsAndOnlyConditionalCodeHandoff,com.androidharness.app.llm.AnonymousFreeProviderDeviceTest,com.androidharness.app.SabaNotificationDeviceTest,com.androidharness.app.ui.chat.CacheUsageDisclosureDeviceTest#cacheTelemetryIsHiddenUntilExpandedAndCanBeClosedAgain,com.androidharness.app.plugins.AiRuntimeBridgeDeviceTest,com.androidharness.app.documents.DocumentExportDeviceTest,com.androidharness.app.documents.DocumentStudioStoreDeviceTest,com.androidharness.app.documents.DocumentStudioPickerDeviceTest,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianHomeRendersRtlAtLargeTextAndKeepsActionsReadable,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianSearchAndPermissionControlsWorkWithLargeText,com.androidharness.app.ui.settings.LocalizationDeviceTest#persianPrimaryScreensAndModelPickerPreserveModelIds' -Pandroid.testInstrumentationRunnerArguments.liveAnonymousFreeProvider=true -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true --no-daemon --stacktrace
             mkdir -p delivery-emulator
             adb pull /sdcard/Android/data/ir.sabagostar.sabastudio.debug/files/issue8 delivery-emulator/issue8-live
+            # Validate the capture in a file: emulator-runner executes script lines individually.
+            python3 scripts/verify-study-screenshot.py delivery-emulator/issue8-live/study-ui/study-fa-light-flashcards.png
             bash scripts/emulator-release-smoke.sh verified-release/app-release.apk
       - name: Upload emulator evidence
         if: always()
@@ -377,8 +401,9 @@ jobs:
   document-readers:
     needs: emulator-persistence
     name: Independently open native document exports
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The independent LibreOffice check must run, not time out during apt mirror downloads.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -392,7 +417,7 @@ jobs:
         run: |
           python -m pip install python-docx==1.2.0 openpyxl==3.1.5 python-pptx==1.0.2 Pillow==11.3.0 pypdf==6.1.1
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=60 install -y --no-install-recommends libreoffice-writer libreoffice-calc libreoffice-impress
           libreoffice --version
       - name: Open all formats and verify real Office conversions
         run: python scripts/validate_document_exports.py native-evidence --output document-reader-evidence --libreoffice

@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">Open existing file as editable text</string>
+  <string name="ds_import_limits">TXT is imported as UTF-8. DOCX, XLSX and PPTX are imported as text only (8 MiB input maximum, 12,000-character Office extraction). Fonts, formulas, images and layout are not preserved. Your original file is never overwritten.</string>
+  <string name="ds_import_notice">Text draft loaded. Check the extracted content before generating and saving a new document; formatting is not preserved.</string>
 </resources>

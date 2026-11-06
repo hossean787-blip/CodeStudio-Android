@@ -96,4 +96,12 @@ class ChatAgentsTest {
         assertEquals(settings.chatAgents, Json.decodeFromString(SettingsBackupFile.serializer(), encoded).settings.chatAgents)
         assertTrue(runCatching { SettingsBackupValidation.validate(SettingsBackupFile(settings = settings.copy(chatAgents = listOf(agent.copy(name = ""))))) }.isFailure)
     }
+
+    @Test fun historyCannotReadChatsWithPersonalizationDisabled() {
+        val own = ConversationConfig(ConversationKind.CHAT, agent = agent)
+        val unpersonalized = own.copy(personalizationEnabled = false)
+        assertFalse(ChatAgentPolicy.canReadHistory(unpersonalized, own))
+        assertFalse(ChatAgentPolicy.canReadHistory(own, unpersonalized))
+        assertTrue(ChatAgentPolicy.canReadHistory(own, own))
+    }
 }

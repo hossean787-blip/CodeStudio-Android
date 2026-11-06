@@ -54,6 +54,15 @@ class FreeApiCatalogTest {
         assertTrue(initialProviderKeyPool(editing, local).keys.isEmpty())
     }
 
+    @Test fun externalInferenceCreditDirectoryIsNotAnAutomaticProviderOrUnlimitedAccess() {
+        val entry = FreeApiCatalog.entries.single { it.id == "huggingface" }
+        assertEquals(FreeApiTier.SETUP_REQUIRED, entry.tier)
+        assertNull(entry.connectionPreset())
+        assertFalse(entry.noCardConfirmed)
+        assertEquals("huggingface.co", URI(entry.officialUrl).host)
+        assertTrue(FreeApiCatalog.lastReviewedIso.matches(Regex("\\d{4}-\\d{2}-\\d{2}")))
+    }
+
     @Test fun searchAndConnectedFilterDoNotAlterTheBank() {
         assertEquals(listOf("openrouter"), FreeApiCatalog.search("ROUTER").map { it.id })
         assertEquals(emptyList<FreeApiEntry>(), FreeApiCatalog.search("cloudflare", onlyConnectable = true))

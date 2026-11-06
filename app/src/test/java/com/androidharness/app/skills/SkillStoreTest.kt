@@ -181,4 +181,48 @@ class SkillStoreTest {
         paths.forEach { assertTrue(it, base.view(parsed.name, it).getOrThrow().content.isNotBlank()) }
     }
 
+
+    @Test fun `skill deletion rejects traversal and preserves neighboring directories`() {
+        val user = tmp.newFolder("safe-user")
+        val neighboring = tmp.newFolder("neighboring")
+        neighboring.resolve("sentinel.txt").writeText("keep")
+        val s = SkillStore(emptyMap(), user, { null }, { emptySet() })
+        assertTrue(!s.deleteUser("../neighboring"))
+        assertTrue(!s.deleteUser("/tmp"))
+        assertTrue(neighboring.resolve("sentinel.txt").readText() == "keep")
+    }
+
+    @Test fun `symlinked skill directory cannot be written through or recursively deleted`() {
+        val user = tmp.newFolder("symlink-user")
+        val outside = tmp.newFolder("symlink-outside")
+        outside.resolve("SKILL.md").writeText("keep")
+        java.nio.file.Files.createSymbolicLink(user.toPath().resolve("unsafe"), outside.toPath())
+        val s = SkillStore(emptyMap(), user, { null }, { emptySet() })
+        assertTrue(runCatching { s.saveUser(skill("unsafe", "test")) }.isFailure)
+        assertTrue(!s.deleteUser("unsafe"))
+        assertTrue(outside.resolve("SKILL.md").readText() == "keep")
+    }
+
+    @Test fun `symlinked skill document is never overwritten`() {
+        val user = tmp.newFolder("symlink-document-user")
+        val external = tmp.newFile("outside-skill.txt")
+        external.writeText("do not overwrite")
+        val skillDir = user.resolve("unsafe").apply { mkdirs() }
+        java.nio.file.Files.createSymbolicLink(skillDir.resolve("SKILL.md").toPath(), external.toPath())
+        val s = SkillStore(emptyMap(), user, { null }, { emptySet() })
+        assertTrue(runCatching { s.saveUser(skill("unsafe", "test")) }.isFailure)
+        assertEquals("do not overwrite", external.readText())
+    }
+
+    @Test fun `skill updates replace the complete validated document without temporary leftovers`() {
+        val user = tmp.newFolder("atomic-user")
+        val s = SkillStore(emptyMap(), user, { null }, { emptySet() })
+        s.saveUser(skill("safe", "test", "before"))
+        s.saveUser(skill("safe", "test", "after"))
+        val dir = user.resolve("safe")
+        assertTrue(dir.resolve("SKILL.md").readText().contains("after"))
+        assertEquals(listOf("SKILL.md"), dir.listFiles().orEmpty().map { it.name })
+        assertTrue(s.deleteUser("safe"))
+        assertTrue(!dir.exists())
+    }
 }

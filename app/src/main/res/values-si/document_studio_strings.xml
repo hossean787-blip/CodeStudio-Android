@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">පවතින ගොනුව සංස්කරණය කළ හැකි පෙළ ලෙස විවෘත කරන්න</string>
+  <string name="ds_import_limits">TXT UTF-8 ලෙස ආයාත කෙරේ. DOCX, XLSX සහ PPTX සඳහා පෙළ පමණක් ආයාත කෙරේ (උපරිම 8 MiB; Office පෙරදසුන අක්ෂර 12,000). හැඩතල, රූප, සූත්‍ර සහ අකුරු රටා රැකෙන්නේ නැත. මුල් ගොනුව නොමකා තබයි.</string>
+  <string name="ds_import_notice">පෙළ කෙටුම්පත පූරණය විය. නව ගොනුව සුරැකීමට පෙර පෙළ පරීක්ෂා කරන්න; හැඩතල රැකෙන්නේ නැත.</string>
 </resources>

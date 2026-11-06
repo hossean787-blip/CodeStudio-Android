@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">Источники проверены: %1$s. Это не проверка цен или доступности в реальном времени.</string>
     <string name="free_api_bank_title">Каталог бесплатных ИИ API</string>
     <string name="free_api_bank_intro">Изучите официальные бесплатные квоты, пробные доступы и локальные варианты без ключа. Лимиты и модели меняются; ключи и платные тарифы автоматически не создаются.</string>
     <string name="free_api_bank_expand">Показать бесплатные API</string>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">Asistente de estudio</string>
+    <string name="study_back">Volver</string>
+    <string name="study_hero">Practica con tus apuntes</string>
+    <string name="study_subtitle">Tarjetas, cuestionarios y un plan de repaso sin conexión, basados solo en las notas que escribas aquí.</string>
+    <string name="study_notes">Tus apuntes</string>
+    <string name="study_example">Un par por línea: Concepto: Definición</string>
+    <string name="study_notice">Cada línea debe contener un concepto y una definición separados por dos puntos. Se omite el texto sin estructura. No se envían datos a proveedores ni a otros proyectos. Máximo 20.000 caracteres.</string>
+    <string name="study_flashcards">Tarjetas</string>
+    <string name="study_quiz">Cuestionario</string>
+    <string name="study_plan">Plan de repaso</string>
+    <string name="study_generate">Generar práctica</string>
+    <string name="study_result">Tu resultado</string>
+    <string name="study_limit">El límite es de 20.000 caracteres.</string>
+    <string name="study_invalid_notes">Escribe pares válidos como Concepto: Definición. No se inventarán respuestas a partir de notas incompletas.</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">学习助手</string>
+    <string name="study_back">返回</string>
+    <string name="study_hero">用自己的笔记练习</string>
+    <string name="study_subtitle">根据此处输入的笔记，离线生成记忆卡、测验和复习计划。</string>
+    <string name="study_notes">你的笔记</string>
+    <string name="study_example">每行一组：概念: 定义</string>
+    <string name="study_notice">每行须包含用冒号分隔的概念和定义。忽略不符合格式的文本。数据不会发送给服务商或其他项目。最多 20,000 个字符。</string>
+    <string name="study_flashcards">记忆卡</string>
+    <string name="study_quiz">测验</string>
+    <string name="study_plan">复习计划</string>
+    <string name="study_generate">生成练习</string>
+    <string name="study_result">练习结果</string>
+    <string name="study_limit">输入最多 20,000 个字符。</string>
+    <string name="study_invalid_notes">请按“概念: 定义”输入有效内容。不会根据不完整笔记编造答案。</string>
+</resources>

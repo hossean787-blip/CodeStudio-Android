@@ -2,9 +2,10 @@ name: Saba Studio native release verification
 on:
   workflow_dispatch:
   push:
-    branches: [main, "feature/**", "codex/**"]
+    branches: [main, "feature/**", "feat/**", "codex/**"]
     paths:
       - '.github/workflows/saba-native-release.yml'
+      - '.github/workflows/saba-studio-build.yml'
       - 'app/**'
       - 'gradle/**'
       - 'scripts/verify_release.sh'

@@ -490,6 +490,8 @@ fun AppNav(container: AppContainer) {
             onProviders = { navigateFromSidebar { nav.navigate("providers") { launchSingleTop = true } } },
             onSkills = { navigateFromSidebar { nav.navigate("skills") { launchSingleTop = true } } },
             onDocuments = { navigateFromSidebar { nav.navigate("document-studio") { launchSingleTop = true } } },
+            onStudy = { navigateFromSidebar { nav.navigate("study-assistant") { launchSingleTop = true } } },
+            onLibraryDesign = { navigateFromSidebar { nav.navigate("library-design") { launchSingleTop = true } } },
             onIntegrations = { service -> navigateFromSidebar {
                 nav.navigate("connections/${encode(service)}") { launchSingleTop = true }
             } },
@@ -983,8 +985,18 @@ fun AppNav(container: AppContainer) {
                     onBack = { nav.popBackStack() },
                 )
             }
+            composable("library-design") {
+                com.androidharness.app.ui.library.LibraryDesignScreen(
+                    projectId = currentWorkspace?.id,
+                    projectName = currentWorkspace?.name,
+                    onBack = { nav.popBackStack() },
+                )
+            }
             composable("document-studio") {
                 com.androidharness.app.ui.documents.DocumentStudioScreen(onBack = { nav.popBackStack() })
+            }
+            composable("study-assistant") {
+                com.androidharness.app.ui.study.StudyAssistantScreen(onBack = { nav.popBackStack() })
             }
             composable("providers") {
                 ProvidersScreen(container = container, onBack = { nav.popBackStack() })

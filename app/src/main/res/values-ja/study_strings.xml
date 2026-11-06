@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="study_title">学習アシスタント</string>
+    <string name="study_back">戻る</string>
+    <string name="study_hero">自分のノートから練習</string>
+    <string name="study_subtitle">ここに入力したノートだけを使い、オフラインで単語カード、クイズ、復習計画を作成します。</string>
+    <string name="study_notes">ノート</string>
+    <string name="study_example">1行に1組：用語: 定義</string>
+    <string name="study_notice">各行にコロンで区切った用語と定義を入力してください。形式が合わない文章は無視します。データを外部サービスや他のプロジェクトへ送信しません。最大20,000文字。</string>
+    <string name="study_flashcards">単語カード</string>
+    <string name="study_quiz">クイズ</string>
+    <string name="study_plan">復習計画</string>
+    <string name="study_generate">練習を作成</string>
+    <string name="study_result">練習結果</string>
+    <string name="study_limit">入力は最大20,000文字です。</string>
+    <string name="study_invalid_notes">「用語: 定義」の形式で入力してください。不完全なノートから回答を捏造しません。</string>
+</resources>

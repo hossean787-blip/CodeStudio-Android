@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">آخرین بررسی منابع: %1$s؛ این تاریخ استعلام زنده قیمت یا موجودی نیست.</string>
     <string name="free_api_bank_title">بانک API هوش مصنوعی رایگان</string>
     <string name="free_api_bank_intro">سرویس‌های دارای سهمیه رایگان، اعتبار آزمایشی و گزینه‌های محلی بدون کلید را ببینید. محدودیت‌ها و مدل‌های در دسترس تغییر می‌کنند؛ هیچ کلید یا اشتراک پولی خودکار ایجاد نمی‌شود.</string>
     <string name="free_api_bank_expand">مشاهده بانک API</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="free_api_bank_last_reviewed">情報源の最終確認日: %1$s。価格や利用可能状況をリアルタイムで確認したものではありません。</string>
     <string name="free_api_bank_title">無料AI APIバンク</string>
     <string name="free_api_bank_intro">公式の無料枠、試用版、クラウドキー不要のローカル環境を探せます。上限と利用可能モデルは変わります。キーや有料プランは自動作成されません。</string>
     <string name="free_api_bank_expand">無料APIの候補を見る</string>

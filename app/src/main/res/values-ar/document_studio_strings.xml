@@ -13,4 +13,7 @@
   <string name="ds_verified">Saved bytes reopened and verified (size and SHA-256).</string>
   <string name="ds_cancelled">Save cancelled; no success reported.</string>
   <string name="ds_failed">Could not complete. Destination may contain partial data; inspect it before retrying. Details:</string>
+  <string name="ds_import_text">فتح ملف موجود كنص قابل للتحرير</string>
+  <string name="ds_import_limits">يتم استيراد TXT بنظام UTF-8، وDOCX وXLSX وPPTX كنص فقط (حجم أقصى 8 ميبيبايت و12000 حرف للمعاينة). لا يتم الحفاظ على التنسيق أو الصور أو الصيغ أو الخطوط. لن يتم استبدال الملف الأصلي.</string>
+  <string name="ds_import_notice">تم تحميل المسودة النصية. راجع المحتوى قبل إنشاء ملف جديد وحفظه؛ لن يتم الحفاظ على التنسيق.</string>
 </resources>
