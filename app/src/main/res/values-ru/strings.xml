@@ -974,4 +974,7 @@
     <string name="glass_transparency">Прозрачность</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">Сдвиньте вправо, чтобы стекло стало прозрачнее. Предпросмотр обновляется при перетаскивании, выбор применяется после отпускания. Кнопки действий и всплывающие окна сохраняют читаемый оттенок.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d из %2$d источников</string>
+    <string name="chat_activity_pages_read">Прочитано страниц: %1$d</string>
 </resources>

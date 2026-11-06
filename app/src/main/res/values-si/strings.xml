@@ -972,4 +972,7 @@
     <string name="glass_transparency">පාරදෘශ්‍යතාව</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">වඩා පැහැදිලි වීදුරු සඳහා දකුණට අදින්න. ඇදීමේදී පෙරදසුන යාවත්කාලීන වන අතර ඔබේ තේරීම මුදා හරින විට යෙදේ. ක්‍රියා බොත්තම් සහ උත්පතන කවුළු කියවිය හැකි වර්ණයක් රඳවා ගනී.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d / %2$d මූලාශ්‍ර</string>
+    <string name="chat_activity_pages_read">%1$d පිටු කියවා ඇත</string>
 </resources>

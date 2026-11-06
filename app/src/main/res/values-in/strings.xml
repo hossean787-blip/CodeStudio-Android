@@ -971,4 +971,7 @@
     <string name="glass_transparency">Transparansi</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">Geser ke kanan untuk kaca yang lebih bening. Pratinjau ikut bergeser dan pilihanmu berlaku saat dilepas. Tombol tindakan dan pop-up tetap memakai warna yang terbaca.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d dari %2$d sumber</string>
+    <string name="chat_activity_pages_read">%1$d halaman dibaca</string>
 </resources>

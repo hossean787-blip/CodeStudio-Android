@@ -972,4 +972,7 @@
     <string name="glass_transparency">Transparenz</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">Nach rechts schieben für klareres Glas. Die Vorschau folgt dem Ziehen, deine Auswahl gilt beim Loslassen. Aktionsschaltflächen und Pop-ups behalten eine lesbare Tönung.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d von %2$d Quellen</string>
+    <string name="chat_activity_pages_read">%1$d Seiten gelesen</string>
 </resources>
