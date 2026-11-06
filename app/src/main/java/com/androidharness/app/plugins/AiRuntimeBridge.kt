@@ -35,6 +35,26 @@ object AiRuntimeBridge {
     fun checkCommand(id: String): String =
         "command -v " + profile(id).executable + " >/dev/null 2>&1"
 
+    /**
+     * Opt-in version probe for a user-installed CLI. The executable comes only
+     * from the fixed allowlist; no prompt, account, URL or token is interpolated.
+     * A version string is not proof of authentication or runtime compatibility.
+     */
+    fun versionCommand(id: String): String = profile(id).executable + " --version"
+
+    private val versionPattern = Regex(
+        """(?<![A-Za-z0-9])v?([0-9]{1,3}\.[0-9]{1,3}(?:\.[0-9]{1,3})?(?:[-+][A-Za-z0-9.]{1,24})?)(?![A-Za-z0-9])"""
+    )
+
+    /**
+     * Return only a bounded numeric version, never arbitrary output from a
+     * third-party executable (which could include credentials or ANSI escapes).
+     */
+    fun parseVersion(output: String): String? {
+        val firstLine = output.lineSequence().firstOrNull()?.take(240).orEmpty()
+        return versionPattern.find(firstLine)?.groupValues?.get(1)
+    }
+
     /** Only a UUID is accepted; never interpret paths, options or shell fragments as a session. */
     fun isValidSessionId(value: String): Boolean =
         value.matches(Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"))

@@ -25,6 +25,18 @@ class AiRuntimeBridgeDeviceTest {
         }
     }
 
+    @Test fun cliVersionPreflightIsAllowlistedOnAndroidWithoutLaunchingCli() {
+        assertEquals("aider --version", AiRuntimeBridge.versionCommand("aider"))
+        assertEquals("0.9.7", AiRuntimeBridge.parseVersion("aider 0.9.7"))
+        assertNull(AiRuntimeBridge.parseVersion("Sign in required"))
+        try {
+            AiRuntimeBridge.versionCommand("aider && echo injected")
+            fail("Untrusted CLI name accepted")
+        } catch (_: IllegalArgumentException) {
+            // Only a fixed executable is eligible for an opt-in version probe.
+        }
+    }
+
     @Test fun claudeSessionResumeIsValidatedOnAndroidWithoutLaunchingCli() {
         val uuid = "123e4567-e89b-12d3-a456-426614174000"
         assertTrue(AiRuntimeBridge.isValidSessionId(uuid))
