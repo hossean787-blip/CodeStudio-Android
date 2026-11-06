@@ -118,8 +118,10 @@ internal fun ChatActivity(
             turnStartedAt = turnStartedAt, streamId = streamId) }) else null) {
         entries.forEach { entry ->
             when (entry) {
-                is ChatActivityPresentation.Entry.Thought -> {
-                    item(key = entry.key + "-heading") {
+                // Reasoning traces are private model internals: never render them in chat.
+                // Keep timeline entries in memory for processing, but not in the user-facing UI.
+                is ChatActivityPresentation.Entry.Thought -> Unit
+                /* item(key = entry.key + "-heading") {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                         Icon(painterResource(R.drawable.ic_brain), null, Modifier.size(13.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(if (entry.milliseconds >= 1000) stringResource(R.string.chat_thought_seconds, entry.milliseconds / 1000)
@@ -132,6 +134,7 @@ internal fun ChatActivity(
                         }
                     }
                 }
+                */
                 is ChatActivityPresentation.Entry.Commentary -> item(key = entry.key) { Text(
                     com.androidharness.app.core.response.RichResponse.plainText(
                         com.androidharness.app.core.response.ChatRichResponse.normalize(entry.text)),
