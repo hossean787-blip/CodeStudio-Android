@@ -86,12 +86,13 @@ internal fun UserBubble(
         val bubbleMaxWidth = minOf(560.dp, maxWidth * 0.88f)
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             Surface(
-                color = scheme.surfaceContainerHigh,
+                color = scheme.surfaceContainerLow,
                 contentColor = scheme.onSurface,
-                shape = RoundedCornerShape(18.dp, 18.dp, 5.dp, 18.dp),
+                shape = RoundedCornerShape(20.dp, 20.dp, 7.dp, 20.dp),
+                border = BorderStroke(1.dp, scheme.outlineVariant.copy(alpha = 0.42f)),
                 modifier = Modifier.widthIn(max = bubbleMaxWidth).let { m ->
                     if (onLongPress != null) {
-                        m.expressivePressFeedback(press).clip(RoundedCornerShape(18.dp, 18.dp, 5.dp, 18.dp))
+                        m.expressivePressFeedback(press).clip(RoundedCornerShape(20.dp, 20.dp, 7.dp, 20.dp))
                             .combinedClickable(interactionSource = press, indication = ripple(color = scheme.primary),
                                 onClick = {}, onLongClick = onLongPress)
                     } else m

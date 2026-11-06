@@ -71,7 +71,7 @@ internal fun ThinkingBlock(
     thinkingMs: Long = 0,
     reasoningTokens: Int? = null,
     timing: ThinkingTiming? = null,
-    autoExpand: Boolean = true,
+    autoExpand: Boolean = false,
 ) {
     if (thinking.isBlank() && !live && (reasoningTokens ?: 0) <= 0) return
     ChatActivity(
@@ -83,7 +83,7 @@ internal fun ThinkingBlock(
         )),
         live = live,
         streamingThinking = if (live) thinking else "",
-        showThinkingMetrics = true,
+        showThinkingMetrics = false,
         thinkingTiming = timing.takeIf { live },
         reasoningTokens = reasoningTokens.takeIf { live },
         autoExpand = autoExpand,

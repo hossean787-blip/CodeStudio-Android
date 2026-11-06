@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">開始するにはAIモデルを接続してください</string>
     <string name="saba_home_connect_action">AIモデルを接続</string>
     <string name="saba_home_question">今日は何を作りましょうか？</string>
+    <string name="saba_home_kicker">SABA・AIワークスペース</string>
+    <string name="saba_home_quick_start">クイックスタート</string>
 </resources>

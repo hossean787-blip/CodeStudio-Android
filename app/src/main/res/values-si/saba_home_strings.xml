@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">ආරම්භ කිරීමට AI ආකෘතියක් සම්බන්ධ කරන්න</string>
     <string name="saba_home_connect_action">AI ආකෘතියක් සම්බන්ධ කරන්න</string>
     <string name="saba_home_question">අද අපි මොනවාද නිර්මාණය කරන්නේ?</string>
+    <string name="saba_home_kicker">SABA • AI වැඩබිම</string>
+    <string name="saba_home_quick_start">ඉක්මන් ආරම්භය</string>
 </resources>

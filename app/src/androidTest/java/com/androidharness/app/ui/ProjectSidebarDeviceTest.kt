@@ -97,8 +97,8 @@ class ProjectSidebarDeviceTest {
                     }
                 }
             } }
-            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
-            assertWithin(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon))
+            await { find("نشان صبا استودیو") != null }
+            assertWithin("نشان صبا استودیو")
             screenshot("chats-view")
             tap("History")
             scrollTo("Open Give the sidebar more room")
@@ -187,7 +187,7 @@ class ProjectSidebarDeviceTest {
             await { find("Open navigation") != null }
             assertNull("A closed drawer must not expose its search field", find("Search chats and messages"))
             tap("Open navigation")
-            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
+            await { find("نشان صبا استودیو") != null }
             assertSearchInactive(activity)
             tap("Search chats and messages")
             await { searchHasFocus() }
@@ -196,7 +196,7 @@ class ProjectSidebarDeviceTest {
             tap("Collapse sidebar")
             await { find("Open navigation") != null }
             tap("Open navigation")
-            await { find(instrumentation.targetContext.getString(com.androidharness.app.R.string.ui_androidharness_icon)) != null }
+            await { find("نشان صبا استودیو") != null }
             assertSearchInactive(activity)
             assertEquals("", nodes().first { it.isEditable && it.isVisibleToUser }.text?.toString().orEmpty())
             search("")

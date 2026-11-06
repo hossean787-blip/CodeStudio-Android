@@ -573,18 +573,18 @@ internal fun MessageComposer(
             expressiveSpatialSpec(), label = "composerInset")
         val pillCorner by animateDpAsState(if (glass || isGroqActive) 32.dp else if (expanded) 30.dp else 28.dp,
             expressiveSpatialSpec(), label = "composerCorner")
-        val elevation by animateDpAsState(if (expanded && !glass) 2.dp else 0.dp,
+        val elevation by animateDpAsState(if (expanded && !glass) 3.dp else if (!glass) 1.dp else 0.dp,
             expressiveSpatialSpec(), label = "composerElevation")
         val outline by animateColorAsState(when {
             glass -> if (expanded) scheme.primary.copy(alpha = .18f) else Color.Transparent
             isGroqActive -> Color.Transparent
             expanded -> scheme.primary.copy(alpha = .55f)
-            else -> scheme.outlineVariant.copy(alpha = .55f)
+            else -> scheme.outlineVariant.copy(alpha = .7f)
         }, expressiveEffectsSpec(), label = "composerOutline")
         Column(modifier.fillMaxWidth().padding(horizontal = inset, vertical = 8.dp)
             .testTag("message-composer")
             .shadow(elevation, RoundedCornerShape(pillCorner), clip = false)
-            .harnessGlassChrome(if (glass) Color.Transparent else if (isGroqActive) scheme.surfaceContainer else scheme.surfaceContainerHigh,
+            .harnessGlassChrome(if (glass) Color.Transparent else if (isGroqActive) scheme.surfaceContainer else scheme.surface,
                 RoundedCornerShape(pillCorner), centerOpacityFloor = if (glass) .32f else 0f)
             .border(1.dp, outline, RoundedCornerShape(pillCorner))) { recorderContent() }
     } else {

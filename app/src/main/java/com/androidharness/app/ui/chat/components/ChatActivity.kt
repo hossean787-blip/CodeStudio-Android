@@ -72,8 +72,11 @@ internal fun ChatActivity(
     val entries = remember(messages, runningCalls, streamingThinking, streamId, streamingCommentary) {
         ChatActivityPresentation.timeline(messages, runningCalls, streamingThinking, streamId, streamingCommentary)
     }
+    // Model reasoning is internal state, never a user-visible timeline entry.
+    val publicEntries = remember(entries) {
+        entries.filterNot { it is ChatActivityPresentation.Entry.Thought }
+    }
     if (!live && entries.isEmpty()) return
-    val thoughtChunks = remember { mutableMapOf<String, com.androidharness.app.core.ReasoningTextChunks.Stream>() }
     val active = remember(messages, runningCalls) { ChatActivityPresentation.activeCall(messages, runningCalls) }
     val research = remember(messages) { ChatActivityPresentation.researchProgress(messages) }
     val lastTool = remember(entries) {
@@ -112,29 +115,13 @@ internal fun ChatActivity(
         seenStep = step
         if (step != null) onStep(step.first)
     }
-    ChatActivityRow(title, if (live && showToolPhase) (active ?: lastTool?.call?.takeIf { completedPhase })?.name else null, live, entries.isNotEmpty(), followLatest = live, autoExpand = autoExpand,
+    ChatActivityRow(title, if (live && showToolPhase) (active ?: lastTool?.call?.takeIf { completedPhase })?.name else null, live, publicEntries.isNotEmpty(), followLatest = live, autoExpand = autoExpand,
         progress = research,
         trailing = if (showThinkingMetrics) ({ ChatThinkingMetrics(messages, streamingThinking, thinkingTiming, reasoningTokens, live,
             turnStartedAt = turnStartedAt, streamId = streamId) }) else null) {
-        entries.forEach { entry ->
+        publicEntries.forEach { entry ->
             when (entry) {
-                // Reasoning traces are private model internals: never render them in chat.
-                // Keep timeline entries in memory for processing, but not in the user-facing UI.
-                is ChatActivityPresentation.Entry.Thought -> Unit
-                /* item(key = entry.key + "-heading") {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                        Icon(painterResource(R.drawable.ic_brain), null, Modifier.size(13.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(if (entry.milliseconds >= 1000) stringResource(R.string.chat_thought_seconds, entry.milliseconds / 1000)
-                            else stringResource(R.string.chat_thought), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    }
-                    thoughtChunks.getOrPut(entry.key) { com.androidharness.app.core.ReasoningTextChunks.Stream() }.update(entry.text).forEachIndexed { index, chunk ->
-                        item(key = entry.key + "-text-" + index) {
-                            Text(chunk, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                }
-                */
+                is ChatActivityPresentation.Entry.Thought -> Unit // Filtered above; never render provider reasoning.
                 is ChatActivityPresentation.Entry.Commentary -> item(key = entry.key) { Text(
                     com.androidharness.app.core.response.RichResponse.plainText(
                         com.androidharness.app.core.response.ChatRichResponse.normalize(entry.text)),

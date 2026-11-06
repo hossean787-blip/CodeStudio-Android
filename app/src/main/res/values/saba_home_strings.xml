@@ -7,4 +7,6 @@
     <string name="saba_home_connect_model">Connect an AI model to get started</string>
     <string name="saba_home_connect_action">Connect an AI model</string>
     <string name="saba_home_question">What will we build today?</string>
+    <string name="saba_home_kicker">SABA · AI WORKSPACE</string>
+    <string name="saba_home_quick_start">Quick start</string>
 </resources>
