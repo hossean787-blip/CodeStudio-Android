@@ -3496,7 +3496,7 @@ private fun AboutSection(container: AppContainer) {
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             HarnessMark(size = 58.dp)
-            Text("AndroidHarness", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge)
             Text(
                 uiContext.getString(R.string.ui_a_coding_agent_that_lives_on_your),
                 style = MaterialTheme.typography.bodyMedium,
