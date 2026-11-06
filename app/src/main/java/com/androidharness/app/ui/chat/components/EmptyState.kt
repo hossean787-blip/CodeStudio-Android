@@ -67,7 +67,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidharness.app.R
-import com.androidharness.app.ui.common.HarnessMark
+import com.androidharness.app.ui.common.SabaBrandMark
 import kotlinx.coroutines.delay
 import com.androidharness.app.ui.common.Button
 
@@ -132,15 +132,7 @@ internal fun EmptyState(
             if (chatOnly && agent != null) {
                 AgentAvatar(agent.avatar)
             } else {
-                Box(
-                    modifier = Modifier
-                        .size(62.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(violet.copy(alpha = 0.12f)),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    HarnessMark(36.dp)
-                }
+                SabaBrandMark(size = 72.dp)
             }
             Spacer(Modifier.height(22.dp))
             Text(

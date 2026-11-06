@@ -46,7 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidharness.app.AppContainer
 import com.androidharness.app.data.env.EnvState
 import com.androidharness.app.data.env.ShizukuState
-import com.androidharness.app.ui.common.HarnessMark
+import com.androidharness.app.ui.common.SabaBrandMark
 import com.androidharness.app.ui.common.SystemGrants
 import com.androidharness.app.ui.common.ThinLinearProgress
 import com.androidharness.app.ui.common.rememberStorageAccess
@@ -127,7 +127,7 @@ fun SetupScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp, vertical = 12.dp),
             ) {
-                HarnessMark(size = 44.dp)
+                SabaBrandMark(size = 52.dp)
                 Spacer(Modifier.size(2.dp))
                 Text(uiContext.getString(R.string.ui_welcome_to_androidharness), style = MaterialTheme.typography.headlineSmall)
                 Text(
