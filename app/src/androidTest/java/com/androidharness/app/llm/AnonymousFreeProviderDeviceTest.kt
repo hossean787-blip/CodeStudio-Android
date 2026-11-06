@@ -6,6 +6,7 @@ import com.androidharness.app.core.ChatMessage
 import com.androidharness.app.core.Role
 import java.io.File
 import java.time.Instant
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -25,13 +26,24 @@ class AnonymousFreeProviderDeviceTest {
         val report = File(InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null),
             "issue8/anonymous-free-provider.json").apply { parentFile?.mkdirs() }
         // Fail closed if routing ever changes: no account, key, paid model, or alternate origin.
-        val client = OkHttpClient.Builder().retryOnConnectionFailure(false).followRedirects(false)
-            .followSslRedirects(false).addInterceptor { chain ->
+        // Mirror the production SSE transport: the first response headers can take
+        // longer than OkHttp's default 10-second read timeout on a free queue.
+        // withTimeout(60_000) below remains the hard end-to-end smoke-test deadline.
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(0, TimeUnit.MILLISECONDS)
+            .retryOnConnectionFailure(false)
+            .followRedirects(false)
+            .followSslRedirects(false)
+            .addInterceptor { chain ->
             val request = chain.request()
             check(request.url.host == "api.kilo.ai" && request.url.encodedPath == "/api/gateway/chat/completions")
             check(request.header("Authorization") == null)
             chain.proceed(request)
         }.build()
+        assertEquals("Live SSE must not inherit OkHttp's default 10s read timeout", 0, client.readTimeoutMillis)
+        assertEquals(30_000, client.connectTimeoutMillis)
         try {
             HarnessProvider.restoreModels(listOf(ModelEntry(HarnessProvider.DEFAULT_MODEL)))
             val events = withTimeout(60_000) {
