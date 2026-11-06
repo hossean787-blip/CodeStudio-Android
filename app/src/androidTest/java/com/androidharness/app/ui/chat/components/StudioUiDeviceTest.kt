@@ -86,7 +86,7 @@ class StudioUiDeviceTest {
                         Surface {
                             Box(Modifier.fillMaxSize()) {
                                 ChatActivity(
-                                    messages = listOf(ChatMessage(role = Role.ASSISTANT, thinking = marker)),
+                                    messages = listOf(ChatMessage(role = Role.ASSISTANT, thinking = marker, thinkingMs = 2_000)),
                                     autoExpand = false,
                                     showThinkingMetrics = false,
                                 )
@@ -98,7 +98,7 @@ class StudioUiDeviceTest {
             instrumentation.waitForIdleSync()
             assertTrue("Activity summary missing", visibleNodes().any {
                 it.isVisibleToUser && it.text?.toString()
-                    ?.contains(instrumentation.targetContext.getString(R.string.chat_thought)) == true
+                    ?.contains(instrumentation.targetContext.getString(R.string.chat_thought_seconds, 2)) == true
             })
             assertFalse("Private thoughts visible before opening", visibleNodes().any {
                 it.text?.toString()?.contains(marker) == true
@@ -108,6 +108,10 @@ class StudioUiDeviceTest {
             instrumentation.waitForIdleSync()
             assertFalse("Private thoughts visible after expanding", visibleNodes().any {
                 it.text?.toString()?.contains(marker) == true
+            })
+            assertFalse("Expanded activity rendered a duplicate private-thought heading", visibleNodes().any {
+                it.isVisibleToUser &&
+                    it.text?.toString() == instrumentation.targetContext.getString(R.string.chat_thought)
             })
         }
     }
