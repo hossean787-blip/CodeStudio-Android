@@ -50,6 +50,9 @@ jobs:
               # Issue #8 item 04: reviewed upstream attribution and branding.
               'README.md',
               'app/src/main/res/drawable/ic_launcher_foreground.xml',
+              # Issue #8 item 04: ensure in-app logo uses the approved launcher artwork.
+              'app/src/main/java/com/androidharness/app/ui/common/HarnessMark.kt',
+              'app/src/main/java/com/androidharness/app/ui/setup/SetupScreen.kt',
               'app/src/main/res/values/colors.xml',
               'app/src/main/res/values/themes.xml',
               # Debug label must match the installed Saba Studio identity.

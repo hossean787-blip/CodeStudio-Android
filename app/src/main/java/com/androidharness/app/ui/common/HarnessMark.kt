@@ -1,80 +1,94 @@
 package com.androidharness.app.ui.common
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.androidharness.app.ui.theme.LocalHarnessGlass
+import com.androidharness.app.R
 
 /**
- * The Harness brand mark: a terminal prompt ("❯_").
- *
- * Geometry mirrors `res/drawable/ic_launcher_foreground.xml` (the launcher icon)
- * scaled to a 24dp viewport, so the in-app identity and the home-screen icon match.
- * Filled, not stroked, it stays crisp at 14dp and holds up at 56dp.
- */
-val PromptMark: ImageVector = ImageVector.Builder(
-    name = "PromptMark",
-    defaultWidth = 24.dp,
-    defaultHeight = 24.dp,
-    viewportWidth = 24f,
-    viewportHeight = 24f,
-).apply {
-    path(fill = SolidColor(Color.Black)) {
-        // chevron "❯"
-        moveTo(7.1f, 7.56f)
-        lineTo(10.67f, 7.56f)
-        lineTo(15.11f, 12f)
-        lineTo(10.67f, 16.44f)
-        lineTo(7.1f, 16.44f)
-        lineTo(11.56f, 12f)
-        close()
-    }
-    path(fill = SolidColor(Color.Black)) {
-        // underscore "_"
-        moveTo(12.89f, 14.67f)
-        lineTo(18.22f, 14.67f)
-        lineTo(18.22f, 16.44f)
-        lineTo(12.89f, 16.44f)
-        close()
-    }
-}.build()
-
-/**
- * Brand tile: the prompt mark on a near-black (light theme) / near-white (dark
- * theme) rounded square. Deliberately monochrome, the dynamic accent is reserved
- * for actions, not logos.
+ * Saba Studio identity: reuse the EXACT vector used by the launcher and splash.
+ * No terminal-prompt badge and no theme-dependent black/white replacement.
  */
 @Composable
-fun HarnessMark(
-    size: Dp,
-    modifier: Modifier = Modifier,
-) {
-    // Harness Glass clears the surface role, so the glyph falls back to the glass base color.
-    val ink = MaterialTheme.colorScheme.surface.takeIf { it.alpha > 0f } ?: LocalHarnessGlass.current.surface
+fun SabaBrandMark(size: Dp, modifier: Modifier = Modifier) {
     Surface(
-        color = MaterialTheme.colorScheme.onSurface,
-        contentColor = ink,
+        color = colorResource(R.color.ic_launcher_background),
         shape = RoundedCornerShape(size * 0.28f),
         modifier = modifier.size(size),
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Icon(
-                PromptMark,
-                contentDescription = null,
-                modifier = Modifier.size(size * 0.55f),
-            )
-        }
+        Image(
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = null, // The adjacent text identifies the app.
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds,
+        )
     }
 }
+
+/** Compatibility wrapper for older call sites. New screens should use SabaBrandMark. */
+@Composable
+fun HarnessMark(size: Dp, modifier: Modifier = Modifier) = SabaBrandMark(size, modifier)
+
+/**
+ * Source-compatible legacy ImageVector alias. Uses the same colored Saba glyph,
+ * never the old >_ prompt. Prefer the XML-backed SabaBrandMark for actual UI.
+ */
+@Deprecated("Use SabaBrandMark so in-app identity exactly matches launcher/splash")
+val PromptMark: ImageVector = ImageVector.Builder(
+    name = "SabaStudioMark",
+    defaultWidth = 108.dp,
+    defaultHeight = 108.dp,
+    viewportWidth = 108f,
+    viewportHeight = 108f,
+).apply {
+    path(fill = SolidColor(Color(0xFF164569))) {
+        moveTo(54f, 19f)
+        curveTo(73.3f, 19f, 89f, 34.7f, 89f, 54f)
+        curveTo(89f, 73.3f, 73.3f, 89f, 54f, 89f)
+        curveTo(34.7f, 89f, 19f, 73.3f, 19f, 54f)
+        curveTo(19f, 34.7f, 34.7f, 19f, 54f, 19f)
+        close()
+    }
+    path(fill = SolidColor(Color(0xFF40D5F2))) {
+        moveTo(28f, 45f)
+        lineTo(44f, 29f)
+        lineTo(66f, 29f)
+        lineTo(80f, 43f)
+        lineTo(71f, 52f)
+        lineTo(61f, 41f)
+        lineTo(48f, 41f)
+        lineTo(38f, 52f)
+        close()
+    }
+    path(fill = SolidColor(Color(0xFFF6FCFF))) {
+        moveTo(80f, 63f)
+        lineTo(64f, 79f)
+        lineTo(41f, 79f)
+        lineTo(28f, 66f)
+        lineTo(37f, 57f)
+        lineTo(46f, 67f)
+        lineTo(60f, 67f)
+        lineTo(70f, 56f)
+        close()
+    }
+    path(fill = SolidColor(Color(0xFF81F0CA))) {
+        moveTo(70f, 25f)
+        lineTo(74f, 30f)
+        lineTo(79f, 25f)
+        lineTo(74f, 20f)
+        close()
+    }
+}.build()

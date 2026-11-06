@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.AdaptiveIconDrawable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.unit.dp
 import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -45,4 +47,47 @@ class SabaBrandDeviceTest {
         try { assertEquals(expected, attrs.getResourceId(0, 0)) }
         finally { attrs.recycle() }
     }
+    /** Regression: catch the real-device defect where setup/home showed a black >_ prompt. */
+    @Test fun actualComposeBrandMarkMatchesTheLauncherColors() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        androidx.test.core.app.ActivityScenario.launch(
+            com.androidharness.app.ui.chat.ChatListTestActivity::class.java
+        ).use { scenario ->
+            scenario.onActivity { activity ->
+                androidx.activity.compose.setContent(activity) {
+                    com.androidharness.app.ui.theme.HarnessTheme(
+                        themeMode = com.androidharness.app.data.ThemeMode.LIGHT,
+                        dynamicColor = false,
+                    ) {
+                        androidx.compose.foundation.layout.Box(
+                            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+                            contentAlignment = androidx.compose.ui.Alignment.Center,
+                        ) {
+                            com.androidharness.app.ui.common.SabaBrandMark(104.dp)
+                        }
+                    }
+                }
+            }
+            instrumentation.waitForIdleSync()
+            android.os.SystemClock.sleep(350)
+            instrumentation.waitForIdleSync()
+            val screenshot = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+            try {
+                var cyan = 0
+                for (y in screenshot.height / 3 until screenshot.height * 2 / 3) {
+                    for (x in screenshot.width / 4 until screenshot.width * 3 / 4) {
+                        val pixel = screenshot.getPixel(x, y)
+                        val red = Color.red(pixel)
+                        val green = Color.green(pixel)
+                        val blue = Color.blue(pixel)
+                        if (red in 45..85 && green in 190..238 && blue in 220..255) cyan++
+                    }
+                }
+                assertTrue("In-app Saba brand is not rendered in cyan; terminal icon may still be displayed", cyan > 60)
+            } finally {
+                screenshot.recycle()
+            }
+        }
+    }
+
 }
