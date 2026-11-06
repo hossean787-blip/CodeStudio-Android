@@ -152,9 +152,9 @@
     <string name="settings_search_license_title">License</string>
     <string name="settings_search_license_desc">About · The MIT license and what it means for forks</string>
     <string name="settings_search_credits_title">Credits</string>
-    <string name="settings_search_credits_desc">About · Open source projects behind AndroidHarness</string>
+    <string name="settings_search_credits_desc">About · Open-source foundations of Saba Studio</string>
     <string name="settings_search_author_title">Author</string>
-    <string name="settings_search_author_desc">About · Who builds AndroidHarness and where to find it</string>
+    <string name="settings_search_author_desc">About · Original AndroidHarness author and source links</string>
 
     <!-- Settings · anchors. Referenced by both the search entry and the
          SettingsAnchor call so the pair can never drift apart. -->
