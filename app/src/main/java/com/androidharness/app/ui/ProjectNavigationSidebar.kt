@@ -269,11 +269,11 @@ internal fun ProjectNavigationSidebar(
                         onSelectAll = { onSelectedChatsChange(if (selection.containsAll(selectableIds)) emptySet() else selection + selectableIds) },
                         onAction = { onSelectedChatsAction(selection, it) })
                     if (!selecting) {
-                    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 18.dp, end = 8.dp),
+                    Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(start = 18.dp, end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-                        HarnessMark(26.dp, Modifier.semantics { contentDescription = uiContext.getString(R.string.ui_androidharness_icon) })
-                        Text("صبا استودیو", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        HarnessMark(34.dp, Modifier.semantics { contentDescription = "نشان صبا استودیو" })
+                        Text("صبا استودیو", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         ExpressiveIconButton(onClick = onCollapse) { Icon(Icons.AutoMirrored.Outlined.MenuOpen, uiContext.getString(R.string.ui_collapse_sidebar), Modifier.size(19.dp)) }
                     }
                     com.androidharness.app.ui.chat.components.ConversationSectionSwitcher(
@@ -282,8 +282,8 @@ internal fun ProjectNavigationSidebar(
                         sectionSwitchEnabled, onSelectSection)
                     Button(onClick = onNewChat, enabled = projectCreationEnabled,
                         colors = if (glass) ButtonDefaults.buttonColors(containerColor = androidx.compose.ui.graphics.Color.Transparent,
-                            contentColor = scheme.onPrimaryContainer) else ButtonDefaults.buttonColors(), shape = RoundedCornerShape(if (LocalHarnessGlass.current.mode != HarnessGlassMode.OFF) 28.dp else 11.dp),
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp).heightIn(min = 44.dp)
+                            contentColor = scheme.onPrimaryContainer) else ButtonDefaults.buttonColors(), shape = RoundedCornerShape(if (LocalHarnessGlass.current.mode != HarnessGlassMode.OFF) 28.dp else 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp).heightIn(min = 48.dp)
                             .then(if (glass) Modifier.harnessGlass(scheme.primaryContainer, RoundedCornerShape(28.dp)) else Modifier)) {
                         Icon(Icons.Outlined.EditNote, null, Modifier.size(19.dp)); Spacer(Modifier.width(8.dp))
                         Text(uiContext.getString(R.string.settings_chat_start_new), style = MaterialTheme.typography.labelLarge)
@@ -296,7 +296,7 @@ internal fun ProjectNavigationSidebar(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 6.dp)
                             .semantics { contentDescription = uiContext.getString(R.string.ui_search_chats_and_messages) },
                         decorationBox = { field ->
-                            Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).harnessGlass(scheme.surfaceContainerHigh, RoundedCornerShape(if (glass) 24.dp else 10.dp))
+                            Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).harnessGlass(scheme.surfaceContainerLow, RoundedCornerShape(if (glass) 24.dp else 14.dp))
                                 .padding(start = 12.dp, end = if (query.isBlank() && !chatOnly) 12.dp else 0.dp, top = 4.dp, bottom = 4.dp),
                                 verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Outlined.Search, null, Modifier.size(18.dp), tint = scheme.onSurfaceVariant)
