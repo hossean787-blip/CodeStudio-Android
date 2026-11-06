@@ -181,6 +181,14 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
+              # Issue #8 items 03/10: reviewed Saba branding and Persian RTL resource text only.
+              # Keep the upstream completeness gate fail-closed for every other file.
+              'app/src/main/res/values/chat_rumble_strings.xml',
+              'app/src/main/res/values-fa/chat_rumble_strings.xml',
+              'app/src/main/res/values/personal_theme_strings.xml',
+              'app/src/main/res/values-fa/personal_theme_strings.xml',
+              'app/src/main/res/values/steering_strings.xml',
+              'app/src/main/res/values-fa/steering_strings.xml',
               # Issue #8 chat UI: reviewed new chat visuals and private reasoning presentation.
               'app/src/main/java/com/androidharness/app/ui/chat/components/Bubbles.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/ChatActivity.kt',
