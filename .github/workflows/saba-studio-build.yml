@@ -181,6 +181,8 @@ jobs:
               'app/src/main/java/com/androidharness/app/ui/chat/components/MainHeader.kt',
               'app/src/main/java/com/androidharness/app/AgentService.kt',
               'app/src/main/java/com/androidharness/app/ui/chat/components/MessageComposer.kt',
+              # Issue #8 item 04: About title uses app_name; required source credits remain visible.
+              'app/src/main/java/com/androidharness/app/ui/settings/SettingsScreen.kt',
               # Issue #8 items 03/10: reviewed Saba branding and Persian RTL resource text only.
               # Keep the upstream completeness gate fail-closed for every other file.
               'app/src/main/res/values/chat_rumble_strings.xml',
