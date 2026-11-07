@@ -241,7 +241,7 @@
     <string name="ui_more_browser_actions">"اقدامات بیشتر مرورگر"</string>
     <string name="ui_cancel_element_selection">"لغو انتخاب عنصر"</string>
     <string name="ui_select_element_to_fix">"عنصر را برای اصلاح انتخاب کنید"</string>
-    <string name="ui_devtools">"DevTools"</string>
+    <string name="ui_devtools">"ابزارهای توسعه‌دهنده"</string>
     <string name="ui_open_in_external_browser">"در مرورگر خارجی باز کنید"</string>
     <string name="ui_exit_fullscreen">"خروج از تمام صفحه"</string>
     <string name="ui_fullscreen">"تمام صفحه"</string>
@@ -257,7 +257,7 @@
     <string name="ui_cannot_load_page">"صفحه بارگیری نمی شود"</string>
     <string name="ui_pick_source">"منبع را انتخاب کنید"</string>
     <string name="ui_fix_with_agent">"با نماینده رفع کنید"</string>
-    <string name="ui_js_console">"JS CONSOLE (%1$s)"</string>
+    <string name="ui_js_console">"کنسول جاوااسکریپت (%1$s)"</string>
     <string name="ui_fix_bug_in_chat">"رفع خطا در گفت‌وگو"</string>
     <string name="ui_clear_logs">"لاگ ها را پاک کنید"</string>
     <string name="ui_close_console">"کنسول را ببندید"</string>
@@ -780,7 +780,7 @@
     <string name="ui_next_match">"مسابقه بعدی"</string>
     <string name="ui_aa">"Aa"</string>
     <string name="ui_match_case">"مورد کبریت"</string>
-    <string name="ui_regex">"Regex"</string>
+    <string name="ui_regex">"عبارت باقاعده"</string>
     <string name="ui_close_find">"پیدا کردن را ببندید"</string>
     <string name="ui_replace_with">"جایگزین کنید با"</string>
     <string name="ui_replace">"جایگزین کنید"</string>
@@ -961,7 +961,7 @@
     <string name="ui_enable_root_use">"استفاده از ریشه را فعال کنید"</string>
     <string name="ui_grant_root_access">"اجازه دسترسی روت"</string>
     <string name="ui_always_on_root_shizuku_normal">همیشه فعال · Root → Shizuku → Normal</string>
-    <string name="ui_root_shizuku_normal">"Root → Shizuku → Normal"</string>
+    <string name="ui_root_shizuku_normal">"روت ← شیزوکو ← عادی"</string>
     <string name="ui_auto_chooses_available_access_root_then_shizuku">"خودکار دسترسی در دسترس را انتخاب می کند: Root، سپس Shizuku، سپس Normal. Root همچنان برای این پروژه به مجوز نیاز دارد مگر اینکه حالت ریشه موقت خاموش باشد."</string>
     <string name="ui_both_stay_connected_shizuku_runs_ordinary_commands">"هر دو متصل می مانند: Shizuku دستورات معمولی را اجرا می کند و روت مستقیم درخواست های root را مدیریت می کند. Root همچنان به مجوز نیاز دارد مگر اینکه حالت موقت ریشه خاموش باشد."</string>
     <string name="ui_commands_fail_if_the_selected_access_is">"اگر دسترسی انتخاب شده در دسترس نباشد، دستورات با شکست مواجه می شوند."</string>
@@ -1158,7 +1158,7 @@
     <string name="ui_open_source">باز کردن منبع</string>
     <string name="ui_use_it_change_it_ship_it_even">"از آن استفاده کنید، آن را تغییر دهید، حتی در داخل یک اپلیکیشن تجاری ارسال کنید. یک شرط این است که"</string>
     <string name="ui_copyright_notice_and_the_license_text_travel">"اعلامیه حق چاپ و متن مجوز با کد همراه است. بدون گارانتی می آید"</string>
-    <string name="ui_androidharness_is_built_on_open_source_work">"AndroidHarness بر اساس کار منبع باز ساخته شده است و ایده ها را از عواملی که قبل از آن آمده اند وام می گیرد."</string>
+    <string name="ui_androidharness_is_built_on_open_source_work">"صبا استودیو بر پایهٔ AndroidHarness و پروژه‌های متن‌باز دیگر توسعه یافته است. نام سازندگان اصلی و پیوند سورس آن‌ها در ادامه آمده است."</string>
     <string name="ui_built_with">"ساخته شده با"</string>
     <string name="ui_inspired_by">"با الهام از"</string>
     <string name="ui_every_project_keeps_its_own_license_androidharness">"هر پروژه مجوز خود را حفظ می کند. صبا استودیو به آنها وابسته نیست."</string>

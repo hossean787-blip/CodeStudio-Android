@@ -1158,7 +1158,7 @@
     <string name="ui_open_source">"Open source"</string>
     <string name="ui_use_it_change_it_ship_it_even">"Use it, change it, ship it, even inside a commercial app. The one condition is that the "</string>
     <string name="ui_copyright_notice_and_the_license_text_travel">"copyright notice and the license text travel with the code. It comes with no warranty."</string>
-    <string name="ui_androidharness_is_built_on_open_source_work">"AndroidHarness is built on open source work and borrows ideas from the agents that came before it."</string>
+    <string name="ui_androidharness_is_built_on_open_source_work">"Saba Studio builds on AndroidHarness and other open-source projects. The original creators are credited below."</string>
     <string name="ui_built_with">"Built with"</string>
     <string name="ui_inspired_by">"Inspired by"</string>
     <string name="ui_every_project_keeps_its_own_license_androidharness">"Every project keeps its own license. Saba Studio is not affiliated with them."</string>

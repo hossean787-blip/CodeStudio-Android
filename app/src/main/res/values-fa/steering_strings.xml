@@ -2,7 +2,7 @@
 <resources>
     <string name="steering_group">هنگام کار عامل</string>
     <string name="settings_anchor_steering">پیام‌های ارسال‌شده در میانهٔ کار</string>
-    <string name="steering_mode_auto">AH Auto</string>
+    <string name="steering_mode_auto">خودکار صبا</string>
     <string name="steering_mode_auto_desc">عامل پیام شما را بعد از مرحلهٔ فعلی می‌خواند و به کار ادامه می‌دهد. ابزارهای در حال اجرا هرگز قطع نمی‌شوند. اگر کار تمام شده باشد، پیام نوبت بعدی را شروع می‌کند.</string>
     <string name="steering_mode_after_task">بعد از کار</string>
     <string name="steering_mode_after_task_desc">پیام شما تا پایان کامل کار منتظر می‌ماند و سپس نوبت تازه‌ای را شروع می‌کند.</string>

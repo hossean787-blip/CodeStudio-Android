@@ -972,4 +972,7 @@
     <string name="glass_transparency">Transparencia</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">Desliza a la derecha para un cristal más claro. La vista previa sigue el arrastre y tu elección se aplica al soltar. Los botones de acción y las ventanas emergentes mantienen un tinte legible.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d de %2$d fuentes</string>
+    <string name="chat_activity_pages_read">%1$d páginas leídas</string>
 </resources>

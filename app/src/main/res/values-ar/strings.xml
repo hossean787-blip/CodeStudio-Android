@@ -976,4 +976,7 @@
     <string name="glass_transparency">الشفافية</string>
     <string name="glass_transparency_percent">%1$d%%</string>
     <string name="glass_transparency_hint">اسحب لليمين لزجاج أكثر صفاءً. تتحدث المعاينة أثناء السحب ويُطبق اختيارك عند الإفلات. تحتفظ أزرار الإجراءات والنوافذ المنبثقة بلون مقروء.</string>
+    <!-- Chat activity counters; both numeric placeholders match default strings.xml. -->
+    <string name="chat_activity_sources_progress">%1$d من أصل %2$d مصادر</string>
+    <string name="chat_activity_pages_read">تمت قراءة %1$d صفحات</string>
 </resources>

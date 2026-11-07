@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_page_rumble_title">AH Rumble</string>
+    <string name="settings_page_rumble_title">بازخورد لمسی صبا</string>
     <string name="settings_page_rumble_desc">لرزش‌های لمسی هنگام فکر کردن، فراخوانی ابزار و پایان گفتگو</string>
-    <string name="rumble_title">AH Rumble</string>
+    <string name="rumble_title">بازخورد لمسی صبا</string>
     <string name="rumble_desc">وقتی گفتگو به مرحله‌ای تازه می‌رود، مثل فکر کردن، فراخوانی ابزار، نوشتن پاسخ یا پایان، یک لرزش حس کنید.</string>
     <string name="rumble_where_title">کجا بلرزد</string>
     <string name="rumble_in_chat">گفتگو</string>
@@ -32,7 +32,7 @@
     <string name="rumble_flow_title">لرزش هنگام نوشتن</string>
     <string name="rumble_flow_desc">لرزشی نرم و آرام‌بخش تا زمانی که پاسخ گفتگو در حال رسیدن است. محتوای تصویری غنی لرزش آهسته‌تر خودش را دارد. فقط در گفتگو.</string>
     <string name="rumble_flow_status_system">از لرزش پیشرفته گوشی شما استفاده می‌شود.</string>
-    <string name="rumble_flow_status_custom">این گوشی لرزش پیشرفته ندارد، پس به‌جای آن از ضربه‌های خود AH Rumble استفاده می‌شود.</string>
+    <string name="rumble_flow_status_custom">این گوشی لرزش پیشرفته ندارد، پس به‌جای آن از ضربه‌های خود بازخورد لمسی صبا استفاده می‌شود.</string>
     <string name="rumble_flow_try">جریان را حس کن</string>
     <string name="rumble_cue_think">فکر کردن</string>
     <string name="rumble_cue_think_desc">مدل دوباره شروع به فکر کردن می‌کند.</string>
@@ -64,5 +64,5 @@
     <string name="rumble_spacing_hint">لرزش‌هایی که از این نزدیک‌تر باشند رد می‌شوند تا پشت‌سرهم بودن ابزارها آرام بماند.</string>
     <string name="rumble_battery_saver">توقف در حالت بهینه‌سازی باتری</string>
     <string name="rumble_battery_saver_desc">تا وقتی حالت بهینه‌سازی باتری روشن است لرزش‌ها رد شوند.</string>
-    <string name="rumble_reset">بازنشانی AH Rumble</string>
+    <string name="rumble_reset">بازنشانی بازخورد لمسی صبا</string>
 </resources>

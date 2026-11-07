@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_page_rumble_title">AH Rumble</string>
+    <string name="settings_page_rumble_title">Saba Rumble</string>
     <string name="settings_page_rumble_desc">Haptic pulses as chats think, call tools and finish</string>
-    <string name="rumble_title">AH Rumble</string>
+    <string name="rumble_title">Saba Rumble</string>
     <string name="rumble_desc">Feel a pulse when a conversation moves to a new step, like thinking, a tool call, writing the reply or finishing.</string>
     <string name="rumble_where_title">Where it rumbles</string>
     <string name="rumble_in_chat">Chat</string>
@@ -32,7 +32,7 @@
     <string name="rumble_flow_title">Rumble while it writes</string>
     <string name="rumble_flow_desc">A smooth, soothing rumble for as long as a Chat reply is coming in. Rich visuals get their own slower rumble. Chat only.</string>
     <string name="rumble_flow_status_system">Using your phone\'s advanced haptics.</string>
-    <string name="rumble_flow_status_custom">This phone has no advanced haptics, so AH Rumble\'s own pulses are used instead.</string>
+    <string name="rumble_flow_status_custom">This phone has no advanced haptics, so Saba Rumble\'s own pulses are used instead.</string>
     <string name="rumble_flow_try">Feel the flow</string>
     <string name="rumble_cue_think">Thinking</string>
     <string name="rumble_cue_think_desc">The model goes back to thinking.</string>
@@ -65,6 +65,6 @@
     <string name="rumble_spacing_hint">Pulses closer together than this are skipped, so bursts of tool calls stay calm.</string>
     <string name="rumble_battery_saver">Pause in battery saver</string>
     <string name="rumble_battery_saver_desc">Skip pulses while battery saver is on.</string>
-    <string name="rumble_reset">Reset AH Rumble</string>
+    <string name="rumble_reset">Reset Saba Rumble</string>
     <string name="rumble_percent" translatable="false">%1$d%%</string>
 </resources>
