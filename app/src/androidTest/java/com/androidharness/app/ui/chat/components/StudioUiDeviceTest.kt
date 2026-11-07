@@ -6,6 +6,8 @@ import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -140,7 +142,7 @@ class StudioUiDeviceTest {
                             LocalLayoutDirection provides LayoutDirection.Rtl,
                         ) {
                             Surface {
-                                Box(Modifier.fillMaxSize()) {
+                                Box(Modifier.fillMaxSize().systemBarsPadding().padding(horizontal = 16.dp)) {
                                     ChatActivity(messages = messages, autoExpand = false,
                                         showThinkingMetrics = false)
                                 }
